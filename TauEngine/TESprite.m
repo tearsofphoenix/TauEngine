@@ -20,8 +20,7 @@
         [self setRenderStyle: kTERenderStyleTexture];
         [self setEffect: [TETexture effectWithTextureFromImage:image]];
         
-        self.width = image.size.width/ratio;
-        self.height = image.size.height/ratio;
+        [self setSize: CGSizeMake(image.size.width / ratio, image.size.height / ratio)];
         
         self.textureCoordinates[0] = GLKVector2Make(1, 0);
         self.textureCoordinates[1] = GLKVector2Make(1, 1);

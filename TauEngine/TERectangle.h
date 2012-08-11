@@ -20,8 +20,6 @@ typedef NSUInteger TERectangleCornerVertex;
 
 @interface TERectangle : TEPolygon
 
-@property (nonatomic) GLfloat height;
-
-@property (nonatomic) GLfloat width;
+@property (nonatomic) CGSize size;
 
 @end

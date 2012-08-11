@@ -11,8 +11,9 @@
 
 #define RenderStyleIs(x) ((_renderStyle & x) == x)
 
-static GLKBaseEffect *defaultEffect;
-static GLKBaseEffect *constantColorEffect;
+static GLKBaseEffect *s_defaultEffect = nil;
+
+static GLKBaseEffect *s_constantColorEffect = nil;
 
 @implementation TEShape
 
@@ -25,10 +26,12 @@ static GLKBaseEffect *constantColorEffect;
 
 + (void)initialize
 {
-    defaultEffect = [[GLKBaseEffect alloc] init];
+    s_defaultEffect = [[GLKBaseEffect alloc] init];
     
-    constantColorEffect = [[GLKBaseEffect alloc] init];
-    constantColorEffect.useConstantColor = YES;
+    s_constantColorEffect = [[GLKBaseEffect alloc] init];
+    [s_constantColorEffect setUseConstantColor: YES];
+    
+    [super initialize];
 }
 
 - (id)init
@@ -97,11 +100,16 @@ static GLKBaseEffect *constantColorEffect;
     __block GLKVector4 *displayColorVertices = NULL;
     
     // Initialize the effect if necessary
-    if (_effect == nil) {
+    if (_effect == nil)
+    {
         if (RenderStyleIs(kTERenderStyleConstantColor))
-            _effect = constantColorEffect;
-        else if (RenderStyleIs(kTERenderStyleVertexColors))
-            _effect = defaultEffect;
+        {
+            _effect = s_constantColorEffect;
+            
+        }else if (RenderStyleIs(kTERenderStyleVertexColors))
+        {
+            _effect = s_defaultEffect;
+        }
     }
     
     _effect.transform.modelviewMatrix = [[super node] modelViewMatrix];

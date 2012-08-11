@@ -33,13 +33,13 @@
 
 - (void)addButton: (TEButton *)button
 {
-    [characters addObject: button];
+    [_characters addObject: button];
     [_buttons addObject: button];
 }
 
 - (void)removeButton: (TEButton *)button
 {
-    [characters removeObject: button];
+    [_characters removeObject: button];
     [_buttons removeObject: button];
 }
 

@@ -15,10 +15,17 @@
     self = [super init];
     if (self)
     {
-        sounds = [[NSMutableDictionary alloc] init];
+        _sounds = [[NSMutableDictionary alloc] init];
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [_sounds release];
+    
+    [super dealloc];
 }
 
 + (TESoundManager *)sharedManager
@@ -43,17 +50,17 @@
     
     if (AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath: soundFilePath], &soundID) == kAudioServicesNoError)
     {
-        [sounds setObject: [NSNumber numberWithUnsignedInt: soundID]
-                   forKey: filename];
+        [_sounds setObject: [NSNumber numberWithUnsignedInt: soundID]
+                    forKey: filename];
     }else
     {
         NSLog(@"Could not load sound '%@.wav'", filename);
     }
 }
 
-- (void)play: (NSString *)sound
+- (void)play: (NSString *)soundName
 {
-    NSNumber *soundID = (NSNumber *)[sounds objectForKey:sound];
+    NSNumber *soundID = [_sounds objectForKey: soundName];
     
     if (soundID != nil)
     {
@@ -61,7 +68,7 @@
         
     }else
     {
-        NSLog(@"Sound '%@.wav' has not been loaded.", sound);
+        NSLog(@"Sound '%@.wav' has not been loaded.", soundName);
     }
 }
 

@@ -13,11 +13,12 @@
 
 # pragma mark Making Textures
 
-+(GLKTextureInfo *)textureFromImage:(UIImage*)image;
++ (GLKTextureInfo *)textureFromImage: (UIImage*)image;
 
 # pragma mark Making Effects
 
-+(GLKBaseEffect *)effectWithTexture:(GLKTextureInfo *)texture;
-+(GLKBaseEffect *)effectWithTextureFromImage:(UIImage*)image;
++ (GLKBaseEffect *)effectWithTexture: (GLKTextureInfo *)texture;
+
++ (GLKBaseEffect *)effectWithTextureFromImage: (UIImage*)image;
 
 @end

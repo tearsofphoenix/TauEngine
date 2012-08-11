@@ -35,11 +35,13 @@
 
 - (void)updateVertices
 {
-    self.vertices[0] = GLKVector2Make(0,0);
+    GLKVector2 *vertices = [self vertices];
+
+    vertices[0] = GLKVector2Make(0,0);
     for (int i = 0; i <= _numSides; i++)
     {
         float theta = ((float)i) / _numSides * M_TAU;
-        self.vertices[i+1] = GLKVector2Make(cos(theta) * _radius, sin(theta) * _radius);
+        vertices[i+1] = GLKVector2Make(cos(theta) * _radius, sin(theta) * _radius);
     }
 }
 

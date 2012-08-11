@@ -59,13 +59,18 @@ typedef struct
     return GLKVector2Normalize(GLKVector2Make(-edge.y,edge.x));
 }
 
-+(ProjectionRange)polygon:(TEPolygon *)poly projectedOnto:(GLKVector2)axis {
++ (ProjectionRange)polygon: (TEPolygon *)poly
+             projectedOnto: (GLKVector2)axis
+{
     ProjectionRange range;
     range.min = INFINITY;
     range.max = 0;
     
-    for (int i = 0; i < poly.numVertices; i++) {
-        float projection = GLKVector2DotProduct(poly.vertices[i], axis);
+    GLKVector2 *vertices = [poly vertices];
+    
+    for (int i = 0; i < poly.numVertices; i++)
+    {
+        float projection = GLKVector2DotProduct(vertices[i], axis);
         range.min = MIN(range.min,projection);
         range.max = MAX(range.max,projection);
     }
@@ -90,20 +95,38 @@ typedef struct
     return NO;
 }
 
-+(BOOL)intersectOnEdgesFirst:(TEPolygon *)poly1 second:(TEPolygon*)poly2 {
++ (BOOL)intersectOnEdgesFirst: (TEPolygon *)poly1
+                       second: (TEPolygon*)poly2
+{
     GLKVector2 testedEdges[poly1.numEdges+poly2.numEdges];
     int testedCount = 0;
-    for (int i = 0; i<2; i++){
+    for (int i = 0; i<2; i++)
+    {
         TEPolygon *poly = i == 0 ? poly1 : poly2;
-        for (int j = 0; j < poly.numEdges; j++) {
-            GLKVector2 edge = GLKVector2Subtract(poly.vertices[(j+1+poly.edgeVerticesOffset)%poly.numEdges], poly.vertices[j+poly.edgeVerticesOffset]);
-            GLKVector2 perpendicularAxis = [self axisPerpendicularToEdge:edge];
+        
+        GLKVector2 *vertices = [poly vertices];
+        
+        for (int j = 0; j < poly.numEdges; j++)
+        {
+            GLKVector2 edge = GLKVector2Subtract(vertices[(j + 1 + poly.edgeVerticesOffset) % poly.numEdges],
+                                                 vertices[j + poly.edgeVerticesOffset]);
             
-            if (![self testedEdge:perpendicularAxis alreadyTested:testedEdges numTested:testedCount]) {
-                if (![self polygon:poly1 andPolygon:poly2 intersectOnAxis:perpendicularAxis])
+            GLKVector2 perpendicularAxis = [self axisPerpendicularToEdge: edge];
+            
+            if (![self testedEdge: perpendicularAxis
+                    alreadyTested: testedEdges
+                        numTested: testedCount])
+            {
+                if (![self polygon: poly1
+                        andPolygon: poly2
+                   intersectOnAxis: perpendicularAxis])
+                {
                     return NO;
-                else
+                    
+                }else
+                {
                     testedEdges[testedCount++] = edge;
+                }
             }
         }
     }
@@ -113,11 +136,12 @@ typedef struct
 + (TEPolygon *)transformedPolygonFrom: (TEPolygon *)drawable
 {
     TEPolygon *poly = [[TEPolygon alloc] initWithVertices: [drawable numVertices]];
-    
+    GLKVector2 *vertices = [poly vertices];
+    GLKVector2 *drawableVertices = [drawable vertices];
     for (int i = 0; i < [poly numVertices]; i++)
     {
-        poly.vertices[i] = [self transformedPoint: drawable.vertices[i]
-                                        fromShape: drawable];
+        vertices[i] = [self transformedPoint: drawableVertices[i]
+                                   fromShape: drawable];
     }
     return [poly autorelease];
 }
@@ -138,20 +162,30 @@ typedef struct
 
 # pragma mark - Collision detection between point and polygon
 
-+(BOOL)point:(GLKVector2)point collidesWithPolygon:(TENode *)node {
-    if (![node.shape isKindOfClass:[TERectangle class]]) {
++       (BOOL)point: (GLKVector2)point
+collidesWithPolygon: (TENode *)node
+{
+    if (![[node shape] isKindOfClass: [TERectangle class]])
+    {
         NSLog(@"Point/GenericPolygon collisions not yet implemented. Only rectangles!");
         return NO;
     }
     
-    TEPolygon *rectangle = [self transformedPolygonFrom:((TEPolygon *)node.drawable)];
-    return point.x >= rectangle.vertices[kTERectangleBottomLeft].x && point.x <= rectangle.vertices[kTERectangleTopRight].x &&
-    point.y >= rectangle.vertices[kTERectangleBottomLeft].y && point.y <= rectangle.vertices[kTERectangleTopRight].y;
+    TEPolygon *rectangle = [self transformedPolygonFrom: ((TEPolygon *)node.drawable)];
+
+    GLKVector2 *vertices = [rectangle vertices];
+
+    return point.x >= vertices[kTERectangleBottomLeft].x
+        && point.x <= vertices[kTERectangleTopRight].x
+        && point.y >= vertices[kTERectangleBottomLeft].y
+        && point.y <= vertices[kTERectangleTopRight].y;
 }
 
 # pragma mark - Collision detection between point and circle
 
-+(BOOL)point:(GLKVector2)point collidesWithCircle:(TENode *)node {
++      (BOOL)point: (GLKVector2)point
+collidesWithCircle: (TENode *)node
+{
     GLKVector2 circleCenter  = [self transformedPoint:GLKVector2Make(0,0) fromShape:(TEShape *)node.drawable];
     GLKVector2 pointOnCircle = [self transformedPoint:GLKVector2Make(0,((TEShape *)node.drawable).radius) fromShape:(TEShape *)node.drawable];
     float radius = GLKVector2Length(GLKVector2Subtract(pointOnCircle, circleCenter));

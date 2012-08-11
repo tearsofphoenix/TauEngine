@@ -33,11 +33,13 @@
 
 - (void)updateVertices
 {
-    self.vertices[0] = GLKVector2Make(0,0);
+    GLKVector2 *vertices = [self vertices];
+    
+    vertices[0] = GLKVector2Make(0,0);
     for (int i = 0; i <= TE_ELLIPSE_RESOLUTION; i++)
     {
         float theta = ((float)i) / TE_ELLIPSE_RESOLUTION * M_TAU;
-        self.vertices[i+1] = GLKVector2Make(cos(theta) * _radiusX, sin(theta) * _radiusY);
+        vertices[i+1] = GLKVector2Make(cos(theta) * _radiusX, sin(theta) * _radiusY);
     }
 }
 

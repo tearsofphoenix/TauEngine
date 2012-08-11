@@ -9,13 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioServices.h>
 
-@interface TESoundManager : NSObject {
-  NSMutableDictionary *sounds;
+@interface TESoundManager : NSObject
+{
+    NSMutableDictionary *_sounds;
 }
 
-+(TESoundManager *)sharedManager;
++ (TESoundManager *)sharedManager;
 
--(void)load:(NSString *)filename;
--(void)play:(NSString *)sound;
+- (void)load: (NSString *)filename;
+
+- (void)play: (NSString *)sound;
 
 @end

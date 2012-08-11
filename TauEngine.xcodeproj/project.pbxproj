@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		22D2287F15D66E47008ACEF9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD261472C7520008AC62 /* UIKit.framework */; };
 		22D2288015D66E47008ACEF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD161472C7520008AC62 /* Foundation.framework */; };
 		22D2288215D66E47008ACEF9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D2288115D66E47008ACEF9 /* CoreGraphics.framework */; };
 		22D2288815D66E47008ACEF9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22D2288615D66E47008ACEF9 /* InfoPlist.strings */; };
@@ -22,8 +21,6 @@
 		3C7288091516343900100C66 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C7288051516342400100C66 /* GLKit.framework */; };
 		3C72880A1516343900100C66 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C7288061516342400100C66 /* OpenGLES.framework */; };
 		3CCDBD171472C7520008AC62 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD161472C7520008AC62 /* Foundation.framework */; };
-		3CCDBD251472C7520008AC62 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD241472C7520008AC62 /* SenTestingKit.framework */; };
-		3CCDBD271472C7520008AC62 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD261472C7520008AC62 /* UIKit.framework */; };
 		3CCDBD281472C7520008AC62 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD161472C7520008AC62 /* Foundation.framework */; };
 		3CCDBD2B1472C7520008AC62 /* libTauEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD131472C7520008AC62 /* libTauEngine.a */; };
 		3CCDBD311472C7520008AC62 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3CCDBD2F1472C7520008AC62 /* InfoPlist.strings */; };
@@ -86,6 +83,10 @@
 		3CCDBDC41472C8210008AC62 /* TENumberDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBDC21472C8210008AC62 /* TENumberDisplay.m */; };
 		3CCDBDC81472C8340008AC62 /* TESprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCDBDC61472C8340008AC62 /* TESprite.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3CCDBDC91472C8340008AC62 /* TESprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBDC71472C8340008AC62 /* TESprite.m */; };
+		E1AA74EF15D6B1CC00891071 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1AA74EE15D6B1CB00891071 /* QuartzCore.framework */; };
+		E1AA74F115D6B1EF00891071 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1AA74F015D6B1EF00891071 /* UIKit.framework */; };
+		E1AA74F215D6B1F500891071 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1AA74EE15D6B1CB00891071 /* QuartzCore.framework */; };
+		E1AA74F315D6B22F00891071 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD241472C7520008AC62 /* SenTestingKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,7 +117,6 @@
 		3CCDBD1A1472C7520008AC62 /* TauEngine-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TauEngine-Prefix.pch"; sourceTree = "<group>"; };
 		3CCDBD231472C7520008AC62 /* TauEngineTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TauEngineTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CCDBD241472C7520008AC62 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		3CCDBD261472C7520008AC62 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		3CCDBD2E1472C7520008AC62 /* TauEngineTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TauEngineTests-Info.plist"; sourceTree = "<group>"; };
 		3CCDBD301472C7520008AC62 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3CCDBD321472C7520008AC62 /* TauEngineTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TauEngineTests.h; sourceTree = "<group>"; };
@@ -179,6 +179,8 @@
 		3CCDBDC21472C8210008AC62 /* TENumberDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TENumberDisplay.m; sourceTree = "<group>"; };
 		3CCDBDC61472C8340008AC62 /* TESprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TESprite.h; sourceTree = "<group>"; };
 		3CCDBDC71472C8340008AC62 /* TESprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TESprite.m; sourceTree = "<group>"; };
+		E1AA74EE15D6B1CB00891071 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E1AA74F015D6B1EF00891071 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,10 +188,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1AA74F215D6B1F500891071 /* QuartzCore.framework in Frameworks */,
+				E1AA74F115D6B1EF00891071 /* UIKit.framework in Frameworks */,
 				22D2289515D66F10008ACEF9 /* OpenGLES.framework in Frameworks */,
 				22D2289415D66F09008ACEF9 /* GLKit.framework in Frameworks */,
 				22D2289315D66EFF008ACEF9 /* libTauEngine.a in Frameworks */,
-				22D2287F15D66E47008ACEF9 /* UIKit.framework in Frameworks */,
 				22D2288015D66E47008ACEF9 /* Foundation.framework in Frameworks */,
 				22D2288215D66E47008ACEF9 /* CoreGraphics.framework in Frameworks */,
 			);
@@ -199,6 +202,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1AA74EF15D6B1CC00891071 /* QuartzCore.framework in Frameworks */,
 				3C7288071516342400100C66 /* GLKit.framework in Frameworks */,
 				3C7288081516342400100C66 /* OpenGLES.framework in Frameworks */,
 				3CCDBD171472C7520008AC62 /* Foundation.framework in Frameworks */,
@@ -211,10 +215,9 @@
 			files = (
 				3C7288091516343900100C66 /* GLKit.framework in Frameworks */,
 				3C72880A1516343900100C66 /* OpenGLES.framework in Frameworks */,
-				3CCDBD251472C7520008AC62 /* SenTestingKit.framework in Frameworks */,
-				3CCDBD271472C7520008AC62 /* UIKit.framework in Frameworks */,
 				3CCDBD281472C7520008AC62 /* Foundation.framework in Frameworks */,
 				3CCDBD2B1472C7520008AC62 /* libTauEngine.a in Frameworks */,
+				E1AA74F315D6B22F00891071 /* SenTestingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,11 +278,12 @@
 		3CCDBD151472C7520008AC62 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E1AA74F015D6B1EF00891071 /* UIKit.framework */,
+				E1AA74EE15D6B1CB00891071 /* QuartzCore.framework */,
 				3C7288051516342400100C66 /* GLKit.framework */,
 				3C7288061516342400100C66 /* OpenGLES.framework */,
 				3CCDBD161472C7520008AC62 /* Foundation.framework */,
 				3CCDBD241472C7520008AC62 /* SenTestingKit.framework */,
-				3CCDBD261472C7520008AC62 /* UIKit.framework */,
 				22D2288115D66E47008ACEF9 /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
@@ -822,6 +826,7 @@
 		3CCDBD3B1472C7520008AC62 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
@@ -837,6 +842,7 @@
 		3CCDBD3C1472C7520008AC62 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",

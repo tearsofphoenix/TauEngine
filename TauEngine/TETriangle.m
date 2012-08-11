@@ -15,9 +15,11 @@
     self = [super initWithVertices: 3];
     if (self)
     {
-        self.vertices[0] = GLKVector2Make(0.0, 1.0);
-        self.vertices[1] = GLKVector2Make(-1.0, -1.0);
-        self.vertices[2] = GLKVector2Make(1.0, -1.0);
+        GLKVector2 *vertices = [self vertices];
+        
+        vertices[0] = GLKVector2Make(0.0, 1.0);
+        vertices[1] = GLKVector2Make(-1.0, -1.0);
+        vertices[2] = GLKVector2Make(1.0, -1.0);
     }
     
     return self;

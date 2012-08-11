@@ -64,19 +64,22 @@ static float digitFractionalWidth;
     float top = digitHeight/2;
     float bottom = -1*top;
     
+    GLKVector2 *vertices = [self vertices];
+
     for (int i = 0; i < _numDigits; i++)
     {
         int index = i*4;
         if (i < _hiddenDigits)
         {
-            self.vertices[index+0] = self.vertices[index+1] = self.vertices[index+2] = self.vertices[index+3] = GLKVector2Make(1000, 1000); // offscreen hack
-        } else {
+            vertices[index+0] = vertices[index+1] = vertices[index+2] = vertices[index+3] = GLKVector2Make(1000, 1000); // offscreen hack
+        } else
+        {
             float left = -1 * (middle - (i - _hiddenDigits)) * digitWidth - offset;
             float right = left + digitWidth;
-            self.vertices[index+0] = GLKVector2Make(left, top);
-            self.vertices[index+1] = GLKVector2Make(left, bottom);
-            self.vertices[index+2] = GLKVector2Make(right, top);
-            self.vertices[index+3] = GLKVector2Make(right, bottom);
+            vertices[index+0] = GLKVector2Make(left, top);
+            vertices[index+1] = GLKVector2Make(left, bottom);
+            vertices[index+2] = GLKVector2Make(right, top);
+            vertices[index+3] = GLKVector2Make(right, bottom);
         }
     }
 }

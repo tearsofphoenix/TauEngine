@@ -14,8 +14,8 @@
 }
 
 @property float scale, scaleX, scaleY;
-@property(readonly) float easedScale;
-@property(readonly) float easedScaleX;
-@property(readonly) float easedScaleY;
+@property (readonly) float easedScale;
+@property (readonly) float easedScaleX;
+@property (readonly) float easedScaleY;
 
 @end

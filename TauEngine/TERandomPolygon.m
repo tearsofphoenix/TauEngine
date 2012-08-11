@@ -41,15 +41,20 @@
 
 - (void)updateVertices
 {
-    self.vertices[0] = GLKVector2Make(0,0);
+    GLKVector2 *vertices = [self vertices];
+
+    vertices[0] = GLKVector2Make(0,0);
     for (int i = 0; i < _numSides; i++)
     {
         float theta = ((float)i) / _numSides * M_TAU;
         
-        self.vertices[i+1] = GLKVector2Make(cos(theta)*[TERandom randomFractionFrom:lowerFactor to:upperFactor],
-                                            sin(theta)*[TERandom randomFractionFrom:lowerFactor to:upperFactor]);
+        vertices[i+1] = GLKVector2Make(cos(theta) * [TERandom randomFractionFrom: lowerFactor
+                                                                              to: upperFactor],
+                                            sin(theta) * [TERandom randomFractionFrom: lowerFactor
+                                                                                   to: upperFactor]);
     }
-    self.vertices[_numSides+1] = self.vertices[1];
+    
+    vertices[_numSides+1] = vertices[1];
 }
 
 @end

@@ -8,8 +8,10 @@
 
 #import "TEAccelerometer.h"
 
-static double s_previousHorizontal = 0.0;
-static double kFilterFactor = 0.05;
+static CGFloat s_previousHorizontal = 0.0;
+
+static CGFloat kFilterFactor = 0.05;
+
 static CMAcceleration s_calibration;
 
 @implementation TEAccelerometer;

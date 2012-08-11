@@ -10,12 +10,17 @@
 #import <GLKit/GLKit.h>
 
 @class TENode;
+@class CADisplayLink;
 
 @interface TEScene : GLKView <GLKViewDelegate>
 {
     UIEdgeInsets _edgeInsets;
-    GLKVector4 clearColor;
-    NSMutableArray *characters, *charactersToAdd;
+    NSTimeInterval _lastUpdateTime;
+    GLKVector4 _clearColor;
+    NSMutableArray *_characters;
+    NSMutableArray *_charactersToAdd;
+    
+    CADisplayLink *_displayLink;
     
     GLKMatrix4 cachedProjectionMatrix;
     BOOL dirtyProjectionMatrix;
@@ -27,7 +32,7 @@
 
 @property (nonatomic) GLKVector4 clearColor;
 
-@property(strong, nonatomic) NSMutableArray *characters;
+@property (nonatomic, strong, nonatomic) NSMutableArray *characters;
 
 # pragma mark Scene Setup
 

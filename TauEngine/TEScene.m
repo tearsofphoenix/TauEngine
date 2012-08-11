@@ -8,12 +8,13 @@
 
 #import "TEScene.h"
 #import "TauEngine.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation TEScene
 
 @synthesize edgeInsets = _edgeInsets;
-@synthesize clearColor;
-@synthesize characters;
+@synthesize clearColor = _clearColor;
+@synthesize characters = _characters;
 
 - (id)initWithFrame: (CGRect)frame
 {
@@ -25,45 +26,58 @@
         
         [self setDrawableMultisample: GLKViewDrawableMultisampleNone];// 4X;
         
-        characters = [[NSMutableArray alloc] init];
-        charactersToAdd = [[NSMutableArray alloc] init];
+        _characters = [[NSMutableArray alloc] init];
+        _charactersToAdd = [[NSMutableArray alloc] init];
         
         dirtyProjectionMatrix = YES;
+        
+        _displayLink = [CADisplayLink displayLinkWithTarget: self
+                                                   selector: @selector(update)];
+        [_displayLink setFrameInterval: 1];
+        [_displayLink addToRunLoop: [NSRunLoop currentRunLoop]
+                           forMode: NSDefaultRunLoopMode];
     }
     
     return self;
 }
 
-- (void)glkViewControllerUpdate: (GLKViewController *)controller
+- (void)update
 {
-    GLfloat timeSince = [controller timeSinceLastDraw]; // FIXME should really be timeSinceLastUpdate, but it's buggy
+    NSTimeInterval currentTime = [NSDate timeIntervalSinceReferenceDate];
+    
+    GLfloat timeSince = currentTime - _lastUpdateTime;
+
+    _lastUpdateTime = currentTime;
     
     // Update all characters
-    for (TENode *character in characters)
-        [character update:timeSince inScene:self];
+    for (TENode *character in _characters)
+    {
+        [character update: timeSince
+                  inScene: self];
+    }
     
     // Remove any who declared they need removed
     NSMutableArray *removed = [[NSMutableArray alloc] init];
-    [characters filterUsingPredicate: [NSPredicate predicateWithBlock: (^(TENode *character, NSDictionary *bindings)
-                                                                        {
-                                                                            if (character.remove)
-                                                                            {
-                                                                                [removed addObject:character];
-                                                                                return NO;
-                                                                            } else
-                                                                            {
-                                                                                return YES;
-                                                                            }
-                                                                        })]];
+    
+    [_characters enumerateObjectsUsingBlock: (^(TENode *obj, NSUInteger idx, BOOL *stop)
+                                              {
+                                                  if ([obj remove])
+                                                  {
+                                                      [removed addObject: obj];
+                                                  }
+                                              })];
+    
     for (TENode *character in removed)
     {
         [self nodeRemoved:character];
         [character onRemoval];
     }
     
+    [removed release];
+    
     // Add any who were created in update
-    [characters addObjectsFromArray:charactersToAdd];
-    [charactersToAdd removeAllObjects];
+    [_characters addObjectsFromArray: _charactersToAdd];
+    [_charactersToAdd removeAllObjects];
 }
 
 - (void)glkView: (GLKView *)view
@@ -133,20 +147,20 @@
 
 - (void)markChildrensFullMatricesDirty
 {
-    [characters makeObjectsPerformSelector: @selector(traverseUsingBlock:)
-                                withObject: (^(TENode *node)
-                                             {
-                                                 [node setDirtyFullModelViewMatrix: YES];
-                                             })];
+    [_characters makeObjectsPerformSelector: @selector(traverseUsingBlock:)
+                                 withObject: (^(TENode *node)
+                                              {
+                                                  [node setDirtyFullModelViewMatrix: YES];
+                                              })];
 }
 
 - (void)render
 {
-    glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+    glClearColor(_clearColor.r, _clearColor.g, _clearColor.b, _clearColor.a);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    [characters makeObjectsPerformSelector: @selector(renderInScene:)
-                                withObject: self];
+    [_characters makeObjectsPerformSelector: @selector(renderInScene:)
+                                 withObject: self];
 }
 
 - (GLKMatrix4)projectionMatrix
@@ -163,7 +177,7 @@
 
 - (void)addCharacterAfterUpdate: (TENode *)node
 {
-    [charactersToAdd addObject:node];
+    [_charactersToAdd addObject:node];
 }
 
 - (void)nodeRemoved: (TENode *)node
