@@ -11,9 +11,9 @@
 
 @class TENode;
 
-@interface TEScene : GLKViewController <GLKViewDelegate, GLKViewControllerDelegate>
+@interface TEScene : GLKView <GLKViewDelegate>
 {
-    GLfloat left, right, bottom, top;
+    UIEdgeInsets _edgeInsets;
     GLKVector4 clearColor;
     NSMutableArray *characters, *charactersToAdd;
     
@@ -21,35 +21,41 @@
     BOOL dirtyProjectionMatrix;
 }
 
-@property(readonly) GLfloat left, right, bottom, top;
-@property(readonly) float width, height;
-@property GLKVector4 clearColor;
+@property (nonatomic, readonly) UIEdgeInsets edgeInsets;
+
+@property (nonatomic, readonly) CGSize size;
+
+@property (nonatomic) GLKVector4 clearColor;
+
 @property(strong, nonatomic) NSMutableArray *characters;
 
 # pragma mark Scene Setup
 
--(id)initWithFrame:(CGRect)frame;
+@property (nonatomic, readonly) CGSize visibleSize;
 
--(void)setLeft:(GLfloat)left right:(GLfloat)right bottom:(GLfloat)bottom top:(GLfloat)top;
-@property(readonly) float visibleWidth, visibleHeight;
-@property(readonly) GLKVector2 center;
-@property(readonly) GLKVector2 bottomLeftVisible;
-@property(readonly) GLKVector2 topRightVisible;
+@property (nonatomic,  readonly) GLKVector2 center;
+
+@property (nonatomic,  readonly) GLKVector2 bottomLeftVisible;
+
+@property (nonatomic,  readonly) GLKVector2 topRightVisible;
 
 # pragma mark - Helpers
 
--(GLKVector2)positionForLocationInView:(CGPoint)location;
--(CGPoint)locationInViewForPosition:(GLKVector2)position;
+- (GLKVector2)positionForLocationInView: (CGPoint)location;
+
+- (CGPoint)locationInViewForPosition: (GLKVector2)position;
 
 # pragma mark Rendering
 
--(void)render;
--(void)markChildrensFullMatricesDirty;
--(GLKMatrix4)projectionMatrix;
+- (void)render;
+
+- (void)markChildrensFullMatricesDirty;
+
+- (GLKMatrix4)projectionMatrix;
 
 # pragma mark Scene Updating
 
--(void)addCharacterAfterUpdate:(TENode *)node;
--(void)nodeRemoved:(TENode *)node;
+- (void)addCharacterAfterUpdate: (TENode *)node;
+- (void)nodeRemoved: (TENode *)node;
 
 @end

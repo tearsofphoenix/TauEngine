@@ -265,33 +265,60 @@
     [self bounceXInScene:scene bufferLeft:buffer bufferRight:buffer];
 }
 
--(void)bounceXInScene:(TEScene *)scene bufferLeft:(float)left bufferRight:(float)right {
-    BOOL farLeft = self.position.x < scene.left + left;
-    BOOL farRight = self.position.x > scene.right - right;
+- (void)bounceXInScene: (TEScene *)scene
+            bufferLeft: (float)left
+           bufferRight: (float)right
+{
+    UIEdgeInsets edgeInsets = [scene edgeInsets];
+    
+    BOOL farLeft = self.position.x < edgeInsets.left + left;
+    BOOL farRight = self.position.x > edgeInsets.right - right;
     
     if (farLeft)
-        self.position = GLKVector2Make(scene.left + left, self.position.y);
+    {
+        self.position = GLKVector2Make(edgeInsets.left + left, self.position.y);
+    }
+    
     if (farRight)
-        self.position = GLKVector2Make(scene.right - right, self.position.y);
-    if (farLeft || farRight) {
+    {
+        self.position = GLKVector2Make(edgeInsets.right - right, self.position.y);
+    }
+    
+    if (farLeft || farRight)
+    {
         self.velocity = GLKVector2Make(-1*self.velocity.x, self.velocity.y);
         self.acceleration = GLKVector2Make(-1*self.acceleration.x, self.acceleration.y);
     }
 }
 
--(void)bounceYInScene:(TEScene *)scene buffer:(float)buffer {
-    [self bounceYInScene:scene bufferTop:buffer bufferBottom:buffer];
+- (void)bounceYInScene: (TEScene *)scene
+                buffer: (float)buffer
+{
+    [self bounceYInScene: scene
+               bufferTop: buffer
+            bufferBottom: buffer];
 }
 
--(void)bounceYInScene:(TEScene *)scene bufferTop:(float)top bufferBottom:(float)bottom {
-    BOOL low = self.position.y < scene.bottom + bottom;
-    BOOL high = self.position.y > scene.top - top;
+- (void)bounceYInScene: (TEScene *)scene
+             bufferTop: (float)top
+          bufferBottom: (float)bottom
+{
+    UIEdgeInsets edgeInsets = [scene edgeInsets];
+    
+    BOOL low = self.position.y < edgeInsets.bottom + bottom;
+    BOOL high = self.position.y > edgeInsets.top - top;
     
     if (low)
-        self.position = GLKVector2Make(self.position.x, scene.bottom + bottom);
+    {
+        self.position = GLKVector2Make(self.position.x, edgeInsets.bottom + bottom);
+    }
     if (high)
-        self.position = GLKVector2Make(self.position.x, scene.top - top);
-    if (low || high) {
+    {
+        self.position = GLKVector2Make(self.position.x, edgeInsets.top - top);
+    }
+    
+    if (low || high)
+    {
         self.velocity = GLKVector2Make(self.velocity.x, -1*self.velocity.y);
         self.acceleration = GLKVector2Make(self.acceleration.x, -1*self.acceleration.y);
     }

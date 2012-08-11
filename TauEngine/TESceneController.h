@@ -7,35 +7,57 @@
 //
 
 #import <GLKit/GLKit.h>
-#import "TEScene.h"
 
-extern NSString *const kTEPreviousScene;
+@class TEScene;
 
 @interface TESceneController : UIViewController
 {
-  UIView *container;
-  
-  EAGLContext *context;
-  NSMutableDictionary *scenes;
-  UIViewController *currentScene, *previousScene;
+    UIView *_contentView;
+    
+    EAGLContext *_context;
+    NSMutableDictionary *_scenes;
+    TEScene *_currentScene;
+    TEScene *_previousScene;
 }
 
-@property(strong, readonly) UIView *container;
-@property(strong, readonly) EAGLContext *context;
-@property(strong, readonly) UIViewController *currentScene;
-@property(strong, readonly) NSString *currentSceneName;
-@property(strong, readonly) NSMutableDictionary *scenes;
+@property (nonatomic, strong, readonly) UIView *contentView;
+
+@property (nonatomic, strong, readonly) EAGLContext *context;
+
+@property (nonatomic, strong, readonly) TEScene *currentScene;
+
+@property (nonatomic, strong, readonly) NSString *currentSceneName;
+
+@property (nonatomic, strong, readonly) NSMutableDictionary *scenes;
 
 # pragma mark Scene Management
 
--(TEScene *)sceneNamed:(NSString *)name;
--(void)addSceneOfClass:(Class)sceneClass named:(NSString *)name;
--(void)addScene:(UIViewController *)scene named:(NSString *)name;
--(void)removeScene:(NSString *)name;
--(void)displayScene:(NSString *)name;
--(void)displayScene:(NSString *)name  duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options completion:(void (^)(BOOL finished))completion;
+- (TEScene *)sceneNamed: (NSString *)name;
 
--(void)replaceCurrentSceneWithScene:(UIViewController *)scene named:(NSString*)name;
--(void)replaceCurrentSceneWithScene:(UIViewController *)scene named:(NSString *)name  duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options completion:(void (^)(BOOL finished))completion;
+- (void)addSceneOfClass: (Class)sceneClass
+                  named: (NSString *)name;
+
+- (void)addScene: (TEScene *)scene
+           named: (NSString *)name;
+
+- (void)removeScene:(NSString *)name;
+
+- (void)displayScene: (NSString *)name;
+
+- (void)displayScene: (NSString *)name
+            duration: (NSTimeInterval)duration
+             options: (UIViewAnimationOptions)options
+          completion: (void (^)(BOOL finished))completion;
+
+- (void)replaceCurrentSceneWithScene: (TEScene *)scene
+                               named: (NSString*)name;
+
+- (void)replaceCurrentSceneWithScene: (TEScene *)scene
+                               named: (NSString *)name
+                            duration: (NSTimeInterval)duration
+                             options: (UIViewAnimationOptions)options
+                          completion: (void (^)(BOOL finished))completion;
 
 @end
+
+extern NSString *const kTEPreviousScene;

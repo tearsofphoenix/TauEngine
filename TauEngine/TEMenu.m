@@ -53,7 +53,8 @@
     
     _currentButton = nil;
     UITouch *touch = [touches anyObject];
-    GLKVector2 location = [self positionForLocationInView:[touch locationInView:self.view]];
+    GLKVector2 location = [self positionForLocationInView: [touch locationInView: self]];
+    
     [_buttons enumerateObjectsUsingBlock: (^(TEButton *button, NSUInteger idx, BOOL *stop)
                                            {
                                                if ([TECollisionDetector point: location
@@ -73,7 +74,7 @@
     if (_currentButton)
     {
         UITouch *touch = [touches anyObject];
-        GLKVector2 location = [self positionForLocationInView: [touch locationInView: [self view]]];
+        GLKVector2 location = [self positionForLocationInView: [touch locationInView: self]];
         if (![TECollisionDetector point: location
                        collidesWithNode: _currentButton
                             recurseNode: YES])

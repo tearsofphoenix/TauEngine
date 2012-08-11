@@ -18,6 +18,7 @@
 @property (nonatomic) BOOL enabled;
 
 - (void)addButton: (TEButton*)button;
+
 - (void)removeButton: (TEButton*)button;
 
 @end
