@@ -17,7 +17,12 @@ static float digitFractionalWidth;
 
 @implementation TENumberDisplay
 
-@synthesize numDigits, decimalPointDigit, hiddenDigits;
+@synthesize numDigits = _numDigits;
+@synthesize decimalPointDigit = _decimalPointDigit;
+@synthesize hiddenDigits = _hiddenDigits;
+@synthesize width = _width;
+
+@synthesize number = _number;
 
 + (void)initialize
 {
@@ -31,7 +36,7 @@ static float digitFractionalWidth;
     digitFractionalWidth = digitSize.width / (11*digitSize.width + 1.0);
 }
 
-- (id)initWithNumDigits:(int)num
+- (id)initWithNumDigits: (int)num
 {
     self = [super initWithVertices:num*4];
     if (self)
@@ -39,31 +44,34 @@ static float digitFractionalWidth;
         [self setEffect: digitsTextureEffect];
         [self setRenderStyle: kTERenderStyleTexture | kTERenderStyleVertexColors];
         
-        numDigits = num;
-        decimalPointDigit = 0;
-        hiddenDigits = 0;
-        self.width = numDigits;
+        _numDigits = num;
+        _decimalPointDigit = 0;
+        _hiddenDigits = 0;
+        _width = _numDigits;
         self.number = 0;
     }
     
     return self;
 }
 
--(void)updateVertices {
-    float digitWidth = width / (numDigits-hiddenDigits);
+- (void)updateVertices
+{
+    float digitWidth = _width / (_numDigits - _hiddenDigits);
     float digitHeight = digitSize.height * (digitWidth/digitSize.width);
     
-    float offset = numDigits % 2 == 0 ? 0 : digitWidth / 2.0;
-    int middle = (numDigits-hiddenDigits) / 2;
+    float offset = _numDigits % 2 == 0 ? 0 : digitWidth / 2.0;
+    int middle = (_numDigits - _hiddenDigits) / 2;
     float top = digitHeight/2;
     float bottom = -1*top;
     
-    for (int i = 0; i < numDigits; i++) {
+    for (int i = 0; i < _numDigits; i++)
+    {
         int index = i*4;
-        if (i < hiddenDigits) {
+        if (i < _hiddenDigits)
+        {
             self.vertices[index+0] = self.vertices[index+1] = self.vertices[index+2] = self.vertices[index+3] = GLKVector2Make(1000, 1000); // offscreen hack
         } else {
-            float left = -1*(middle-(i-hiddenDigits))*digitWidth - offset;
+            float left = -1 * (middle - (i - _hiddenDigits)) * digitWidth - offset;
             float right = left + digitWidth;
             self.vertices[index+0] = GLKVector2Make(left, top);
             self.vertices[index+1] = GLKVector2Make(left, bottom);
@@ -73,20 +81,28 @@ static float digitFractionalWidth;
     }
 }
 
--(void)updateTextureCoordinates {
-    for(int i = 0, temp = number; i < numDigits; ++i) {
-        int index = (numDigits-i-1)*4;
+- (void)updateTextureCoordinates
+{
+    for(int i = 0, temp = _number; i < _numDigits; ++i)
+    {
+        int index = (_numDigits - i - 1)*4;
         int digit;
-        if (decimalPointDigit > 0 && i == decimalPointDigit)
+        
+        if (_decimalPointDigit > 0 && i == _decimalPointDigit)
+        {
             digit = 10;
-        else {
+            
+        }else
+        {
             digit = temp-10*(temp/10);
             temp /= 10;
         }
         
-        if (hiddenDigits > 0 && i >= hiddenDigits) {
+        if (_hiddenDigits > 0 && i >= _hiddenDigits)
+        {
             self.textureCoordinates[index+0] = self.textureCoordinates[index+1] = self.textureCoordinates[index+2] = self.textureCoordinates[index+3] = GLKVector2Make(0, 0);
-        } else {
+        } else
+        {
             self.textureCoordinates[index+0] = GLKVector2Make(digit*digitFractionalWidth, 1);
             self.textureCoordinates[index+1] = GLKVector2Make(digit*digitFractionalWidth, 0);
             self.textureCoordinates[index+2] = GLKVector2Make((digit+1)*digitFractionalWidth, 1);
@@ -98,29 +114,25 @@ static float digitFractionalWidth;
     }
 }
 
--(GLenum)renderMode {
+- (GLenum)renderMode
+{
     return GL_TRIANGLE_STRIP;
 }
 
--(int)number {
-    return number;
-}
-
--(void)setNumber:(int)_number {
-    number = _number;
+-(void)setNumber: (int)number
+{
+    _number = number;
     [self updateTextureCoordinates];
 }
 
--(float)height {
-    return digitSize.height * ((width/(numDigits-hiddenDigits))/digitSize.width);
+- (float)height
+{
+    return digitSize.height * ((_width / (_numDigits - _hiddenDigits)) / digitSize.width);
 }
 
--(float)width {
-    return width;
-}
-
--(void)setWidth:(float)_width {
-    width = _width;
+- (void)setWidth:(float)width
+{
+    _width = width;
     [self updateVertices];
 }
 

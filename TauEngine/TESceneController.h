@@ -11,7 +11,8 @@
 
 extern NSString *const kTEPreviousScene;
 
-@interface TESceneController : UIViewController {
+@interface TESceneController : UIViewController
+{
   UIView *container;
   
   EAGLContext *context;

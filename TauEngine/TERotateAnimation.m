@@ -7,27 +7,31 @@
 //
 
 #import "TERotateAnimation.h"
+#import "TENode.h"
 
 @implementation TERotateAnimation
 
-@synthesize rotation;
+@synthesize rotation = _rotation;
 
 - (id)init
 {
-  self = [super init];
-  if (self) {
-    rotation = 0.0;
-  }
-  
-  return self;
+    self = [super init];
+    if (self)
+    {
+        _rotation = 0.0;
+    }
+    
+    return self;
 }
 
--(float)easedRotation {
-  return self.easingFactor * rotation;
+- (float)easedRotation
+{
+    return self.easingFactor * _rotation;
 }
 
--(void)permanentize {
-  self.node.rotation += rotation;
+- (void)permanentize
+{
+    self.node.rotation += _rotation;
 }
 
 @end

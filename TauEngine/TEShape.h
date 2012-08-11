@@ -10,17 +10,17 @@
 
 enum
 {
-  kTERenderStyleNone          = 0,
-  kTERenderStyleConstantColor = 1 << 0,
-  kTERenderStyleVertexColors  = 1 << 1,
-  kTERenderStyleTexture       = 1 << 2,
+    kTERenderStyleNone          = 0,
+    kTERenderStyleConstantColor = 1 << 0,
+    kTERenderStyleVertexColors  = 1 << 1,
+    kTERenderStyleTexture       = 1 << 2,
     
 };
 
 typedef NSUInteger TERenderStyle;
 
 @interface TEShape : TEDrawable
-{  
+{
     NSMutableData *_vertexData;
     NSMutableData *_textureData;
     NSMutableData *_colorData;

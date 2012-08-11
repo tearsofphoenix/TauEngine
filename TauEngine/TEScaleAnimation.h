@@ -8,8 +8,9 @@
 
 #import "TEAnimation.h"
 
-@interface TEScaleAnimation : TEAnimation {
-  float scaleX, scaleY;
+@interface TEScaleAnimation : TEAnimation
+{
+    float scaleX, scaleY;
 }
 
 @property float scale, scaleX, scaleY;

@@ -8,6 +8,8 @@
 
 #import <GLKit/GLKit.h>
 
+typedef void (^ TEActionBlock) (void);
+
 @class TEDrawable;
 @class TEShape;
 @class TEScene;

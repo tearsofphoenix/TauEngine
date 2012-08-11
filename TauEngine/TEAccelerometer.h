@@ -11,8 +11,8 @@
 
 @interface TEAccelerometer : NSObject <UIAccelerometerDelegate>
 
-+(void)zero;
++ (void)zero;
 
-+(float)horizontalForOrientation:(UIInterfaceOrientation)orientation;
++ (float)horizontalForOrientation: (UIInterfaceOrientation)orientation;
 
 @end

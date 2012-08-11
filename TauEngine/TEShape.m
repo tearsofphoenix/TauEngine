@@ -19,7 +19,7 @@ static GLKBaseEffect *constantColorEffect;
 @synthesize effect = _effect;
 @synthesize renderStyle = _renderStyle;
 @synthesize color = _color;
-@synthesize colorData;
+@synthesize colorData = _colorData;
 
 + (void)initialize
 {
@@ -67,9 +67,10 @@ static GLKBaseEffect *constantColorEffect;
 
 -(GLKVector4 *)colorVertices
 {
-    if (colorData == nil) {
-        colorData = [NSMutableData dataWithLength:sizeof(GLKVector4)*self.numVertices];
-        _colorVertices = [colorData mutableBytes];
+    if (_colorData == nil)
+    {
+        _colorData = [NSMutableData dataWithLength:sizeof(GLKVector4)*self.numVertices];
+        _colorVertices = [_colorData mutableBytes];
     }
     return _colorVertices;
 }

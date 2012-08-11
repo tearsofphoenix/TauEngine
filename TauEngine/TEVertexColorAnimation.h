@@ -8,14 +8,20 @@
 
 #import "TEAnimation.h"
 
-@interface TEVertexColorAnimation : TEAnimation {
-  int numVertices;
-  NSMutableData *fromColorData, *toColorData, *easedColorData;
-  GLKVector4 *fromColorVertices, *toColorVertices, *easedColorVertices;
+@interface TEVertexColorAnimation : TEAnimation
+{
+    int numVertices;
+    NSMutableData *_fromColorData;
+    NSMutableData *_toColorData;
+    NSMutableData *_easedColorData;
 }
 
-@property(readonly) GLKVector4 *fromColorVertices, *toColorVertices, *easedColorVertices;
+@property (nonatomic, readonly) GLKVector4 *fromColorVertices;
 
--(GLKVector4)easedColorForVertex:(int)i;
+@property (nonatomic, readonly) GLKVector4 *toColorVertices;
+
+@property (nonatomic, readonly) GLKVector4 *easedColorVertices;
+
+- (GLKVector4)easedColorForVertex:(int)i;
 
 @end

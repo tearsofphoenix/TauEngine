@@ -8,11 +8,10 @@
 
 #import "TEAnimation.h"
 
-@interface TERotateAnimation : TEAnimation {
-  float rotation;
-}
+@interface TERotateAnimation : TEAnimation
 
-@property float rotation;
-@property(readonly) float easedRotation;
+@property (nonatomic) float rotation;
+
+@property (nonatomic, readonly) float easedRotation;
 
 @end

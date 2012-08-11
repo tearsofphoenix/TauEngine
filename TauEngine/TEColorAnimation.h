@@ -13,21 +13,19 @@
  *
  * The drawable must be set in order to get the shape's previous color, and initWithDrawable: is the preferred initialization.
  */
-@interface TEColorAnimation : TEAnimation {
-  
-  /**
-   * The color to transition to
-   */
-  GLKVector4 color;
-  
-  /**
-   * The color that it was originally, in order to calculate the easing for the animation.
-   * This will be set automatically if the drawable is set.
-   */
-  GLKVector4 previousColor;
-}
+@interface TEColorAnimation : TEAnimation
 
-@property GLKVector4 color, previousColor;
-@property(readonly) GLKVector4 easedColor;
+/**
+ * The color to transition to
+ */
+@property (nonatomic) GLKVector4 color;
+
+/**
+ * The color that it was originally, in order to calculate the easing for the animation.
+ * This will be set automatically if the drawable is set.
+ */
+@property (nonatomic) GLKVector4 previousColor;
+
+@property (nonatomic, readonly) GLKVector4 easedColor;
 
 @end

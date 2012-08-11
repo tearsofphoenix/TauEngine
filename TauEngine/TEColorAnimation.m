@@ -8,28 +8,33 @@
 
 #import "TEColorAnimation.h"
 #import "TEShape.h"
+#import "TENode.h"
 
 @implementation TEColorAnimation
 
-@synthesize color, previousColor;
+@synthesize color = _color;
+@synthesize previousColor = _previousColor;
 
--(id)initWithNode:(TENode *)_node
+- (id)initWithNode: (TENode *)node
 {
-  self = [super initWithNode:_node];
-  if (self) {
-    self.color = _node.shape.color;
-    self.previousColor = _node.shape.color;
-  }
-  
-  return self;
+    self = [super initWithNode: node];
+    if (self)
+    {
+        _color = [self node].shape.color;
+        _previousColor = _color;
+    }
+    
+    return self;
 }
 
--(GLKVector4)easedColor {
-  return GLKVector4MultiplyScalar(GLKVector4Subtract(self.color, self.previousColor), self.easingFactor);
+- (GLKVector4)easedColor
+{
+    return GLKVector4MultiplyScalar(GLKVector4Subtract(_color, _previousColor), self.easingFactor);
 }
 
--(void)permanentize {
-  self.node.shape.color = color;
+- (void)permanentize
+{
+    self.node.shape.color = _color;
 }
 
 @end

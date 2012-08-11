@@ -8,8 +8,6 @@
 
 #import "TENode.h"
 
-typedef void (^ TEActionBlock) (void);
-
 @interface TEButton : TENode
 
 @property (nonatomic, copy) TEActionBlock action;

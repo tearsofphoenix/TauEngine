@@ -8,34 +8,57 @@
 
 #import "TEAccelerometer.h"
 
-static double previousHorizontal = 0.0;
+static double s_previousHorizontal = 0.0;
 static double kFilterFactor = 0.05;
-static CMAcceleration calibration;
+static CMAcceleration s_calibration;
 
 @implementation TEAccelerometer;
 
-+(void)zero {
-  calibration = [TauEngine motionManager].accelerometerData.acceleration;
++ (void)zero
+{
+    s_calibration = [[[TauEngine motionManager] accelerometerData] acceleration];
 }
 
-+(float)horizontalForOrientation:(UIInterfaceOrientation)orientation {
-  CMAcceleration accel = [TauEngine motionManager].accelerometerData.acceleration;
-  float horizontal;
-  
-  if (orientation == UIInterfaceOrientationPortrait)
-    horizontal = (accel.x - calibration.x);
-  else if (orientation == UIInterfaceOrientationPortraitUpsideDown)
-    horizontal = -1*(accel.x - calibration.x);
-  else if (orientation == UIInterfaceOrientationLandscapeLeft)
-    horizontal = (accel.y - calibration.y);
-  else if (orientation == UIInterfaceOrientationLandscapeRight)
-    horizontal = -1*(accel.y - calibration.y);
-  else
-    horizontal = (accel.x - calibration.x);
-  
-  horizontal = horizontal*kFilterFactor+(1-kFilterFactor)*previousHorizontal;
-  previousHorizontal = horizontal;
-  return horizontal;
++ (float)horizontalForOrientation: (UIInterfaceOrientation)orientation
+{
+    CMAcceleration accel = [[[TauEngine motionManager] accelerometerData] acceleration];
+    
+    float horizontal;
+    
+    switch (orientation)
+    {
+        case UIInterfaceOrientationPortrait:
+        {
+            horizontal = (accel.x - s_calibration.x);
+            break;
+        }
+        case UIInterfaceOrientationPortraitUpsideDown:
+        {
+            horizontal = -1*(accel.x - s_calibration.x);
+            break;
+        }
+        case UIInterfaceOrientationLandscapeLeft:
+        {
+            horizontal = (accel.y - s_calibration.y);
+            break;
+        }
+        case UIInterfaceOrientationLandscapeRight:
+        {
+            horizontal = -1*(accel.y - s_calibration.y);
+            break;
+        }
+        default:
+        {
+            horizontal = (accel.x - s_calibration.x);
+            break;
+        }
+    }
+    
+    horizontal = horizontal * kFilterFactor + (1 - kFilterFactor) * s_previousHorizontal;
+    
+    s_previousHorizontal = horizontal;
+    
+    return horizontal;
 }
 
 @end

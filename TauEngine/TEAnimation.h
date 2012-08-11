@@ -10,40 +10,49 @@
 #import <GLKit/GLKit.h>
 #import "TENode.h"
 
-typedef enum {
-  kTEAnimationEasingLinear,
-} TEAnimationEasingType;
+@class TEAnimation;
+
+enum
+{
+    kTEAnimationEasingLinear = 0,
+};
+
+typedef NSUInteger TEAnimationEasingType;
 
 #define kTEAnimationRepeatForever -1
 
-@interface TEAnimation : NSObject {
-  TENode *node;
-  TEAnimationEasingType easing;
-  double elapsedTime, duration;
-  int repeat;
-  BOOL remove, reverse, forward, permanent;
-  void (^onRemoval)(void);
-  void (^onComplete)(void);
-  
-  TEAnimation *next;
+@interface TEAnimation : NSObject
+{
+    TEAnimationEasingType easing;
+    int repeat;
+    BOOL _forward;
 }
 
-@property(strong) TENode *node;
-@property(strong) TEAnimation *next;
-@property TEAnimationEasingType easing;
-@property double elapsedTime, duration;
-@property int repeat;
-@property BOOL remove, reverse, backward, permanent;
-@property(nonatomic,copy) void (^onRemoval)(void);
-@property(nonatomic,copy) void (^onComplete)(void);
+@property (nonatomic, strong) TENode *node;
 
-@property(readonly) float percentDone;
-@property(readonly) float easingFactor;
+@property (nonatomic, strong) TEAnimation *next;
 
--(id)initWithNode:(TENode *)_node;
+@property (nonatomic) TEAnimationEasingType easing;
 
--(void)incrementElapsedTime:(double)time;
+@property (nonatomic) NSTimeInterval elapsedTime;
+@property (nonatomic) NSTimeInterval  duration;
 
--(void)permanentize;
+@property (nonatomic) int repeat;
+@property (nonatomic) BOOL remove;
+@property (nonatomic) BOOL  reverse;
+@property (nonatomic) BOOL  backward;
+@property (nonatomic) BOOL  permanent;
+
+@property (nonatomic, copy) TEActionBlock onRemoval;
+@property (nonatomic, copy) TEActionBlock onComplete;
+
+@property (nonatomic, readonly) float percentDone;
+@property (nonatomic, readonly) float easingFactor;
+
+- (id)initWithNode: (TENode *)_node;
+
+- (void)incrementElapsedTime: (double)time;
+
+- (void)permanentize;
 
 @end

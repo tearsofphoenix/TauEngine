@@ -10,16 +10,18 @@
 
 @interface TENumberDisplay : TEPolygon
 {
-    int number, numDigits, padDigit, decimalPointDigit, hiddenDigits;
-    float width;
+    int _padDigit;
 }
 
-@property int number, numDigits, hiddenDigits, decimalPointDigit;
+@property (nonatomic) int number;
+@property (nonatomic) int numDigits;
+@property (nonatomic) int hiddenDigits;
+@property (nonatomic) int decimalPointDigit;
 
-@property(readonly) float height;
+@property (nonatomic, readonly) float height;
 
-@property float width;
+@property (nonatomic) float width;
 
--(id)initWithNumDigits:(int)num;
+- (id)initWithNumDigits: (int)num;
 
 @end

@@ -8,49 +8,64 @@
 
 #import "TEVertexColorAnimation.h"
 #import "TEShape.h"
+#import "TENode.h"
 
 @implementation TEVertexColorAnimation
 
-@synthesize fromColorVertices, easedColorVertices;
+@synthesize fromColorVertices = _fromColorVertices;
+@synthesize easedColorVertices = _easedColorVertices;
+@synthesize toColorVertices = _toColorVertices;
 
--(id)initWithNode:(TENode *)_node
+- (id)initWithNode: (TENode *)node
 {
-  self = [super initWithNode:_node];
-  if (self) {
-    numVertices = node.shape.numVertices;
+    self = [super initWithNode: node];
+    if (self)
+    {
+        numVertices = [self node].shape.numVertices;
+        
+        _fromColorData = [[self node].shape colorData];
+        _fromColorVertices = [_fromColorData mutableBytes];
+        
+        _easedColorData = [_fromColorData mutableCopy];
+        _easedColorVertices = [_easedColorData mutableBytes];
+    }
     
-    fromColorData = [node.shape colorData];
-    fromColorVertices = [fromColorData mutableBytes];
+    return self;
+}
+
+- (GLKVector4 *)toColorVertices
+{
+    if (_toColorData == nil)
+    {
+        _toColorData = [NSMutableData dataWithLength: sizeof(GLKVector4) * numVertices];
+        _toColorVertices = [_toColorData mutableBytes];
+    }
+    return _toColorVertices;
+}
+
+- (GLKVector4)easedColorForVertex: (int)i
+{
+    return GLKVector4Add(self.fromColorVertices[i],
+                         GLKVector4MultiplyScalar( GLKVector4Subtract(self.toColorVertices[i], self.fromColorVertices[i]),
+                                                  self.easingFactor));
+}
+
+- (void)incrementElapsedTime: (NSTimeInterval)time
+{
+    [super incrementElapsedTime:time];
     
-    easedColorData = [fromColorData mutableCopy];
-    easedColorVertices = [easedColorData mutableBytes];
-  }
-  
-  return self;
+    for (int i = 0; i < numVertices; i++)
+    {
+        _easedColorVertices[i] = [self easedColorForVertex:i];
+    }
 }
 
-- (GLKVector4 *)toColorVertices {
-  if (toColorData == nil) {
-    toColorData = [NSMutableData dataWithLength:sizeof(GLKVector4)*numVertices];
-    toColorVertices = [toColorData mutableBytes];
-  }
-  return toColorVertices;
-}
-
--(GLKVector4)easedColorForVertex:(int)i {
-  return GLKVector4Add(self.fromColorVertices[i],GLKVector4MultiplyScalar(GLKVector4Subtract(self.toColorVertices[i], self.fromColorVertices[i]), self.easingFactor));
-}
-
--(void)incrementElapsedTime:(double)time {
-  [super incrementElapsedTime:time];
-  
-  for (int i = 0; i < numVertices; i++)
-    easedColorVertices[i] = [self easedColorForVertex:i];
-}
-
--(void)permanentize {
-  for (int i = 0; i < numVertices; i++)
-    self.node.shape.colorVertices[i] = toColorVertices[i];
+- (void)permanentize
+{
+    for (int i = 0; i < numVertices; i++)
+    {
+        self.node.shape.colorVertices[i] = _toColorVertices[i];
+    }
 }
 
 @end

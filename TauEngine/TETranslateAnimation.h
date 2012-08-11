@@ -8,11 +8,9 @@
 
 #import "TEAnimation.h"
 
-@interface TETranslateAnimation : TEAnimation {
-  GLKVector2 translation;
-}
+@interface TETranslateAnimation : TEAnimation
 
-@property GLKVector2 translation;
-@property(readonly) GLKVector2 easedTranslation;
+@property (nonatomic) GLKVector2 translation;
+@property (nonatomic, readonly) GLKVector2 easedTranslation;
 
 @end

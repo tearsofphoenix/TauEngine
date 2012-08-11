@@ -10,6 +10,7 @@
 
 @interface TESprite : TERectangle
 
--(id)initWithImage:(UIImage *)image pointRatio:(float)ratio;
+- (id)initWithImage: (UIImage *)image
+         pointRatio: (float)ratio;
 
 @end

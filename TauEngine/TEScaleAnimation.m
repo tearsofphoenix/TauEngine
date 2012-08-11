@@ -7,6 +7,7 @@
 //
 
 #import "TEScaleAnimation.h"
+#import "TENode.h"
 
 @implementation TEScaleAnimation
 
@@ -14,37 +15,43 @@
 
 - (id)init
 {
-  self = [super init];
-  if (self) {
-    self.scale = 1.0;
-  }
-  
-  return self;
+    self = [super init];
+    if (self)
+    {
+        self.scale = 1.0;
+    }
+    
+    return self;
 }
 
--(float)scale {
-  return scaleX;
-}
-
--(void)setScale:(float)scale {
-  scaleX = scaleY = scale;
-}
-
--(float)easedScale {
-  return [self easedScaleX];
-}
-
--(float)easedScaleX {
-  return 1.0 + self.easingFactor * (scaleX - 1.0);
-}
-
--(float)easedScaleY {
-  return 1.0 + self.easingFactor * (scaleY - 1.0);
-}
-
--(void)permanentize
+- (float)scale
 {
-  self.node.scale *= scaleX;
+    return scaleX;
+}
+
+- (void)setScale: (float)scale
+{
+    scaleX = scaleY = scale;
+}
+
+- (float)easedScale
+{
+    return [self easedScaleX];
+}
+
+- (float)easedScaleX
+{
+    return 1.0 + self.easingFactor * (scaleX - 1.0);
+}
+
+- (float)easedScaleY
+{
+    return 1.0 + self.easingFactor * (scaleY - 1.0);
+}
+
+- (void)permanentize
+{
+    self.node.scale *= scaleX;
 }
 
 @end
