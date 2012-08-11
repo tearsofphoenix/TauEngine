@@ -7,6 +7,7 @@
 //
 
 #import "TEVertexColorAnimation.h"
+#import "TEShape.h"
 
 @implementation TEVertexColorAnimation
 

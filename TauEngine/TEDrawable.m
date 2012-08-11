@@ -11,9 +11,18 @@
 
 @implementation TEDrawable
 
-@synthesize node;
+@synthesize node = _node;
 
--(void)renderInScene:(TEScene *)scene {
+- (void)dealloc
+{
+    [_node release];
+    
+    [super dealloc];
+}
+
+- (void)renderInScene:(TEScene *)scene
+{
+    
 }
 
 @end

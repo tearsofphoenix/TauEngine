@@ -8,17 +8,20 @@
 
 #import "TEPolygon.h"
 
-typedef enum {
+enum
+{
   kTERectangleBottomRight = 0,
   kTERectangleTopRight    = 1,
   kTERectangleTopLeft     = 2,
   kTERectangleBottomLeft  = 3,
-} TERectangleCornerVertex;
+};
 
-@interface TERectangle : TEPolygon {
-  GLfloat height, width;
-}
+typedef NSUInteger TERectangleCornerVertex;
 
-@property GLfloat height, width;
+@interface TERectangle : TEPolygon
+
+@property (nonatomic) GLfloat height;
+
+@property (nonatomic) GLfloat width;
 
 @end

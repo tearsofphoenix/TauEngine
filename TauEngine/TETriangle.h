@@ -8,7 +8,6 @@
 
 #import "TEPolygon.h"
 
-@interface TETriangle : TEPolygon {
-}
+@interface TETriangle : TEPolygon
 
 @end

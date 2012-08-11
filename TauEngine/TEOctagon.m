@@ -10,8 +10,9 @@
 
 @implementation TEOctagon
 
-- (id)init {
-  return [super initWithSides:8];
+- (id)init
+{
+    return [super initWithSides:8];
 }
 
 @end

@@ -8,39 +8,46 @@
 
 #import "TEDrawable.h"
 
-typedef enum {
+enum
+{
   kTERenderStyleNone          = 0,
   kTERenderStyleConstantColor = 1 << 0,
   kTERenderStyleVertexColors  = 1 << 1,
   kTERenderStyleTexture       = 1 << 2,
-} TERenderStyle;
+    
+};
 
-@interface TEShape : TEDrawable {
-  GLKBaseEffect *effect;
-  TERenderStyle renderStyle;
-  GLKVector4 color;
-  
-  NSMutableData *vertexData, *textureData, *colorData;
-  GLKVector2 *vertices, *textureCoordinates;
-  GLKVector4 *colorVertices;
+typedef NSUInteger TERenderStyle;
+
+@interface TEShape : TEDrawable
+{  
+    NSMutableData *_vertexData;
+    NSMutableData *_textureData;
+    NSMutableData *_colorData;
+    
+    GLKVector2 *_vertices;
+    GLKVector2 *_textureCoordinates;
+    GLKVector4 *_colorVertices;
 }
 
-@property(strong, nonatomic) GLKBaseEffect *effect;
-@property TERenderStyle renderStyle;
-@property GLKVector4 color;
+@property (strong, nonatomic) GLKBaseEffect *effect;
+@property (nonatomic) TERenderStyle renderStyle;
+@property (nonatomic) GLKVector4 color;
 
-@property(readonly) int numVertices;
-@property(readonly) GLKVector2 *vertices;
-@property(readonly) GLKVector2 *textureCoordinates;
-@property(strong,readonly) NSMutableData *colorData;
-@property(readonly) GLKVector4 *colorVertices;
+@property (nonatomic, readonly) int numVertices;
+@property (nonatomic, readonly) GLKVector2 *vertices;
+@property (nonatomic, readonly) GLKVector2 *textureCoordinates;
+@property (nonatomic, strong, readonly) NSMutableData *colorData;
+@property (nonatomic, readonly) GLKVector4 *colorVertices;
 
-@property(readonly) float radius; // for bounding circle collision detection
+@property (nonatomic, readonly) float radius; // for bounding circle collision detection
 
-@property(readonly) GLenum renderMode;
+@property (nonatomic, readonly) GLenum renderMode;
 
--(void)updateVertices;
--(BOOL)isPolygon;
--(BOOL)isCircle;
+- (void)updateVertices;
+
+- (BOOL)isPolygon;
+
+- (BOOL)isCircle;
 
 @end

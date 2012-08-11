@@ -9,154 +9,182 @@
 #import "TEShape.h"
 #import "TEEllipse.h"
 
-#define RenderStyleIs(x) ((renderStyle & x) == x)
+#define RenderStyleIs(x) ((_renderStyle & x) == x)
 
 static GLKBaseEffect *defaultEffect;
 static GLKBaseEffect *constantColorEffect;
 
 @implementation TEShape
 
-@synthesize effect, renderStyle, color, colorData;
+@synthesize effect = _effect;
+@synthesize renderStyle = _renderStyle;
+@synthesize color = _color;
+@synthesize colorData;
 
-+(void)initialize {
-  defaultEffect = [[GLKBaseEffect alloc] init];
-  
-  constantColorEffect = [[GLKBaseEffect alloc] init];
-  constantColorEffect.useConstantColor = YES;
++ (void)initialize
+{
+    defaultEffect = [[GLKBaseEffect alloc] init];
+    
+    constantColorEffect = [[GLKBaseEffect alloc] init];
+    constantColorEffect.useConstantColor = YES;
 }
 
 - (id)init
 {
-  self = [super init];
-  if (self) {
-    renderStyle = kTERenderStyleConstantColor;
-  }
-  
-  return self;
+    self = [super init];
+    if (self)
+    {
+        _renderStyle = kTERenderStyleConstantColor;
+    }
+    
+    return self;
 }
 
--(int)numVertices {
-  return 0;
+- (int)numVertices
+{
+    return 0;
 }
 
-- (GLKVector2 *)vertices {
-  if (vertexData == nil) {
-    vertexData = [NSMutableData dataWithLength:sizeof(GLKVector2)*self.numVertices];
-    vertices = [vertexData mutableBytes];
-  }
-  return vertices;
+- (GLKVector2 *)vertices
+{
+    if (_vertexData == nil)
+    {
+        _vertexData = [NSMutableData dataWithLength:sizeof(GLKVector2)*self.numVertices];
+        _vertices = [_vertexData mutableBytes];
+    }
+    return _vertices;
 }
 
--(GLKVector2 *)textureCoordinates {
-  if (textureData == nil) {
-    textureData = [NSMutableData dataWithLength:sizeof(GLKVector2)*self.numVertices];
-    textureCoordinates = [textureData mutableBytes];
-  }
-  return textureCoordinates;
+- (GLKVector2 *)textureCoordinates
+{
+    if (_textureData == nil)
+    {
+        _textureData = [NSMutableData dataWithLength:sizeof(GLKVector2)*self.numVertices];
+        _textureCoordinates = [_textureData mutableBytes];
+    }
+    return _textureCoordinates;
 }
 
--(GLKVector4 *)colorVertices {
-  if (colorData == nil) {
-    colorData = [NSMutableData dataWithLength:sizeof(GLKVector4)*self.numVertices];
-    colorVertices = [colorData mutableBytes];
-  }
-  return colorVertices;
+-(GLKVector4 *)colorVertices
+{
+    if (colorData == nil) {
+        colorData = [NSMutableData dataWithLength:sizeof(GLKVector4)*self.numVertices];
+        _colorVertices = [colorData mutableBytes];
+    }
+    return _colorVertices;
 }
 
--(void)updateVertices {
+- (void)updateVertices
+{
+    
 }
 
--(GLenum)renderMode {
-  return GL_TRIANGLE_FAN;
+- (GLenum)renderMode
+{
+    return GL_TRIANGLE_FAN;
 }
 
--(void)renderInScene:(TEScene *)scene {
-  if (renderStyle == kTERenderStyleNone)
-    return;
-  
-  __block GLKVector4 *displayColorVertices;
-  
-  // Initialize the effect if necessary
-  if (effect == nil) {
+- (void)renderInScene:(TEScene *)scene
+{
+    if (_renderStyle == kTERenderStyleNone)
+        return;
+    
+    __block GLKVector4 *displayColorVertices;
+    
+    // Initialize the effect if necessary
+    if (_effect == nil) {
+        if (RenderStyleIs(kTERenderStyleConstantColor))
+            _effect = constantColorEffect;
+        else if (RenderStyleIs(kTERenderStyleVertexColors))
+            _effect = defaultEffect;
+    }
+    
+    _effect.transform.modelviewMatrix = [[super node] modelViewMatrix];
+    _effect.transform.projectionMatrix = [scene projectionMatrix];
+    
+    // Set up effect specifics
     if (RenderStyleIs(kTERenderStyleConstantColor))
-      effect = constantColorEffect;
-    else if (RenderStyleIs(kTERenderStyleVertexColors))
-      effect = defaultEffect;
-  }
-  
-  effect.transform.modelviewMatrix = [node modelViewMatrix];
-  effect.transform.projectionMatrix = [scene projectionMatrix];
-  
-  // Set up effect specifics
-  if (RenderStyleIs(kTERenderStyleConstantColor)) {
-    effect.constantColor = color;
-    [node.currentAnimations enumerateObjectsUsingBlock:^(id animation, NSUInteger idx, BOOL *stop){
-      if ([animation isKindOfClass:[TEColorAnimation class]]) {
-        TEColorAnimation *colorAnimation = (TEColorAnimation *)animation;
-        effect.constantColor = GLKVector4Add(self.effect.constantColor, colorAnimation.easedColor);
-      }
-    }];
-  } else if (RenderStyleIs(kTERenderStyleVertexColors)) {
-    displayColorVertices = colorVertices;
-    [node.currentAnimations enumerateObjectsUsingBlock:^(id animation, NSUInteger idx, BOOL *stop){
-      if ([animation isKindOfClass:[TEVertexColorAnimation class]]) {
-        TEVertexColorAnimation *colorAnimation = (TEVertexColorAnimation *)animation;
-        displayColorVertices = colorAnimation.easedColorVertices;
-      }
-    }];
-  }
-  
-  // Finalize effect
-  [effect prepareToDraw];
-  
-  // Set up transparency
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  
-  // Set up position vertices
-  glEnableVertexAttribArray(GLKVertexAttribPosition);
-  glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, vertices);
-  
-  // Set up color vertices
-  if (RenderStyleIs(kTERenderStyleVertexColors)) {
-    glEnableVertexAttribArray(GLKVertexAttribColor);
-    glVertexAttribPointer(GLKVertexAttribColor, 4, GL_FLOAT, GL_FALSE, 0, displayColorVertices);
-  }
-  
-  // Set up texture vertices
-  if (RenderStyleIs(kTERenderStyleTexture)) {
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 0, textureCoordinates);
-  }
-  
-  // Draw arrays
-  glDrawArrays(self.renderMode, 0, self.numVertices);
-  
-  // Tear down position vertices
-  glDisableVertexAttribArray(GLKVertexAttribPosition);
-  
-  // Tear down color vertices
-  if (RenderStyleIs(kTERenderStyleVertexColors))
-    glDisableVertexAttribArray(GLKVertexAttribColor);
-  
-  // Tear down texture vertices
-  if (RenderStyleIs(kTERenderStyleTexture))
-    glDisableVertexAttribArray(GLKVertexAttribTexCoord0);
-  
-  // Disable transparency
-  glDisable(GL_BLEND);
+    {
+        _effect.constantColor = _color;
+        
+        [[[super node] currentAnimations] enumerateObjectsUsingBlock: (^(id animation, NSUInteger idx, BOOL *stop)
+                                                                       {
+                                                                           if ([animation isKindOfClass:[TEColorAnimation class]])
+                                                                           {
+                                                                               TEColorAnimation *colorAnimation = (TEColorAnimation *)animation;
+                                                                               _effect.constantColor = GLKVector4Add(_effect.constantColor, colorAnimation.easedColor);
+                                                                           }
+                                                                       })];
+        
+    } else if (RenderStyleIs(kTERenderStyleVertexColors))
+    {
+        displayColorVertices = _colorVertices;
+        [[[super node] currentAnimations] enumerateObjectsUsingBlock: (^(id animation, NSUInteger idx, BOOL *stop)
+                                                                       {
+                                                                           if ([animation isKindOfClass:[TEVertexColorAnimation class]])
+                                                                           {
+                                                                               TEVertexColorAnimation *colorAnimation = (TEVertexColorAnimation *)animation;
+                                                                               displayColorVertices = colorAnimation.easedColorVertices;
+                                                                           }
+                                                                       })];
+    }
+    
+    // Finalize effect
+    [_effect prepareToDraw];
+    
+    // Set up transparency
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    // Set up position vertices
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, _vertices);
+    
+    // Set up color vertices
+    if (RenderStyleIs(kTERenderStyleVertexColors))
+    {
+        glEnableVertexAttribArray(GLKVertexAttribColor);
+        glVertexAttribPointer(GLKVertexAttribColor, 4, GL_FLOAT, GL_FALSE, 0, displayColorVertices);
+    }
+    
+    // Set up texture vertices
+    if (RenderStyleIs(kTERenderStyleTexture))
+    {
+        glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+        glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 0, _textureCoordinates);
+    }
+    
+    // Draw arrays
+    glDrawArrays(self.renderMode, 0, self.numVertices);
+    
+    // Tear down position vertices
+    glDisableVertexAttribArray(GLKVertexAttribPosition);
+    
+    // Tear down color vertices
+    if (RenderStyleIs(kTERenderStyleVertexColors))
+        glDisableVertexAttribArray(GLKVertexAttribColor);
+    
+    // Tear down texture vertices
+    if (RenderStyleIs(kTERenderStyleTexture))
+        glDisableVertexAttribArray(GLKVertexAttribTexCoord0);
+    
+    // Disable transparency
+    glDisable(GL_BLEND);
 }
 
--(BOOL)isPolygon {
-  return ![self isCircle];
+- (BOOL)isPolygon
+{
+    return ![self isCircle];
 }
 
--(BOOL)isCircle {
-  return [self isKindOfClass:[TEEllipse class]];
+- (BOOL)isCircle
+{
+    return [self isKindOfClass:[TEEllipse class]];
 }
 
--(float)radius {
-  return 0.0;
+- (float)radius
+{
+    return 0.0;
 }
 
 @end

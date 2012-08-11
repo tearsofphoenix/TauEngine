@@ -9,15 +9,19 @@
 #import "TauEngine.h"
 
 
-static CMMotionManager *motionManager = nil;
+static CMMotionManager *s_motionManager = nil;
 
 @implementation TauEngine
 
-+(CMMotionManager *)motionManager {
-  if (motionManager == nil) {
-    motionManager = [[CMMotionManager alloc] init];
-  }
-  return motionManager;
++ (CMMotionManager *)motionManager
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, (^
+                               {
+                                   s_motionManager = [[CMMotionManager alloc] init];
+                               }));
+    
+    return s_motionManager;
 }
 
 @end

@@ -32,7 +32,7 @@
 
 -(void)load:(NSString *)filename {
   CFBundleRef mainBundle = CFBundleGetMainBundle();
-  CFURLRef soundFileURLRef  = CFBundleCopyResourceURL(mainBundle, (__bridge CFStringRef)filename, CFSTR("wav"), NULL);
+  CFURLRef soundFileURLRef  = CFBundleCopyResourceURL(mainBundle, (CFStringRef)filename, CFSTR("wav"), NULL);
   SystemSoundID soundID;
   if (AudioServicesCreateSystemSoundID(soundFileURLRef, &soundID) == kAudioServicesNoError)
     [sounds setObject:[NSNumber numberWithUnsignedInt:soundID] forKey:filename];

@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
-#import "TENode.h"
 
-@interface TEScene : GLKViewController <GLKViewDelegate, GLKViewControllerDelegate> {
+@class TENode;
+
+@interface TEScene : GLKViewController <GLKViewDelegate, GLKViewControllerDelegate>
+{
   GLfloat left, right, bottom, top;
   GLKVector4 clearColor;
   NSMutableArray *characters, *charactersToAdd;

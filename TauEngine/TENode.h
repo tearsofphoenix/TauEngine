@@ -6,105 +6,108 @@
 //  Copyright 2011 Ian Terrell. All rights reserved.
 //
 
-#import "TEDrawable.h"
-#import "TEScene.h"
-#import "TEShape.h"
+#import <GLKit/GLKit.h>
 
+@class TEDrawable;
+@class TEShape;
+@class TEScene;
 @class TEAnimation;
 
-@interface TENode : NSObject {
-  NSString *name;
-  TEDrawable *drawable;
-  
-  GLKVector2 position, velocity, acceleration;
-  float rotation, angularVelocity, angularAcceleration;
-  float scaleX, scaleY;
-  
-  float maxVelocity, maxAcceleration;
-  float maxAngularVelocity, maxAngularAcceleration;
-  
-  NSMutableArray *currentAnimations;
-  
-  __weak TENode *parent;
-  NSMutableArray *children;
-  
-  BOOL remove;
-  BOOL collide;
-  BOOL renderChildrenFirst;
-  
-  GLKMatrix4 cachedObjectModelViewMatrix, cachedFullModelViewMatrix;
-  BOOL dirtyObjectModelViewMatrix, dirtyFullModelViewMatrix;
+@interface TENode : NSObject
+{            
+    __weak TENode *_parent;
+    NSMutableArray *_children;
+        
+    GLKMatrix4 cachedObjectModelViewMatrix;
+    GLKMatrix4 cachedFullModelViewMatrix;
+    BOOL dirtyObjectModelViewMatrix;
 }
 
-@property GLKVector2 position, velocity, acceleration;
-@property float scale, scaleX, scaleY;
-@property float rotation, angularVelocity, angularAcceleration;
+@property (nonatomic) GLKVector2 position;
+@property (nonatomic) GLKVector2 velocity;
+@property (nonatomic) GLKVector2 acceleration;
+
+@property (nonatomic) float scale;
+
+@property (nonatomic) float rotation;
+@property (nonatomic) float angularVelocity;
+@property (nonatomic) float angularAcceleration;
 
 @property(strong, nonatomic) NSMutableArray *currentAnimations;
 @property BOOL dirtyFullModelViewMatrix; // can be marked by parents
 
 @property(strong, nonatomic) NSString *name;
 @property(strong, nonatomic) TEDrawable *drawable;
-@property(readonly) TEShape *shape;
+@property(nonatomic, readonly) TEShape *shape;
 @property(weak, nonatomic) TENode *parent;
-@property float maxVelocity, maxAcceleration, maxAngularVelocity, maxAngularAcceleration;
-@property BOOL remove;
-@property BOOL collide;
-@property BOOL renderChildrenFirst;
+
+@property (nonatomic) float maxVelocity;
+@property (nonatomic) float maxAcceleration;
+@property (nonatomic) float maxAngularVelocity;
+@property (nonatomic) float maxAngularAcceleration;
+
+@property (nonatomic) BOOL remove;
+@property (nonatomic) BOOL collide;
+@property (nonatomic) BOOL renderChildrenFirst;
 
 # pragma mark Factories
 
-+(TENode *)nodeWithDrawable:(TEDrawable *)drawable;
++ (TENode *)nodeWithDrawable: (TEDrawable *)drawable;
 
 # pragma mark Update
--(void)update:(NSTimeInterval)dt inScene:(TEScene *)scene;
+- (void)update: (NSTimeInterval)dt
+       inScene: (TEScene *)scene;
 
 # pragma mark Motion Methods
--(void)updatePosition:(NSTimeInterval)dt inScene:(TEScene *)scene;
+- (void)updatePosition: (NSTimeInterval)dt
+               inScene: (TEScene *)scene;
 
 # pragma mark Position Shortcuts
 
--(void)wraparoundInScene:(TEScene *)scene;
--(void)wraparoundXInScene:(TEScene *)scene;
--(void)wraparoundYInScene:(TEScene *)scene;
+- (void)wraparoundInScene: (TEScene *)scene;
+- (void)wraparoundXInScene: (TEScene *)scene;
+- (void)wraparoundYInScene: (TEScene *)scene;
 
--(void)bounceXInScene:(TEScene *)scene buffer:(float)buffer;
--(void)bounceXInScene:(TEScene *)scene bufferLeft:(float)left bufferRight:(float)right;
--(void)bounceYInScene:(TEScene *)scene buffer:(float)buffer;
--(void)bounceYInScene:(TEScene *)scene bufferTop:(float)top bufferBottom:(float)bottom;
+- (void)bounceXInScene: (TEScene *)scene
+                buffer: (float)buffer;
+- (void)bounceXInScene: (TEScene *)scene
+            bufferLeft: (float)left
+           bufferRight: (float)right;
+- (void)bounceYInScene: (TEScene *)scene
+                buffer: (float)buffer;
+- (void)bounceYInScene: (TEScene *)scene
+             bufferTop: (float)top
+          bufferBottom: (float)bottom;
 
--(void)removeOutOfScene:(TEScene *)scene buffer:(float)buffer;
+- (void)removeOutOfScene: (TEScene *)scene
+                  buffer: (float)buffer;
 
--(GLKVector2)vectorToNode:(TENode *)node;
+- (GLKVector2)vectorToNode: (TENode *)node;
 
 # pragma mark Animation Methods
 
--(void)startAnimation:(TEAnimation *)animation;
+- (void)startAnimation: (TEAnimation *)animation;
 
 # pragma mark Tree Methods
 
--(void)addChild:(TENode *)child;
--(void)traverseUsingBlock:(void (^)(TENode *))block;
--(TENode *)childNamed:(NSString *)name;
--(NSArray *)childrenNamed:(NSArray *)names;
+- (void)addChild: (TENode *)child;
+- (void)traverseUsingBlock: (void (^)(TENode *))block;
+- (TENode *)childNamed: (NSString *)name;
+- (NSArray *)childrenNamed: (NSArray *)names;
 
 # pragma mark Callbacks
 
--(void)onRemoval;
-
-# pragma mark Communicating with outside world
-
--(void)postNotification:(NSString *)notificationName;
+- (void)onRemoval;
 
 # pragma mark Rendering
 
--(void)renderInScene:(TEScene *)scene;
+- (void)renderInScene:(TEScene *)scene;
 
 # pragma mark Matrix Methods
 
--(GLKMatrix4)modelViewMatrix;
--(void)markModelViewMatrixDirty;
--(BOOL)hasCustomTransformation;
--(GLKMatrix4)customTransformation;
+- (GLKMatrix4)modelViewMatrix;
+- (void)markModelViewMatrixDirty;
+- (BOOL)hasCustomTransformation;
+- (GLKMatrix4)customTransformation;
 
 @end

@@ -12,12 +12,10 @@
 @class TENode;
 @class TEScene;
 
-@interface TEDrawable : NSObject {
-  TENode *node;
-}
+@interface TEDrawable : NSObject
 
 @property(strong, nonatomic) TENode *node;
 
--(void)renderInScene:(TEScene *)scene;
+- (void)renderInScene:(TEScene *)scene;
 
 @end

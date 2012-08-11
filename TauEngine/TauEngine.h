@@ -58,11 +58,9 @@
 #import "TEImage.h"
 #import "TETexture.h"
 
-@interface TauEngine : NSObject {
-  CMMotionManager *motionManager;
-}
+@interface TauEngine : NSObject
 
-+(CMMotionManager *)motionManager;
++ (CMMotionManager *)motionManager;
 
 @end
 

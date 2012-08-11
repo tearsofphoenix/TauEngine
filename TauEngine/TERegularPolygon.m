@@ -11,40 +11,47 @@
 
 @implementation TERegularPolygon
 
--(id)initWithSides:(int)num
+- (id)initWithSides:(int)num
 {
-  self = [super initWithVertices:num+2];
-  if (self) {
-    numSides = num;
-    self.radius = 1.0;
-  }
-  
-  return self;
+    self = [super initWithVertices: num + 2];
+    if (self)
+    {
+        numSides = num;
+        self.radius = 1.0;
+    }
+    
+    return self;
 }
 
--(int)numEdges {
-  return numVertices-2;
+- (int)numEdges
+{
+    return _numVertices - 2;
 }
 
--(int)edgeVerticesOffset {
-  return 1;
+- (int)edgeVerticesOffset
+{
+    return 1;
 }
 
--(void)updateVertices {
-  self.vertices[0] = GLKVector2Make(0,0);
-  for (int i = 0; i <= numSides; i++) {
-    float theta = ((float)i) / numSides * M_TAU;
-    self.vertices[i+1] = GLKVector2Make(cos(theta)*radius, sin(theta)*radius);
-  }
+- (void)updateVertices
+{
+    self.vertices[0] = GLKVector2Make(0,0);
+    for (int i = 0; i <= numSides; i++)
+    {
+        float theta = ((float)i) / numSides * M_TAU;
+        self.vertices[i+1] = GLKVector2Make(cos(theta) * _radius, sin(theta) * _radius);
+    }
 }
 
--(float)radius {
-  return radius;
+- (float)radius
+{
+    return _radius;
 }
 
--(void)setRadius:(float)_radius {
-  radius = _radius;
-  [self updateVertices];
+-(void)setRadius: (float)radius
+{
+    _radius = radius;
+    [self updateVertices];
 }
 
 

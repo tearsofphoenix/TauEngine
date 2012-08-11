@@ -8,11 +8,12 @@
 
 #import "TEPolygon.h"
 
-@interface TERegularPolygon : TEPolygon {
-  int numSides;
+@interface TERegularPolygon : TEPolygon
+{
+    int numSides;
 }
 
-@property float radius;
+@property (nonatomic) float radius;
 
 -(id)initWithSides:(int)numSides;
 

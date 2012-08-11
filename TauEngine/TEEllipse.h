@@ -9,10 +9,12 @@
 #import "TauEngine.h"
 #import "TEShape.h"
 
-@interface TEEllipse : TEShape {
-  float radiusX, radiusY;
-}
+@interface TEEllipse : TEShape
 
-@property float radius, radiusX, radiusY;
+@property (nonatomic) float radius;
+
+@property (nonatomic) float radiusX;
+
+@property (nonatomic) float radiusY;
 
 @end

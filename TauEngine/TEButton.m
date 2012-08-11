@@ -10,23 +10,41 @@
 
 @implementation TEButton
 
-@synthesize action;
+@synthesize action = _action;
 
-+(TEButton *)buttonWithDrawable:(TEDrawable *)drawable {
++ (id)buttonWithDrawable: (TEDrawable *)drawable
+{
   TEButton *node = [[TEButton alloc] init];
-  node.drawable = drawable;
-  return node;
+  [node setDrawable: drawable];
+  return [node autorelease];
 }
 
--(void)highlight {
+- (void)dealloc
+{
+    if (_action)
+    {
+        Block_release(_action);
+    }
+    
+    [super dealloc];
 }
 
--(void)unhighlight {
+- (void)highlight
+{
+    
 }
 
--(void)fire {
-  if (action != nil)
-    action();
+- (void)unhighlight
+{
+    
+}
+
+- (void)fire
+{
+    if (_action)
+    {
+        _action();
+    }
 }
 
 @end

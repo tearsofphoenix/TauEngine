@@ -8,13 +8,16 @@
 
 #import "TEPolygon.h"
 
-@interface TENumberDisplay : TEPolygon {
-  int number, numDigits, padDigit, decimalPointDigit, hiddenDigits;
-  float width;
+@interface TENumberDisplay : TEPolygon
+{
+    int number, numDigits, padDigit, decimalPointDigit, hiddenDigits;
+    float width;
 }
 
 @property int number, numDigits, hiddenDigits, decimalPointDigit;
+
 @property(readonly) float height;
+
 @property float width;
 
 -(id)initWithNumDigits:(int)num;

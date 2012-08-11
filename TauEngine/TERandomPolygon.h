@@ -8,12 +8,15 @@
 
 #import "TEPolygon.h"
 
-@interface TERandomPolygon : TEPolygon {
-  int numSides;
-  float lowerFactor, upperFactor;
+@interface TERandomPolygon : TEPolygon
+{
+    float lowerFactor, upperFactor;
 }
-@property int numSides;
 
--(id)initWithSides:(int)numSides lowerFactor:(float)lower upperFactor:(float)upper;
+@property (nonatomic) int numSides;
+
+- (id)initWithSides: (int)numSides
+        lowerFactor: (float)lower
+        upperFactor: (float)upper;
 
 @end

@@ -7,11 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TENode.h"
+
+@class TENode;
 
 @interface TENodeLoader : NSObject
 
-+(void)loadCharacter:(TENode *)character fromJSONFile:(NSString *)fileName;
-+(TENode *)loadCharacterFromJSONFile:(NSString *)fileName;
++ (void)loadCharacter: (TENode *)character
+         fromJSONFile: (NSString *)fileName;
+
++ (TENode *)loadCharacterFromJSONFile: (NSString *)fileName;
 
 @end

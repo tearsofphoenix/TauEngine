@@ -10,8 +10,9 @@
 
 @implementation TEHeptagon
 
-- (id)init {
-  return [super initWithSides:7];
+- (id)init
+{
+    return [super initWithSides:7];
 }
 
 @end

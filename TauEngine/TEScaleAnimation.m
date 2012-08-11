@@ -42,9 +42,9 @@
   return 1.0 + self.easingFactor * (scaleY - 1.0);
 }
 
--(void)permanentize {
-  self.node.scaleX *= scaleX;
-  self.node.scaleY *= scaleY;
+-(void)permanentize
+{
+  self.node.scale *= scaleX;
 }
 
 @end

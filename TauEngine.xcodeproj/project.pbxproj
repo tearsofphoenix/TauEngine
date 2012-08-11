@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22D2287F15D66E47008ACEF9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD261472C7520008AC62 /* UIKit.framework */; };
+		22D2288015D66E47008ACEF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD161472C7520008AC62 /* Foundation.framework */; };
+		22D2288215D66E47008ACEF9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D2288115D66E47008ACEF9 /* CoreGraphics.framework */; };
+		22D2288815D66E47008ACEF9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22D2288615D66E47008ACEF9 /* InfoPlist.strings */; };
+		22D2288A15D66E47008ACEF9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D2288915D66E47008ACEF9 /* main.m */; };
+		22D2288E15D66E47008ACEF9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D2288D15D66E47008ACEF9 /* AppDelegate.m */; };
+		22D2289315D66EFF008ACEF9 /* libTauEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD131472C7520008AC62 /* libTauEngine.a */; };
+		22D2289415D66F09008ACEF9 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C7288051516342400100C66 /* GLKit.framework */; };
+		22D2289515D66F10008ACEF9 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C7288061516342400100C66 /* OpenGLES.framework */; };
 		3C728802151631D600100C66 /* TECollisionDetectorTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C728801151631D600100C66 /* TECollisionDetectorTestCase.m */; };
 		3C7288071516342400100C66 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C7288051516342400100C66 /* GLKit.framework */; };
 		3C7288081516342400100C66 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C7288061516342400100C66 /* OpenGLES.framework */; };
@@ -98,6 +107,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		22D2287D15D66E47008ACEF9 /* TauExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TauExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		22D2288115D66E47008ACEF9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		22D2288515D66E47008ACEF9 /* TauExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TauExample-Info.plist"; sourceTree = "<group>"; };
+		22D2288715D66E47008ACEF9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22D2288915D66E47008ACEF9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		22D2288B15D66E47008ACEF9 /* TauExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TauExample-Prefix.pch"; sourceTree = "<group>"; };
+		22D2288C15D66E47008ACEF9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		22D2288D15D66E47008ACEF9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		3C728800151631D600100C66 /* TECollisionDetectorTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TECollisionDetectorTestCase.h; sourceTree = "<group>"; };
 		3C728801151631D600100C66 /* TECollisionDetectorTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TECollisionDetectorTestCase.m; sourceTree = "<group>"; };
 		3C7288051516342400100C66 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -181,6 +198,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		22D2287A15D66E47008ACEF9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22D2289515D66F10008ACEF9 /* OpenGLES.framework in Frameworks */,
+				22D2289415D66F09008ACEF9 /* GLKit.framework in Frameworks */,
+				22D2289315D66EFF008ACEF9 /* libTauEngine.a in Frameworks */,
+				22D2287F15D66E47008ACEF9 /* UIKit.framework in Frameworks */,
+				22D2288015D66E47008ACEF9 /* Foundation.framework in Frameworks */,
+				22D2288215D66E47008ACEF9 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3CCDBD101472C7520008AC62 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -207,6 +237,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22D2288315D66E47008ACEF9 /* TauExample */ = {
+			isa = PBXGroup;
+			children = (
+				22D2288C15D66E47008ACEF9 /* AppDelegate.h */,
+				22D2288D15D66E47008ACEF9 /* AppDelegate.m */,
+				22D2288415D66E47008ACEF9 /* Supporting Files */,
+			);
+			path = TauExample;
+			sourceTree = "<group>";
+		};
+		22D2288415D66E47008ACEF9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				22D2288515D66E47008ACEF9 /* TauExample-Info.plist */,
+				22D2288615D66E47008ACEF9 /* InfoPlist.strings */,
+				22D2288915D66E47008ACEF9 /* main.m */,
+				22D2288B15D66E47008ACEF9 /* TauExample-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		3C7288041516329D00100C66 /* Collision Detection */ = {
 			isa = PBXGroup;
 			children = (
@@ -221,6 +272,7 @@
 			children = (
 				3CCDBD181472C7520008AC62 /* TauEngine */,
 				3CCDBD2C1472C7520008AC62 /* TauEngineTests */,
+				22D2288315D66E47008ACEF9 /* TauExample */,
 				3CCDBD151472C7520008AC62 /* Frameworks */,
 				3CCDBD141472C7520008AC62 /* Products */,
 			);
@@ -231,6 +283,7 @@
 			children = (
 				3CCDBD131472C7520008AC62 /* libTauEngine.a */,
 				3CCDBD231472C7520008AC62 /* TauEngineTests.octest */,
+				22D2287D15D66E47008ACEF9 /* TauExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -243,6 +296,7 @@
 				3CCDBD161472C7520008AC62 /* Foundation.framework */,
 				3CCDBD241472C7520008AC62 /* SenTestingKit.framework */,
 				3CCDBD261472C7520008AC62 /* UIKit.framework */,
+				22D2288115D66E47008ACEF9 /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -483,6 +537,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		22D2287C15D66E47008ACEF9 /* TauExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22D2289115D66E47008ACEF9 /* Build configuration list for PBXNativeTarget "TauExample" */;
+			buildPhases = (
+				22D2287915D66E47008ACEF9 /* Sources */,
+				22D2287A15D66E47008ACEF9 /* Frameworks */,
+				22D2287B15D66E47008ACEF9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TauExample;
+			productName = TauExample;
+			productReference = 22D2287D15D66E47008ACEF9 /* TauExample.app */;
+			productType = "com.apple.product-type.application";
+		};
 		3CCDBD121472C7520008AC62 /* TauEngine */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3CCDBD371472C7520008AC62 /* Build configuration list for PBXNativeTarget "TauEngine" */;
@@ -542,11 +613,20 @@
 			targets = (
 				3CCDBD121472C7520008AC62 /* TauEngine */,
 				3CCDBD221472C7520008AC62 /* TauEngineTests */,
+				22D2287C15D66E47008ACEF9 /* TauExample */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		22D2287B15D66E47008ACEF9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22D2288815D66E47008ACEF9 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3CCDBD201472C7520008AC62 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -574,6 +654,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		22D2287915D66E47008ACEF9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22D2288A15D66E47008ACEF9 /* main.m in Sources */,
+				22D2288E15D66E47008ACEF9 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3CCDBD0F1472C7520008AC62 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -634,6 +723,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		22D2288615D66E47008ACEF9 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				22D2288715D66E47008ACEF9 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		3CCDBD2F1472C7520008AC62 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -645,6 +742,47 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		22D2288F15D66E47008ACEF9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TauExample/TauExample-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "TauExample/TauExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		22D2289015D66E47008ACEF9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TauExample/TauExample-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "TauExample/TauExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		3CCDBD351472C7520008AC62 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -690,6 +828,7 @@
 		3CCDBD381472C7520008AC62 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
 				DSTROOT = /tmp/TauEngine.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TauEngine/TauEngine-Prefix.pch";
@@ -702,6 +841,7 @@
 		3CCDBD391472C7520008AC62 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
 				DSTROOT = /tmp/TauEngine.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TauEngine/TauEngine-Prefix.pch";
@@ -744,6 +884,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		22D2289115D66E47008ACEF9 /* Build configuration list for PBXNativeTarget "TauExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22D2288F15D66E47008ACEF9 /* Debug */,
+				22D2289015D66E47008ACEF9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3CCDBD0D1472C7520008AC62 /* Build configuration list for PBXProject "TauEngine" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

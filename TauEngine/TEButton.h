@@ -8,16 +8,18 @@
 
 #import "TENode.h"
 
-@interface TEButton : TENode {
-  void (^action)(void);
-}
+typedef void (^ TEActionBlock) (void);
 
-@property(nonatomic,copy) void (^action)(void);
+@interface TEButton : TENode
 
-+(TEButton *)buttonWithDrawable:(TEDrawable *)drawable;
+@property (nonatomic, copy) TEActionBlock action;
 
--(void)highlight;
--(void)unhighlight;
--(void)fire;
++ (id)buttonWithDrawable: (TEDrawable *)drawable;
+
+- (void)highlight;
+
+- (void)unhighlight;
+
+- (void)fire;
 
 @end

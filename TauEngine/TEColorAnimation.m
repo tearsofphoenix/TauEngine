@@ -7,6 +7,7 @@
 //
 
 #import "TEColorAnimation.h"
+#import "TEShape.h"
 
 @implementation TEColorAnimation
 
