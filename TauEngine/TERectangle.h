@@ -10,10 +10,10 @@
 
 enum
 {
-  kTERectangleBottomRight = 0,
-  kTERectangleTopRight    = 1,
-  kTERectangleTopLeft     = 2,
-  kTERectangleBottomLeft  = 3,
+    kTERectangleBottomRight = 0,
+    kTERectangleTopRight    = 1,
+    kTERectangleTopLeft     = 2,
+    kTERectangleBottomLeft  = 3,
 };
 
 typedef NSUInteger TERectangleCornerVertex;

@@ -11,12 +11,9 @@
 @interface TEButton : TENode
 
 @property (nonatomic, copy) TEActionBlock action;
+@property (nonatomic, getter = isHightLigt) BOOL hightLight;
 
 + (id)buttonWithDrawable: (TEDrawable *)drawable;
-
-- (void)highlight;
-
-- (void)unhighlight;
 
 - (void)fire;
 

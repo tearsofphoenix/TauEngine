@@ -20,6 +20,8 @@ static GLKBaseEffect *constantColorEffect;
 @synthesize renderStyle = _renderStyle;
 @synthesize color = _color;
 @synthesize colorData = _colorData;
+@synthesize numVertices = _numVertices;
+@synthesize radius = _radius;
 
 + (void)initialize
 {
@@ -49,7 +51,7 @@ static GLKBaseEffect *constantColorEffect;
 {
     if (_vertexData == nil)
     {
-        _vertexData = [NSMutableData dataWithLength:sizeof(GLKVector2)*self.numVertices];
+        _vertexData = [NSMutableData dataWithLength:sizeof(GLKVector2) * _numVertices];
         _vertices = [_vertexData mutableBytes];
     }
     return _vertices;
@@ -59,7 +61,7 @@ static GLKBaseEffect *constantColorEffect;
 {
     if (_textureData == nil)
     {
-        _textureData = [NSMutableData dataWithLength:sizeof(GLKVector2)*self.numVertices];
+        _textureData = [NSMutableData dataWithLength:sizeof(GLKVector2) * _numVertices];
         _textureCoordinates = [_textureData mutableBytes];
     }
     return _textureCoordinates;
@@ -69,7 +71,7 @@ static GLKBaseEffect *constantColorEffect;
 {
     if (_colorData == nil)
     {
-        _colorData = [NSMutableData dataWithLength:sizeof(GLKVector4)*self.numVertices];
+        _colorData = [NSMutableData dataWithLength:sizeof(GLKVector4) * _numVertices];
         _colorVertices = [_colorData mutableBytes];
     }
     return _colorVertices;
@@ -158,7 +160,7 @@ static GLKBaseEffect *constantColorEffect;
     }
     
     // Draw arrays
-    glDrawArrays(self.renderMode, 0, self.numVertices);
+    glDrawArrays(self.renderMode, 0, _numVertices);
     
     // Tear down position vertices
     glDisableVertexAttribArray(GLKVertexAttribPosition);

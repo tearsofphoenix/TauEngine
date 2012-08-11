@@ -28,6 +28,8 @@ typedef NSUInteger TERenderStyle;
     GLKVector2 *_vertices;
     GLKVector2 *_textureCoordinates;
     GLKVector4 *_colorVertices;
+    int _numVertices;
+    float _radius;
 }
 
 @property (strong, nonatomic) GLKBaseEffect *effect;

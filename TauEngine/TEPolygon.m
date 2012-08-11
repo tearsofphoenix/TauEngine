@@ -10,28 +10,21 @@
 
 @implementation TEPolygon
 
-@synthesize numVertices;
-
-- (id)initWithVertices:(int)num
+- (id)initWithVertices: (int)num
 {
     self = [super init];
     if (self)
     {
-        numVertices = num;
+        _numVertices = num;
         _radius = 0;
     }
     
     return self;
 }
 
-- (int)numVertices
-{
-    return numVertices;
-}
-
 - (int)numEdges
 {
-    return numVertices;
+    return _numVertices;
 }
 
 - (int)edgeVerticesOffset
@@ -48,7 +41,7 @@
 {
     if (_radius == 0)
     {
-        for (int i = 0; i < numVertices; i++)
+        for (int i = 0; i < _numVertices; i++)
         {
             _radius = MAX(_radius, GLKVector2Length(_vertices[i]));
         }

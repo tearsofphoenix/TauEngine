@@ -10,11 +10,11 @@
 
 @interface TERegularPolygon : TEPolygon
 {
-    int numSides;
+    int _numSides;
 }
 
 @property (nonatomic) float radius;
 
--(id)initWithSides:(int)numSides;
+- (id)initWithSides: (int)numSides;
 
 @end

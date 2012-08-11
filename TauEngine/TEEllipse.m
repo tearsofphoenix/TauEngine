@@ -16,52 +16,52 @@
 
 - (id)init
 {
-  self = [super init];
-  if (self)
-  {
-    _radiusX = _radiusY = 1.0;
-    [self updateVertices];
-  }
-  
-  return self;
+    self = [super init];
+    if (self)
+    {
+        _radiusX = _radiusY = 1.0;
+        [self updateVertices];
+    }
+    
+    return self;
 }
 
 - (int)numVertices
 {
-  return TE_ELLIPSE_NUM_VERTICES;
+    return TE_ELLIPSE_NUM_VERTICES;
 }
 
 - (void)updateVertices
 {
-  self.vertices[0] = GLKVector2Make(0,0);
-  for (int i = 0; i <= TE_ELLIPSE_RESOLUTION; i++)
-  {
-    float theta = ((float)i) / TE_ELLIPSE_RESOLUTION * M_TAU;
-    self.vertices[i+1] = GLKVector2Make(cos(theta) * _radiusX, sin(theta) * _radiusY);
-  }
+    self.vertices[0] = GLKVector2Make(0,0);
+    for (int i = 0; i <= TE_ELLIPSE_RESOLUTION; i++)
+    {
+        float theta = ((float)i) / TE_ELLIPSE_RESOLUTION * M_TAU;
+        self.vertices[i+1] = GLKVector2Make(cos(theta) * _radiusX, sin(theta) * _radiusY);
+    }
 }
 
 - (void)setRadiusX: (GLfloat)radius
 {
-  _radiusX = radius;
-  [self updateVertices];
+    _radiusX = radius;
+    [self updateVertices];
 }
 
 - (void)setRadiusY: (GLfloat)radius
 {
-  _radiusY = radius;
-  [self updateVertices];
+    _radiusY = radius;
+    [self updateVertices];
 }
 
 - (float)radius
 {
-  return _radiusX;
+    return _radiusX;
 }
 
 - (void)setRadius: (float)radius
 {
-  _radiusX = _radiusY = radius;
-  [self updateVertices];
+    _radiusX = _radiusY = radius;
+    [self updateVertices];
 }
 
 @end

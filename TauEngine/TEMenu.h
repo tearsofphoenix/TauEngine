@@ -9,15 +9,15 @@
 #import "TEScene.h"
 #import "TEButton.h"
 
-@interface TEMenu : TEScene {
-  NSMutableArray *buttons;
-  TEButton *currentButton;
-  BOOL enabled;
+@interface TEMenu : TEScene
+{
+    NSMutableArray *_buttons;
+    TEButton *_currentButton;
 }
 
-@property BOOL enabled;
+@property (nonatomic) BOOL enabled;
 
--(void)addButton:(TEButton*)button;
--(void)removeButton:(TEButton*)button;
+- (void)addButton: (TEButton*)button;
+- (void)removeButton: (TEButton*)button;
 
 @end

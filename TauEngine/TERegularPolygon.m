@@ -11,13 +11,13 @@
 
 @implementation TERegularPolygon
 
-- (id)initWithSides:(int)num
+- (id)initWithSides: (int)num
 {
     self = [super initWithVertices: num + 2];
     if (self)
     {
-        numSides = num;
-        self.radius = 1.0;
+        _numSides = num;
+        _radius = 1.0;
     }
     
     return self;
@@ -36,16 +36,11 @@
 - (void)updateVertices
 {
     self.vertices[0] = GLKVector2Make(0,0);
-    for (int i = 0; i <= numSides; i++)
+    for (int i = 0; i <= _numSides; i++)
     {
-        float theta = ((float)i) / numSides * M_TAU;
+        float theta = ((float)i) / _numSides * M_TAU;
         self.vertices[i+1] = GLKVector2Make(cos(theta) * _radius, sin(theta) * _radius);
     }
-}
-
-- (float)radius
-{
-    return _radius;
 }
 
 -(void)setRadius: (float)radius

@@ -11,71 +11,98 @@
 
 @implementation TEMenu
 
-@synthesize enabled;
+@synthesize enabled = _enabled;
 
--(id)initWithFrame:(CGRect)frame {
-  self = [super initWithFrame:frame];
-  if (self) {
-    buttons = [NSMutableArray arrayWithCapacity:5];
-    enabled = YES;
-  }
-  return self;
-}
-
--(void)addButton:(TEButton *)button {
-  [characters addObject:button];
-  [buttons addObject:button];
-}
-
--(void)removeButton:(TEButton *)button {
-  [characters removeObject:button];
-  [buttons removeObject:button];
-}
-
--(void)tap {
-  NSLog(@"tapped!");
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-  if (!enabled)
-    return;
-  
-  currentButton = nil;
-  UITouch *touch = [touches anyObject];
-  GLKVector2 location = [self positionForLocationInView:[touch locationInView:self.view]];
-  [buttons enumerateObjectsUsingBlock:^(TEButton *button, NSUInteger idx, BOOL *stop) {
-    if ([TECollisionDetector point:location collidesWithNode:button recurseNode:YES]) {
-      currentButton = button;
-      [button highlight];
-      *stop = YES;
+- (id)initWithFrame: (CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        _buttons = [[NSMutableArray alloc] initWithCapacity: 5];
+        _enabled = YES;
     }
-  }];
+    return self;
 }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-  if (currentButton) {
+- (void)dealloc
+{
+    [_buttons release];
+    
+    [super dealloc];
+}
+
+- (void)addButton: (TEButton *)button
+{
+    [characters addObject: button];
+    [_buttons addObject: button];
+}
+
+- (void)removeButton: (TEButton *)button
+{
+    [characters removeObject: button];
+    [_buttons removeObject: button];
+}
+
+- (void)touchesBegan: (NSSet *)touches
+           withEvent: (UIEvent *)event
+{
+    if (!_enabled)
+    {
+        return;
+    }
+    
+    _currentButton = nil;
     UITouch *touch = [touches anyObject];
     GLKVector2 location = [self positionForLocationInView:[touch locationInView:self.view]];
-    if (![TECollisionDetector point:location collidesWithNode:currentButton recurseNode:YES]) {
-      [currentButton unhighlight];
-      currentButton = nil;
+    [_buttons enumerateObjectsUsingBlock: (^(TEButton *button, NSUInteger idx, BOOL *stop)
+                                           {
+                                               if ([TECollisionDetector point: location
+                                                             collidesWithNode: button
+                                                                  recurseNode: YES])
+                                               {
+                                                   _currentButton = button;
+                                                   [_currentButton setHightLight: YES];
+                                                   *stop = YES;
+                                               }
+                                           })];
+}
+
+- (void)touchesMoved: (NSSet *)touches
+           withEvent: (UIEvent *)event
+{
+    if (_currentButton)
+    {
+        UITouch *touch = [touches anyObject];
+        GLKVector2 location = [self positionForLocationInView: [touch locationInView: [self view]]];
+        if (![TECollisionDetector point: location
+                       collidesWithNode: _currentButton
+                            recurseNode: YES])
+        {
+            [_currentButton setHightLight: NO];
+            _currentButton = nil;
+        }
     }
-  }
 }
 
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-  if (currentButton) {
-    [currentButton unhighlight];
-    currentButton = nil;
-  }
+- (void)touchesCancelled: (NSSet *)touches
+               withEvent: (UIEvent *)event
+{
+    if (_currentButton)
+    {
+        [_currentButton setHightLight: NO];
+        _currentButton = nil;
+    }
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-  if (currentButton != nil) {
-    [currentButton unhighlight];
-    [currentButton fire];
-    currentButton = nil;
-  }
+- (void)touchesEnded: (NSSet *)touches
+           withEvent: (UIEvent *)event
+{
+    if (_currentButton != nil)
+    {
+        [_currentButton setHightLight: NO];
+        [_currentButton fire];
+        _currentButton = nil;
+    }
 }
 
 @end

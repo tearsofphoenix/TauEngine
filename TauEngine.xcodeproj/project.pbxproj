@@ -34,8 +34,6 @@
 		3CCDBD6C1472C7C90008AC62 /* TENode.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBD401472C7C90008AC62 /* TENode.m */; };
 		3CCDBD6D1472C7C90008AC62 /* TEButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCDBD411472C7C90008AC62 /* TEButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3CCDBD6E1472C7C90008AC62 /* TEButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBD421472C7C90008AC62 /* TEButton.m */; };
-		3CCDBD6F1472C7C90008AC62 /* TENodeLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCDBD431472C7C90008AC62 /* TENodeLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3CCDBD701472C7C90008AC62 /* TENodeLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBD441472C7C90008AC62 /* TENodeLoader.m */; };
 		3CCDBD711472C7C90008AC62 /* TEDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCDBD451472C7C90008AC62 /* TEDrawable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3CCDBD721472C7C90008AC62 /* TEDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBD461472C7C90008AC62 /* TEDrawable.m */; };
 		3CCDBD731472C7C90008AC62 /* TEAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCDBD471472C7C90008AC62 /* TEAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -82,12 +80,6 @@
 		3CCDBDB51472C8090008AC62 /* TERegularPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBDA11472C8090008AC62 /* TERegularPolygon.m */; };
 		3CCDBDB61472C8090008AC62 /* TERandomPolygon.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCDBDA21472C8090008AC62 /* TERandomPolygon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3CCDBDB71472C8090008AC62 /* TERandomPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBDA31472C8090008AC62 /* TERandomPolygon.m */; };
-		3CCDBDB81472C8090008AC62 /* TEHexagon.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCDBDA41472C8090008AC62 /* TEHexagon.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3CCDBDB91472C8090008AC62 /* TEHexagon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBDA51472C8090008AC62 /* TEHexagon.m */; };
-		3CCDBDBA1472C8090008AC62 /* TEHeptagon.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCDBDA61472C8090008AC62 /* TEHeptagon.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3CCDBDBB1472C8090008AC62 /* TEHeptagon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBDA71472C8090008AC62 /* TEHeptagon.m */; };
-		3CCDBDBC1472C8090008AC62 /* TEOctagon.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCDBDA81472C8090008AC62 /* TEOctagon.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3CCDBDBD1472C8090008AC62 /* TEOctagon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBDA91472C8090008AC62 /* TEOctagon.m */; };
 		3CCDBDBE1472C8090008AC62 /* TEEllipse.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCDBDAA1472C8090008AC62 /* TEEllipse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3CCDBDBF1472C8090008AC62 /* TEEllipse.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCDBDAB1472C8090008AC62 /* TEEllipse.m */; };
 		3CCDBDC31472C8210008AC62 /* TENumberDisplay.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCDBDC11472C8210008AC62 /* TENumberDisplay.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -135,8 +127,6 @@
 		3CCDBD401472C7C90008AC62 /* TENode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TENode.m; sourceTree = "<group>"; };
 		3CCDBD411472C7C90008AC62 /* TEButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEButton.h; sourceTree = "<group>"; };
 		3CCDBD421472C7C90008AC62 /* TEButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEButton.m; sourceTree = "<group>"; };
-		3CCDBD431472C7C90008AC62 /* TENodeLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TENodeLoader.h; sourceTree = "<group>"; };
-		3CCDBD441472C7C90008AC62 /* TENodeLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TENodeLoader.m; sourceTree = "<group>"; };
 		3CCDBD451472C7C90008AC62 /* TEDrawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEDrawable.h; sourceTree = "<group>"; };
 		3CCDBD461472C7C90008AC62 /* TEDrawable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEDrawable.m; sourceTree = "<group>"; };
 		3CCDBD471472C7C90008AC62 /* TEAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEAnimation.h; sourceTree = "<group>"; };
@@ -183,12 +173,6 @@
 		3CCDBDA11472C8090008AC62 /* TERegularPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TERegularPolygon.m; sourceTree = "<group>"; };
 		3CCDBDA21472C8090008AC62 /* TERandomPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TERandomPolygon.h; sourceTree = "<group>"; };
 		3CCDBDA31472C8090008AC62 /* TERandomPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TERandomPolygon.m; sourceTree = "<group>"; };
-		3CCDBDA41472C8090008AC62 /* TEHexagon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEHexagon.h; sourceTree = "<group>"; };
-		3CCDBDA51472C8090008AC62 /* TEHexagon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEHexagon.m; sourceTree = "<group>"; };
-		3CCDBDA61472C8090008AC62 /* TEHeptagon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEHeptagon.h; sourceTree = "<group>"; };
-		3CCDBDA71472C8090008AC62 /* TEHeptagon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEHeptagon.m; sourceTree = "<group>"; };
-		3CCDBDA81472C8090008AC62 /* TEOctagon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEOctagon.h; sourceTree = "<group>"; };
-		3CCDBDA91472C8090008AC62 /* TEOctagon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEOctagon.m; sourceTree = "<group>"; };
 		3CCDBDAA1472C8090008AC62 /* TEEllipse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEEllipse.h; sourceTree = "<group>"; };
 		3CCDBDAB1472C8090008AC62 /* TEEllipse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEEllipse.m; sourceTree = "<group>"; };
 		3CCDBDC11472C8210008AC62 /* TENumberDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TENumberDisplay.h; sourceTree = "<group>"; };
@@ -354,8 +338,6 @@
 				3CCDBD401472C7C90008AC62 /* TENode.m */,
 				3CCDBD411472C7C90008AC62 /* TEButton.h */,
 				3CCDBD421472C7C90008AC62 /* TEButton.m */,
-				3CCDBD431472C7C90008AC62 /* TENodeLoader.h */,
-				3CCDBD441472C7C90008AC62 /* TENodeLoader.m */,
 			);
 			name = Nodes;
 			sourceTree = "<group>";
@@ -387,12 +369,6 @@
 				3CCDBDA11472C8090008AC62 /* TERegularPolygon.m */,
 				3CCDBDA21472C8090008AC62 /* TERandomPolygon.h */,
 				3CCDBDA31472C8090008AC62 /* TERandomPolygon.m */,
-				3CCDBDA41472C8090008AC62 /* TEHexagon.h */,
-				3CCDBDA51472C8090008AC62 /* TEHexagon.m */,
-				3CCDBDA61472C8090008AC62 /* TEHeptagon.h */,
-				3CCDBDA71472C8090008AC62 /* TEHeptagon.m */,
-				3CCDBDA81472C8090008AC62 /* TEOctagon.h */,
-				3CCDBDA91472C8090008AC62 /* TEOctagon.m */,
 				3CCDBDAA1472C8090008AC62 /* TEEllipse.h */,
 				3CCDBDAB1472C8090008AC62 /* TEEllipse.m */,
 			);
@@ -501,7 +477,6 @@
 				3CCDBD691472C7C90008AC62 /* TauEngine.h in Headers */,
 				3CCDBD6B1472C7C90008AC62 /* TENode.h in Headers */,
 				3CCDBD6D1472C7C90008AC62 /* TEButton.h in Headers */,
-				3CCDBD6F1472C7C90008AC62 /* TENodeLoader.h in Headers */,
 				3CCDBD711472C7C90008AC62 /* TEDrawable.h in Headers */,
 				3CCDBD731472C7C90008AC62 /* TEAnimation.h in Headers */,
 				3CCDBD751472C7C90008AC62 /* TEScaleAnimation.h in Headers */,
@@ -525,9 +500,6 @@
 				3CCDBDB21472C8090008AC62 /* TERectangle.h in Headers */,
 				3CCDBDB41472C8090008AC62 /* TERegularPolygon.h in Headers */,
 				3CCDBDB61472C8090008AC62 /* TERandomPolygon.h in Headers */,
-				3CCDBDB81472C8090008AC62 /* TEHexagon.h in Headers */,
-				3CCDBDBA1472C8090008AC62 /* TEHeptagon.h in Headers */,
-				3CCDBDBC1472C8090008AC62 /* TEOctagon.h in Headers */,
 				3CCDBDBE1472C8090008AC62 /* TEEllipse.h in Headers */,
 				3CCDBDC31472C8210008AC62 /* TENumberDisplay.h in Headers */,
 				3CCDBDC81472C8340008AC62 /* TESprite.h in Headers */,
@@ -670,7 +642,6 @@
 				3CCDBD6A1472C7C90008AC62 /* TauEngine.m in Sources */,
 				3CCDBD6C1472C7C90008AC62 /* TENode.m in Sources */,
 				3CCDBD6E1472C7C90008AC62 /* TEButton.m in Sources */,
-				3CCDBD701472C7C90008AC62 /* TENodeLoader.m in Sources */,
 				3CCDBD721472C7C90008AC62 /* TEDrawable.m in Sources */,
 				3CCDBD741472C7C90008AC62 /* TEAnimation.m in Sources */,
 				3CCDBD761472C7C90008AC62 /* TEScaleAnimation.m in Sources */,
@@ -694,9 +665,6 @@
 				3CCDBDB31472C8090008AC62 /* TERectangle.m in Sources */,
 				3CCDBDB51472C8090008AC62 /* TERegularPolygon.m in Sources */,
 				3CCDBDB71472C8090008AC62 /* TERandomPolygon.m in Sources */,
-				3CCDBDB91472C8090008AC62 /* TEHexagon.m in Sources */,
-				3CCDBDBB1472C8090008AC62 /* TEHeptagon.m in Sources */,
-				3CCDBDBD1472C8090008AC62 /* TEOctagon.m in Sources */,
 				3CCDBDBF1472C8090008AC62 /* TEEllipse.m in Sources */,
 				3CCDBDC41472C8210008AC62 /* TENumberDisplay.m in Sources */,
 				3CCDBDC91472C8340008AC62 /* TESprite.m in Sources */,

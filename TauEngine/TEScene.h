@@ -13,12 +13,12 @@
 
 @interface TEScene : GLKViewController <GLKViewDelegate, GLKViewControllerDelegate>
 {
-  GLfloat left, right, bottom, top;
-  GLKVector4 clearColor;
-  NSMutableArray *characters, *charactersToAdd;
-  
-  GLKMatrix4 cachedProjectionMatrix;
-  BOOL dirtyProjectionMatrix;
+    GLfloat left, right, bottom, top;
+    GLKVector4 clearColor;
+    NSMutableArray *characters, *charactersToAdd;
+    
+    GLKMatrix4 cachedProjectionMatrix;
+    BOOL dirtyProjectionMatrix;
 }
 
 @property(readonly) GLfloat left, right, bottom, top;

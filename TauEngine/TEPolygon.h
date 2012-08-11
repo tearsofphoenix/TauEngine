@@ -9,12 +9,8 @@
 #import "TEShape.h"
 
 @interface TEPolygon : TEShape
-{
-  int _numVertices;
-  float _radius;
-}
 
-- (id)initWithVertices:(int)numVertices;
+- (id)initWithVertices: (int)numVertices;
 
 - (int)numEdges;
 - (int)edgeVerticesOffset;
