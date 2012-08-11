@@ -88,9 +88,11 @@ static GLKBaseEffect *constantColorEffect;
 - (void)renderInScene:(TEScene *)scene
 {
     if (_renderStyle == kTERenderStyleNone)
+    {
         return;
+    }
     
-    __block GLKVector4 *displayColorVertices;
+    __block GLKVector4 *displayColorVertices = NULL;
     
     // Initialize the effect if necessary
     if (_effect == nil) {

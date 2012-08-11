@@ -110,14 +110,20 @@ typedef struct
     return YES;
 }
 
-+(TEPolygon *)transformedPolygonFrom:(TEPolygon *)drawable {
-    TEPolygon *poly = [[TEPolygon alloc] initWithVertices:drawable.numVertices];
-    for (int i = 0; i < poly.numVertices; i++)
-        poly.vertices[i] = [self transformedPoint:drawable.vertices[i] fromShape:drawable];
-    return poly;
++ (TEPolygon *)transformedPolygonFrom: (TEPolygon *)drawable
+{
+    TEPolygon *poly = [[TEPolygon alloc] initWithVertices: [drawable numVertices]];
+    
+    for (int i = 0; i < [poly numVertices]; i++)
+    {
+        poly.vertices[i] = [self transformedPoint: drawable.vertices[i]
+                                        fromShape: drawable];
+    }
+    return [poly autorelease];
 }
 
-+(BOOL)polygon:(TENode *)node1 collidesWithPolygon:(TENode *)node2 {
++ (BOOL)polygon:(TENode *)node1 collidesWithPolygon:(TENode *)node2
+{
     // Check bounding circles first; way faster
     if (![self circle:node1 collidesWithCircle:node2])
         return NO;
@@ -259,16 +265,24 @@ typedef struct
 
 # pragma mark - Collision detection within an array
 
-+(NSMutableArray *)collisionsIn:(NSArray *)nodes {
-    return [self collisionsIn:nodes maxPerNode:0];
++ (NSMutableArray *)collisionsIn: (NSArray *)nodes
+{
+    return [self collisionsIn: nodes
+                   maxPerNode: 0];
 }
 
-+(NSMutableArray *)collisionsIn:(NSArray *)nodes maxPerNode:(int)n {
++ (NSMutableArray *)collisionsIn: (NSArray *)nodes
+                      maxPerNode: (int)n
+{
     NSMutableArray *collisions = [[NSMutableArray alloc] init];
-    [self collisionsIn:nodes maxPerNode:n withBlock:^(TENode *node1, TENode *node2) {
-        [collisions addObject:[[NSArray alloc] initWithObjects:node1, node2, nil]];
-    }];
-    return collisions;
+    [self collisionsIn: nodes
+            maxPerNode: n
+             withBlock: (^(TENode *node1, TENode *node2)
+                         {
+                             [collisions addObject:[NSArray arrayWithObjects:node1, node2, nil]];
+                             
+                         })];
+    return [collisions autorelease];
 }
 
 +(void)collisionsIn:(NSArray *)nodes withBlock:(void (^)(TENode *, TENode *))block {
@@ -297,16 +311,28 @@ typedef struct
 
 # pragma mark - Collision detection between two arrays
 
-+(NSMutableArray *)collisionsBetween:(NSArray *)nodes andNodes:(NSArray *)moreNodes {
-    return [self collisionsBetween:nodes andNodes:moreNodes maxPerNode:0];
++ (NSMutableArray *)collisionsBetween: (NSArray *)nodes
+                             andNodes: (NSArray *)moreNodes
+{
+    return [self collisionsBetween: nodes
+                          andNodes: moreNodes
+                        maxPerNode: 0];
 }
 
-+(NSMutableArray *)collisionsBetween:(NSArray *)nodes andNodes:(NSArray *)moreNodes maxPerNode:(int)n {
++ (NSMutableArray *)collisionsBetween: (NSArray *)nodes
+                             andNodes: (NSArray *)moreNodes
+                           maxPerNode: (int)n
+{
     NSMutableArray *collisions = [[NSMutableArray alloc] init];
-    [self collisionsBetween:nodes andNodes:moreNodes maxPerNode:n withBlock:^(TENode *node1, TENode *node2) {
-        [collisions addObject:[[NSArray alloc] initWithObjects:node1, node2, nil]];
-    }];
-    return collisions;
+    [self collisionsBetween: nodes
+                   andNodes: moreNodes
+                 maxPerNode: n
+                  withBlock: (^(TENode *node1, TENode *node2)
+                              {
+                                  [collisions addObject: [NSArray arrayWithObjects: node1, node2, nil]];
+                                  
+                              })];
+    return [collisions autorelease];
 }
 
 +(void)collisionsBetween:(NSArray *)nodes andNodes:(NSArray *)moreNodes withBlock:(void (^)(TENode *, TENode *))block {
@@ -332,20 +358,40 @@ typedef struct
 
 # pragma mark - Collision detection between a node and an array
 
-+(NSMutableArray *)collisionsBetweenNode:(TENode *)node andNodes:(NSArray *)moreNodes {
-    return [self collisionsBetweenNode:node andNodes:moreNodes maxPerNode:0];
++ (NSMutableArray *)collisionsBetweenNode: (TENode *)node
+                                 andNodes: (NSArray *)moreNodes
+{
+    return [self collisionsBetweenNode: node
+                              andNodes: moreNodes
+                            maxPerNode: 0];
 }
 
-+(NSMutableArray *)collisionsBetweenNode:(TENode *)node andNodes:(NSArray *)moreNodes maxPerNode:(int)n {
++ (NSMutableArray *)collisionsBetweenNode: (TENode *)node
+                                 andNodes: (NSArray *)moreNodes
+                               maxPerNode: (int)n
+{
     NSMutableArray *collisions = [[NSMutableArray alloc] init];
-    [self collisionsBetweenNode:node andNodes:moreNodes maxPerNode:n withBlock:^(TENode *node1, TENode *node2) {
-        [collisions addObject:[[NSArray alloc] initWithObjects:node1, node2, nil]];
-    }];
-    return collisions;
+    
+    [self collisionsBetweenNode: node
+                       andNodes: moreNodes
+                     maxPerNode: n
+                      withBlock: (^(TENode *node1, TENode *node2)
+                                  {
+                                      [collisions addObject: [NSArray arrayWithObjects:node1, node2, nil]];
+                                      
+                                  })];
+    
+    return [collisions autorelease];
 }
 
-+(void)collisionsBetweenNode:(TENode *)node andNodes:(NSArray *)moreNodes withBlock:(void (^)(TENode *, TENode *))block {
-    return [self collisionsBetweenNode:node andNodes:moreNodes maxPerNode:0 withBlock:block];
++ (void)collisionsBetweenNode: (TENode *)node
+                     andNodes: (NSArray *)moreNodes
+                    withBlock: (void (^)(TENode *, TENode *))block
+{
+    return [self collisionsBetweenNode: node
+                              andNodes: moreNodes
+                            maxPerNode: 0
+                             withBlock: block];
 }
 
 +(void)collisionsBetweenNode:(TENode *)node andNodes:(NSArray *)moreNodes maxPerNode:(int)n withBlock:(void (^)(TENode *, TENode *))block {

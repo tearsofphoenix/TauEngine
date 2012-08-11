@@ -17,22 +17,6 @@
     [super dealloc];
 }
 
-- (id)foo
-{
-    
-    id block = (^
-                {
-                    printf("in func: %s\n", __func__);
-                });
-    
-    @autoreleasepool
-    {
-        block = [block copy];
-    }
-    
-    return block;
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -48,15 +32,17 @@
     [sceneController addScene: scene
                         named: @"com.veritas.mainscene"];
 
-    [scene render];
+    [scene release];
     
     TETriangle *triangle = [[TETriangle alloc] init];
     [triangle setColor: GLKVector4Make(1.0, 0, 0, 1.0)];
+    
     TENode *node = [TENode nodeWithDrawable: triangle];
     
+    [triangle release];
+    
     [scene addCharacterAfterUpdate: node];
-    
-    
+        
     return YES;
 }
 

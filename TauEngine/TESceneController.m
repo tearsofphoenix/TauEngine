@@ -39,16 +39,29 @@ NSString * const kTEPreviousScene = @"kTEPreviousScene";
   return [scenes objectForKey:name];
 }
 
--(void)addSceneOfClass:(Class)sceneClass named:(NSString *)name {
-  [self addScene:[[sceneClass alloc] initWithFrame:self.container.frame] named:name];
+- (void)addSceneOfClass: (Class)sceneClass
+                  named: (NSString *)name
+{
+    id scene = [[sceneClass alloc] initWithFrame: self.container.frame];
+    
+    [self addScene: scene
+             named: name];
+    
+    [scene release];
 }
 
--(void)addScene:(UIViewController *)scene named:(NSString *)name {
+- (void)addScene: (UIViewController *)scene
+           named: (NSString *)name
+{
   [self addChildViewController:scene];
   
-  if ([scene isKindOfClass:[GLKViewController class]])
-    ((GLKView*)scene.view).context = context;
-  [scenes setObject:scene forKey:name];
+  if ([scene isKindOfClass: [GLKViewController class]])
+  {
+      [((GLKView*)[scene view]) setContext: context];
+  }
+    
+  [scenes setObject: scene
+             forKey: name];
 }
 
 -(void)removeScene:(NSString *)name {

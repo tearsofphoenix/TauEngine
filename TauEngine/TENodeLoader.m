@@ -40,21 +40,36 @@
 {
     NSString *geometry = [attributes objectForKey:@"geometry"];
     TEShape *shape;
-    if ([geometry isEqualToString:@"triangle"]) {
+    if ([geometry isEqualToString:@"triangle"])
+    {
         shape = [[TETriangle alloc] init];
-    } else if ([geometry isEqualToString:@"square"] || [geometry isEqualToString:@"rectangle"]) {
+        
+    } else if ([geometry isEqualToString:@"square"] || [geometry isEqualToString:@"rectangle"])
+    {
         shape = [[TERectangle alloc] init];
-    } else if ([geometry isEqualToString:@"circle"] || [geometry isEqualToString:@"ellipse"]) {
+        
+    } else if ([geometry isEqualToString:@"circle"] || [geometry isEqualToString:@"ellipse"])
+    {
         shape = [[TEEllipse alloc] init];
-    } else if ([geometry isEqualToString:@"polygon"]) {
+        
+    } else if ([geometry isEqualToString:@"polygon"])
+    {
         shape = [[TEPolygon alloc] initWithVertices:[[attributes objectForKey:@"num-vertices"] intValue]];
-    } else if ([geometry isEqualToString:@"hexagon"]) {
+        
+    } else if ([geometry isEqualToString:@"hexagon"])
+    {
         shape = [[TEHexagon alloc] init];
-    } else if ([geometry isEqualToString:@"heptagon"]) {
+        
+    } else if ([geometry isEqualToString:@"heptagon"])
+    {
         shape = [[TEHeptagon alloc] init];
-    } else if ([geometry isEqualToString:@"octagon"]) {
+        
+    } else if ([geometry isEqualToString:@"octagon"])
+    {
         shape = [[TEOctagon alloc] init];
-    } else {
+        
+    } else
+    {
         NSLog(@"Unrecognized shape: '%@'", geometry);
         return nil;
     }
@@ -67,14 +82,16 @@
         }
         
         // Set vertex colors & adjust render style
-        else if ([key length] == 6 && [[key substringToIndex:5] isEqualToString:@"color"]) {
+        else if ([key length] == 6 && [[key substringToIndex:5] isEqualToString:@"color"])
+        {
             shape.renderStyle = kTERenderStyleVertexColors;
             ((TEPolygon *)shape).colorVertices[[[key substringWithRange:NSMakeRange(5,1)] intValue]] = GLKVector4Make([[obj objectAtIndex:0] floatValue], [[obj objectAtIndex:1] floatValue],
                                                                                                                       [[obj objectAtIndex:2] floatValue], [[obj objectAtIndex:3] floatValue]);
         }
         
         // Set vertex data
-        else if ([key length] == 7 && [[key substringToIndex:6] isEqualToString:@"vertex"]) {
+        else if ([key length] == 7 && [[key substringToIndex:6] isEqualToString:@"vertex"])
+        {
             ((TEPolygon *)shape).vertices[[[key substringWithRange:NSMakeRange(6,1)] intValue]] = GLKVector2Make([[obj objectAtIndex:0] floatValue], [[obj objectAtIndex:1] floatValue]);
         }
         
@@ -97,50 +114,77 @@
     return shape;
 }
 
-+(void)setUpColliders:(TENode *)node attributes:(NSDictionary *)attributes {
-    NSString *collide = (NSString *)[attributes objectForKey:@"collide"];
++ (void)setUpColliders: (TENode *)node
+            attributes: (NSDictionary *)attributes
+{
+    NSString *collide = [attributes objectForKey:@"collide"];
     if ([collide isEqualToString:@"yes"])
+    {
         node.collide = YES;
+    }
 }
 
-+(void)parseNode:(TENode *)node attributes:(NSDictionary *)attributes {
++ (void)parseNode: (TENode *)node
+       attributes: (NSDictionary *)attributes
+{
     [self setUpColliders:node attributes:attributes];
-    [attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        [self parseTransformsForNode:node attributes:attributes];
-        if ([key isEqualToString:@"shape"]) {
-            TEShape *shape = [self createShape:obj];
-            node.drawable = shape;
-            shape.node = node;
-        } else if ([key isEqualToString:@"children"]) {
-            [obj enumerateKeysAndObjectsUsingBlock:^(id childName, id childAttributes, BOOL *stop) {
-                TENode *childNode = [[TENode alloc] init];
-                childNode.name = childName;
-                [self parseNode:childNode attributes:childAttributes];
-                [node addChild:childNode];
-            }];
-        }
-    }];
+    [attributes enumerateKeysAndObjectsUsingBlock: (^(id key, id obj, BOOL *stop)
+                                                    {
+                                                        [self parseTransformsForNode:node attributes:attributes];
+                                                        if ([key isEqualToString:@"shape"])
+                                                        {
+                                                            TEShape *shape = [self createShape:obj];
+                                                            node.drawable = shape;
+                                                            shape.node = node;
+                                                            
+                                                        } else if ([key isEqualToString:@"children"])
+                                                        {
+                                                            [obj enumerateKeysAndObjectsUsingBlock: (^(id childName, id childAttributes, BOOL *stop)
+                                                                                                     {
+                                                                                                         TENode *childNode = [[TENode alloc] init];
+                                                                                                         [childNode setName: childName];
+                                                                                                         
+                                                                                                         [self parseNode: childNode
+                                                                                                              attributes: childAttributes];
+                                                                                                         
+                                                                                                         [node addChild: childNode];
+                                                                                                         
+                                                                                                         [childNode release];
+                                                                                                     })];
+                                                        }
+                                                    })];
 }
 
-+(void)loadCharacter:(TENode *)character fromJSONFile:(NSString *)fileName {
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfFile:filePath];
++ (void)loadCharacter: (TENode *)character
+         fromJSONFile: (NSString *)fileName
+{
+    NSString *filePath = [[NSBundle mainBundle] pathForResource: fileName
+                                                         ofType: @"json"];
     
-    NSError *error;
-    NSDictionary *characterData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-    if (!characterData) {
+    NSData *data = [NSData dataWithContentsOfFile: filePath];
+    
+    NSError *error = nil;
+    NSDictionary *characterData = [NSJSONSerialization JSONObjectWithData: data
+                                                                  options: 0
+                                                                    error: &error];
+    if (error)
+    {
         NSLog(@"Could not load character data, error is %@", error);
         return;
     }
     
     character.name = [[characterData allKeys] objectAtIndex:0];
-    [self parseNode:character attributes:[characterData objectForKey:character.name]];
+    
+    [self parseNode: character
+         attributes: [characterData objectForKey: character.name]];
 }
 
-+(TENode *)loadCharacterFromJSONFile:(NSString *)fileName {
++ (TENode *)loadCharacterFromJSONFile: (NSString *)fileName
+{
     TENode *character = [[TENode alloc] init];
-    [self loadCharacter:character fromJSONFile:fileName];
-    return character;
+    [self loadCharacter: character
+           fromJSONFile: fileName];
+    return [character autorelease];
 }
 
 
