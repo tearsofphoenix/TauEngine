@@ -46,6 +46,10 @@
 @property (nonatomic) GLKVector2 velocity;
 @property (nonatomic) GLKVector2 acceleration;
 
+
+@property (nonatomic) GLKMatrix4 transform;
+@property (nonatomic) GLKMatrix4 subShapeTransform;
+
 @property (nonatomic) float rotation;
 
 @property (nonatomic) float angularVelocity;
@@ -57,7 +61,7 @@
 
 - (void)removeFromParent;
 
-@property (nonatomic, readonly) GLKMatrix4 modelviewMatrix;
+@property (nonatomic, readonly) GLKMatrix4 modelViewMatrix;
 
 @property (nonatomic, strong, readonly) GLKTextureInfo *texture;
 

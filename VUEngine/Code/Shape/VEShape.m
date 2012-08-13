@@ -11,6 +11,18 @@
 #import "VEScene.h"
 #import "VESpriteAnimation.h"
 
+@interface VEShape ()
+{
+@private
+    GLKMatrix4 _fullModelViewMatrixCache;
+    GLKMatrix4 _objectModelViewMatrixCache;
+    
+    BOOL _dirtyObjectModelViewMatrix;
+    BOOL _dirtyFullModelViewMatrix;
+}
+
+@end
+
 @implementation VEShape
 
 @synthesize color = _color;
@@ -31,6 +43,9 @@
 @synthesize texture = _texture;
 @synthesize animations = _animations;
 @synthesize spriteAnimation = _spriteAnimation;
+
+@synthesize transform = _transform;
+@synthesize subShapeTransform = _subShapeTransform;
 
 - (id)init
 {
@@ -61,6 +76,15 @@
         
         // No _animations by default
         _animations = [[NSMutableArray alloc] init];
+        
+        _transform = GLKMatrix4Identity;
+        _subShapeTransform = GLKMatrix4Identity;
+        
+        _fullModelViewMatrixCache = GLKMatrix4Identity;
+        _objectModelViewMatrixCache = GLKMatrix4Identity;
+        
+//        _dirtyFullModelViewMatrix = YES;
+//        _dirtyObjectModelViewMatrix = YES;
         
     }
     return self;
@@ -110,67 +134,68 @@
     return _textureCoordinates;
 }
 
-- (GLKMatrix4)modelviewMatrix
+- (GLKMatrix4)modelViewMatrix
 {
-    GLKMatrix4 modelviewMatrix = GLKMatrix4Multiply(GLKMatrix4MakeTranslation(_position.x, _position.y, 0),
+    GLKMatrix4 modelViewMatrix = GLKMatrix4Multiply(GLKMatrix4MakeTranslation(_position.x, _position.y, 0),
                                                     GLKMatrix4MakeRotation(_rotation, 0, 0, 1));
-    modelviewMatrix = GLKMatrix4Multiply(modelviewMatrix, GLKMatrix4MakeScale(_scale.x, _scale.y, 1));
+    modelViewMatrix = GLKMatrix4Multiply(modelViewMatrix, GLKMatrix4MakeScale(_scale.x, _scale.y, 1));
     
-    if (_parent != nil)
+    if (_parent)
     {
-        modelviewMatrix = GLKMatrix4Multiply([_parent modelviewMatrix], modelviewMatrix);
+        modelViewMatrix = GLKMatrix4Multiply([_parent modelViewMatrix], modelViewMatrix);
     }
     
-    return modelviewMatrix;
+    return modelViewMatrix;
 }
-
-/*
- if (dirtyObjectModelViewMatrix)
- {
- __block GLKVector2 mvTranslation = _position;
- __block GLfloat mvScaleX = _scale;
- __block GLfloat mvScaleY = _scale;
- __block GLfloat mvRotation = _rotation;
- 
- [_currentAnimations enumerateObjectsUsingBlock: (^(id animation, NSUInteger idx, BOOL *stop)
- {
- if ([animation isKindOfClass:[VETranslateAnimation class]])
- mvTranslation = GLKVector2Add(mvTranslation, ((VETranslateAnimation *)animation).easedTranslation);
- else if ([animation isKindOfClass:[VERotateAnimation class]])
- mvRotation += ((VERotateAnimation *)animation).easedRotation;
- else if ([animation isKindOfClass:[VEScaleAnimation class]]) {
- mvScaleX *= ((VEScaleAnimation *)animation).easedScaleX;
- mvScaleY *= ((VEScaleAnimation *)animation).easedScaleY;
- }
- })];
- 
- cachedObjectModelViewMatrix = GLKMatrix4Multiply(GLKMatrix4MakeTranslation(mvTranslation.x, mvTranslation.y, 0.0),GLKMatrix4MakeScale(mvScaleX, mvScaleY, 1.0));
- cachedObjectModelViewMatrix = GLKMatrix4Multiply(cachedObjectModelViewMatrix, GLKMatrix4MakeZRotation(mvRotation));
- if ([self hasCustomTransformation])
- cachedObjectModelViewMatrix = GLKMatrix4Multiply(cachedObjectModelViewMatrix, [self customTransformation]);
- 
- dirtyObjectModelViewMatrix = [_currentAnimations count] > 0;
- _dirtyFullModelViewMatrix = YES;
- }
- 
- if (_dirtyFullModelViewMatrix)
- {
- if (_parent)
- {
- cachedFullModelViewMatrix = GLKMatrix4Multiply([self.parent modelViewMatrix], cachedObjectModelViewMatrix);
- }else
- {
- cachedFullModelViewMatrix = cachedObjectModelViewMatrix;
- }
- 
- _dirtyFullModelViewMatrix = NO;
- }
- 
- return cachedFullModelViewMatrix;
- */
+//
+//- (GLKMatrix4)xxx
+//{
+//    if (_dirtyObjectModelViewMatrix)
+//    {
+//        __block GLKVector2 mvTranslation = _position;
+//        __block GLKVector2 mvScale = _scale;
+//        __block GLfloat mvRotation = _rotation;
+//        
+//        [_animations enumerateObjectsUsingBlock: (^(VEAnimation *animation, NSUInteger idx, BOOL *stop)
+//                                                  {
+//                                                      mvTranslation = GLKVector2Add(mvTranslation, [animation positionDelta]);
+//                                                      mvRotation += [animation rotationDelta];
+//                                                      mvScale = GLKVector2Multiply(mvScale, [animation scaleDelta]);
+//                                                  })];
+//        
+//        _objectModelViewMatrixCache = GLKMatrix4Multiply(GLKMatrix4MakeTranslation(mvTranslation.x, mvTranslation.y, 0.0),
+//                                                         GLKMatrix4MakeScale(mvScale.x, mvScale.y, 1.0));
+//        
+//        _objectModelViewMatrixCache = GLKMatrix4Multiply(_objectModelViewMatrixCache, GLKMatrix4MakeZRotation(mvRotation));
+//        
+//        _objectModelViewMatrixCache = GLKMatrix4Multiply(_objectModelViewMatrixCache, _transform);
+//        
+//        
+//        _dirtyObjectModelViewMatrix = [_animations count] > 0;
+//        
+//        _dirtyFullModelViewMatrix = YES;
+//    }
+//    
+//    if (_dirtyFullModelViewMatrix)
+//    {
+//        if (_parent)
+//        {
+//            _fullModelViewMatrixCache = GLKMatrix4Multiply([_parent modelViewMatrix], _objectModelViewMatrixCache);
+//            
+//        }else
+//        {
+//            _fullModelViewMatrixCache = _objectModelViewMatrixCache;
+//        }
+//        
+//        _dirtyFullModelViewMatrix = NO;
+//    }
+//    
+//    return _fullModelViewMatrixCache;
+//}
 
 - (void)update: (NSTimeInterval)dt
 {
+    
     _angularVelocity += _angularAcceleration * dt;
     _rotation += _angularVelocity * dt;
     
@@ -235,7 +260,7 @@
     
     // Create a modelview matrix to _position and rotate the object
     GLKEffectPropertyTransform *transform = [effect transform];
-    [transform setModelviewMatrix: [self modelviewMatrix]];
+    [transform setModelviewMatrix: [self modelViewMatrix]];
     
     // Set up the projection matrix to fit the scene's boundaries
     //
