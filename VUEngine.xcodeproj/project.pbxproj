@@ -1,0 +1,735 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		22D2288015D66E47008ACEF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD161472C7520008AC62 /* Foundation.framework */; };
+		22D2288215D66E47008ACEF9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D2288115D66E47008ACEF9 /* CoreGraphics.framework */; };
+		22D2289315D66EFF008ACEF9 /* libVUEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD131472C7520008AC62 /* libVUEngine.a */; };
+		22D2289415D66F09008ACEF9 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C7288051516342400100C66 /* GLKit.framework */; };
+		22D2289515D66F10008ACEF9 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C7288061516342400100C66 /* OpenGLES.framework */; };
+		3C7288071516342400100C66 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C7288051516342400100C66 /* GLKit.framework */; };
+		3C7288081516342400100C66 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C7288061516342400100C66 /* OpenGLES.framework */; };
+		3CCDBD171472C7520008AC62 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD161472C7520008AC62 /* Foundation.framework */; };
+		E1AA74EF15D6B1CC00891071 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1AA74EE15D6B1CB00891071 /* QuartzCore.framework */; };
+		E1AA74F115D6B1EF00891071 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1AA74F015D6B1EF00891071 /* UIKit.framework */; };
+		E1AA74F215D6B1F500891071 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1AA74EE15D6B1CB00891071 /* QuartzCore.framework */; };
+		E1AA75D915D884E200891071 /* VEAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75BA15D884E200891071 /* VEAnimation.h */; };
+		E1AA75DA15D884E200891071 /* VEAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75BB15D884E200891071 /* VEAnimation.m */; };
+		E1AA75DB15D884E200891071 /* VESpriteAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75BC15D884E200891071 /* VESpriteAnimation.h */; };
+		E1AA75DC15D884E200891071 /* VESpriteAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75BD15D884E200891071 /* VESpriteAnimation.m */; };
+		E1AA75DD15D884E200891071 /* VEScene.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75BF15D884E200891071 /* VEScene.h */; };
+		E1AA75DE15D884E200891071 /* VEScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75C015D884E200891071 /* VEScene.m */; };
+		E1AA75DF15D884E200891071 /* VESceneController.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75C115D884E200891071 /* VESceneController.h */; };
+		E1AA75E015D884E200891071 /* VESceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75C215D884E200891071 /* VESceneController.m */; };
+		E1AA75E115D884E200891071 /* VEEllipse.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75C415D884E200891071 /* VEEllipse.h */; };
+		E1AA75E215D884E200891071 /* VEEllipse.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75C515D884E200891071 /* VEEllipse.m */; };
+		E1AA75E315D884E200891071 /* VERectangle.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75C615D884E200891071 /* VERectangle.h */; };
+		E1AA75E415D884E200891071 /* VERectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75C715D884E200891071 /* VERectangle.m */; };
+		E1AA75E515D884E200891071 /* VERegularPolygon.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75C815D884E200891071 /* VERegularPolygon.h */; };
+		E1AA75E615D884E200891071 /* VERegularPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75C915D884E200891071 /* VERegularPolygon.m */; };
+		E1AA75E715D884E200891071 /* VEShape.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75CA15D884E200891071 /* VEShape.h */; };
+		E1AA75E815D884E200891071 /* VEShape.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75CB15D884E200891071 /* VEShape.m */; };
+		E1AA75E915D884E200891071 /* VESprite.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75CC15D884E200891071 /* VESprite.h */; };
+		E1AA75EA15D884E200891071 /* VESprite.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75CD15D884E200891071 /* VESprite.m */; };
+		E1AA75EB15D884E200891071 /* VETriangle.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75CE15D884E200891071 /* VETriangle.h */; };
+		E1AA75EC15D884E200891071 /* VETriangle.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75CF15D884E200891071 /* VETriangle.m */; };
+		E1AA75ED15D884E200891071 /* VEAccelerometer.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75D015D884E200891071 /* VEAccelerometer.h */; };
+		E1AA75EE15D884E200891071 /* VEAccelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75D115D884E200891071 /* VEAccelerometer.m */; };
+		E1AA75EF15D884E200891071 /* VERandom.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75D215D884E200891071 /* VERandom.h */; };
+		E1AA75F015D884E200891071 /* VERandom.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75D315D884E200891071 /* VERandom.m */; };
+		E1AA75F115D884E200891071 /* VESoundManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75D415D884E200891071 /* VESoundManager.h */; };
+		E1AA75F215D884E200891071 /* VESoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75D515D884E200891071 /* VESoundManager.m */; };
+		E1AA75F315D884E200891071 /* VUEngine-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75D615D884E200891071 /* VUEngine-Prefix.pch */; };
+		E1AA75F415D884E200891071 /* VUEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AA75D715D884E200891071 /* VUEngine.h */; };
+		E1AA75F515D884E200891071 /* VUEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA75D815D884E200891071 /* VUEngine.m */; };
+		E1AA769415D8870300891071 /* VEDemoMain.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA765815D8870300891071 /* VEDemoMain.m */; };
+		E1AA769515D8870300891071 /* ball.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E1AA765A15D8870300891071 /* ball.jpg */; };
+		E1AA769615D8870300891071 /* boy-sprite.png in Resources */ = {isa = PBXBuildFile; fileRef = E1AA765B15D8870300891071 /* boy-sprite.png */; };
+		E1AA769715D8870300891071 /* landscape.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E1AA765C15D8870300891071 /* landscape.jpg */; };
+		E1AA769815D8870300891071 /* sierpinksy.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E1AA765D15D8870300891071 /* sierpinksy.jpg */; };
+		E1AA769915D8870300891071 /* alfred0.png in Resources */ = {isa = PBXBuildFile; fileRef = E1AA765F15D8870300891071 /* alfred0.png */; };
+		E1AA769A15D8870300891071 /* alfred1.png in Resources */ = {isa = PBXBuildFile; fileRef = E1AA766015D8870300891071 /* alfred1.png */; };
+		E1AA769B15D8870300891071 /* alfred2.png in Resources */ = {isa = PBXBuildFile; fileRef = E1AA766115D8870300891071 /* alfred2.png */; };
+		E1AA769C15D8870300891071 /* alfred3.png in Resources */ = {isa = PBXBuildFile; fileRef = E1AA766215D8870300891071 /* alfred3.png */; };
+		E1AA769D15D8870300891071 /* alfred4.png in Resources */ = {isa = PBXBuildFile; fileRef = E1AA766315D8870300891071 /* alfred4.png */; };
+		E1AA769E15D8870300891071 /* alfred5.png in Resources */ = {isa = PBXBuildFile; fileRef = E1AA766415D8870300891071 /* alfred5.png */; };
+		E1AA769F15D8870300891071 /* alfred6.png in Resources */ = {isa = PBXBuildFile; fileRef = E1AA766515D8870300891071 /* alfred6.png */; };
+		E1AA76A015D8870300891071 /* alfred7.png in Resources */ = {isa = PBXBuildFile; fileRef = E1AA766615D8870300891071 /* alfred7.png */; };
+		E1AA76A115D8870300891071 /* alfred8.png in Resources */ = {isa = PBXBuildFile; fileRef = E1AA766715D8870300891071 /* alfred8.png */; };
+		E1AA76A215D8870300891071 /* alfred9.png in Resources */ = {isa = PBXBuildFile; fileRef = E1AA766815D8870300891071 /* alfred9.png */; };
+		E1AA76A315D8870300891071 /* AccelerationScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA766B15D8870300891071 /* AccelerationScene.m */; };
+		E1AA76A415D8870300891071 /* BeachBallScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA766D15D8870300891071 /* BeachBallScene.m */; };
+		E1AA76A515D8870300891071 /* ColorChangeScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA766F15D8870300891071 /* ColorChangeScene.m */; };
+		E1AA76A615D8870300891071 /* ComplexAnimationScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA767115D8870300891071 /* ComplexAnimationScene.m */; };
+		E1AA76A715D8870300891071 /* EllipseScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA767315D8870300891071 /* EllipseScene.m */; };
+		E1AA76A815D8870300891071 /* ForestScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA767515D8870300891071 /* ForestScene.m */; };
+		E1AA76A915D8870300891071 /* HexagonScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA767715D8870300891071 /* HexagonScene.m */; };
+		E1AA76AA15D8870300891071 /* LandscapeScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA767915D8870300891071 /* LandscapeScene.m */; };
+		E1AA76AB15D8870300891071 /* ManuallyMovedTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA767B15D8870300891071 /* ManuallyMovedTree.m */; };
+		E1AA76AC15D8870300891071 /* OptimizedTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA767D15D8870300891071 /* OptimizedTree.m */; };
+		E1AA76AD15D8870300891071 /* PrettyAPIMoveScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA767F15D8870300891071 /* PrettyAPIMoveScene.m */; };
+		E1AA76AE15D8870300891071 /* RectangleScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA768115D8870300891071 /* RectangleScene.m */; };
+		E1AA76AF15D8870300891071 /* RotatingTreeScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA768315D8870300891071 /* RotatingTreeScene.m */; };
+		E1AA76B015D8870300891071 /* SierpinskyTriangleScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA768515D8870300891071 /* SierpinskyTriangleScene.m */; };
+		E1AA76B115D8870300891071 /* SpriteScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA768715D8870300891071 /* SpriteScene.m */; };
+		E1AA76B215D8870300891071 /* Tree.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA768915D8870300891071 /* Tree.m */; };
+		E1AA76B315D8870300891071 /* TreeScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA768B15D8870300891071 /* TreeScene.m */; };
+		E1AA76B415D8870300891071 /* TriangleScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA768D15D8870300891071 /* TriangleScene.m */; };
+		E1AA76B515D8870300891071 /* VelocityScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA768F15D8870300891071 /* VelocityScene.m */; };
+		E1AA76B615D8870300891071 /* WalkingAnimationScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA769115D8870300891071 /* WalkingAnimationScene.m */; };
+		E1AA76B715D8870300891071 /* VEAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AA769315D8870300891071 /* VEAppDelegate.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		22D2287D15D66E47008ACEF9 /* Demos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demos.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		22D2288115D66E47008ACEF9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		3C7288051516342400100C66 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		3C7288061516342400100C66 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		3CCDBD131472C7520008AC62 /* libVUEngine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libVUEngine.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CCDBD161472C7520008AC62 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		3CCDBD241472C7520008AC62 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		E1AA74EE15D6B1CB00891071 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E1AA74F015D6B1EF00891071 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E1AA75BA15D884E200891071 /* VEAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEAnimation.h; sourceTree = "<group>"; };
+		E1AA75BB15D884E200891071 /* VEAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEAnimation.m; sourceTree = "<group>"; };
+		E1AA75BC15D884E200891071 /* VESpriteAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VESpriteAnimation.h; sourceTree = "<group>"; };
+		E1AA75BD15D884E200891071 /* VESpriteAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VESpriteAnimation.m; sourceTree = "<group>"; };
+		E1AA75BF15D884E200891071 /* VEScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEScene.h; sourceTree = "<group>"; };
+		E1AA75C015D884E200891071 /* VEScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEScene.m; sourceTree = "<group>"; };
+		E1AA75C115D884E200891071 /* VESceneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VESceneController.h; sourceTree = "<group>"; };
+		E1AA75C215D884E200891071 /* VESceneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VESceneController.m; sourceTree = "<group>"; };
+		E1AA75C415D884E200891071 /* VEEllipse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEEllipse.h; sourceTree = "<group>"; };
+		E1AA75C515D884E200891071 /* VEEllipse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEEllipse.m; sourceTree = "<group>"; };
+		E1AA75C615D884E200891071 /* VERectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VERectangle.h; sourceTree = "<group>"; };
+		E1AA75C715D884E200891071 /* VERectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VERectangle.m; sourceTree = "<group>"; };
+		E1AA75C815D884E200891071 /* VERegularPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VERegularPolygon.h; sourceTree = "<group>"; };
+		E1AA75C915D884E200891071 /* VERegularPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VERegularPolygon.m; sourceTree = "<group>"; };
+		E1AA75CA15D884E200891071 /* VEShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEShape.h; sourceTree = "<group>"; };
+		E1AA75CB15D884E200891071 /* VEShape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEShape.m; sourceTree = "<group>"; };
+		E1AA75CC15D884E200891071 /* VESprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VESprite.h; sourceTree = "<group>"; };
+		E1AA75CD15D884E200891071 /* VESprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VESprite.m; sourceTree = "<group>"; };
+		E1AA75CE15D884E200891071 /* VETriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VETriangle.h; sourceTree = "<group>"; };
+		E1AA75CF15D884E200891071 /* VETriangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VETriangle.m; sourceTree = "<group>"; };
+		E1AA75D015D884E200891071 /* VEAccelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEAccelerometer.h; path = VUEngine/VEAccelerometer.h; sourceTree = SOURCE_ROOT; };
+		E1AA75D115D884E200891071 /* VEAccelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEAccelerometer.m; path = VUEngine/VEAccelerometer.m; sourceTree = SOURCE_ROOT; };
+		E1AA75D215D884E200891071 /* VERandom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VERandom.h; path = VUEngine/VERandom.h; sourceTree = SOURCE_ROOT; };
+		E1AA75D315D884E200891071 /* VERandom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VERandom.m; path = VUEngine/VERandom.m; sourceTree = SOURCE_ROOT; };
+		E1AA75D415D884E200891071 /* VESoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VESoundManager.h; path = VUEngine/VESoundManager.h; sourceTree = SOURCE_ROOT; };
+		E1AA75D515D884E200891071 /* VESoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VESoundManager.m; path = VUEngine/VESoundManager.m; sourceTree = SOURCE_ROOT; };
+		E1AA75D615D884E200891071 /* VUEngine-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VUEngine-Prefix.pch"; path = "VUEngine/VUEngine-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		E1AA75D715D884E200891071 /* VUEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VUEngine.h; path = VUEngine/VUEngine.h; sourceTree = SOURCE_ROOT; };
+		E1AA75D815D884E200891071 /* VUEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VUEngine.m; path = VUEngine/VUEngine.m; sourceTree = SOURCE_ROOT; };
+		E1AA765815D8870300891071 /* VEDemoMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEDemoMain.m; sourceTree = "<group>"; };
+		E1AA765A15D8870300891071 /* ball.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ball.jpg; sourceTree = "<group>"; };
+		E1AA765B15D8870300891071 /* boy-sprite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "boy-sprite.png"; sourceTree = "<group>"; };
+		E1AA765C15D8870300891071 /* landscape.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = landscape.jpg; sourceTree = "<group>"; };
+		E1AA765D15D8870300891071 /* sierpinksy.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sierpinksy.jpg; sourceTree = "<group>"; };
+		E1AA765F15D8870300891071 /* alfred0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfred0.png; sourceTree = "<group>"; };
+		E1AA766015D8870300891071 /* alfred1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfred1.png; sourceTree = "<group>"; };
+		E1AA766115D8870300891071 /* alfred2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfred2.png; sourceTree = "<group>"; };
+		E1AA766215D8870300891071 /* alfred3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfred3.png; sourceTree = "<group>"; };
+		E1AA766315D8870300891071 /* alfred4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfred4.png; sourceTree = "<group>"; };
+		E1AA766415D8870300891071 /* alfred5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfred5.png; sourceTree = "<group>"; };
+		E1AA766515D8870300891071 /* alfred6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfred6.png; sourceTree = "<group>"; };
+		E1AA766615D8870300891071 /* alfred7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfred7.png; sourceTree = "<group>"; };
+		E1AA766715D8870300891071 /* alfred8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfred8.png; sourceTree = "<group>"; };
+		E1AA766815D8870300891071 /* alfred9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfred9.png; sourceTree = "<group>"; };
+		E1AA766A15D8870300891071 /* AccelerationScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccelerationScene.h; sourceTree = "<group>"; };
+		E1AA766B15D8870300891071 /* AccelerationScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccelerationScene.m; sourceTree = "<group>"; };
+		E1AA766C15D8870300891071 /* BeachBallScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeachBallScene.h; sourceTree = "<group>"; };
+		E1AA766D15D8870300891071 /* BeachBallScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeachBallScene.m; sourceTree = "<group>"; };
+		E1AA766E15D8870300891071 /* ColorChangeScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorChangeScene.h; sourceTree = "<group>"; };
+		E1AA766F15D8870300891071 /* ColorChangeScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorChangeScene.m; sourceTree = "<group>"; };
+		E1AA767015D8870300891071 /* ComplexAnimationScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComplexAnimationScene.h; sourceTree = "<group>"; };
+		E1AA767115D8870300891071 /* ComplexAnimationScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComplexAnimationScene.m; sourceTree = "<group>"; };
+		E1AA767215D8870300891071 /* EllipseScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EllipseScene.h; sourceTree = "<group>"; };
+		E1AA767315D8870300891071 /* EllipseScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EllipseScene.m; sourceTree = "<group>"; };
+		E1AA767415D8870300891071 /* ForestScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForestScene.h; sourceTree = "<group>"; };
+		E1AA767515D8870300891071 /* ForestScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForestScene.m; sourceTree = "<group>"; };
+		E1AA767615D8870300891071 /* HexagonScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexagonScene.h; sourceTree = "<group>"; };
+		E1AA767715D8870300891071 /* HexagonScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexagonScene.m; sourceTree = "<group>"; };
+		E1AA767815D8870300891071 /* LandscapeScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeScene.h; sourceTree = "<group>"; };
+		E1AA767915D8870300891071 /* LandscapeScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapeScene.m; sourceTree = "<group>"; };
+		E1AA767A15D8870300891071 /* ManuallyMovedTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManuallyMovedTree.h; sourceTree = "<group>"; };
+		E1AA767B15D8870300891071 /* ManuallyMovedTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManuallyMovedTree.m; sourceTree = "<group>"; };
+		E1AA767C15D8870300891071 /* OptimizedTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptimizedTree.h; sourceTree = "<group>"; };
+		E1AA767D15D8870300891071 /* OptimizedTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptimizedTree.m; sourceTree = "<group>"; };
+		E1AA767E15D8870300891071 /* PrettyAPIMoveScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyAPIMoveScene.h; sourceTree = "<group>"; };
+		E1AA767F15D8870300891071 /* PrettyAPIMoveScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyAPIMoveScene.m; sourceTree = "<group>"; };
+		E1AA768015D8870300891071 /* RectangleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RectangleScene.h; sourceTree = "<group>"; };
+		E1AA768115D8870300891071 /* RectangleScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RectangleScene.m; sourceTree = "<group>"; };
+		E1AA768215D8870300891071 /* RotatingTreeScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotatingTreeScene.h; sourceTree = "<group>"; };
+		E1AA768315D8870300891071 /* RotatingTreeScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotatingTreeScene.m; sourceTree = "<group>"; };
+		E1AA768415D8870300891071 /* SierpinskyTriangleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SierpinskyTriangleScene.h; sourceTree = "<group>"; };
+		E1AA768515D8870300891071 /* SierpinskyTriangleScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SierpinskyTriangleScene.m; sourceTree = "<group>"; };
+		E1AA768615D8870300891071 /* SpriteScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteScene.h; sourceTree = "<group>"; };
+		E1AA768715D8870300891071 /* SpriteScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpriteScene.m; sourceTree = "<group>"; };
+		E1AA768815D8870300891071 /* Tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tree.h; sourceTree = "<group>"; };
+		E1AA768915D8870300891071 /* Tree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tree.m; sourceTree = "<group>"; };
+		E1AA768A15D8870300891071 /* TreeScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeScene.h; sourceTree = "<group>"; };
+		E1AA768B15D8870300891071 /* TreeScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeScene.m; sourceTree = "<group>"; };
+		E1AA768C15D8870300891071 /* TriangleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriangleScene.h; sourceTree = "<group>"; };
+		E1AA768D15D8870300891071 /* TriangleScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TriangleScene.m; sourceTree = "<group>"; };
+		E1AA768E15D8870300891071 /* VelocityScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VelocityScene.h; sourceTree = "<group>"; };
+		E1AA768F15D8870300891071 /* VelocityScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VelocityScene.m; sourceTree = "<group>"; };
+		E1AA769015D8870300891071 /* WalkingAnimationScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalkingAnimationScene.h; sourceTree = "<group>"; };
+		E1AA769115D8870300891071 /* WalkingAnimationScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalkingAnimationScene.m; sourceTree = "<group>"; };
+		E1AA769215D8870300891071 /* VEAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEAppDelegate.h; sourceTree = "<group>"; };
+		E1AA769315D8870300891071 /* VEAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEAppDelegate.m; sourceTree = "<group>"; };
+		E1AA76B815D8875F00891071 /* VUExample-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUExample-Prefix.pch"; sourceTree = "<group>"; };
+		E1AA76B915D8876700891071 /* VUExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VUExample-Info.plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		22D2287A15D66E47008ACEF9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1AA74F215D6B1F500891071 /* QuartzCore.framework in Frameworks */,
+				E1AA74F115D6B1EF00891071 /* UIKit.framework in Frameworks */,
+				22D2289515D66F10008ACEF9 /* OpenGLES.framework in Frameworks */,
+				22D2289415D66F09008ACEF9 /* GLKit.framework in Frameworks */,
+				22D2289315D66EFF008ACEF9 /* libVUEngine.a in Frameworks */,
+				22D2288015D66E47008ACEF9 /* Foundation.framework in Frameworks */,
+				22D2288215D66E47008ACEF9 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3CCDBD101472C7520008AC62 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1AA74EF15D6B1CC00891071 /* QuartzCore.framework in Frameworks */,
+				3C7288071516342400100C66 /* GLKit.framework in Frameworks */,
+				3C7288081516342400100C66 /* OpenGLES.framework in Frameworks */,
+				3CCDBD171472C7520008AC62 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3CCDBD081472C7520008AC62 = {
+			isa = PBXGroup;
+			children = (
+				3CCDBD181472C7520008AC62 /* VUEngine */,
+				E1AA765715D8870300891071 /* Demos */,
+				3CCDBD151472C7520008AC62 /* Frameworks */,
+				3CCDBD141472C7520008AC62 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3CCDBD141472C7520008AC62 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3CCDBD131472C7520008AC62 /* libVUEngine.a */,
+				22D2287D15D66E47008ACEF9 /* Demos.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3CCDBD151472C7520008AC62 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA74F015D6B1EF00891071 /* UIKit.framework */,
+				E1AA74EE15D6B1CB00891071 /* QuartzCore.framework */,
+				3C7288051516342400100C66 /* GLKit.framework */,
+				3C7288061516342400100C66 /* OpenGLES.framework */,
+				3CCDBD161472C7520008AC62 /* Foundation.framework */,
+				3CCDBD241472C7520008AC62 /* SenTestingKit.framework */,
+				22D2288115D66E47008ACEF9 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3CCDBD181472C7520008AC62 /* VUEngine */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA75B815D884E200891071 /* Code */,
+				E1AA75D015D884E200891071 /* VEAccelerometer.h */,
+				E1AA75D115D884E200891071 /* VEAccelerometer.m */,
+				E1AA75D215D884E200891071 /* VERandom.h */,
+				E1AA75D315D884E200891071 /* VERandom.m */,
+				E1AA75D415D884E200891071 /* VESoundManager.h */,
+				E1AA75D515D884E200891071 /* VESoundManager.m */,
+				E1AA75D715D884E200891071 /* VUEngine.h */,
+				E1AA75D815D884E200891071 /* VUEngine.m */,
+				3CCDBD191472C7520008AC62 /* Supporting Files */,
+			);
+			name = VUEngine;
+			path = TauEngine;
+			sourceTree = "<group>";
+		};
+		3CCDBD191472C7520008AC62 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA75D615D884E200891071 /* VUEngine-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E1AA75B815D884E200891071 /* Code */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA75B915D884E200891071 /* Animation */,
+				E1AA75BE15D884E200891071 /* Scene */,
+				E1AA75C315D884E200891071 /* Shape */,
+			);
+			name = Code;
+			path = VUEngine/Code;
+			sourceTree = SOURCE_ROOT;
+		};
+		E1AA75B915D884E200891071 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA75BA15D884E200891071 /* VEAnimation.h */,
+				E1AA75BB15D884E200891071 /* VEAnimation.m */,
+				E1AA75BC15D884E200891071 /* VESpriteAnimation.h */,
+				E1AA75BD15D884E200891071 /* VESpriteAnimation.m */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
+		E1AA75BE15D884E200891071 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA75BF15D884E200891071 /* VEScene.h */,
+				E1AA75C015D884E200891071 /* VEScene.m */,
+				E1AA75C115D884E200891071 /* VESceneController.h */,
+				E1AA75C215D884E200891071 /* VESceneController.m */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		E1AA75C315D884E200891071 /* Shape */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA75C415D884E200891071 /* VEEllipse.h */,
+				E1AA75C515D884E200891071 /* VEEllipse.m */,
+				E1AA75C615D884E200891071 /* VERectangle.h */,
+				E1AA75C715D884E200891071 /* VERectangle.m */,
+				E1AA75C815D884E200891071 /* VERegularPolygon.h */,
+				E1AA75C915D884E200891071 /* VERegularPolygon.m */,
+				E1AA75CA15D884E200891071 /* VEShape.h */,
+				E1AA75CB15D884E200891071 /* VEShape.m */,
+				E1AA75CC15D884E200891071 /* VESprite.h */,
+				E1AA75CD15D884E200891071 /* VESprite.m */,
+				E1AA75CE15D884E200891071 /* VETriangle.h */,
+				E1AA75CF15D884E200891071 /* VETriangle.m */,
+			);
+			path = Shape;
+			sourceTree = "<group>";
+		};
+		E1AA765715D8870300891071 /* Demos */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA76BA15D8877300891071 /* Supporting Files */,
+				E1AA765915D8870300891071 /* Resources */,
+				E1AA766915D8870300891071 /* SourceCode */,
+				E1AA765815D8870300891071 /* VEDemoMain.m */,
+				E1AA769215D8870300891071 /* VEAppDelegate.h */,
+				E1AA769315D8870300891071 /* VEAppDelegate.m */,
+				E1AA76B815D8875F00891071 /* VUExample-Prefix.pch */,
+			);
+			path = Demos;
+			sourceTree = SOURCE_ROOT;
+		};
+		E1AA765915D8870300891071 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA765A15D8870300891071 /* ball.jpg */,
+				E1AA765B15D8870300891071 /* boy-sprite.png */,
+				E1AA765C15D8870300891071 /* landscape.jpg */,
+				E1AA765D15D8870300891071 /* sierpinksy.jpg */,
+				E1AA765E15D8870300891071 /* sprite animation */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E1AA765E15D8870300891071 /* sprite animation */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA765F15D8870300891071 /* alfred0.png */,
+				E1AA766015D8870300891071 /* alfred1.png */,
+				E1AA766115D8870300891071 /* alfred2.png */,
+				E1AA766215D8870300891071 /* alfred3.png */,
+				E1AA766315D8870300891071 /* alfred4.png */,
+				E1AA766415D8870300891071 /* alfred5.png */,
+				E1AA766515D8870300891071 /* alfred6.png */,
+				E1AA766615D8870300891071 /* alfred7.png */,
+				E1AA766715D8870300891071 /* alfred8.png */,
+				E1AA766815D8870300891071 /* alfred9.png */,
+			);
+			path = "sprite animation";
+			sourceTree = "<group>";
+		};
+		E1AA766915D8870300891071 /* SourceCode */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA766A15D8870300891071 /* AccelerationScene.h */,
+				E1AA766B15D8870300891071 /* AccelerationScene.m */,
+				E1AA766C15D8870300891071 /* BeachBallScene.h */,
+				E1AA766D15D8870300891071 /* BeachBallScene.m */,
+				E1AA766E15D8870300891071 /* ColorChangeScene.h */,
+				E1AA766F15D8870300891071 /* ColorChangeScene.m */,
+				E1AA767015D8870300891071 /* ComplexAnimationScene.h */,
+				E1AA767115D8870300891071 /* ComplexAnimationScene.m */,
+				E1AA767215D8870300891071 /* EllipseScene.h */,
+				E1AA767315D8870300891071 /* EllipseScene.m */,
+				E1AA767415D8870300891071 /* ForestScene.h */,
+				E1AA767515D8870300891071 /* ForestScene.m */,
+				E1AA767615D8870300891071 /* HexagonScene.h */,
+				E1AA767715D8870300891071 /* HexagonScene.m */,
+				E1AA767815D8870300891071 /* LandscapeScene.h */,
+				E1AA767915D8870300891071 /* LandscapeScene.m */,
+				E1AA767A15D8870300891071 /* ManuallyMovedTree.h */,
+				E1AA767B15D8870300891071 /* ManuallyMovedTree.m */,
+				E1AA767C15D8870300891071 /* OptimizedTree.h */,
+				E1AA767D15D8870300891071 /* OptimizedTree.m */,
+				E1AA767E15D8870300891071 /* PrettyAPIMoveScene.h */,
+				E1AA767F15D8870300891071 /* PrettyAPIMoveScene.m */,
+				E1AA768015D8870300891071 /* RectangleScene.h */,
+				E1AA768115D8870300891071 /* RectangleScene.m */,
+				E1AA768215D8870300891071 /* RotatingTreeScene.h */,
+				E1AA768315D8870300891071 /* RotatingTreeScene.m */,
+				E1AA768415D8870300891071 /* SierpinskyTriangleScene.h */,
+				E1AA768515D8870300891071 /* SierpinskyTriangleScene.m */,
+				E1AA768615D8870300891071 /* SpriteScene.h */,
+				E1AA768715D8870300891071 /* SpriteScene.m */,
+				E1AA768815D8870300891071 /* Tree.h */,
+				E1AA768915D8870300891071 /* Tree.m */,
+				E1AA768A15D8870300891071 /* TreeScene.h */,
+				E1AA768B15D8870300891071 /* TreeScene.m */,
+				E1AA768C15D8870300891071 /* TriangleScene.h */,
+				E1AA768D15D8870300891071 /* TriangleScene.m */,
+				E1AA768E15D8870300891071 /* VelocityScene.h */,
+				E1AA768F15D8870300891071 /* VelocityScene.m */,
+				E1AA769015D8870300891071 /* WalkingAnimationScene.h */,
+				E1AA769115D8870300891071 /* WalkingAnimationScene.m */,
+			);
+			path = SourceCode;
+			sourceTree = "<group>";
+		};
+		E1AA76BA15D8877300891071 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E1AA76B915D8876700891071 /* VUExample-Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		3CCDBD111472C7520008AC62 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1AA75D915D884E200891071 /* VEAnimation.h in Headers */,
+				E1AA75DB15D884E200891071 /* VESpriteAnimation.h in Headers */,
+				E1AA75DD15D884E200891071 /* VEScene.h in Headers */,
+				E1AA75DF15D884E200891071 /* VESceneController.h in Headers */,
+				E1AA75E115D884E200891071 /* VEEllipse.h in Headers */,
+				E1AA75E315D884E200891071 /* VERectangle.h in Headers */,
+				E1AA75E515D884E200891071 /* VERegularPolygon.h in Headers */,
+				E1AA75E715D884E200891071 /* VEShape.h in Headers */,
+				E1AA75E915D884E200891071 /* VESprite.h in Headers */,
+				E1AA75EB15D884E200891071 /* VETriangle.h in Headers */,
+				E1AA75ED15D884E200891071 /* VEAccelerometer.h in Headers */,
+				E1AA75EF15D884E200891071 /* VERandom.h in Headers */,
+				E1AA75F115D884E200891071 /* VESoundManager.h in Headers */,
+				E1AA75F315D884E200891071 /* VUEngine-Prefix.pch in Headers */,
+				E1AA75F415D884E200891071 /* VUEngine.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		22D2287C15D66E47008ACEF9 /* Demos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22D2289115D66E47008ACEF9 /* Build configuration list for PBXNativeTarget "Demos" */;
+			buildPhases = (
+				22D2287915D66E47008ACEF9 /* Sources */,
+				22D2287A15D66E47008ACEF9 /* Frameworks */,
+				22D2287B15D66E47008ACEF9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Demos;
+			productName = TauExample;
+			productReference = 22D2287D15D66E47008ACEF9 /* Demos.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3CCDBD121472C7520008AC62 /* VUEngine */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3CCDBD371472C7520008AC62 /* Build configuration list for PBXNativeTarget "VUEngine" */;
+			buildPhases = (
+				3CCDBD0F1472C7520008AC62 /* Sources */,
+				3CCDBD101472C7520008AC62 /* Frameworks */,
+				3CCDBD111472C7520008AC62 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VUEngine;
+			productName = TauEngine;
+			productReference = 3CCDBD131472C7520008AC62 /* libVUEngine.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3CCDBD0A1472C7520008AC62 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Ian Terrell";
+			};
+			buildConfigurationList = 3CCDBD0D1472C7520008AC62 /* Build configuration list for PBXProject "VUEngine" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 3CCDBD081472C7520008AC62;
+			productRefGroup = 3CCDBD141472C7520008AC62 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3CCDBD121472C7520008AC62 /* VUEngine */,
+				22D2287C15D66E47008ACEF9 /* Demos */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		22D2287B15D66E47008ACEF9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1AA769515D8870300891071 /* ball.jpg in Resources */,
+				E1AA769615D8870300891071 /* boy-sprite.png in Resources */,
+				E1AA769715D8870300891071 /* landscape.jpg in Resources */,
+				E1AA769815D8870300891071 /* sierpinksy.jpg in Resources */,
+				E1AA769915D8870300891071 /* alfred0.png in Resources */,
+				E1AA769A15D8870300891071 /* alfred1.png in Resources */,
+				E1AA769B15D8870300891071 /* alfred2.png in Resources */,
+				E1AA769C15D8870300891071 /* alfred3.png in Resources */,
+				E1AA769D15D8870300891071 /* alfred4.png in Resources */,
+				E1AA769E15D8870300891071 /* alfred5.png in Resources */,
+				E1AA769F15D8870300891071 /* alfred6.png in Resources */,
+				E1AA76A015D8870300891071 /* alfred7.png in Resources */,
+				E1AA76A115D8870300891071 /* alfred8.png in Resources */,
+				E1AA76A215D8870300891071 /* alfred9.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		22D2287915D66E47008ACEF9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1AA769415D8870300891071 /* VEDemoMain.m in Sources */,
+				E1AA76A315D8870300891071 /* AccelerationScene.m in Sources */,
+				E1AA76A415D8870300891071 /* BeachBallScene.m in Sources */,
+				E1AA76A515D8870300891071 /* ColorChangeScene.m in Sources */,
+				E1AA76A615D8870300891071 /* ComplexAnimationScene.m in Sources */,
+				E1AA76A715D8870300891071 /* EllipseScene.m in Sources */,
+				E1AA76A815D8870300891071 /* ForestScene.m in Sources */,
+				E1AA76A915D8870300891071 /* HexagonScene.m in Sources */,
+				E1AA76AA15D8870300891071 /* LandscapeScene.m in Sources */,
+				E1AA76AB15D8870300891071 /* ManuallyMovedTree.m in Sources */,
+				E1AA76AC15D8870300891071 /* OptimizedTree.m in Sources */,
+				E1AA76AD15D8870300891071 /* PrettyAPIMoveScene.m in Sources */,
+				E1AA76AE15D8870300891071 /* RectangleScene.m in Sources */,
+				E1AA76AF15D8870300891071 /* RotatingTreeScene.m in Sources */,
+				E1AA76B015D8870300891071 /* SierpinskyTriangleScene.m in Sources */,
+				E1AA76B115D8870300891071 /* SpriteScene.m in Sources */,
+				E1AA76B215D8870300891071 /* Tree.m in Sources */,
+				E1AA76B315D8870300891071 /* TreeScene.m in Sources */,
+				E1AA76B415D8870300891071 /* TriangleScene.m in Sources */,
+				E1AA76B515D8870300891071 /* VelocityScene.m in Sources */,
+				E1AA76B615D8870300891071 /* WalkingAnimationScene.m in Sources */,
+				E1AA76B715D8870300891071 /* VEAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3CCDBD0F1472C7520008AC62 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1AA75DA15D884E200891071 /* VEAnimation.m in Sources */,
+				E1AA75DC15D884E200891071 /* VESpriteAnimation.m in Sources */,
+				E1AA75DE15D884E200891071 /* VEScene.m in Sources */,
+				E1AA75E015D884E200891071 /* VESceneController.m in Sources */,
+				E1AA75E215D884E200891071 /* VEEllipse.m in Sources */,
+				E1AA75E415D884E200891071 /* VERectangle.m in Sources */,
+				E1AA75E615D884E200891071 /* VERegularPolygon.m in Sources */,
+				E1AA75E815D884E200891071 /* VEShape.m in Sources */,
+				E1AA75EA15D884E200891071 /* VESprite.m in Sources */,
+				E1AA75EC15D884E200891071 /* VETriangle.m in Sources */,
+				E1AA75EE15D884E200891071 /* VEAccelerometer.m in Sources */,
+				E1AA75F015D884E200891071 /* VERandom.m in Sources */,
+				E1AA75F215D884E200891071 /* VESoundManager.m in Sources */,
+				E1AA75F515D884E200891071 /* VUEngine.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		22D2288F15D66E47008ACEF9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Demos/VUExample-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "Demos/VUExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		22D2289015D66E47008ACEF9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Demos/VUExample-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "Demos/VUExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		3CCDBD351472C7520008AC62 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		3CCDBD361472C7520008AC62 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3CCDBD381472C7520008AC62 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				DSTROOT = /tmp/TauEngine.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VUEngine/VUEngine-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = VUEngine;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		3CCDBD391472C7520008AC62 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				DSTROOT = /tmp/TauEngine.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VUEngine/VUEngine-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = VUEngine;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		22D2289115D66E47008ACEF9 /* Build configuration list for PBXNativeTarget "Demos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22D2288F15D66E47008ACEF9 /* Debug */,
+				22D2289015D66E47008ACEF9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3CCDBD0D1472C7520008AC62 /* Build configuration list for PBXProject "VUEngine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3CCDBD351472C7520008AC62 /* Debug */,
+				3CCDBD361472C7520008AC62 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3CCDBD371472C7520008AC62 /* Build configuration list for PBXNativeTarget "VUEngine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3CCDBD381472C7520008AC62 /* Debug */,
+				3CCDBD391472C7520008AC62 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3CCDBD0A1472C7520008AC62 /* Project object */;
+}
