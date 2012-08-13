@@ -99,7 +99,7 @@ int indexOfScene;
     return YES;
 }
 
-- (void)nextScene:(id) sender
+- (void)nextScene: (id)sender
 {
     indexOfScene =  (indexOfScene >= [arrayOfScenes count] -1) ? 0 : indexOfScene + 1;
     VEScene *newScene = [arrayOfScenes objectAtIndex:indexOfScene];
@@ -110,15 +110,13 @@ int indexOfScene;
     [scene setEdgeInsets: UIEdgeInsetsMake(2, -3, -2, 3)];
 }
 
-- (void)glkViewControllerUpdate:(GLKViewController *)controller
+- (void)glkViewControllerUpdate: (GLKViewController *)controller
 {
-    //  NSLog(@"in glkViewControllerUpdate");
-    [scene update:controller.timeSinceLastUpdate];
+    [scene update: [controller timeSinceLastUpdate]];
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    //  NSLog(@"in glkView:drawInRect:");
     [scene render];
 }
 @end

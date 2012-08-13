@@ -39,15 +39,18 @@
     {
         // Draw with the _color white
         _useConstantColor = YES;
-        _color = GLKVector4Make(1,1,1,1);
+        _color = GLKVector4Make(1, 1, 1, 1);
         
         // No texture
+        //
         _texture = nil;
         
         // Center on the origin
+        //
         _position = GLKVector2Make(0,0);
         
         // Don't rotate
+        //
         _rotation = 0;
         
         // Scale to original size
@@ -170,25 +173,35 @@
 {
     _angularVelocity += _angularAcceleration * dt;
     _rotation += _angularVelocity * dt;
- 
+    
     GLKVector2 changeInVelocity = GLKVector2MultiplyScalar(_acceleration, dt);
     _velocity = GLKVector2Add(_velocity, changeInVelocity);
- 
+    
     GLKVector2 distanceTraveled = GLKVector2MultiplyScalar(_velocity, dt);
     _position = GLKVector2Add(_position, distanceTraveled);
- 
+    
     [_animations enumerateObjectsUsingBlock: (^(VEAnimation *animation, NSUInteger idx, BOOL *stop)
                                               {
                                                   [animation animateShape: self
                                                                        dt: dt];
                                               })];
- 
+    
+    
     [_animations filterUsingPredicate: [NSPredicate predicateWithBlock: (^BOOL(VEAnimation *animation, NSDictionary *bindings)
                                                                          {
-                                                                             return [animation elapsedTime] <= [animation duration];
+                                                                             BOOL shouldKeepAnimation = [animation elapsedTime] <= [animation duration];
+                                                                             if (!shouldKeepAnimation)
+                                                                             {
+                                                                                 VEAnimationCompletionBlock completion = [animation completion];
+                                                                                 if (completion)
+                                                                                 {
+                                                                                     completion(YES);
+                                                                                 }
+                                                                             }
+                                                                             return shouldKeepAnimation;
                                                                          })]];
     
-    [_spriteAnimation update:dt];
+    [_spriteAnimation update: dt];
 }
 
 - (void)renderInScene: (VEScene *)scene
@@ -234,37 +247,41 @@
     [effect release];
     
     // Enable transparency
+    //
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    // Tell OpenGL that we'll be using vertex _position data
+    // Tell OpenGL that we'll be using vertex position data
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, [self vertices]);
     
-    // If we're using vertex coloring, tell OpenGL that we'll be using vertex _color data
+    // If we're using vertex coloring, tell OpenGL that we'll be using vertex color data
     if (!_useConstantColor)
     {
         glEnableVertexAttribArray(GLKVertexAttribColor);
         glVertexAttribPointer(GLKVertexAttribColor, 4, GL_FLOAT, GL_FALSE, 0, [self vertexColors]);
     }
     
-    // If we have a _texture, tell OpenGL that we'll be using _texture coordinate data
-    
-    if (_texture != nil)
+    // If we have a texture, tell OpenGL that we'll be using texture coordinate data
+    //
+    if (_texture)
     {
         glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
         glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 0, [self textureCoordinates]);
     }
     
     // Draw our primitives!
-    glDrawArrays(GL_TRIANGLE_FAN, 0, self.numVertices);
+    //
+    glDrawArrays(GL_TRIANGLE_FAN, 0, [self numVertices]);
     
     // Cleanup: Done with _position data
     glDisableVertexAttribArray(GLKVertexAttribPosition);
     
     // Cleanup: Done with _color data (only if we used it)
     if (!_useConstantColor)
+    {
         glDisableVertexAttribArray(GLKVertexAttribColor);
+    }
     
     // Cleanup: Done with _texture data (only if we used it)
     if (_texture)
@@ -275,7 +292,8 @@
     // Cleanup: Done with the current blend function
     glDisable(GL_BLEND);
     
-    // Draw our _children
+    // Draw our subShapes
+    //
     [_subShapes makeObjectsPerformSelector: @selector(renderInScene:)
                                 withObject: scene];
 }
@@ -288,7 +306,7 @@
         _textureImage = [image retain];
         
         NSError *error = nil;
-        //    [_texture release];
+        [_texture release];
         _texture = [[GLKTextureLoader textureWithCGImage: [_textureImage CGImage]
                                                  options: [NSDictionary dictionaryWithObject: [NSNumber numberWithBool:YES]
                                                                                       forKey: GLKTextureLoaderOriginBottomLeft]
@@ -301,17 +319,34 @@
     
 }
 
-- (void)addSubShape:(VEShape *)child
+- (void)addSubShape: (VEShape *)child
 {
     if (child)
     {
-        [child setParent: self];
+        [child retain];
+        
+        [child removeFromParent];
+        
+        child->_parent = self;
+        
         [_subShapes addObject: child];
+        
+        [child release];
     }
 }
 
--(void)animateWithDuration: (NSTimeInterval)duration
-                animations: (void (^)(void))animationsBlock
+- (void)removeFromParent
+{
+    if (_parent)
+    {
+        [[_parent subShapes] removeObject: self];
+        _parent = nil;
+    }
+}
+
+- (void)animateWithDuration: (NSTimeInterval)duration
+                 animations: (void (^)(void))animationsBlock
+                 completion: (void (^)(BOOL))completion
 {
     GLKVector2 currentPosition = _position;
     GLKVector2 currentScale = _scale;
@@ -331,6 +366,8 @@
     [animation setRotationDelta: _rotation - currentRotation];
     [animation setColorDelta: GLKVector4Subtract(_color, currentColor)];
     [animation setDuration: duration];
+    [animation setCompletion: completion];
+    
     [_animations addObject: animation];
     
     [animation release];

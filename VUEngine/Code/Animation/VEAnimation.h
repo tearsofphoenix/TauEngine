@@ -11,6 +11,8 @@
 
 @class VEShape;
 
+typedef void (^ VEAnimationCompletionBlock)(BOOL finished);
+
 @interface VEAnimation : NSObject
 {
     NSTimeInterval _elapsedTime;    
@@ -20,9 +22,10 @@
 
 @property (nonatomic, readonly) NSTimeInterval elapsedTime;
 
+@property (nonatomic, copy) VEAnimationCompletionBlock completion;
+
 @property (nonatomic) GLKVector2 positionDelta;
 @property (nonatomic) GLKVector2  scaleDelta;
-
 @property (nonatomic) float rotationDelta;
 
 @property (nonatomic) GLKVector4 colorDelta;

@@ -41,20 +41,25 @@
 @property (nonatomic) BOOL useConstantColor;
 
 @property (nonatomic) GLKVector2 position;
-@property (nonatomic) GLKVector2 velocity;
-@property (nonatomic) GLKVector2 acceleration;
 @property (nonatomic) GLKVector2 scale;
 
+@property (nonatomic) GLKVector2 velocity;
+@property (nonatomic) GLKVector2 acceleration;
+
 @property (nonatomic) float rotation;
+
 @property (nonatomic) float angularVelocity;
 @property (nonatomic) float angularAcceleration;
 
 @property (nonatomic, strong, readonly) NSMutableArray *subShapes;
-@property (nonatomic, weak) VEShape *parent;
+
+@property (nonatomic, weak, readonly) VEShape *parent;
+
+- (void)removeFromParent;
 
 @property (nonatomic, readonly) GLKMatrix4 modelviewMatrix;
 
-@property (nonatomic, strong,readonly) GLKTextureInfo *texture;
+@property (nonatomic, strong, readonly) GLKTextureInfo *texture;
 
 @property (nonatomic, strong, readonly) NSMutableArray *animations;
 
@@ -69,6 +74,7 @@
 - (void)addSubShape: (VEShape *)child;
 
 - (void)animateWithDuration: (NSTimeInterval)duration
-                 animations: (void (^)(void))animations;
+                 animations: (void (^)(void))animations
+                 completion: (void(^)(BOOL finished))completion;
 
 @end

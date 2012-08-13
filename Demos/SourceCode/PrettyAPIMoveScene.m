@@ -22,6 +22,10 @@
                        animations: (^()
                                     {
                                         tree.position = GLKVector2Make(1.5,0);
+                                    })
+                       completion: (^(BOOL finished)
+                                    {
+                                        tree.position = GLKVector2Make(-1.5,0);
                                     })];
         
         [_shapes addObject:tree];

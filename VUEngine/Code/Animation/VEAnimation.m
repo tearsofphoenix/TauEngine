@@ -13,10 +13,14 @@
 
 @synthesize duration = _duration;
 @synthesize elapsedTime =_elapsedTime;
+
 @synthesize positionDelta = _positionDelta;
 @synthesize rotationDelta = _rotationDelta;
 @synthesize scaleDelta = _scaleDelta;
+
 @synthesize colorDelta = _colorDelta;
+
+@synthesize completion = _completion;
 
 - (id)init
 {
@@ -34,9 +38,19 @@
     return self;
 }
 
+- (void)dealloc
+{
+    if (_completion)
+    {
+        Block_release(_completion);
+    }
+    
+    [super dealloc];
+}
+
 - (void)animateShape: (VEShape *)shape
                   dt: (NSTimeInterval)dt
-{
+{    
     _elapsedTime += dt;
     
     if (_elapsedTime > _duration)
