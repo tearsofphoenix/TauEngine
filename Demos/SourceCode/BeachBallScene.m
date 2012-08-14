@@ -10,28 +10,28 @@
 
 @implementation BeachBallScene
 
--(id)init {
-  self = [super init];
-  if (self) {
-    ellipse = [[VEEllipse alloc] init];
-    ellipse.radiusX = 1;
-    ellipse.radiusY = 1;
-    
-    [ellipse setTextureImage: [UIImage imageNamed:@"ball.jpg"]];
-    float textureBallRadius = 0.5;
-    float textureCenterOffset = 0.5;
-    for (int i = 0; i < ellipse.numVertices; i++){
-      float theta = ((float)i) / ellipse.numVertices * (2 * M_PI);
-      ellipse.textureCoordinates[i] = GLKVector2Make(textureCenterOffset+cos(theta)*textureBallRadius, 
-                                                     textureCenterOffset+sin(theta)*textureBallRadius);
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        ellipse = [[VEEllipse alloc] init];
+        ellipse.radiusX = 1;
+        ellipse.radiusY = 1;
+        
+        [ellipse setTextureImage: [UIImage imageNamed:@"ball.jpg"]];
+        float textureBallRadius = 0.5;
+        float textureCenterOffset = 0.5;
+        for (int i = 0; i < ellipse.numVertices; i++)
+        {
+            float theta = ((float)i) / ellipse.numVertices * (2 * M_PI);
+            ellipse.textureCoordinates[i] = GLKVector2Make(textureCenterOffset + cos(theta) * textureBallRadius,
+                                                           textureCenterOffset + sin(theta) * textureBallRadius);
+        }
+        
+        [_shapes addObject: ellipse];
     }
-  }
-  return self;
-}
-
--(void)render {
-  [super render];
-  [ellipse renderInScene:self];
+    return self;
 }
 
 @end

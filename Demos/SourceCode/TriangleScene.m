@@ -10,26 +10,25 @@
 
 @implementation TriangleScene
 
--(id)init {
-  self = [super init];
-  if (self) {
-    triangle = [[VETriangle alloc] init];
-    
-    triangle.vertices[0] = GLKVector2Make(-1, -1);
-    triangle.vertices[1] = GLKVector2Make( 1, -1);
-    triangle.vertices[2] = GLKVector2Make( 0,  1);
-    
-    triangle.useConstantColor = NO;
-    triangle.vertexColors[0] = GLKVector4Make(1,0,0,1);
-    triangle.vertexColors[1] = GLKVector4Make(0,1,0,1);
-    triangle.vertexColors[2] = GLKVector4Make(0,0,1,1);
-  }
-  return self;
-}
-
--(void)render {
-  [super render];
-  [triangle renderInScene:self];
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        triangle = [[VETriangle alloc] init];
+        
+        triangle.vertices[0] = GLKVector2Make(-1, -1);
+        triangle.vertices[1] = GLKVector2Make( 1, -1);
+        triangle.vertices[2] = GLKVector2Make( 0,  1);
+        
+        triangle.useConstantColor = NO;
+        triangle.vertexColors[0] = GLKVector4Make(1,0,0,1);
+        triangle.vertexColors[1] = GLKVector4Make(0,1,0,1);
+        triangle.vertexColors[2] = GLKVector4Make(0,0,1,1);
+        
+        [_shapes addObject: triangle];
+    }
+    return self;
 }
 
 @end

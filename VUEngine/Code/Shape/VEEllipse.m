@@ -15,6 +15,29 @@
 @synthesize radiusX = _radiusX;
 @synthesize radiusY = _radiusY;
 
+- (GLKVector2)center
+{
+    float rotation = [self rotation];
+    
+    float cosR = cos(rotation);
+    float sinR = sin(rotation);
+    
+    GLKVector2 position = [self position];
+    
+    return GLKVector2Make(position.x + _radiusX * sinR - _radiusY * cosR, position.y - _radiusX * cosR - _radiusY * sinR);
+}
+
+- (void)setCenter: (GLKVector2)center
+{
+    float rotation = [self rotation];
+    
+    float cosR = cos(rotation);
+    float sinR = sin(rotation);
+
+    [self setPosition: GLKVector2Make(center.x - (_radiusX * sinR - _radiusY * cosR), center.y + (_radiusX * cosR + _radiusY * sinR))];
+    
+}
+
 - (int)numVertices
 {
     return VE_ELLIPSE_RESOLUTION;

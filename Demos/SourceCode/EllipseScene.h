@@ -9,7 +9,8 @@
 #import "VEScene.h"
 #import "VEEllipse.h"
 
-@interface EllipseScene : VEScene {
+@interface EllipseScene : VEScene
+{
   VEEllipse *ellipse;
 }
 

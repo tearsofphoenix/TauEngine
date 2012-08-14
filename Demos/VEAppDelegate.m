@@ -27,7 +27,13 @@
 #import "TreeScene.h"
 #import "TriangleScene.h"
 #import "VelocityScene.h"
+#import "EllipseScene.h"
 
+#import "VEWorld.h"
+#import "VEGravityField.h"
+#import "VEQualityObject.h"
+
+#import <QuartzCore/QuartzCore.h>
 
 @implementation VEAppDelegate
 
@@ -72,7 +78,9 @@ int indexOfScene;
     // setup arrayOfScenes
     indexOfScene = -1;
     
-    arrayOfScenes = [[NSArray alloc] initWithObjects: [[[PrettyAPIMoveScene alloc] init] autorelease],
+    arrayOfScenes = [[NSArray alloc] initWithObjects:
+                     [[[EllipseScene alloc] init] autorelease],
+                     [[[PrettyAPIMoveScene alloc] init] autorelease],
                      [[[BeachBallScene alloc] init] autorelease],
                      [[[WalkingAnimationScene alloc] init] autorelease],
                      [[[AccelerationScene alloc] init] autorelease],
@@ -95,6 +103,23 @@ int indexOfScene;
     
     [self nextScene: self];
     
+    //    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget: self
+    //                                                             selector: @selector(render)];
+    //    [displayLink setFrameInterval: 1];
+    //    [displayLink addToRunLoop: [NSRunLoop currentRunLoop]
+    //                      forMode: NSDefaultRunLoopMode];
+    printf("retainCount: %d\n", [self retainCount]);
+
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    
+    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 1.0  * NSEC_PER_SEC, 0);
+    dispatch_source_set_event_handler(timer, (^
+                                              {
+                                                  [self render];
+                                              }));
+    
+    dispatch_resume(timer);
+    
     return YES;
 }
 
@@ -114,8 +139,15 @@ int indexOfScene;
     [scene update: [controller timeSinceLastUpdate]];
 }
 
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
+- (void)render
 {
+    printf("retainCount: %d\n", [self retainCount]);
     [scene render];
 }
+
+- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
+{
+    //[scene render];
+}
+
 @end

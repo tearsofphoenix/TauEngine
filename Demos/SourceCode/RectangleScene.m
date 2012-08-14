@@ -17,14 +17,10 @@
     {
         rectangle = [[VERectangle alloc] init];
         [rectangle setSize: CGSizeMake(2, 1)];
+        [rectangle setBackgroundColor: GLKVector4Make(1.0, 0.0, 1.0, 0.5)];
+        [_shapes addObject: rectangle];
     }
     return self;
-}
-
-- (void)render
-{
-    [super render];
-    [rectangle renderInScene:self];
 }
 
 @end

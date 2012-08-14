@@ -9,8 +9,9 @@
 #import "VEScene.h"
 #import "VERectangle.h"
 
-@interface RectangleScene : VEScene {
-  VERectangle *rectangle;
+@interface RectangleScene : VEScene
+{
+    VERectangle *rectangle;
 }
 
 @end

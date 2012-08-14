@@ -20,10 +20,6 @@
 
 @synthesize shapes = _shapes;
 
-@synthesize gravityField = _gravityField;
-
-@synthesize fields = _fields;
-
 - (id)init
 {
     self = [super init];

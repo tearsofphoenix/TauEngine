@@ -8,8 +8,6 @@
 
 #import <GLKit/GLKit.h>
 
-@class VEGravityField;
-
 @interface VEScene : NSObject
 {
     GLKVector4 _clearColor;
@@ -25,10 +23,6 @@
 @property (nonatomic, readonly) GLKMatrix4 projectionMatrix;
 
 @property (strong,readonly) NSMutableArray *shapes;
-
-@property (nonatomic, strong) VEGravityField *gravityField;
-
-@property (nonatomic, strong) NSArray *fields;
 
 - (void)update: (NSTimeInterval)dt;
 

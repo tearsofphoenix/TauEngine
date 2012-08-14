@@ -23,13 +23,10 @@
         rectangle.textureCoordinates[1] = GLKVector2Make(1,0.88);
         rectangle.textureCoordinates[2] = GLKVector2Make(0,0.88);
         rectangle.textureCoordinates[3] = GLKVector2Make(0,0);
+        
+        [_shapes addObject: rectangle];
     }
     return self;
-}
-
--(void)render {
-    [super render];
-    [rectangle renderInScene:self];
 }
 
 @end

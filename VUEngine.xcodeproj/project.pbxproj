@@ -15,6 +15,8 @@
 		2264439E15DA363A00FF1BD4 /* VEGravityField.m in Sources */ = {isa = PBXBuildFile; fileRef = 2264439A15DA363A00FF1BD4 /* VEGravityField.m */; };
 		226443A215DA369F00FF1BD4 /* VEQualityObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 226443A015DA369F00FF1BD4 /* VEQualityObject.h */; };
 		226443A315DA369F00FF1BD4 /* VEQualityObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 226443A115DA369F00FF1BD4 /* VEQualityObject.m */; };
+		226443AA15DA57D400FF1BD4 /* VEWorld.h in Headers */ = {isa = PBXBuildFile; fileRef = 226443A815DA57D400FF1BD4 /* VEWorld.h */; };
+		226443AB15DA57D400FF1BD4 /* VEWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 226443A915DA57D400FF1BD4 /* VEWorld.m */; };
 		22D2288015D66E47008ACEF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD161472C7520008AC62 /* Foundation.framework */; };
 		22D2288215D66E47008ACEF9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D2288115D66E47008ACEF9 /* CoreGraphics.framework */; };
 		22D2289315D66EFF008ACEF9 /* libVUEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCDBD131472C7520008AC62 /* libVUEngine.a */; };
@@ -102,6 +104,8 @@
 		2264439A15DA363A00FF1BD4 /* VEGravityField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEGravityField.m; sourceTree = "<group>"; };
 		226443A015DA369F00FF1BD4 /* VEQualityObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEQualityObject.h; sourceTree = "<group>"; };
 		226443A115DA369F00FF1BD4 /* VEQualityObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEQualityObject.m; sourceTree = "<group>"; };
+		226443A815DA57D400FF1BD4 /* VEWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEWorld.h; sourceTree = "<group>"; };
+		226443A915DA57D400FF1BD4 /* VEWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEWorld.m; sourceTree = "<group>"; };
 		22D2287D15D66E47008ACEF9 /* Demos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D2288115D66E47008ACEF9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		3C7288051516342400100C66 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -347,6 +351,8 @@
 		E1AA75BE15D884E200891071 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				226443A815DA57D400FF1BD4 /* VEWorld.h */,
+				226443A915DA57D400FF1BD4 /* VEWorld.m */,
 				E1AA75BF15D884E200891071 /* VEScene.h */,
 				E1AA75C015D884E200891071 /* VEScene.m */,
 				E1AA75C115D884E200891071 /* VESceneController.h */,
@@ -498,6 +504,7 @@
 				2264439B15DA363A00FF1BD4 /* VEField.h in Headers */,
 				2264439D15DA363A00FF1BD4 /* VEGravityField.h in Headers */,
 				226443A215DA369F00FF1BD4 /* VEQualityObject.h in Headers */,
+				226443AA15DA57D400FF1BD4 /* VEWorld.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,6 +648,7 @@
 				2264439C15DA363A00FF1BD4 /* VEField.m in Sources */,
 				2264439E15DA363A00FF1BD4 /* VEGravityField.m in Sources */,
 				226443A315DA369F00FF1BD4 /* VEQualityObject.m in Sources */,
+				226443AB15DA57D400FF1BD4 /* VEWorld.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

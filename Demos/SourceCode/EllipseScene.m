@@ -10,19 +10,20 @@
 
 @implementation EllipseScene
 
--(id)init {
-  self = [super init];
-  if (self) {
-    ellipse = [[VEEllipse alloc] init];
-    ellipse.radiusX = 2;
-    ellipse.radiusY = 1;
-  }
-  return self;
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        ellipse = [[VEEllipse alloc] init];
+        ellipse.radiusX = 1;
+        ellipse.radiusY = 1;
+        [ellipse setBackgroundColor: GLKVector4Make(0.0, 1.0, 0.0, 1.0)];
+        
+        [_shapes addObject: ellipse];
+    }
+    return self;
 }
 
--(void)render {
-  [super render];
-  [ellipse renderInScene:self];
-}
 
 @end
