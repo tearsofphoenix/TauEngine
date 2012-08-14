@@ -19,7 +19,7 @@
         VEEllipse *ball = [[VEEllipse alloc] init];
         ball.radiusX = 0.2;
         ball.radiusY = 0.2;
-        ball.color = GLKVector4Make(1, 0, 0, 1);
+        [ball setBackgroundColor: GLKVector4Make(1, 0, 0, 1)];
         ball.position = GLKVector2Make(-3,-2);
         ball.velocity = GLKVector2Make(1,2.5);
         ball.acceleration = GLKVector2Make(0,-1);

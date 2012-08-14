@@ -7,13 +7,22 @@
 //
 
 #import "VEScene.h"
+
 #import "VEShape.h"
+
+#import "VEGravityField.h"
 
 @implementation VEScene
 
 @synthesize clearColor = _clearColor;
+
 @synthesize edgeInsets = _edgeInsets;
+
 @synthesize shapes = _shapes;
+
+@synthesize gravityField = _gravityField;
+
+@synthesize fields = _fields;
 
 - (id)init
 {
@@ -33,7 +42,7 @@
 }
 
 - (void)update: (NSTimeInterval)dt
-{
+{    
     for (VEShape *shapeLooper in _shapes)
     {
         [shapeLooper update: dt];

@@ -23,6 +23,11 @@
     return self;
 }
 
+- (int)numVertices
+{
+    return _numSides;
+}
+
 - (void)updateVertices
 {
     GLKVector2 *vertices = [self vertices];

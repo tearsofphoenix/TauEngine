@@ -6,8 +6,9 @@
 //  Copyright (c) 2011 Ian Terrell. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
+
+@class VEGravityField;
 
 @interface VEScene : NSObject
 {
@@ -21,9 +22,13 @@
 
 @property (nonatomic) UIEdgeInsets edgeInsets;
 
-@property(nonatomic, readonly) GLKMatrix4 projectionMatrix;
+@property (nonatomic, readonly) GLKMatrix4 projectionMatrix;
 
-@property(strong,readonly) NSMutableArray *shapes;
+@property (strong,readonly) NSMutableArray *shapes;
+
+@property (nonatomic, strong) VEGravityField *gravityField;
+
+@property (nonatomic, strong) NSArray *fields;
 
 - (void)update: (NSTimeInterval)dt;
 

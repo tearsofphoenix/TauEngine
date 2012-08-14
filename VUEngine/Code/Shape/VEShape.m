@@ -25,7 +25,7 @@
 
 @implementation VEShape
 
-@synthesize color = _color;
+@synthesize backgroundColor = _backgroundColor;
 @synthesize useConstantColor = _useConstantColor;
 @synthesize position = _position;
 @synthesize velocity = _velocity;
@@ -46,6 +46,7 @@
 
 @synthesize transform = _transform;
 @synthesize subShapeTransform = _subShapeTransform;
+@synthesize center = _center;
 
 - (id)init
 {
@@ -54,7 +55,7 @@
     {
         // Draw with the _color white
         _useConstantColor = YES;
-        _color = GLKVector4Make(1, 1, 1, 1);
+        _backgroundColor = GLKVector4Make(1, 1, 1, 1);
         
         // No texture
         //
@@ -83,8 +84,8 @@
         _fullModelViewMatrixCache = GLKMatrix4Identity;
         _objectModelViewMatrixCache = GLKMatrix4Identity;
         
-//        _dirtyFullModelViewMatrix = YES;
-//        _dirtyObjectModelViewMatrix = YES;
+        //        _dirtyFullModelViewMatrix = YES;
+        //        _dirtyObjectModelViewMatrix = YES;
         
     }
     return self;
@@ -92,6 +93,7 @@
 
 - (void)dealloc
 {
+    [_subShapes makeObjectsPerformSelector: @selector(removeFromParent)];
     [_subShapes release];
     [_animations release];
     
@@ -134,68 +136,57 @@
     return _textureCoordinates;
 }
 
-- (GLKMatrix4)modelViewMatrix
-{
-    GLKMatrix4 modelViewMatrix = GLKMatrix4Multiply(GLKMatrix4MakeTranslation(_position.x, _position.y, 0),
-                                                    GLKMatrix4MakeRotation(_rotation, 0, 0, 1));
-    modelViewMatrix = GLKMatrix4Multiply(modelViewMatrix, GLKMatrix4MakeScale(_scale.x, _scale.y, 1));
-    
-    if (_parent)
-    {
-        modelViewMatrix = GLKMatrix4Multiply([_parent modelViewMatrix], modelViewMatrix);
-    }
-    
-    return modelViewMatrix;
-}
-//
-//- (GLKMatrix4)xxx
+//- (void)setPosition: (GLKVector2)position
 //{
-//    if (_dirtyObjectModelViewMatrix)
+//    if (!GLKVector2AllEqualToVector2(_position, position))
 //    {
-//        __block GLKVector2 mvTranslation = _position;
-//        __block GLKVector2 mvScale = _scale;
-//        __block GLfloat mvRotation = _rotation;
-//        
-//        [_animations enumerateObjectsUsingBlock: (^(VEAnimation *animation, NSUInteger idx, BOOL *stop)
-//                                                  {
-//                                                      mvTranslation = GLKVector2Add(mvTranslation, [animation positionDelta]);
-//                                                      mvRotation += [animation rotationDelta];
-//                                                      mvScale = GLKVector2Multiply(mvScale, [animation scaleDelta]);
-//                                                  })];
-//        
-//        _objectModelViewMatrixCache = GLKMatrix4Multiply(GLKMatrix4MakeTranslation(mvTranslation.x, mvTranslation.y, 0.0),
-//                                                         GLKMatrix4MakeScale(mvScale.x, mvScale.y, 1.0));
-//        
-//        _objectModelViewMatrixCache = GLKMatrix4Multiply(_objectModelViewMatrixCache, GLKMatrix4MakeZRotation(mvRotation));
-//        
-//        _objectModelViewMatrixCache = GLKMatrix4Multiply(_objectModelViewMatrixCache, _transform);
-//        
-//        
-//        _dirtyObjectModelViewMatrix = [_animations count] > 0;
-//        
+//        _position = position;
 //        _dirtyFullModelViewMatrix = YES;
 //    }
-//    
-//    if (_dirtyFullModelViewMatrix)
-//    {
-//        if (_parent)
-//        {
-//            _fullModelViewMatrixCache = GLKMatrix4Multiply([_parent modelViewMatrix], _objectModelViewMatrixCache);
-//            
-//        }else
-//        {
-//            _fullModelViewMatrixCache = _objectModelViewMatrixCache;
-//        }
-//        
-//        _dirtyFullModelViewMatrix = NO;
-//    }
-//    
-//    return _fullModelViewMatrixCache;
 //}
+//
+//- (void)setRotation: (float)rotation
+//{
+//    if (_rotation != rotation)
+//    {
+//        _rotation = rotation;
+//        _dirtyFullModelViewMatrix = YES;
+//    }
+//}
+//
+//- (void)setScale: (GLKVector2)scale
+//{
+//    if (!GLKVector2AllEqualToVector2(_scale, scale))
+//    {
+//        _scale = scale;
+//        _dirtyFullModelViewMatrix = YES;
+//    }
+//}
+
+- (GLKMatrix4)modelViewMatrix
+{
+    //if (_dirtyFullModelViewMatrix)
+    {
+        NSLog(@"position: {%f, %f}", _position.x, _position.y);
+        
+        _fullModelViewMatrixCache = GLKMatrix4Multiply(GLKMatrix4MakeTranslation(_position.x, _position.y, 0),
+                                                       GLKMatrix4MakeRotation(_rotation, 0, 0, 1));
+        
+        _fullModelViewMatrixCache = GLKMatrix4Multiply(_fullModelViewMatrixCache, GLKMatrix4MakeScale(_scale.x, _scale.y, 1));
+        
+        if (_parent)
+        {
+            _fullModelViewMatrixCache = GLKMatrix4Multiply([_parent modelViewMatrix], _fullModelViewMatrixCache);
+        }
+        
+        _dirtyFullModelViewMatrix = NO;
+    }
+    
+    return _fullModelViewMatrixCache;
+}
 
 - (void)update: (NSTimeInterval)dt
 {
-    
     _angularVelocity += _angularAcceleration * dt;
     _rotation += _angularVelocity * dt;
     
@@ -205,32 +196,34 @@
     GLKVector2 distanceTraveled = GLKVector2MultiplyScalar(_velocity, dt);
     _position = GLKVector2Add(_position, distanceTraveled);
     
-    [_animations enumerateObjectsUsingBlock: (^(VEAnimation *animation, NSUInteger idx, BOOL *stop)
-                                              {
-                                                  [animation animateShape: self
-                                                                       dt: dt];
-                                              })];
+    NSArray *animations = [NSArray arrayWithArray: _animations];
     
-    
-    [_animations filterUsingPredicate: [NSPredicate predicateWithBlock: (^BOOL(VEAnimation *animation, NSDictionary *bindings)
-                                                                         {
-                                                                             BOOL shouldKeepAnimation = [animation elapsedTime] <= [animation duration];
-                                                                             if (!shouldKeepAnimation)
-                                                                             {
-                                                                                 VEAnimationCompletionBlock completion = [animation completion];
-                                                                                 if (completion)
-                                                                                 {
-                                                                                     completion(YES);
-                                                                                 }
-                                                                             }
-                                                                             return shouldKeepAnimation;
-                                                                         })]];
+    for (VEAnimation *animationLooper in animations)
+    {
+        [animationLooper animateShape: self
+                                   dt: dt];
+        
+        BOOL shouldKeepAnimation = [animationLooper elapsedTime] <= [animationLooper duration];
+        if (!shouldKeepAnimation)
+        {
+            VEAnimationCompletionBlock completion = [animationLooper completion];
+            if (completion)
+            {
+                completion(YES);
+            }
+            
+            [_animations removeObject: animationLooper];
+        }
+        
+        _dirtyFullModelViewMatrix = YES;
+    }
     
     [_spriteAnimation update: dt];
 }
 
 - (void)renderInScene: (VEScene *)scene
 {
+    
     // Set up our rendering effect
     GLKBaseEffect *effect = [[GLKBaseEffect alloc] init];
     
@@ -238,7 +231,7 @@
     if (_useConstantColor)
     {
         [effect setUseConstantColor: YES];
-        [effect setConstantColor: _color];
+        [effect setConstantColor: _backgroundColor];
     }
     
     // Set up our _texture effect if set
@@ -375,7 +368,7 @@
 {
     GLKVector2 currentPosition = _position;
     GLKVector2 currentScale = _scale;
-    GLKVector4 currentColor = _color;
+    GLKVector4 currentColor = _backgroundColor;
     float currentRotation = _rotation;
     
     if (animationsBlock)
@@ -389,7 +382,7 @@
     
     [animation setScaleDelta: GLKVector2Subtract(_scale, currentScale)];
     [animation setRotationDelta: _rotation - currentRotation];
-    [animation setColorDelta: GLKVector4Subtract(_color, currentColor)];
+    [animation setColorDelta: GLKVector4Subtract(_backgroundColor, currentColor)];
     [animation setDuration: duration];
     [animation setCompletion: completion];
     
@@ -399,7 +392,7 @@
     
     _position = currentPosition;
     _scale = currentScale;
-    _color = currentColor;
+    _backgroundColor = currentColor;
     _rotation = currentRotation;
 }
 

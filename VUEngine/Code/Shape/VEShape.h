@@ -37,10 +37,11 @@
 
 @property (nonatomic, readonly) GLKVector2 *textureCoordinates;
 
-@property (nonatomic) GLKVector4 color;
+@property (nonatomic) GLKVector4 backgroundColor;
 @property (nonatomic) BOOL useConstantColor;
 
 @property (nonatomic) GLKVector2 position;
+@property (nonatomic) GLKVector2 center;
 @property (nonatomic) GLKVector2 scale;
 
 @property (nonatomic) GLKVector2 velocity;

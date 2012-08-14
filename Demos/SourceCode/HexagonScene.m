@@ -15,7 +15,7 @@
   if (self) {
     polygon = [[VERegularPolygon alloc] initWithNumSides:6];
     [polygon setRadius: 1];
-    [polygon setColor: GLKVector4Make(0.9, 0.9, 0.1, 1.0)];
+    [polygon setBackgroundColor: GLKVector4Make(0.9, 0.9, 0.1, 1.0)];
   }
   return self;
 }

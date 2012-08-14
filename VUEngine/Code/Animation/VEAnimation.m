@@ -65,7 +65,7 @@
     [shape setPosition: GLKVector2Add([shape position], positionIncrement)];
     
     GLKVector4 colorIncrement = GLKVector4MultiplyScalar(_colorDelta, fractionOfDuration);
-    [shape setColor: GLKVector4Add([shape color], colorIncrement)];
+    [shape setBackgroundColor: GLKVector4Add([shape backgroundColor], colorIncrement)];
     
     GLKVector2 scaleIncrement = GLKVector2MultiplyScalar(_scaleDelta, fractionOfDuration);
     [shape setScale: GLKVector2Add([shape scale], scaleIncrement)];

@@ -22,7 +22,7 @@
         [rectangle setSize: CGSizeMake(2, 1)];
         
         rectangle.scale = GLKVector2Make(0.5, 1);
-        rectangle.color = GLKVector4Make(1, 0, 0, 0);
+        [rectangle setBackgroundColor: GLKVector4Make(1, 0, 0, 0)];
         
         VEAnimation *complexAnimation = [[VEAnimation alloc] init];
         

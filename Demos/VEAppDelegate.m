@@ -55,16 +55,16 @@ int indexOfScene;
     _window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController: controller];
     [_window setRootViewController: nav];
-
+    
     [controller release];
     [nav release];
     
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle: @"Next"
-                                     style: UIBarButtonItemStyleBordered
-                                     target: self
-                                     action: @selector(nextScene:)];
+                                                                     style: UIBarButtonItemStyleBordered
+                                                                    target: self
+                                                                    action: @selector(nextScene:)];
     [[controller navigationItem] setRightBarButtonItem: rightBarItem];
-
+    
     [rightBarItem release];
     
     [_window makeKeyAndVisible];
@@ -89,9 +89,8 @@ int indexOfScene;
                      [[[SpriteScene alloc] init] autorelease],
                      [[[TriangleScene alloc] init] autorelease],
                      [[[VelocityScene alloc] init] autorelease],
-                     //                     [[HexagonScene alloc] init],
-                     //                     [[PrettyAPIMoveScene alloc] init],
-                     //                     [[RectangleScene alloc] init],
+                     [[[HexagonScene alloc] init] autorelease],
+                     [[[RectangleScene alloc] init] autorelease],
                      nil];
     
     [self nextScene: self];

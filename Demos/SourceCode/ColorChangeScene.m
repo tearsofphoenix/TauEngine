@@ -19,11 +19,11 @@
         VEEllipse *ball = [[VEEllipse alloc] init];
         ball.radiusX = 1;
         ball.radiusY = 1;
-        ball.color = GLKVector4Make(0.9, 0.1, 0.1, 1);
+        [ball setBackgroundColor: GLKVector4Make(0.9, 0.1, 0.1, 1)];
         [ball animateWithDuration: 3
                        animations: (^
                                     {
-                                        ball.color = GLKVector4Make(0, 0.4, 0.9, 1);
+                                        [ball setBackgroundColor: GLKVector4Make(0, 0.4, 0.9, 1)];
                                     })
                        completion: (^(BOOL finished)
                                     {
