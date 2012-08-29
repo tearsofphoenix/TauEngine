@@ -89,7 +89,7 @@
         
 		opacityModifyRGB_			= YES;
 		_opacity					= 255;
-		color_ = colorUnmodified_	= ccWHITE;
+		_color = colorUnmodified_	= ccWHITE;
         
 		_blendFunc.src = CC_BLEND_SRC;
 		_blendFunc.dst = CC_BLEND_DST;
@@ -762,7 +762,7 @@ if( hasChildren_)							\
 #pragma mark CCSprite - RGBA protocol
 -(void) updateColor
 {
-	ccColor4B color4 = {color_.r, color_.g, color_.b, _opacity};
+	ccColor4B color4 = {_color.r, _color.g, _color.b, _opacity};
     
 	quad_.bl.colors = color4;
 	quad_.br.colors = color4;
@@ -803,17 +803,17 @@ if( hasChildren_)							\
 	if(opacityModifyRGB_)
 		return colorUnmodified_;
     
-	return color_;
+	return _color;
 }
 
 -(void) setColor:(ccColor4B)color3
 {
-	color_ = colorUnmodified_ = color3;
+	_color = colorUnmodified_ = color3;
     
 	if( opacityModifyRGB_ ){
-		color_.r = color3.r * _opacity/255.0f;
-		color_.g = color3.g * _opacity/255.0f;
-		color_.b = color3.b * _opacity/255.0f;
+		_color.r = color3.r * _opacity/255.0f;
+		_color.g = color3.g * _opacity/255.0f;
+		_color.b = color3.b * _opacity/255.0f;
 	}
     
 	[self updateColor];

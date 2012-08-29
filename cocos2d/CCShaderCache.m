@@ -164,8 +164,6 @@ void CCShaderCacheInitialize(void)
     if (!_programs)
     {
         _programs = [[NSMutableDictionary alloc] initWithCapacity: 10];
-
-        glEnable(GL_LINE_SMOOTH);
         
         CCShaderCacheLoadDefaultShaders(_programs);
     };

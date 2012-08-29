@@ -115,7 +115,7 @@
     }
 }
 
-@synthesize color = color_;
+@synthesize color = _color;
 
 - (void) setOpacity:(GLubyte)opacity
 {
@@ -204,8 +204,8 @@
 
         // Color asignation
         const NSUInteger offset = nuPoints_*8;
-        *((ccColor4B*)(colorPointer_ + offset)) = color_;
-        *((ccColor4B*)(colorPointer_ + offset+4)) = color_;
+        *((ccColor4B*)(colorPointer_ + offset)) = _color;
+        *((ccColor4B*)(colorPointer_ + offset+4)) = _color;
 
         // Opacity
         colorPointer_[offset+3] = 255;

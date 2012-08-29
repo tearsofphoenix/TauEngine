@@ -599,9 +599,9 @@ static CCDirector *_sharedDirector = nil;
 			[draws release];
 		}
 
-		[drawsLabel_ visit];
-		[FPSLabel_ visit];
-		[SPFLabel_ visit];
+		[drawsLabel_ renderInContext: _renderContext];
+		[FPSLabel_ renderInContext: _renderContext];
+		[SPFLabel_ renderInContext: _renderContext];
 	}
 	
 	__ccNumberOfDraws = 0;

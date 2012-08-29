@@ -562,7 +562,7 @@ static NSString *CCFontMenuItem_fontName = @"Marker Felt";
 @implementation CCMenuItemToggle
 
 @synthesize subItems = subItems_;
-@synthesize opacity = _opacity, color = color_;
+@synthesize opacity = _opacity, color = _color;
 
 - (id)initWithItems: (NSArray*)arrayOfItems
               block: (void(^)(id sender))block
@@ -656,7 +656,7 @@ static NSString *CCFontMenuItem_fontName = @"Marker Felt";
 
 - (void) setColor:(ccColor4B)color
 {
-	color_ = color;
+	_color = color;
 	for(CCMenuItem<CCRGBAProtocol>* item in subItems_)
 		[item setColor: color];
 }

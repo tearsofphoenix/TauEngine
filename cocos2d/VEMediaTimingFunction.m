@@ -17,14 +17,52 @@
 
 @implementation VEMediaTimingFunction
 
+static NSMutableDictionary *__VEMediaTimingFunctions = nil;
+
+static float __VELinearControlPoints[4] = {0, 0, 1, 1};
+
+//static float __VEEaseControlPoints[4] = {0.25, 0.1, 0.25, 1};
+
+static float __VEEaseInControlPoints[4] = {0.42, 0, 1, 1};
+
+static float __VEEaseOutControlPoints[4] = {0, 0, 0.58, 1};
+
+static float __VEEaseInOutControlPoints[4] = {0.42, 0, 0.58, 1};
+
+
++ (void)load
+{
+    __VEMediaTimingFunctions = [[NSMutableDictionary alloc] initWithCapacity: 5];
+    
+#define _VEMediaTimineFunctionStore(address, name) [__VEMediaTimingFunctions setObject: [NSValue valueWithPointer: address] forKey: name]
+    
+    _VEMediaTimineFunctionStore(__VELinearControlPoints, kVEMediaTimingFunctionLinear);
+    _VEMediaTimineFunctionStore(__VEEaseInControlPoints, kVEMediaTimingFunctionEaseIn);
+    _VEMediaTimineFunctionStore(__VEEaseOutControlPoints, kVEMediaTimingFunctionEaseOut);
+    _VEMediaTimineFunctionStore(__VEEaseInOutControlPoints, kVEMediaTimingFunctionEaseInEaseOut);
+    _VEMediaTimineFunctionStore(__VELinearControlPoints, kVEMediaTimingFunctionDefault);
+    
+#undef _VEMediaTimineFunctionStore
+    
+}
 /* A convenience method for creating common timing functions. The
  * currently supported names are `linear', `easeIn', `easeOut' and
  * `easeInEaseOut' and `default' (the curve used by implicit animations
  * created by Core Animation). */
 
-+ (id)functionWithName:(NSString *)name
++ (id)functionWithName: (NSString *)name
 {
-    return nil;
+    float *address = [[__VEMediaTimingFunctions objectForKey: name] pointerValue];
+    VEMediaTimingFunction *newFunction = nil;
+    if (address)
+    {
+        newFunction = [[self alloc] initWithControlPoints: address[0]
+                                                         : address[1]
+                                                         : address[2]
+                                                         : address[3]];
+    }
+    
+    return [newFunction autorelease];
 }
 
 /* Creates a timing function modelled on a cubic Bezier curve. The end
@@ -81,7 +119,7 @@
             if (ptr)
             {
                 ptr[0] = _controlPoints[2 * idx];
-                ptr[1] = _controlPoints[2 * idx + 1];                
+                ptr[1] = _controlPoints[2 * idx + 1];
             }
             break;
         }
@@ -98,27 +136,30 @@
 {
     if ((self = [super init]))
     {
-        
+        NSUInteger length = 0;
+        float *address = [aDecoder decodeBytesWithReturnedLength: &length];
+        memcpy(_controlPoints, address, length);
     }
     return self;
 }
 
 - (void)encodeWithCoder: (NSCoder *)aCoder
 {
-    
+    [aCoder encodeBytes: _controlPoints
+                 length: sizeof(float) * 8];
 }
 
 
 
 @end
 
- NSString * const kVEMediaTimingFunctionLinear = @"kVEMediaTimingFunctionLinear";
+NSString * const kVEMediaTimingFunctionLinear = @"kVEMediaTimingFunctionLinear";
 
- NSString * const kVEMediaTimingFunctionEaseIn = @"kVEMediaTimingFunctionEaseIn";
+NSString * const kVEMediaTimingFunctionEaseIn = @"kVEMediaTimingFunctionEaseIn";
 
- NSString * const kVEMediaTimingFunctionEaseOut = @"kVEMediaTimingFunctionEaseOut";
+NSString * const kVEMediaTimingFunctionEaseOut = @"kVEMediaTimingFunctionEaseOut";
 
- NSString * const kVEMediaTimingFunctionEaseInEaseOut = @"kVEMediaTimingFunctionEaseInEaseOut";
+NSString * const kVEMediaTimingFunctionEaseInEaseOut = @"kVEMediaTimingFunctionEaseInEaseOut";
 
- NSString * const kVEMediaTimingFunctionDefault = @"kVEMediaTimingFunctionDefault";
+NSString * const kVEMediaTimingFunctionDefault = @"kVEMediaTimingFunctionDefault";
 

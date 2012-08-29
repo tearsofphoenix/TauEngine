@@ -62,7 +62,7 @@
     {
         _itemSize = size;
 		_opacity = 255;
-		color_ = colorUnmodified_ = ccWHITE;
+		_color = colorUnmodified_ = ccWHITE;
 		opacityModifyRGB_ = YES;
 
 		_blendFunc.src = CC_BLEND_SRC;
@@ -119,7 +119,7 @@
 
 	CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
 	
-	GLfloat colors[4] = {color_.r / 255.0f, color_.g / 255.0f, color_.b / 255.0f, _opacity / 255.0f};
+	GLfloat colors[4] = {_color.r / 255.0f, _color.g / 255.0f, _color.b / 255.0f, _opacity / 255.0f};
     
     CCGLProgramUniformfv(_shaderProgram, uniformColor_, colors, 1, CCGLUniform4fv);
 	
@@ -133,18 +133,18 @@
 	if(opacityModifyRGB_)
 		return colorUnmodified_;
 
-	return color_;
+	return _color;
 }
 
 -(void) setColor:(ccColor4B)color3
 {
-	color_ = colorUnmodified_ = color3;
+	_color = colorUnmodified_ = color3;
 
 	if( opacityModifyRGB_ )
     {
-		color_.r = color3.r * _opacity/255;
-		color_.g = color3.g * _opacity/255;
-		color_.b = color3.b * _opacity/255;
+		_color.r = color3.r * _opacity/255;
+		_color.g = color3.g * _opacity/255;
+		_color.b = color3.b * _opacity/255;
 	}
 }
 

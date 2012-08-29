@@ -163,9 +163,9 @@ CGFloat	__ccContentScaleFactor = 1;
     
 	VEGLPushMatrix();
     
-	[runningScene_ visit];
+	[runningScene_ renderInContext: _renderContext];
     
-	[notificationNode_ visit];
+	[notificationNode_ renderInContext: _renderContext];
     
 	if( displayStats_ )
 		[self showStats];

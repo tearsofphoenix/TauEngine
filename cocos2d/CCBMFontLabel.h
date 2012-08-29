@@ -156,7 +156,7 @@ typedef struct _BMFontPadding
 
 	// texture RGBA
 	GLubyte		_opacity;
-	ccColor4B	color_;
+	ccColor4B	_color;
 	BOOL opacityModifyRGB_;
 	
 	// offset of the texture atlas

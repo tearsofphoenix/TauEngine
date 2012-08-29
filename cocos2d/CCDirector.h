@@ -31,6 +31,7 @@
 #import "CCProtocols.h"
 #import "Platforms/CCGL.h"
 
+@class VEContext;
 
 /** @typedef ccDirectorProjection
  Possible OpenGL projections used by director
@@ -115,7 +116,8 @@ and when to execute the Scenes.
 	/* will be the next 'runningScene' in the next frame
 	 nextScene is a weak reference. */
 	CCScene *nextScene_;
-
+    VEContext *_renderContext;
+    
 	/* If YES, then "old" scene will receive the cleanup message */
 	BOOL	sendCleanupToScene_;
 

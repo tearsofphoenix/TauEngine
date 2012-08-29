@@ -36,7 +36,7 @@
 {
     CCTexture2D *texture_;
     CGPoint positionR_;
-    ccColor4B color_;
+    ccColor4B _color;
     ccBlendFunc _blendFunc;
     float stroke_;
     float fadeDelta_;

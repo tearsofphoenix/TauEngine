@@ -428,9 +428,9 @@ enum
 
 - (void) setOpacity: (GLubyte)newOpacity
 {
-    if (color_.a != newOpacity)
+    if (_backgroundColor.a != newOpacity)
     {        
-        color_.a = newOpacity;
+        _backgroundColor.a = newOpacity;
         
         for(id<CCRGBAProtocol> item in (NSArray *)_children)
         {
@@ -442,11 +442,11 @@ enum
 -(void) setColor: (ccColor4B)color
 {
     
-	color_ = color;
+	_backgroundColor = color;
     
 	for(id<CCRGBAProtocol> item in (NSArray *)_children)
     {
-		[item setColor: color_];
+		[item setColor: _backgroundColor];
     }
 }
 @end

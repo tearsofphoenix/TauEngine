@@ -74,6 +74,15 @@ ccc4(const GLubyte r, const GLubyte g, const GLubyte b, const GLubyte o)
 	return c;
 }
 
+static inline bool CCColor4BEqualToColor(ccColor4B c1, ccColor4B c2)
+{
+    if(c1.r == c2.r && c1.g == c2.g && c1.b == c2.b && c1.a == c2.a)
+    {
+        return true;
+    }
+    
+    return false;
+}
 
 //! White color (255,255,255)
 static const ccColor4B ccWHITE = {255,255,255, 255};

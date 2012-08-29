@@ -332,6 +332,8 @@
 		E1CDA49215E7D8A800F93FE9 /* VEDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CDA49015E7D8A700F93FE9 /* VEDataSource.m */; };
 		E1CDA49E15E8A02100F93FE9 /* NVTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = E1CDA49C15E8A02100F93FE9 /* NVTimer.h */; };
 		E1CDA49F15E8A02100F93FE9 /* NVTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CDA49D15E8A02100F93FE9 /* NVTimer.m */; };
+		E1E5BCAE15EE7F6900077D98 /* VEContext.h in Headers */ = {isa = PBXBuildFile; fileRef = E1E5BCAC15EE7F6900077D98 /* VEContext.h */; };
+		E1E5BCAF15EE7F6900077D98 /* VEContext.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E5BCAD15EE7F6900077D98 /* VEContext.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -753,6 +755,8 @@
 		E1CDA49015E7D8A700F93FE9 /* VEDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEDataSource.m; sourceTree = "<group>"; };
 		E1CDA49C15E8A02100F93FE9 /* NVTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVTimer.h; sourceTree = "<group>"; };
 		E1CDA49D15E8A02100F93FE9 /* NVTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVTimer.m; sourceTree = "<group>"; };
+		E1E5BCAC15EE7F6900077D98 /* VEContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEContext.h; sourceTree = "<group>"; };
+		E1E5BCAD15EE7F6900077D98 /* VEContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEContext.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1054,6 +1058,8 @@
 				5018F25F0DFDEAFF00C013A5 /* CCLayer.m */,
 				5018F2600DFDEAFF00C013A5 /* CCScene.h */,
 				5018F2610DFDEAFF00C013A5 /* CCScene.m */,
+				E1E5BCAC15EE7F6900077D98 /* VEContext.h */,
+				E1E5BCAD15EE7F6900077D98 /* VEContext.m */,
 			);
 			name = "Layers, Scenes, Transitions Nodes";
 			sourceTree = "<group>";
@@ -1640,6 +1646,7 @@
 				228C95B615EDE39F00CE9EB1 /* VEAnimation.h in Headers */,
 				228C95BC15EDE65900CE9EB1 /* VEMediaTimingFunction.h in Headers */,
 				228C95C215EE22E800CE9EB1 /* VEValueFunction.h in Headers */,
+				E1E5BCAE15EE7F6900077D98 /* VEContext.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2004,6 +2011,7 @@
 				228C95B715EDE39F00CE9EB1 /* VEAnimation.m in Sources */,
 				228C95BD15EDE65900CE9EB1 /* VEMediaTimingFunction.m in Sources */,
 				228C95C315EE22E800CE9EB1 /* VEValueFunction.m in Sources */,
+				E1E5BCAF15EE7F6900077D98 /* VEContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

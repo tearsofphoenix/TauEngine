@@ -50,6 +50,24 @@
     [entriesView setDelegate: menuLayer];
     
     [[director_ view] addSubview: entriesView];
+    [entriesView setAlpha: 0];
+    
+    printf("\t\t\t%f\n", [NSDate timeIntervalSinceReferenceDate]);
+    
+    [UIView animateWithDuration: 1.0
+                     animations: (^
+                                  {
+                                      [entriesView setAlpha: 1];
+                                      printf("\t\t\t%f\n", [NSDate timeIntervalSinceReferenceDate]);
+                                      printf("\t\t\tanimation\n");
+                                  }
+                                  )
+                     completion: (^(BOOL finished)
+                                  {
+                                      printf("\t\t\t%f\n", [NSDate timeIntervalSinceReferenceDate]);
+                                      printf("\t\t\tfinished\n");
+                                  })];
+
     [entriesView release];
     
 	return YES;

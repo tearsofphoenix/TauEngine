@@ -33,7 +33,7 @@
 {
 	// Main Window
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	
+
 	// Director
 	director_ = (CCDirectorIOS*)[CCDirector sharedDirector];
 	[director_ setDisplayStats:NO];

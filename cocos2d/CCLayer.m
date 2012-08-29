@@ -30,11 +30,14 @@
 #import "Platforms/CCGL.h"
 
 #import "CCLayer.h"
+#import "CCScheduler.h"
 #import "CCDirector.h"
 #import "ccMacros.h"
 #import "CCShaderCache.h"
 #import "CCGLProgram.h"
 #import "ccGLStateCache.h"
+#import "VEAnimation.h"
+
 #import "Support/TransformUtils.h"
 #import "Support/CGPointExtension.h"
 
@@ -42,9 +45,7 @@
 #import "Platforms/iOS/CCDirectorIOS.h"
 
 
-#pragma mark -
-#pragma mark Layer
-
+#pragma mark - Layer
 
 @interface CCLayer (Private)
 
@@ -56,6 +57,7 @@
 @implementation CCLayer
 
 static NSMutableArray *__CCLayerAnimationStack = nil;
+static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
 
 #pragma mark Layer - Init
 
@@ -81,14 +83,21 @@ static NSMutableArray *__CCLayerAnimationStack = nil;
         
         _anchorPoint = ccp(0.5f, 0.5f);
 
-        color_ = ccc4(0, 0, 0, 0);
+        _animationKeys = [[NSMutableArray alloc] init];
+        _animations = [[NSMutableDictionary alloc] init];
 
-		[self updateColor];
-        
-		CGSize s = [[CCDirector sharedDirector] winSize];
+        [self setBackgroundColor: ccc4(0, 0, 0, 0)];
+
+        CCDirector *director = [CCDirector sharedDirector];
+		CGSize s = [director winSize];
 		[self setContentSize: s];
         
+        [[director scheduler] scheduleUpdateForTarget: self
+                                             priority: CCSchedulerPriorityZero
+                                               paused: NO];
+        
         [self setShaderProgram: CCShaderCacheGetProgramByName(CCShaderPositionColorProgram)];
+        
         
 	}
     
@@ -160,7 +169,7 @@ static NSMutableArray *__CCLayerAnimationStack = nil;
 }
 
 // Opacity and RGB color protocol
-@synthesize color = color_;
+@synthesize backgroundColor = _backgroundColor;
 
 @synthesize blendFunc = _blendFunc;
 
@@ -179,10 +188,10 @@ static NSMutableArray *__CCLayerAnimationStack = nil;
 {
 	for( NSUInteger i = 0; i < 4; i++ )
 	{
-		squareColors_[i].r = color_.r / 255.0f;
-		squareColors_[i].g = color_.g / 255.0f;
-		squareColors_[i].b = color_.b / 255.0f;
-		squareColors_[i].a = color_.a / 255.0f;
+		squareColors_[i].r = _backgroundColor.r / 255.0f;
+		squareColors_[i].g = _backgroundColor.g / 255.0f;
+		squareColors_[i].b = _backgroundColor.b / 255.0f;
+		squareColors_[i].a = _backgroundColor.a / 255.0f;
 	}
 }
 
@@ -205,27 +214,175 @@ static NSMutableArray *__CCLayerAnimationStack = nil;
 	CC_INCREMENT_GL_DRAWS(1);
 }
 
-#pragma mark Protocols
-// Color Protocol
+#pragma mark - Animation
 
--(void) setColor:(ccColor4B)color
+
+/** Animation methods. **/
+
+/* Attach an animation object to the layer. Typically this is implicitly
+ * invoked through an action that is an VEAnimation object.
+ *
+ * 'key' may be any string such that only one animation per unique key
+ * is added per layer. The special key 'transition' is automatically
+ * used for transition animations. The nil pointer is also a valid key.
+ *
+ * If the `duration' property of the animation is zero or negative it
+ * is given the default duration, either the value of the
+ * `animationDuration' transaction property or .25 seconds otherwise.
+ *
+ * The animation is copied before being added to the layer, so any
+ * subsequent modifications to `anim' will have no affect unless it is
+ * added to another layer. */
+
+//for animation
+//
+- (void)update: (NSTimeInterval)dt
 {
-	color_ = color;
-	[self updateColor];
+    for (NSString *key in _animationKeys)
+    {
+//        VEBasicAnimation *animation = [_animations objectForKey: key];
+//        animation
+    }
+}
+
+- (void)addAnimation: (VEAnimation *)anim
+              forKey: (NSString *)key
+{
+    VEAnimation *copy = [anim copy];
+    
+    [_animationKeys addObject: key];
+    [_animations setObject: copy
+                    forKey: key];
+    
+    [copy release];
+    
+    CCDirector *director = [CCDirector sharedDirector];
+    
+    [[director scheduler] scheduleUpdateForTarget: self
+                                         priority: CCSchedulerPriorityZero
+                                           paused: NO];
+
+}
+
+/* Remove all animations attached to the layer. */
+
+- (void)removeAllAnimations
+{
+    [_animationKeys removeAllObjects];
+    [_animations removeAllObjects];
+}
+
+/* Remove any animation attached to the layer for 'key'. */
+
+- (void)removeAnimationForKey: (NSString *)key
+{
+    [_animationKeys removeObject: key];
+    [_animations removeObjectForKey: key];
+}
+
+/* Returns an array containing the keys of all animations currently
+ * attached to the receiver. The order of the array matches the order
+ * in which animations will be applied. */
+
+- (NSArray *)animationKeys
+{
+    return [NSArray arrayWithArray: _animationKeys];
+}
+
+/* Returns the animation added to the layer with identifier 'key', or nil
+ * if no such animation exists. Attempting to modify any properties of
+ * the returned object will result in undefined behavior. */
+
+- (VEAnimation *)animationForKey:(NSString *)key
+{
+    return [_animations objectForKey: key];
+}
+
+#pragma mark - animatable properties
+
+- (void)setBackgroundColor: (ccColor4B)backgroundColor
+{
+    if (!CCColor4BEqualToColor(_backgroundColor, backgroundColor))
+    {
+        [self willChangeValueForKey: @"backgroundColor"];
+
+        if (__currentBlockAnimationConfiguration)
+        {
+            //in block animation
+            VEBasicAnimation *animation = [VEBasicAnimation animation];
+            [animation setDuration: [__currentBlockAnimationConfiguration duration]];
+            [animation setFromValue: [NSData dataWithBytes: &_backgroundColor
+                                                    length: sizeof(_backgroundColor)]];
+            
+            _backgroundColor = backgroundColor;
+
+            [animation setToValue: [NSData dataWithBytes: &_backgroundColor
+                                                  length: sizeof(_backgroundColor)]];
+            
+            [self addAnimation: animation
+                        forKey: @"backgroundColor"];
+
+        }else
+        {
+            _backgroundColor = backgroundColor;
+        }
+        
+        [self didChangeValueForKey: @"backgroundColor"];
+        
+        [self updateColor];
+    }
+}
+
+- (ccColor4B)backgroundColor
+{
+    return _backgroundColor;
 }
 
 -(void) setOpacity: (GLubyte) o
 {
-    if (color_.a != o)
+    if (_backgroundColor.a != o)
     {
-        color_.a = o;
+        _backgroundColor.a = o;
         [self updateColor];
     }
 }
 
 - (GLubyte)opacity
 {
-    return color_.a;
+    return _backgroundColor.a;
+}
+
++ (void)_setupAnimationWithDuration: (NSTimeInterval)duration
+                              delay: (NSTimeInterval)delay
+                               view: (CCLayer *)layer
+                            options: (UIViewAnimationOptions)options
+                         animations: (dispatch_block_t)animations
+                              start: (dispatch_block_t)start
+                         completion: (void (^)(BOOL finished))completion
+{
+    if (start)
+    {
+        start();
+    }
+    
+    if (animations)
+    {
+        __VEAnimationConfiguration *configuration = [[__VEAnimationConfiguration alloc] init];
+        [configuration setDuration: duration];
+        [configuration setDuration: delay];
+        [configuration setOptions: options];
+        [configuration setAnimations: animations];
+        [configuration setStart: start];
+        [configuration setCompletion: completion];
+        
+        [__CCLayerAnimationStack addObject: configuration];
+        __currentBlockAnimationConfiguration = configuration;
+        
+        [configuration release];
+        
+        animations();
+        
+    }
 }
 
 + (void)animateWithDuration: (NSTimeInterval)duration
@@ -234,7 +391,13 @@ static NSMutableArray *__CCLayerAnimationStack = nil;
                  animations: (void (^)(void))animations
                  completion: (void (^)(BOOL finished))completion
 {
-    
+    [self _setupAnimationWithDuration: duration
+                                delay: delay
+                                 view: nil
+                              options: options
+                           animations: animations
+                                start: nil
+                           completion: completion];
 }
 
 + (void)animateWithDuration: (NSTimeInterval)duration
@@ -310,7 +473,7 @@ static NSMutableArray *__CCLayerAnimationStack = nil;
         
         start.a	= 255;
         compressedInterpolation_ = YES;
-        [self setColor: start];
+        [self setBackgroundColor: start];
     }
 	return self;
 }
@@ -332,13 +495,14 @@ static NSMutableArray *__CCLayerAnimationStack = nil;
 		u = ccpMult(u, h2 * (float)c);
 	}
     
-	float opacityf = color_.a/255.0f;
+	float opacityf = _backgroundColor.a / 255.0f;
     
-    ccColor4F S = {
-		color_.r / 255.0f,
-		color_.g / 255.0f,
-		color_.b / 255.0f,
-		startOpacity_*opacityf / 255.0f,
+    ccColor4F S =
+    {
+		_backgroundColor.r / 255.0f,
+		_backgroundColor.g / 255.0f,
+		_backgroundColor.b / 255.0f,
+		startOpacity_ * opacityf / 255.0f,
 	};
     
     ccColor4F E = {
@@ -373,12 +537,12 @@ static NSMutableArray *__CCLayerAnimationStack = nil;
 
 - (ccColor4B)startColor
 {
-	return color_;
+	return _backgroundColor;
 }
 
 -(void) setStartColor:(ccColor4B)colors
 {
-	[self setColor: colors];
+	[self setBackgroundColor: colors];
 }
 
 -(void) setEndColor:(ccColor4B)colors

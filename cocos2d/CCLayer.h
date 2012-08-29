@@ -28,18 +28,14 @@
 
 #import "ccMacros.h"
 
-#ifdef __CC_PLATFORM_IOS
-
 #import "Platforms/iOS/CCTouchDelegateProtocol.h"		// Touches only supported on iOS
-#elif defined(__CC_PLATFORM_MAC)
-#import "Platforms/Mac/CCEventDispatcher.h"
-#endif
 
 #import "CCProtocols.h"
 #import "CCNode.h"
 
-#pragma mark -
-#pragma mark CCLayer
+@class VEAnimation;
+
+#pragma mark - CCLayer
 
 /** CCLayer is a subclass of CCNode that implements the CCTouchEventsDelegate protocol.
  
@@ -48,15 +44,18 @@
  - It can receive Accelerometer input
  */
 
-@interface CCLayer : CCNode <CCStandardTouchDelegate, CCTargetedTouchDelegate, CCRGBAProtocol, CCBlendProtocol>
+@interface CCLayer : CCNode <CCStandardTouchDelegate, CCTargetedTouchDelegate, CCBlendProtocol>
 {
-	ccColor4B	color_;
+	ccColor4B	_backgroundColor;
 	ccVertex2F	squareVertices_[4];
 	ccColor4F	squareColors_[4];
     
 	ccBlendFunc	_blendFunc;
     
-	BOOL _isUserInteractionEnabled;
+    NSMutableArray *_animationKeys;
+    NSMutableDictionary *_animations;
+	
+    BOOL _isUserInteractionEnabled;
 }
 
 + (id)layer;
@@ -84,7 +83,51 @@
  
  @since v0.8.1
  */
-@property(nonatomic,getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
+@property (nonatomic,getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
+
+@property (atomic) ccColor4B backgroundColor;
+
+@property (atomic) GLubyte opacity;
+
+/** Animation methods. **/
+
+/* Attach an animation object to the layer. Typically this is implicitly
+ * invoked through an action that is an CAAnimation object.
+ *
+ * 'key' may be any string such that only one animation per unique key
+ * is added per layer. The special key 'transition' is automatically
+ * used for transition animations. The nil pointer is also a valid key.
+ *
+ * If the `duration' property of the animation is zero or negative it
+ * is given the default duration, either the value of the
+ * `animationDuration' transaction property or .25 seconds otherwise.
+ *
+ * The animation is copied before being added to the layer, so any
+ * subsequent modifications to `anim' will have no affect unless it is
+ * added to another layer. */
+
+- (void)addAnimation: (VEAnimation *)anim
+              forKey: (NSString *)key;
+
+/* Remove all animations attached to the layer. */
+
+- (void)removeAllAnimations;
+
+/* Remove any animation attached to the layer for 'key'. */
+
+- (void)removeAnimationForKey:(NSString *)key;
+
+/* Returns an array containing the keys of all animations currently
+ * attached to the receiver. The order of the array matches the order
+ * in which animations will be applied. */
+
+- (NSArray *)animationKeys;
+
+/* Returns the animation added to the layer with identifier 'key', or nil
+ * if no such animation exists. Attempting to modify any properties of
+ * the returned object will result in undefined behavior. */
+
+- (VEAnimation *)animationForKey:(NSString *)key;
 
 + (void)animateWithDuration:(NSTimeInterval)duration
                       delay: (NSTimeInterval)delay

@@ -439,7 +439,7 @@ typedef struct _FontDefHashElement
 @implementation CCBMFontLabel
 
 @synthesize alignment = alignment_;
-@synthesize opacity = _opacity, color = color_;
+@synthesize opacity = _opacity, color = _color;
 
 
 #pragma mark LabelBMFont - Purge Cache
@@ -494,7 +494,7 @@ typedef struct _FontDefHashElement
         alignment_ = alignment;
         
 		_opacity = 255;
-		color_ = ccWHITE;
+		_color = ccWHITE;
 		
 		_contentSize = CGSizeZero;
 		
@@ -773,7 +773,7 @@ typedef struct _FontDefHashElement
 		// Apply label properties
 		[fontChar setOpacityModifyRGB:opacityModifyRGB_];
 		// Color MUST be set before opacity, since opacity might change color if OpacityModifyRGB is on
-		[fontChar setColor:color_];
+		[fontChar setColor:_color];
         
 		// only apply opacity if it is different than 255 )
 		// to prevent modifying the color too (issue #610)
@@ -829,11 +829,11 @@ typedef struct _FontDefHashElement
 
 -(void) setColor:(ccColor4B)color
 {
-	color_ = color;
+	_color = color;
     
     for(CCSprite *child in (NSArray *)_children)
     {
-        [child setColor:color_];
+        [child setColor:_color];
     }
 }
 

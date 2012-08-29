@@ -39,6 +39,7 @@ enum
 @class CCScheduler;
 @class CCActionManager;
 @class CCAction;
+@class VEContext;
 
 /** CCNode is the main element. Anything thats gets drawn or contains things that get drawn is a CCNode.
  The most popular CCNodes are: CCScene, CCLayer, CCSprite, CCMenu.
@@ -352,7 +353,7 @@ enum
 -(void) draw;
 
 /** recursive method that visit its children and draw them */
--(void) visit;
+-(void)renderInContext: (VEContext *)context;
 
 
 @end

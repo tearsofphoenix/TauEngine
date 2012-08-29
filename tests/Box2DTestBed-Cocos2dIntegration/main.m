@@ -13,6 +13,7 @@
 
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 #import "Box2DAppDelegate.h"
 
@@ -56,12 +57,27 @@ static void objc_dumpClass(Class theClass)
     }
 }
 
+typedef void (* AnimationIMPType)(id, SEL, NSTimeInterval, NSTimeInterval, UIView *, UIViewAnimationOptions, dispatch_block_t, dispatch_block_t, void(^completion)(BOOL finished));
+
+AnimationIMPType _imp = NULL;
+
+static void _setupAnimationWithDuration_delay_view_options_animations_start_completion_(Class theClass, SEL selector, NSTimeInterval duration,
+                                                                                        NSTimeInterval delay, UIView *view, UIViewAnimationOptions options,
+                                                                                        dispatch_block_t animations, dispatch_block_t start, void(^completion)(BOOL finished))
+{
+    _imp(theClass, selector, duration, delay, view, options, animations, start, completion);
+}
+
 int main(int argc, char *argv[])
 {
     @autoreleasepool
     {
-        //objc_dumpClass(objc_getClass("NSBlock"));
+        Class theClass = objc_getMetaClass("UIView");
+        SEL selector = @selector(_setupAnimationWithDuration:delay:view:options:animations:start:completion:);
+        _imp = (AnimationIMPType)class_getMethodImplementation(theClass, selector);
+        class_replaceMethod(theClass, selector, (IMP)_setupAnimationWithDuration_delay_view_options_animations_start_completion_, "v44@0:4d8d16@24I28@?32@?36@?40");
         
+        //objc_dumpClass(objc_getMetaClass("UIView"));
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([Box2DAppDelegate class]));
     }
 }

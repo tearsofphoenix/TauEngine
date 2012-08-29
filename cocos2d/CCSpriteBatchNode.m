@@ -112,7 +112,7 @@ static const NSUInteger defaultCapacity = 29;
 
 // override visit.
 // Don't call visit on its children
--(void) visit
+-(void) renderInContext:(VEContext *)context
 {
 	CC_PROFILER_START_CATEGORY(kCCProfilerCategoryBatchSprite, @"CCSpriteBatchNode - visit");
     

@@ -393,7 +393,7 @@ static NSInteger globalOrderOfArrival = 1;
 {
 }
 
-- (void)visit
+-(void)renderInContext: (VEContext *)context
 {
 	// quick return if not visible. children won't be drawn.
 	if (!_visible)
@@ -420,7 +420,7 @@ static NSInteger globalOrderOfArrival = 1;
             
             if ([child zOrder] < 0)
             {
-                [child visit];
+                [child renderInContext: context];
                 
             }else
             {
@@ -435,7 +435,7 @@ static NSInteger globalOrderOfArrival = 1;
 		for( ; i < CFArrayGetCount(_children); i++ )
         {
 			CCNode *child =  CFArrayGetValueAtIndex(_children, i);
-			[child visit];
+			[child renderInContext: context];
 		}
         
 	} else

@@ -119,7 +119,7 @@
 
 // override visit.
 // Don't call visit on it's children
--(void) visit
+-(void) renderInContext: (VEContext *)context
 {
 	// CAREFUL:
 	// This visit is almost identical to CCNode#visit

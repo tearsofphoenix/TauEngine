@@ -60,7 +60,7 @@
 
 	// texture RGBA.
 	GLubyte		_opacity;
-	ccColor4B	color_;
+	ccColor4B	_color;
 	ccColor4B	colorUnmodified_;
 	BOOL opacityModifyRGB_;
 

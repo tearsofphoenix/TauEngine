@@ -9,7 +9,16 @@
 #import <GLKit/GLKit.h>
 #import "VEValueFunction.h"
 
-typedef GLKMatrix4 (* _VEValueFunctionIMP)(GLfloat *data);
+typedef GLKMatrix4 (* _VEValueFunctionIMP)(GLfloat f1);
+
+typedef GLKMatrix4 (* _VEValueFunctionIMP3)(GLfloat f1, GLfloat f2, GLfloat f3);
+
+@interface VEValueFunction ()
+{
+@private
+    int _argumentCount;
+}
+@end
 
 @implementation VEValueFunction
 
@@ -19,22 +28,31 @@ static NSMutableDictionary *__VEValueFunctionPointers = nil;
 {
     __VEValueFunctionPointers = [[NSMutableDictionary alloc] init];
     
-    [__VEValueFunctionPointers setObject: kVEValueFunctionRotateX
-                                  forKey: [NSValue valueWithPointer: GLKMatrix4MakeXRotation]];
+#define VEValueFunctionCreate(func, key) [__VEValueFunctionPointers setObject: [NSValue valueWithPointer: func] forKey: key]
 
-    [__VEValueFunctionPointers setObject: kVEValueFunctionRotateY
-                                  forKey: [NSValue valueWithPointer: GLKMatrix4MakeYRotation]];
+    VEValueFunctionCreate(GLKMatrix4MakeXRotation, kVEValueFunctionRotateX);
+    VEValueFunctionCreate(GLKMatrix4MakeYRotation, kVEValueFunctionRotateY);
+    VEValueFunctionCreate(GLKMatrix4MakeZRotation, kVEValueFunctionRotateZ);
 
-    [__VEValueFunctionPointers setObject: kVEValueFunctionRotateZ
-                                  forKey: [NSValue valueWithPointer: GLKMatrix4MakeZRotation]];
+    VEValueFunctionCreate(GLKMatrix4MakeScale, kVEValueFunctionScale);
+    VEValueFunctionCreate(GLKMatrix4MakeScale, kVEValueFunctionScaleX);
+    VEValueFunctionCreate(GLKMatrix4MakeScale, kVEValueFunctionScaleY);
+    VEValueFunctionCreate(GLKMatrix4MakeScale, kVEValueFunctionScaleZ);
 
-    
+    VEValueFunctionCreate(GLKMatrix4MakeTranslation, kVEValueFunctionTranslate);
+    VEValueFunctionCreate(GLKMatrix4MakeTranslation, kVEValueFunctionTranslateX);
+    VEValueFunctionCreate(GLKMatrix4MakeTranslation, kVEValueFunctionTranslateY);
+    VEValueFunctionCreate(GLKMatrix4MakeTranslation, kVEValueFunctionTranslateZ);
+
+#undef VEValueFunctionCreate
 }
 
 + (id)functionWithName: (NSString *)name
 {
     VEValueFunction *newValueFunction = [[self alloc] init];
     newValueFunction->_string = [name copy];
+    newValueFunction->_impl = [[__VEValueFunctionPointers objectForKey: name] pointerValue];
+    
     return [newValueFunction autorelease];
 }
 

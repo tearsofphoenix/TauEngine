@@ -72,7 +72,7 @@
 
 /* The key-path describing the property to be animated. */
 
-@property(copy) NSString *keyPath;
+@property(atomic, copy) NSString *keyPath;
 
 /* When true the value specified by the animation will be "added" to
  * the current presentation value of the property to produce the new
@@ -80,7 +80,7 @@
  * for affine transforms the two matrices are concatenated. Defaults to
  * NO. */
 
-@property(getter=isAdditive) BOOL additive;
+@property(atomic, getter=isAdditive) BOOL additive;
 
 /* The `cumulative' property affects how repeating animations produce
  * their result. If true then the current value of the animation is the
@@ -88,13 +88,13 @@
  * current repeat cycle. If false, the value is simply the value
  * calculated for the current repeat cycle. Defaults to NO. */
 
-@property(getter=isCumulative) BOOL cumulative;
+@property(atomic, getter=isCumulative) BOOL cumulative;
 
 /* If non-nil a function that is applied to interpolated values
  * before they are set as the new presentation value of the animation's
  * target property. Defaults to nil. */
 
-@property(retain) VEValueFunction *valueFunction;
+@property(atomic, retain) VEValueFunction *valueFunction;
 
 @end
 
@@ -127,7 +127,7 @@
  * - `byValue' non-nil. Interpolates between the layer's current value
  * of the property in the render tree and that plus `byValue'. */
 
-@property(retain) id fromValue, toValue, byValue;
+@property (atomic, retain) id fromValue, toValue, byValue;
 
 @end
 
@@ -139,7 +139,7 @@
 /* An array of objects providing the value of the animation function for
  * each keyframe. */
 
-@property(copy) NSArray *values;
+@property (atomic, copy) NSArray *values;
 
 /* An optional path object defining the behavior of the animation
  * function. When non-nil overrides the `values' property. Each point
@@ -148,7 +148,7 @@
  * constant velocity animation along the path, `calculationMode' should
  * be set to `paced'. */
 
-@property CGPathRef path;
+@property (atomic) CGPathRef path;
 
 /* An optional array of `NSNumber' objects defining the pacing of the
  * animation. Each time corresponds to one value in the `values' array,
@@ -156,21 +156,21 @@
  * Each value in the array is a floating point number in the range
  * [0,1]. */
 
-@property(copy) NSArray *keyTimes;
+@property (atomic, copy) NSArray *keyTimes;
 
 /* An optional array of VEMediaTimingFunction objects. If the `values' array
  * defines n keyframes, there should be n-1 objects in the
  * `timingFunctions' array. Each function describes the pacing of one
  * keyframe to keyframe segment. */
 
-@property(copy) NSArray *timingFunctions;
+@property (atomic, copy) NSArray *timingFunctions;
 
 /* The "calculation mode". Possible values are `discrete', `linear',
  * `paced', `cubic' and `cubicPaced'. Defaults to `linear'. When set to
  * `paced' or `cubicPaced' the `keyTimes' and `timingFunctions'
  * properties of the animation are ignored and calculated implicitly. */
 
-@property(copy) NSString *calculationMode;
+@property (atomic, copy) NSString *calculationMode;
 
 /* For animations with the cubic calculation modes, these properties
  * provide control over the interpolation scheme. Each keyframe may
@@ -190,7 +190,7 @@
  * point's tangents, and so on. Any unspecified values default to zero
  * (giving a Catmull-Rom spline if all are unspecified). */
 
-@property(copy) NSArray *tensionValues, *continuityValues, *biasValues;
+@property (atomic, copy) NSArray *tensionValues, *continuityValues, *biasValues;
 
 /* Defines whether or objects animating along paths rotate to match the
  * path tangent. Possible values are `auto' and `autoReverse'. Defaults
@@ -198,27 +198,27 @@
  * no path object is supplied is undefined. `autoReverse' rotates to
  * match the tangent plus 180 degrees. */
 
-@property(copy) NSString *rotationMode;
+@property (atomic, copy) NSString *rotationMode;
 
 @end
 
 /* `calculationMode' strings. */
 
-CF_EXPORT NSString * const kCAAnimationLinear;
+CF_EXPORT NSString * const kVEAnimationLinear;
 
-CF_EXPORT NSString * const kCAAnimationDiscrete;
+CF_EXPORT NSString * const kVEAnimationDiscrete;
 
-CF_EXPORT NSString * const kCAAnimationPaced;
+CF_EXPORT NSString * const kVEAnimationPaced;
 
-CF_EXPORT NSString * const kCAAnimationCubic;
+CF_EXPORT NSString * const kVEAnimationCubic;
 
-CF_EXPORT NSString * const kCAAnimationCubicPaced;
+CF_EXPORT NSString * const kVEAnimationCubicPaced;
 
 /* `rotationMode' strings. */
 
-CF_EXPORT NSString * const kCAAnimationRotateAuto;
+CF_EXPORT NSString * const kVEAnimationRotateAuto;
 
-CF_EXPORT NSString * const kCAAnimationRotateAutoReverse;
+CF_EXPORT NSString * const kVEAnimationRotateAutoReverse;
 
 /** Transition animation subclass. **/
 
@@ -227,21 +227,21 @@ CF_EXPORT NSString * const kCAAnimationRotateAutoReverse;
 /* The name of the transition. Current legal transition types include
  * `fade', `moveIn', `push' and `reveal'. Defaults to `fade'. */
 
-@property(copy) NSString *type;
+@property (atomic, copy) NSString *type;
 
 /* An optional subtype for the transition. E.g. used to specify the
  * transition direction for motion-based transitions, in which case
  * the legal values are `fromLeft', `fromRight', `fromTop' and
  * `fromBottom'. */
 
-@property(copy) NSString *subtype;
+@property (atomic, copy) NSString *subtype;
 
 /* The amount of progress through to the transition at which to begin
  * and end execution. Legal values are numbers in the range [0,1].
  * `endProgress' must be greater than or equal to `startProgress'.
  * Default values are 0 and 1 respectively. */
 
-@property float startProgress, endProgress;
+@property (atomic) float startProgress, endProgress;
 
 /* An optional filter object implementing the transition. When set the
  * `type' and `subtype' properties are ignored. The filter must
@@ -250,30 +250,30 @@ CF_EXPORT NSString * const kCAAnimationRotateAutoReverse;
  * the `inputExtent' key, which will be set to a rectangle describing
  * the region in which the transition should run. Defaults to nil. */
 
-@property(retain) id filter;
+@property (atomic, retain) id filter;
 
 @end
 
 /* Common transition types. */
 
-CF_EXPORT NSString * const kCATransitionFade
+CF_EXPORT NSString * const kVETransitionFade
 ;
-CF_EXPORT NSString * const kCATransitionMoveIn
+CF_EXPORT NSString * const kVETransitionMoveIn
 ;
-CF_EXPORT NSString * const kCATransitionPush
+CF_EXPORT NSString * const kVETransitionPush
 ;
-CF_EXPORT NSString * const kCATransitionReveal
+CF_EXPORT NSString * const kVETransitionReveal
 ;
 
 /* Common transition subtypes. */
 
-CF_EXPORT NSString * const kCATransitionFromRight
+CF_EXPORT NSString * const kVETransitionFromRight
 ;
-CF_EXPORT NSString * const kCATransitionFromLeft
+CF_EXPORT NSString * const kVETransitionFromLeft
 ;
-CF_EXPORT NSString * const kCATransitionFromTop
+CF_EXPORT NSString * const kVETransitionFromTop
 ;
-CF_EXPORT NSString * const kCATransitionFromBottom
+CF_EXPORT NSString * const kVETransitionFromBottom
 ;
 
 
@@ -285,6 +285,23 @@ CF_EXPORT NSString * const kCATransitionFromBottom
  * concurrently in the time space of the parent animation using the
  * normal rules. */
 
-@property(copy) NSArray *animations;
+@property (atomic, copy) NSArray *animations;
+
+@end
+
+
+@interface __VEAnimationConfiguration : NSObject
+
+@property (nonatomic) NSTimeInterval duration;
+
+@property (nonatomic) NSTimeInterval delay;
+
+@property (nonatomic) UIViewAnimationOptions options;
+
+@property (nonatomic, copy) dispatch_block_t start;
+
+@property (nonatomic, copy) dispatch_block_t animations;
+
+@property (nonatomic, copy) void (^completion)(BOOL fnished);
 
 @end
