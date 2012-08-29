@@ -77,7 +77,7 @@
 		[self initIndices];
 		[self initVAO];
         
-		self.shaderProgram = CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor);
+		[self setShaderProgram: CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor)];
 	}
     
 	return self;

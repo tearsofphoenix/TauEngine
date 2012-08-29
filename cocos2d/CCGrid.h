@@ -92,11 +92,11 @@
 }
 
 /** returns the vertex at a given position */
--(ccVertex3F)vertex:(ccGridSize)pos;
+-(GLKVector3)vertex:(ccGridSize)pos;
 /** returns the original (non-transformed) vertex at a given position */
--(ccVertex3F)originalVertex:(ccGridSize)pos;
+-(GLKVector3)originalVertex:(ccGridSize)pos;
 /** sets a new vertex at a given position */
--(void)setVertex:(ccGridSize)pos vertex:(ccVertex3F)vertex;
+-(void)setVertex:(ccGridSize)pos vertex:(GLKVector3)vertex;
 
 @end
 

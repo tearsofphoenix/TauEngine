@@ -47,8 +47,8 @@
 @interface CCLayer : CCNode <CCStandardTouchDelegate, CCTargetedTouchDelegate, CCBlendProtocol>
 {
 	ccColor4B	_backgroundColor;
-	ccVertex2F	squareVertices_[4];
-	ccColor4F	squareColors_[4];
+	GLKVector2	squareVertices_[4];
+	GLKVector4	squareColors_[4];
     
 	ccBlendFunc	_blendFunc;
     
@@ -59,6 +59,10 @@
 }
 
 + (id)layer;
+
+- (id)presentationLayer;
+
+- (id)modelLayer;
 
 /** If isTouchEnabled, this method is called onEnter. Override it to change the
  way CCLayer receives touch events.

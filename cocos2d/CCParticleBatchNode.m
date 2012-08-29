@@ -89,7 +89,7 @@
 		_blendFunc.src = CC_BLEND_SRC;
 		_blendFunc.dst = CC_BLEND_DST;
 
-		self.shaderProgram = CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor);
+		[self setShaderProgram: CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor)];
 	}
 
 	return self;

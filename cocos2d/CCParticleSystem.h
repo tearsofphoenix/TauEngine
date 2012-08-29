@@ -89,8 +89,8 @@ typedef struct sCCParticle
 	CGPoint		pos;
 	CGPoint		startPos;
 
-	ccColor4F	color;
-	ccColor4F	deltaColor;
+	GLKVector4	color;
+	GLKVector4	deltaColor;
 
 	float		size;
 	float		deltaSize;
@@ -247,13 +247,13 @@ typedef void (*CC_UPDATE_PARTICLE_IMP)(id, SEL, tCCParticle*, CGPoint);
 	float lifeVar;
 
 	// Start color of the particles
-	ccColor4F startColor;
+	GLKVector4 startColor;
 	// Start color variance
-	ccColor4F startColorVar;
+	GLKVector4 startColorVar;
 	// End color of the particles
-	ccColor4F endColor;
+	GLKVector4 endColor;
 	// End color variance
-	ccColor4F endColorVar;
+	GLKVector4 endColorVar;
 
 	// start angle of the particles
 	float startSpin;
@@ -363,13 +363,13 @@ typedef void (*CC_UPDATE_PARTICLE_IMP)(id, SEL, tCCParticle*, CGPoint);
 /** end size variance in pixels of each particle */
 @property (nonatomic,assign) float endSizeVar;
 /** start color of each particle */
-@property (nonatomic,assign) ccColor4F startColor;
+@property (nonatomic,assign) GLKVector4 startColor;
 /** start color variance of each particle */
-@property (nonatomic,assign) ccColor4F startColorVar;
+@property (nonatomic,assign) GLKVector4 startColorVar;
 /** end color and end color variation of each particle */
-@property (nonatomic,assign) ccColor4F endColor;
+@property (nonatomic,assign) GLKVector4 endColor;
 /** end color variance of each particle */
-@property (nonatomic,assign) ccColor4F endColorVar;
+@property (nonatomic,assign) GLKVector4 endColorVar;
 //* initial angle of each particle
 @property (nonatomic,assign) float startSpin;
 //* initial angle of each particle

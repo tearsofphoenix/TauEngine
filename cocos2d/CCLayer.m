@@ -71,6 +71,17 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
     return [[[self alloc] init] autorelease];
 }
 
+- (id)presentationLayer
+{
+    return nil;
+}
+
+- (id)modelLayer
+{
+    return nil;
+}
+
+
 - (id)init
 {
 	if( (self=[super init]) )
@@ -83,18 +94,11 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
         
         _anchorPoint = ccp(0.5f, 0.5f);
 
-        _animationKeys = [[NSMutableArray alloc] init];
-        _animations = [[NSMutableDictionary alloc] init];
-
         [self setBackgroundColor: ccc4(0, 0, 0, 0)];
 
         CCDirector *director = [CCDirector sharedDirector];
 		CGSize s = [director winSize];
 		[self setContentSize: s];
-        
-        [[director scheduler] scheduleUpdateForTarget: self
-                                             priority: CCSchedulerPriorityZero
-                                               paused: NO];
         
         [self setShaderProgram: CCShaderCacheGetProgramByName(CCShaderPositionColorProgram)];
         
@@ -214,6 +218,11 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
 	CC_INCREMENT_GL_DRAWS(1);
 }
 
+- (void)renderInContext: (VEContext *)context
+{
+    [self draw];
+}
+
 #pragma mark - Animation
 
 
@@ -248,6 +257,16 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
 - (void)addAnimation: (VEAnimation *)anim
               forKey: (NSString *)key
 {
+    if (!_animationKeys)
+    {
+        _animationKeys = [[NSMutableArray alloc] init];
+    }
+    
+    if (!_animations)
+    {
+        _animations = [[NSMutableDictionary alloc] init];
+    }
+
     VEAnimation *copy = [anim copy];
     
     [_animationKeys addObject: key];
@@ -497,20 +516,19 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
     
 	float opacityf = _backgroundColor.a / 255.0f;
     
-    ccColor4F S =
-    {
+    GLKVector4 S = GLKVector4Make(
 		_backgroundColor.r / 255.0f,
 		_backgroundColor.g / 255.0f,
 		_backgroundColor.b / 255.0f,
-		startOpacity_ * opacityf / 255.0f,
-	};
+		startOpacity_ * opacityf / 255.0f
+	);
     
-    ccColor4F E = {
+    GLKVector4 E = GLKVector4Make(
 		endColor_.r / 255.0f,
 		endColor_.g / 255.0f,
 		endColor_.b / 255.0f,
-		endOpacity_*opacityf / 255.0f,
-	};
+		endOpacity_*opacityf / 255.0f
+	);
     
     
     // (-1, -1)

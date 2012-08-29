@@ -85,7 +85,7 @@
 		self.quadsToDraw = c;
 
 		// shader stuff
-		self.shaderProgram = CCShaderCacheGetProgramByName(kCCShader_PositionTexture_uColor);
+		[self setShaderProgram: CCShaderCacheGetProgramByName(kCCShader_PositionTexture_uColor)];
 		uniformColor_ = CCGLProgramGetUniformLocation(_shaderProgram, "u_color");
 	}
 	return self;

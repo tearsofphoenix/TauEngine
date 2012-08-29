@@ -182,7 +182,7 @@ name = name_, maxS = maxS_, maxT = maxT_;
 #ifdef __CC_PLATFORM_IOS
 		resolutionType_ = kCCResolutionUnknown;
 #endif
-		self.shaderProgram = CCShaderCacheGetProgramByName(kCCShader_PositionTexture);
+		[self setShaderProgram: CCShaderCacheGetProgramByName(kCCShader_PositionTexture)];
 
 	}
 	return self;

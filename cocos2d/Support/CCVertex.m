@@ -26,7 +26,7 @@
 #import "CGPointExtension.h"
 #import "../ccMacros.h"
 
-void ccVertexLineToPolygon(CGPoint *points, float stroke, ccVertex2F *vertices, NSUInteger offset, NSUInteger nuPoints)
+void ccVertexLineToPolygon(CGPoint *points, float stroke, GLKVector2 *vertices, NSUInteger offset, NSUInteger nuPoints)
 {
     nuPoints += offset;
     if(nuPoints<=1) return;
@@ -66,8 +66,8 @@ void ccVertexLineToPolygon(CGPoint *points, float stroke, ccVertex2F *vertices, 
         }
         perpVector = ccpMult(perpVector, stroke);
 
-        vertices[idx] = (ccVertex2F) {p1.x+perpVector.x, p1.y+perpVector.y};
-        vertices[idx+1] = (ccVertex2F) {p1.x-perpVector.x, p1.y-perpVector.y};
+        vertices[idx] = GLKVector2Make(p1.x+perpVector.x, p1.y+perpVector.y);
+        vertices[idx+1] = GLKVector2Make(p1.x-perpVector.x, p1.y-perpVector.y);
     }
 
     // Validate vertexes
@@ -77,10 +77,10 @@ void ccVertexLineToPolygon(CGPoint *points, float stroke, ccVertex2F *vertices, 
         idx = i*2;
         const NSUInteger idx1 = idx+2;
 
-        ccVertex2F p1 = vertices[idx];
-        ccVertex2F p2 = vertices[idx+1];
-        ccVertex2F p3 = vertices[idx1];
-        ccVertex2F p4 = vertices[idx1+1];
+        GLKVector2 p1 = vertices[idx];
+        GLKVector2 p2 = vertices[idx+1];
+        GLKVector2 p3 = vertices[idx1];
+        GLKVector2 p4 = vertices[idx1+1];
 
         float s;
         //BOOL fixVertex = !ccpLineIntersect(ccp(p1.x, p1.y), ccp(p4.x, p4.y), ccp(p2.x, p2.y), ccp(p3.x, p3.y), &s, &t);

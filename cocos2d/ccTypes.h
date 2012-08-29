@@ -103,66 +103,21 @@ static const ccColor4B ccORANGE = {255,127,0, 255};
 //! Gray Color (166,166,166)
 static const ccColor4B ccGRAY = {166,166,166, 255};
 
-
-/** RGBA color composed of 4 floats
-@since v0.8
-*/
-struct ccColor4F {
-	GLfloat r;
-	GLfloat g;
-	GLfloat b;
-	GLfloat a;
-};
-typedef struct ccColor4F ccColor4F;
-
-//! helper that creates a ccColor4f type
-static inline ccColor4F ccc4f(const GLfloat r, const GLfloat g, const GLfloat b, const GLfloat a)
-{
-	return (ccColor4F){r, g, b, a};
-}
-
-/** Returns a ccColor4F from a ccColor3B. Alpha will be 1.
+/** Returns a GLKVector4 from a ccColor3B. Alpha will be 1.
  @since v0.99.1
  */
-static inline ccColor4F ccc4FFromccc3B(ccColor3B c)
+static inline GLKVector4 ccc4FFromccc3B(ccColor3B c)
 {
-	return (ccColor4F){c.r/255.f, c.g/255.f, c.b/255.f, 1.f};
+	return GLKVector4Make(c.r/255.f, c.g/255.f, c.b/255.f, 1.f);
 }
 
-/** Returns a ccColor4F from a ccColor4B.
+/** Returns a GLKVector4 from a ccColor4B.
  @since v0.99.1
  */
-static inline ccColor4F ccc4FFromccc4B(ccColor4B c)
+static inline GLKVector4 ccc4FFromccc4B(ccColor4B c)
 {
-	return (ccColor4F){c.r/255.f, c.g/255.f, c.b/255.f, c.a/255.f};
+	return GLKVector4Make(c.r/255.f, c.g/255.f, c.b/255.f, c.a/255.f);
 }
-
-/** returns YES if both ccColor4F are equal. Otherwise it returns NO.
- @since v0.99.1
- */
-static inline BOOL ccc4FEqual(ccColor4F a, ccColor4F b)
-{
-	return a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a;
-}
-
-/** A vertex composed of 2 GLfloats: x, y
- @since v0.8
- */
-typedef struct _ccVertex2F
-{
-	GLfloat x;
-	GLfloat y;
-} ccVertex2F;
-
-/** A vertex composed of 2 floats: x, y
- @since v0.8
- */
-typedef struct _ccVertex3F
-{
-	GLfloat x;
-	GLfloat y;
-	GLfloat z;
-} ccVertex3F;
 
 /** A texcoord composed of 2 floats: u, y
  @since v0.8
@@ -176,26 +131,26 @@ typedef struct _ccTex2F {
 //! Point Sprite component
 typedef struct _ccPointSprite
 {
-	ccVertex2F	pos;		// 8 bytes
+	GLKVector2	pos;		// 8 bytes
 	ccColor4B	color;		// 4 bytes
 	GLfloat		size;		// 4 bytes
 } ccPointSprite;
 
 //!	A 2D Quad. 4 * 2 floats
 typedef struct _ccQuad2 {
-	ccVertex2F		tl;
-	ccVertex2F		tr;
-	ccVertex2F		bl;
-	ccVertex2F		br;
+	GLKVector2		tl;
+	GLKVector2		tr;
+	GLKVector2		bl;
+	GLKVector2		br;
 } ccQuad2;
 
 
 //!	A 3D Quad. 4 * 3 floats
 typedef struct _ccQuad3 {
-	ccVertex3F		bl;
-	ccVertex3F		br;
-	ccVertex3F		tl;
-	ccVertex3F		tr;
+	GLKVector3		bl;
+	GLKVector3		br;
+	GLKVector3		tl;
+	GLKVector3		tr;
 } ccQuad3;
 
 //! A 2D grid size
@@ -217,7 +172,7 @@ ccg(const NSInteger x, const NSInteger y)
 typedef struct _ccV2F_C4B_T2F
 {
 	//! vertices (2F)
-	ccVertex2F		vertices;
+	GLKVector2		vertices;
 	//! colors (4B)
 	ccColor4B		colors;
 	//! tex coords (2F)
@@ -228,9 +183,9 @@ typedef struct _ccV2F_C4B_T2F
 typedef struct _ccV2F_C4F_T2F
 {
 	//! vertices (2F)
-	ccVertex2F		vertices;
+	GLKVector2		vertices;
 	//! colors (4F)
-	ccColor4F		colors;
+	GLKVector4		colors;
 	//! tex coords (2F)
 	ccTex2F			texCoords;
 } ccV2F_C4F_T2F;
@@ -239,9 +194,9 @@ typedef struct _ccV2F_C4F_T2F
 typedef struct _ccV3F_C4F_T2F
 {
 	//! vertices (3F)
-	ccVertex3F		vertices;
+	GLKVector3		vertices;
 	//! colors (4F)
-	ccColor4F		colors;
+	GLKVector4		colors;
 	//! tex coords (2F)
 	ccTex2F			texCoords;
 } ccV3F_C4F_T2F;
@@ -263,7 +218,7 @@ typedef struct _ccV3F_C4F_T2F_Quad
 typedef struct _ccV3F_C4B_T2F
 {
 	//! vertices (3F)
-	ccVertex3F		vertices;			// 12 bytes
+	GLKVector3		vertices;			// 12 bytes
 //	char __padding__[4];
 
 	//! colors (4B)
@@ -327,7 +282,7 @@ typedef NS_ENUM(NSUInteger, ccResolutionType)
 {
 	//! Unknonw resolution type
 	kCCResolutionUnknown,
-#ifdef __CC_PLATFORM_IOS
+
 	//! iPhone resolution type
 	kCCResolutioniPhone,
 	//! RetinaDisplay resolution type
@@ -336,14 +291,6 @@ typedef NS_ENUM(NSUInteger, ccResolutionType)
 	kCCResolutioniPad,
 	//! iPad Retina Display resolution type
 	kCCResolutioniPadRetinaDisplay,
-	
-#elif defined(__CC_PLATFORM_MAC)
-	//! Mac resolution type
-	kCCResolutionMac,
-
-	//! Mac RetinaDisplay resolution type (???)
-	kCCResolutionMacRetinaDisplay,
-#endif // platform
 
 } ;
 

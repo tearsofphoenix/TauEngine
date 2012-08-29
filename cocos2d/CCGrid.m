@@ -81,7 +81,7 @@
 		grabber_ = [[CCGrabber alloc] init];
 		[grabber_ grab:texture_];
 
-		self.shaderProgram = CCShaderCacheGetProgramByName(kCCShader_PositionTexture);
+		[self setShaderProgram: CCShaderCacheGetProgramByName(kCCShader_PositionTexture)];
 
 		[self calculateVertexPoints];
 	}
@@ -308,9 +308,9 @@
 	
 	NSUInteger numOfPoints = (gridSize_.x+1) * (gridSize_.y+1);
 	
-	vertices = malloc(numOfPoints * sizeof(ccVertex3F));
-	originalVertices = malloc(numOfPoints * sizeof(ccVertex3F));
-	texCoordinates = malloc(numOfPoints * sizeof(ccVertex2F));
+	vertices = malloc(numOfPoints * sizeof(GLKVector3));
+	originalVertices = malloc(numOfPoints * sizeof(GLKVector3));
+	texCoordinates = malloc(numOfPoints * sizeof(GLKVector2));
 	indices = malloc( (gridSize_.x * gridSize_.y) * sizeof(GLushort)*6);
 
 	GLfloat *vertArray = (GLfloat*)vertices;
@@ -338,12 +338,12 @@
 			memcpy(&idxArray[6*idx], tempidx, 6*sizeof(GLushort));
 
 			int l1[4] = { a*3, b*3, c*3, d*3 };
-			ccVertex3F	e = {x1,y1,0};
-			ccVertex3F	f = {x2,y1,0};
-			ccVertex3F	g = {x2,y2,0};
-			ccVertex3F	h = {x1,y2,0};
+			GLKVector3	e = GLKVector3Make(x1,y1,0);
+			GLKVector3	f = GLKVector3Make(x2,y1,0);
+			GLKVector3	g = GLKVector3Make(x2,y2,0);
+			GLKVector3	h = GLKVector3Make(x1,y2,0);
 
-			ccVertex3F l2[4] = { e, f, g, h };
+			GLKVector3 l2[4] = { e, f, g, h };
 
 			int tex1[4] = { a*2, b*2, c*2, d*2 };
 			CGPoint tex2[4] = { ccp(x1, y1), ccp(x2, y1), ccp(x2, y2), ccp(x1, y2) };
@@ -363,30 +363,30 @@
 		}
 	}
 
-	memcpy(originalVertices, vertices, (gridSize_.x+1)*(gridSize_.y+1)*sizeof(ccVertex3F));
+	memcpy(originalVertices, vertices, (gridSize_.x+1)*(gridSize_.y+1)*sizeof(GLKVector3));
 }
 
--(ccVertex3F)vertex:(ccGridSize)pos
+-(GLKVector3)vertex:(ccGridSize)pos
 {
 	NSInteger index = (pos.x * (gridSize_.y+1) + pos.y) * 3;
 	float *vertArray = (float *)vertices;
 
-	ccVertex3F	vert = { vertArray[index], vertArray[index+1], vertArray[index+2] };
+	GLKVector3	vert = GLKVector3Make( vertArray[index], vertArray[index+1], vertArray[index+2] );
 
 	return vert;
 }
 
--(ccVertex3F)originalVertex:(ccGridSize)pos
+-(GLKVector3)originalVertex:(ccGridSize)pos
 {
 	NSInteger index = (pos.x * (gridSize_.y+1) + pos.y) * 3;
 	float *vertArray = (float *)originalVertices;
 
-	ccVertex3F	vert = { vertArray[index], vertArray[index+1], vertArray[index+2] };
+	GLKVector3	vert = GLKVector3Make( vertArray[index], vertArray[index+1], vertArray[index+2] );
 
 	return vert;
 }
 
--(void)setVertex:(ccGridSize)pos vertex:(ccVertex3F)vertex
+-(void)setVertex:(ccGridSize)pos vertex:(GLKVector3)vertex
 {
 	NSInteger index = (pos.x * (gridSize_.y+1) + pos.y) * 3;
 	float *vertArray = (float *)vertices;
@@ -399,7 +399,7 @@
 {
 	if ( reuseGrid_ > 0 )
 	{
-		memcpy(originalVertices, vertices, (gridSize_.x+1)*(gridSize_.y+1)*sizeof(ccVertex3F));
+		memcpy(originalVertices, vertices, (gridSize_.x+1)*(gridSize_.y+1)*sizeof(GLKVector3));
 		reuseGrid_--;
 	}
 }
@@ -459,9 +459,9 @@
 	if (texCoordinates) free(texCoordinates);
 	if (indices) free(indices);
 
-	vertices = malloc(numQuads*4*sizeof(ccVertex3F));
-	originalVertices = malloc(numQuads*4*sizeof(ccVertex3F));
-	texCoordinates = malloc(numQuads*4*sizeof(ccVertex2F));
+	vertices = malloc(numQuads*4*sizeof(GLKVector3));
+	originalVertices = malloc(numQuads*4*sizeof(GLKVector3));
+	texCoordinates = malloc(numQuads*4*sizeof(GLKVector2));
 	indices = malloc(numQuads*6*sizeof(GLushort));
 
 	GLfloat *vertArray = (GLfloat*)vertices;

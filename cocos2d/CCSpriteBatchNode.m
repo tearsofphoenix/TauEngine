@@ -88,7 +88,7 @@ static const NSUInteger defaultCapacity = 29;
 		_children = CFArrayCreateMutable(CFAllocatorGetDefault(), capacity, NULL);
 		_descendants = CFArrayCreateMutable(CFAllocatorGetDefault(), capacity, NULL);
         
-		self.shaderProgram = CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor);
+		[self setShaderProgram: CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor)];
 	}
     
 	return self;

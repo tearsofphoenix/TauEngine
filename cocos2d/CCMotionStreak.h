@@ -51,7 +51,7 @@
     float *pointState_;
 
     // Opengl
-    ccVertex2F *vertices_;
+    GLKVector2 *vertices_;
     unsigned char *colorPointer_;
     ccTex2F *texCoords_;
 

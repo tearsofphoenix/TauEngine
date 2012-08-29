@@ -122,25 +122,25 @@
 		g = [[dictionary valueForKey:@"startColorGreen"] floatValue];
 		b = [[dictionary valueForKey:@"startColorBlue"] floatValue];
 		a = [[dictionary valueForKey:@"startColorAlpha"] floatValue];
-		startColor = (ccColor4F) {r,g,b,a};
+		startColor = GLKVector4Make(r,g,b,a);
 
 		r = [[dictionary valueForKey:@"startColorVarianceRed"] floatValue];
 		g = [[dictionary valueForKey:@"startColorVarianceGreen"] floatValue];
 		b = [[dictionary valueForKey:@"startColorVarianceBlue"] floatValue];
 		a = [[dictionary valueForKey:@"startColorVarianceAlpha"] floatValue];
-		startColorVar = (ccColor4F) {r,g,b,a};
+		startColorVar = GLKVector4Make(r,g,b,a);
 
 		r = [[dictionary valueForKey:@"finishColorRed"] floatValue];
 		g = [[dictionary valueForKey:@"finishColorGreen"] floatValue];
 		b = [[dictionary valueForKey:@"finishColorBlue"] floatValue];
 		a = [[dictionary valueForKey:@"finishColorAlpha"] floatValue];
-		endColor = (ccColor4F) {r,g,b,a};
+		endColor = GLKVector4Make(r,g,b,a);
 
 		r = [[dictionary valueForKey:@"finishColorVarianceRed"] floatValue];
 		g = [[dictionary valueForKey:@"finishColorVarianceGreen"] floatValue];
 		b = [[dictionary valueForKey:@"finishColorVarianceBlue"] floatValue];
 		a = [[dictionary valueForKey:@"finishColorVarianceAlpha"] floatValue];
-		endColorVar = (ccColor4F) {r,g,b,a};
+		endColorVar = GLKVector4Make(r,g,b,a);
 
 		// particle size
 		startSize = [[dictionary valueForKey:@"startParticleSize"] floatValue];
@@ -341,13 +341,13 @@
 	particle->pos.y = sourcePosition.y + posVar.y * CCRANDOM_MINUS1_1();
 
 	// Color
-	ccColor4F start;
+	GLKVector4 start;
 	start.r = clampf( startColor.r + startColorVar.r * CCRANDOM_MINUS1_1(), 0, 1);
 	start.g = clampf( startColor.g + startColorVar.g * CCRANDOM_MINUS1_1(), 0, 1);
 	start.b = clampf( startColor.b + startColorVar.b * CCRANDOM_MINUS1_1(), 0, 1);
 	start.a = clampf( startColor.a + startColorVar.a * CCRANDOM_MINUS1_1(), 0, 1);
 
-	ccColor4F end;
+	GLKVector4 end;
 	end.r = clampf( endColor.r + endColorVar.r * CCRANDOM_MINUS1_1(), 0, 1);
 	end.g = clampf( endColor.g + endColorVar.g * CCRANDOM_MINUS1_1(), 0, 1);
 	end.b = clampf( endColor.b + endColorVar.b * CCRANDOM_MINUS1_1(), 0, 1);

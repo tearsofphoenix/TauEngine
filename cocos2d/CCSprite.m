@@ -83,7 +83,7 @@
 	if( (self = [super init]) )
 	{
 		// shader program
-		self.shaderProgram = CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor);
+		[self setShaderProgram: CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor)];
         
 		dirty_ = recursiveDirty_ = NO;
         
@@ -232,10 +232,10 @@
 		float y1 = offsetPosition_.y;
 		float x2 = x1 + rect_.size.width;
 		float y2 = y1 + rect_.size.height;
-		quad_.bl.vertices = (ccVertex3F) { x1, y1, 0 };
-		quad_.br.vertices = (ccVertex3F) { x2, y1, 0 };
-		quad_.tl.vertices = (ccVertex3F) { x1, y2, 0 };
-		quad_.tr.vertices = (ccVertex3F) { x2, y2, 0 };
+		quad_.bl.vertices = GLKVector3Make( x1, y1, 0 );
+		quad_.br.vertices = GLKVector3Make( x2, y1, 0 );
+		quad_.tl.vertices = GLKVector3Make( x1, y2, 0 );
+		quad_.tr.vertices = GLKVector3Make( x2, y2, 0 );
         
 	} else {
         
@@ -287,10 +287,10 @@
 		float y2 = y1 + rect_.size.height;
         
 		// Don't update Z.
-		quad_.bl.vertices = (ccVertex3F) { x1, y1, 0 };
-		quad_.br.vertices = (ccVertex3F) { x2, y1, 0 };
-		quad_.tl.vertices = (ccVertex3F) { x1, y2, 0 };
-		quad_.tr.vertices = (ccVertex3F) { x2, y2, 0 };
+		quad_.bl.vertices = GLKVector3Make( x1, y1, 0 );
+		quad_.br.vertices = GLKVector3Make( x2, y1, 0 );
+		quad_.tl.vertices = GLKVector3Make( x1, y2, 0 );
+		quad_.tr.vertices = GLKVector3Make( x2, y2, 0 );
 	}
 }
 
@@ -381,7 +381,7 @@
 		// If it is not visible, or one of its ancestors is not visible, then do nothing:
 		if( !_visible || ( parentNode && parentNode != batchNode_ && ((CCSprite*)parentNode)->shouldBeHidden_) )
         {
-			quad_.br.vertices = quad_.tl.vertices = quad_.tr.vertices = quad_.bl.vertices = (ccVertex3F){0,0,0};
+			quad_.br.vertices = quad_.tl.vertices = quad_.tr.vertices = quad_.bl.vertices = GLKVector3Make(0,0,0);
 			shouldBeHidden_ = YES;
             
 		}else
@@ -431,10 +431,10 @@
             
             CGFloat vertexZ = [self vertexZ];
             
-			quad_.bl.vertices = (ccVertex3F) { RENDER_IN_SUBPIXEL(ax), RENDER_IN_SUBPIXEL(ay), vertexZ };
-			quad_.br.vertices = (ccVertex3F) { RENDER_IN_SUBPIXEL(bx), RENDER_IN_SUBPIXEL(by), vertexZ };
-			quad_.tl.vertices = (ccVertex3F) { RENDER_IN_SUBPIXEL(dx), RENDER_IN_SUBPIXEL(dy), vertexZ };
-			quad_.tr.vertices = (ccVertex3F) { RENDER_IN_SUBPIXEL(cx), RENDER_IN_SUBPIXEL(cy), vertexZ };
+			quad_.bl.vertices = GLKVector3Make( RENDER_IN_SUBPIXEL(ax), RENDER_IN_SUBPIXEL(ay), vertexZ );
+			quad_.br.vertices = GLKVector3Make( RENDER_IN_SUBPIXEL(bx), RENDER_IN_SUBPIXEL(by), vertexZ );
+			quad_.tl.vertices = GLKVector3Make( RENDER_IN_SUBPIXEL(dx), RENDER_IN_SUBPIXEL(dy), vertexZ );
+			quad_.tr.vertices = GLKVector3Make( RENDER_IN_SUBPIXEL(cx), RENDER_IN_SUBPIXEL(cy), vertexZ );
 		}
         
 		[_textureAtlas updateQuad:&quad_ atIndex:atlasIndex_];

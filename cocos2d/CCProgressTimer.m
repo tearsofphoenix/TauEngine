@@ -87,7 +87,7 @@ const char kCCProgressTextureCoords = 0x4b;
 		self.sprite = sprite;
     
 		// shader program
-		self.shaderProgram = CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor);
+		[self setShaderProgram: CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor)];
 	}
 	return self;
 }
@@ -195,15 +195,16 @@ const char kCCProgressTextureCoords = 0x4b;
 	return (ccTex2F){min.x * (1.f - alpha.x) + max.x * alpha.x, min.y * (1.f - alpha.y) + max.y * alpha.y};
 }
 
--(ccVertex2F)vertexFromAlphaPoint:(CGPoint) alpha
+-(GLKVector2)vertexFromAlphaPoint:(CGPoint) alpha
 {
-	if (!sprite_) {
-		return (ccVertex2F){0.f, 0.f};
+	if (!sprite_)
+    {
+		return GLKVector2Make(0.f, 0.f);
 	}
 	ccV3F_C4B_T2F_Quad quad = sprite_.quad;
 	CGPoint min = (CGPoint){quad.bl.vertices.x,quad.bl.vertices.y};
 	CGPoint max = (CGPoint){quad.tr.vertices.x,quad.tr.vertices.y};
-	return (ccVertex2F){min.x * (1.f - alpha.x) + max.x * alpha.x, min.y * (1.f - alpha.y) + max.y * alpha.y};
+	return GLKVector2Make(min.x * (1.f - alpha.x) + max.x * alpha.x, min.y * (1.f - alpha.y) + max.y * alpha.y);
 }
 
 -(void)updateColor

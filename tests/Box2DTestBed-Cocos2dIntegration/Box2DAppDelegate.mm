@@ -12,6 +12,7 @@
 
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "Box2DAppDelegate.h"
 #import "Box2DView.h"
 #import "cocos2d.h"
@@ -64,6 +65,8 @@
                                   )
                      completion: (^(BOOL finished)
                                   {
+                                      NSLog(@"%@", [[entriesView layer] presentationLayer]);
+
                                       printf("\t\t\t%f\n", [NSDate timeIntervalSinceReferenceDate]);
                                       printf("\t\t\tfinished\n");
                                   })];

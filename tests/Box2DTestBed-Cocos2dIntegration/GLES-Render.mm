@@ -55,7 +55,7 @@ void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, c
     CCGLProgramUse(mShaderProgram);
     CCGLProgramUniformForModelViewProjectionMatrix(mShaderProgram);
 
-	ccVertex2F vertices[vertexCount];
+	GLKVector2 vertices[vertexCount];
 
 	for( int i=0;i<vertexCount;i++) {
 		b2Vec2 tmp = old_vertices[i];
@@ -79,7 +79,7 @@ void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int32 vertexCou
     CCGLProgramUse(mShaderProgram);
     CCGLProgramUniformForModelViewProjectionMatrix(mShaderProgram);
 
-	ccVertex2F vertices[vertexCount];
+	GLKVector2 vertices[vertexCount];
 
 	for( int i=0;i<vertexCount;i++) {
 		b2Vec2 tmp = old_vertices[i];

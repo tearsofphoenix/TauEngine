@@ -76,7 +76,7 @@
         pointState_ = malloc(sizeof(float) * maxPoints_);
         pointVertexes_ = malloc(sizeof(CGPoint) * maxPoints_);
 
-        vertices_ = malloc(sizeof(ccVertex2F) * maxPoints_ * 2);
+        vertices_ = malloc(sizeof(GLKVector2) * maxPoints_ * 2);
         texCoords_ = malloc(sizeof(ccTex2F) * maxPoints_ * 2);
         colorPointer_ =  malloc(sizeof(GLubyte) * maxPoints_ * 2 * 4);
 
@@ -85,7 +85,7 @@
 		_blendFunc.dst = GL_ONE_MINUS_SRC_ALPHA;
 
 		// shader program
-		self.shaderProgram = CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor);
+		[self setShaderProgram: CCShaderCacheGetProgramByName(kCCShader_PositionTextureColor)];
 
         [self setTexture: texture];
         [self setColor: color];

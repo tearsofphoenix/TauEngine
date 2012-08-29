@@ -86,10 +86,10 @@
 // hAlignment, vAligment, lineBreakMode
 - (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment lineBreakMode:(UILineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size
 {
-	if( (self=[super init]) ) {
-
+	if( (self=[super init]) )
+    {
 		// shader program
-		self.shaderProgram = CCShaderCacheGetProgramByName(SHADER_PROGRAM);
+		[self setShaderProgram: CCShaderCacheGetProgramByName(SHADER_PROGRAM)];
 
 		dimensions_ = dimensions;
 		hAlignment_ = alignment;

@@ -29,8 +29,9 @@
 
 #import <unistd.h>
 #import <sys/time.h>
-// cocos2d imports
+
 #import "CCDirector.h"
+#import "VEContext.h"
 #import "CCScheduler.h"
 #import "CCActionManager.h"
 #import "CCTextureCache.h"
@@ -176,6 +177,8 @@ static CCDirector *_sharedDirector = nil;
                                      paused: NO];
 
 		winSizeInPixels_ = winSizeInPoints_ = CGSizeZero;
+        
+        _renderContext = [[VEContext alloc] init];
 	}
 
 	return self;
