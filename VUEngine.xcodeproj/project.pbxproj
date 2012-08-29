@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		228C95B615EDE39F00CE9EB1 /* VEAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 228C95B415EDE39F00CE9EB1 /* VEAnimation.h */; };
+		228C95B715EDE39F00CE9EB1 /* VEAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95B515EDE39F00CE9EB1 /* VEAnimation.m */; };
+		228C95BC15EDE65900CE9EB1 /* VEMediaTimingFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 228C95BA15EDE65800CE9EB1 /* VEMediaTimingFunction.h */; };
+		228C95BD15EDE65900CE9EB1 /* VEMediaTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95BB15EDE65800CE9EB1 /* VEMediaTimingFunction.m */; };
+		228C95BF15EE223400CE9EB1 /* VEMediaTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95BE15EE1C9400CE9EB1 /* VEMediaTiming.m */; };
+		228C95C215EE22E800CE9EB1 /* VEValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 228C95C015EE22E700CE9EB1 /* VEValueFunction.h */; };
+		228C95C315EE22E800CE9EB1 /* VEValueFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95C115EE22E800CE9EB1 /* VEValueFunction.m */; };
 		50010EC7103B3DB80059EC2E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		50010EC8103B3DB80059EC2E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		50010EC9103B3DB80059EC2E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
@@ -271,7 +278,6 @@
 		E02BB587126CA73F006E46A2 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = E02BB581126CA73F006E46A2 /* Icon-Small-50.png */; };
 		E02BB588126CA73F006E46A2 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = E02BB582126CA73F006E46A2 /* Icon-72.png */; };
 		E02BB5A1126CA73F006E46A2 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = E02BB57D126CA73F006E46A2 /* iTunesArtwork */; };
-		E02BB5A2126CA73F006E46A2 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E02BB57E126CA73F006E46A2 /* Icon@2x.png */; };
 		E02BB5A3126CA73F006E46A2 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E02BB57F126CA73F006E46A2 /* Icon-Small@2x.png */; };
 		E02BB5A4126CA73F006E46A2 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = E02BB580126CA73F006E46A2 /* Icon-Small.png */; };
 		E02BB5A5126CA73F006E46A2 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = E02BB581126CA73F006E46A2 /* Icon-Small-50.png */; };
@@ -377,6 +383,14 @@
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		228C95B415EDE39F00CE9EB1 /* VEAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEAnimation.h; sourceTree = "<group>"; };
+		228C95B515EDE39F00CE9EB1 /* VEAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEAnimation.m; sourceTree = "<group>"; };
+		228C95B915EDE5B800CE9EB1 /* VEMediaTiming.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VEMediaTiming.h; sourceTree = "<group>"; };
+		228C95BA15EDE65800CE9EB1 /* VEMediaTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEMediaTimingFunction.h; sourceTree = "<group>"; };
+		228C95BB15EDE65800CE9EB1 /* VEMediaTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEMediaTimingFunction.m; sourceTree = "<group>"; };
+		228C95BE15EE1C9400CE9EB1 /* VEMediaTiming.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VEMediaTiming.m; sourceTree = "<group>"; };
+		228C95C015EE22E700CE9EB1 /* VEValueFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEValueFunction.h; sourceTree = "<group>"; };
+		228C95C115EE22E800CE9EB1 /* VEValueFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEValueFunction.m; sourceTree = "<group>"; };
 		2D500B920D5A79C200DBA0E3 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		2D500B990D5A79CF00DBA0E3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		50010ED2103B3DB80059EC2E /* Box2dTestBed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Box2dTestBed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -824,6 +838,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		228C95B815EDE59F00CE9EB1 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				228C95B415EDE39F00CE9EB1 /* VEAnimation.h */,
+				228C95B515EDE39F00CE9EB1 /* VEAnimation.m */,
+				228C95B915EDE5B800CE9EB1 /* VEMediaTiming.h */,
+				228C95BE15EE1C9400CE9EB1 /* VEMediaTiming.m */,
+				228C95BA15EDE65800CE9EB1 /* VEMediaTimingFunction.h */,
+				228C95BB15EDE65800CE9EB1 /* VEMediaTimingFunction.m */,
+				228C95C015EE22E700CE9EB1 /* VEValueFunction.h */,
+				228C95C115EE22E800CE9EB1 /* VEValueFunction.m */,
+			);
+			name = Animation;
+			sourceTree = "<group>";
+		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
@@ -1032,6 +1061,7 @@
 		506414C40F9C6792007A7B24 /* Sprite & Animation Nodes */ = {
 			isa = PBXGroup;
 			children = (
+				228C95B815EDE59F00CE9EB1 /* Animation */,
 				E02BB702126CADEA006E46A2 /* CCAnimation.h */,
 				E02BB703126CADEA006E46A2 /* CCAnimation.m */,
 				E02BB6D4126CA93A006E46A2 /* CCAnimationCacheService.h */,
@@ -1607,6 +1637,9 @@
 				E1CDA48815E7D58500F93FE9 /* VEMetaService.h in Headers */,
 				E1CDA49115E7D8A800F93FE9 /* VEDataSource.h in Headers */,
 				E1CDA49E15E8A02100F93FE9 /* NVTimer.h in Headers */,
+				228C95B615EDE39F00CE9EB1 /* VEAnimation.h in Headers */,
+				228C95BC15EDE65900CE9EB1 /* VEMediaTimingFunction.h in Headers */,
+				228C95C215EE22E800CE9EB1 /* VEValueFunction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1844,7 +1877,6 @@
 				E04C646612382F9400A4B3E6 /* b1-hd.png in Resources */,
 				E04C646712382F9400A4B3E6 /* b2-hd.png in Resources */,
 				E02BB5A1126CA73F006E46A2 /* iTunesArtwork in Resources */,
-				E02BB5A2126CA73F006E46A2 /* Icon@2x.png in Resources */,
 				E02BB5A3126CA73F006E46A2 /* Icon-Small@2x.png in Resources */,
 				E02BB5A4126CA73F006E46A2 /* Icon-Small.png in Resources */,
 				E02BB5A5126CA73F006E46A2 /* Icon-Small-50.png in Resources */,
@@ -1910,6 +1942,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				228C95BF15EE223400CE9EB1 /* VEMediaTiming.m in Sources */,
 				506887F70E96D4F000F943E5 /* CCAtlasNode.m in Sources */,
 				506884D70E96921100F943E5 /* CCAtlasLabel.m in Sources */,
 				506882160E95770400F943E5 /* CCAtlasTexture.m in Sources */,
@@ -1968,6 +2001,9 @@
 				E1CDA48915E7D58500F93FE9 /* VEMetaService.m in Sources */,
 				E1CDA49215E7D8A800F93FE9 /* VEDataSource.m in Sources */,
 				E1CDA49F15E8A02100F93FE9 /* NVTimer.m in Sources */,
+				228C95B715EDE39F00CE9EB1 /* VEAnimation.m in Sources */,
+				228C95BD15EDE65900CE9EB1 /* VEMediaTimingFunction.m in Sources */,
+				228C95C315EE22E800CE9EB1 /* VEValueFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

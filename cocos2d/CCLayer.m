@@ -38,15 +38,8 @@
 #import "Support/TransformUtils.h"
 #import "Support/CGPointExtension.h"
 
-#ifdef __CC_PLATFORM_IOS
 #import "Platforms/iOS/CCTouchDispatcher.h"
 #import "Platforms/iOS/CCDirectorIOS.h"
-#elif defined(__CC_PLATFORM_MAC)
-#import "Platforms/Mac/CCEventDispatcher.h"
-#import "Platforms/Mac/CCDirectorMac.h"
-#endif
-
-// extern
 
 
 #pragma mark -
