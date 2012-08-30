@@ -42,6 +42,23 @@
 
 @property(atomic, getter=isRemovedOnCompletion) BOOL removedOnCompletion;
 
+#pragma mark - Private
+
+@property (atomic) NSTimeInterval frameInterval;
+
+- (void)CA_copyRenderValue;
+
+- (void)applyForTime: (NSTimeInterval)time
+  presentationObject: (id)presentation
+         modelObject: (id)model;
+
+@property (atomic, getter = isEnabled) BOOL enabled;
+
+- (NSUInteger)_propertyFlagsForLayer: (id)layer;
+
+- (BOOL)_setCARenderAnimation: (void *)animation
+                        layer: (id)layer;
+
 @end
 
 /* Delegate methods for VEAnimation. */
@@ -128,6 +145,12 @@
  * of the property in the render tree and that plus `byValue'. */
 
 @property (atomic, retain) id fromValue, toValue, byValue;
+
+@property (atomic) BOOL	roundsToInteger;
+
+@property (atomic) float startAngle;
+
+@property (atomic) float endAngle;
 
 @end
 

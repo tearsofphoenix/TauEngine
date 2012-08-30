@@ -13,6 +13,35 @@ typedef GLKMatrix4 (* _VEValueFunctionIMP)(GLfloat f1);
 
 typedef GLKMatrix4 (* _VEValueFunctionIMP3)(GLfloat f1, GLfloat f2, GLfloat f3);
 
+struct value_function_info_s
+{
+    void *ptr;
+    NSUInteger inputCount;
+    NSUInteger outputCount;
+    NSString * name;
+};
+
+typedef struct value_function_info_s value_function_info_t;
+
+static value_function_info_t __VEValueFunctions[] =
+{
+    {GLKMatrix4MakeXRotation, 1, 1, nil},
+    {GLKMatrix4MakeYRotation, 1, 1, nil},
+    {GLKMatrix4MakeZRotation, 1, 1, nil},
+
+    {GLKMatrix4MakeScale, 3, 1, nil},
+    {GLKMatrix4MakeScale, 3, 1, nil},
+    {GLKMatrix4MakeScale, 3, 1, nil},
+    {GLKMatrix4MakeScale, 3, 1, nil},
+
+    {GLKMatrix4MakeTranslation, 3, 1, nil},
+    {GLKMatrix4MakeTranslation, 3, 1, nil},
+    {GLKMatrix4MakeTranslation, 3, 1, nil},
+    {GLKMatrix4MakeTranslation, 3, 1, nil},
+
+};
+
+
 @interface VEValueFunction ()
 {
 @private
@@ -30,19 +59,19 @@ static NSMutableDictionary *__VEValueFunctionPointers = nil;
     
 #define VEValueFunctionCreate(func, key) [__VEValueFunctionPointers setObject: [NSValue valueWithPointer: func] forKey: key]
 
-    VEValueFunctionCreate(GLKMatrix4MakeXRotation, kVEValueFunctionRotateX);
-    VEValueFunctionCreate(GLKMatrix4MakeYRotation, kVEValueFunctionRotateY);
-    VEValueFunctionCreate(GLKMatrix4MakeZRotation, kVEValueFunctionRotateZ);
+    VEValueFunctionCreate(&__VEValueFunctions[0], kVEValueFunctionRotateX);
+    VEValueFunctionCreate(&__VEValueFunctions[1], kVEValueFunctionRotateY);
+    VEValueFunctionCreate(&__VEValueFunctions[2], kVEValueFunctionRotateZ);
 
-    VEValueFunctionCreate(GLKMatrix4MakeScale, kVEValueFunctionScale);
-    VEValueFunctionCreate(GLKMatrix4MakeScale, kVEValueFunctionScaleX);
-    VEValueFunctionCreate(GLKMatrix4MakeScale, kVEValueFunctionScaleY);
-    VEValueFunctionCreate(GLKMatrix4MakeScale, kVEValueFunctionScaleZ);
+    VEValueFunctionCreate(&__VEValueFunctions[3], kVEValueFunctionScale);
+    VEValueFunctionCreate(&__VEValueFunctions[4], kVEValueFunctionScaleX);
+    VEValueFunctionCreate(&__VEValueFunctions[5], kVEValueFunctionScaleY);
+    VEValueFunctionCreate(&__VEValueFunctions[6], kVEValueFunctionScaleZ);
 
-    VEValueFunctionCreate(GLKMatrix4MakeTranslation, kVEValueFunctionTranslate);
-    VEValueFunctionCreate(GLKMatrix4MakeTranslation, kVEValueFunctionTranslateX);
-    VEValueFunctionCreate(GLKMatrix4MakeTranslation, kVEValueFunctionTranslateY);
-    VEValueFunctionCreate(GLKMatrix4MakeTranslation, kVEValueFunctionTranslateZ);
+    VEValueFunctionCreate(&__VEValueFunctions[7], kVEValueFunctionTranslate);
+    VEValueFunctionCreate(&__VEValueFunctions[8], kVEValueFunctionTranslateX);
+    VEValueFunctionCreate(&__VEValueFunctions[9], kVEValueFunctionTranslateY);
+    VEValueFunctionCreate(&__VEValueFunctions[10], kVEValueFunctionTranslateZ);
 
 #undef VEValueFunctionCreate
 }
@@ -74,6 +103,59 @@ static NSMutableDictionary *__VEValueFunctionPointers = nil;
 {
     [aCoder encodeObject: _string
                   forKey: @"name"];
+}
+
+#pragma mark - Private Methods
+
+- (void *)CA_copyRenderValue //encoding:^{Object=^^?{Atomic={?=i}}}8@0:4
+{
+    return NULL;
+}
+
+- (BOOL)apply: (const double *)value
+       result: (double *)result
+parameterFunction: (void *)function
+      context: (void *)context
+{
+    return YES;
+}
+
+- (NSUInteger)outputCount
+{
+   return ((value_function_info_t *)_impl)->outputCount;
+}
+
+- (NSUInteger)inputCount
+{
+    return ((value_function_info_t *)_impl)->inputCount;
+}
+
+- (BOOL)apply: (const double *)value
+       result: (double *)result
+{
+    switch ([self inputCount])
+    {
+        case 1:
+        {
+            _VEValueFunctionIMP imp = ((value_function_info_t *)_impl)->ptr;
+            GLKMatrix4 matrix = imp(value[0]);
+            memcpy(result, &matrix, sizeof(matrix));
+            return YES;
+        }
+        case 3:
+        {
+            _VEValueFunctionIMP3 imp = ((value_function_info_t *)_impl)->ptr;
+            GLKMatrix4 matrix = imp(value[0], value[1], value[2]);
+            memcpy(result, &matrix, sizeof(matrix));
+            return YES;
+        }
+        default:
+        {
+            break;
+        }
+    }
+    
+    return NO;
 }
 
 @end

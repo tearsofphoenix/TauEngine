@@ -19,6 +19,22 @@
 
 @property (atomic, readonly) NSString *name;
 
+//private methods
+//
+- (void *)CA_copyRenderValue; //encoding:^{Object=^^?{Atomic={?=i}}}8@0:4
+
+- (BOOL)apply: (const double *)value
+       result: (double *)result
+parameterFunction: (void *)function
+      context: (void *)context;
+
+- (NSUInteger)outputCount;
+
+- (NSUInteger)inputCount;
+
+- (BOOL)apply: (const double *)value
+       result: (double *)result;
+
 @end
 
 /** Value function names. **/

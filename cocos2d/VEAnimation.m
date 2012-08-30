@@ -47,11 +47,18 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
     return YES;
 }
 
-@synthesize timingFunction = _timingFunction;
+#pragma mark - KVO
 
-@synthesize delegate = _delegate;
+- (void)setValue: (id)value
+      forKeyPath: (NSString *)keyPath
+{
+    
+}
 
-@synthesize removedOnCompletion = _removedOnCompletion;
+- (id)valueForKeyPath: (NSString *)keyPath
+{
+    return [super valueForKeyPath: keyPath];
+}
 
 #pragma mark - NSCoding
 
@@ -75,6 +82,29 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
 {
     id copy = [[[self class] allocWithZone: zone] init];
     return copy;
+}
+
+- (void)CA_copyRenderValue
+{
+    
+}
+
+- (void)applyForTime: (NSTimeInterval)time
+  presentationObject: (id)presentation
+         modelObject: (id)model
+{
+    
+}
+
+- (NSUInteger)_propertyFlagsForLayer: (id)layer
+{
+    return 0;
+}
+
+- (BOOL)_setCARenderAnimation: (void *)animation
+                        layer: (id)layer
+{
+    return YES;
 }
 
 #pragma mark - VEMediaTiming
@@ -138,30 +168,6 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
     return nil;
 }
 
-@synthesize keyPath;
-
-/* When true the value specified by the animation will be "added" to
- * the current presentation value of the property to produce the new
- * presentation value. The addition function is type-dependent, e.g.
- * for affine transforms the two matrices are concatenated. Defaults to
- * NO. */
-
-@synthesize additive;
-
-/* The `cumulative' property affects how repeating animations produce
- * their result. If true then the current value of the animation is the
- * value at the end of the previous repeat cycle, plus the value of the
- * current repeat cycle. If false, the value is simply the value
- * calculated for the current repeat cycle. Defaults to NO. */
-
-@synthesize cumulative;
-
-/* If non-nil a function that is applied to interpolated values
- * before they are set as the new presentation value of the animation's
- * target property. Defaults to nil. */
-
-@synthesize valueFunction;
-
 @end
 
 
@@ -192,10 +198,6 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
  *
  * - `byValue' non-nil. Interpolates between the layer's current value
  * of the property in the render tree and that plus `byValue'. */
-
-@synthesize fromValue;
-@synthesize toValue;
-@synthesize byValue;
 
 @end
 
