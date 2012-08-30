@@ -202,10 +202,7 @@
 	CCDirector *director = [CCDirector sharedDirector];
 	directorProjection_ = [director projection];
 	
-	// 2d projection
-//	[director setProjection:kCCDirectorProjection2D];
 	[self set2DProjection];
-
 	
 	[grabber_ beforeRender:texture_];
 }

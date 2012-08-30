@@ -402,52 +402,34 @@ static NSInteger globalOrderOfArrival = 1;
 	VEGLPushMatrix();
     
 	if ( _grid && _grid.active)
+    {
 		[_grid beforeDraw];
+    }
     
 	[self transform];
     
+    [self draw];
+
 	if(_children)
     {
 		[self sortAllChildren];
         
-		__block NSUInteger i = 0;
-        
-        // draw children zOrder < 0
-        
-        for (; i < CFArrayGetCount(_children); ++i)
-        {
-			CCNode *child =  CFArrayGetValueAtIndex(_children, i);
-            
-            if ([child zOrder] < 0)
-            {
-                [child renderInContext: context];
-                
-            }else
-            {
-                break;
-            }
-        }
-        
-		// self draw
-		[self draw];
-        
 		// draw children zOrder >= 0
-		for( ; i < CFArrayGetCount(_children); i++ )
+		for(CFIndex i = 0 ; i < CFArrayGetCount(_children); i++ )
         {
 			CCNode *child =  CFArrayGetValueAtIndex(_children, i);
 			[child renderInContext: context];
 		}
-        
-	} else
-    {
-		[self draw];
-    }
+                
+	}
     
 	// reset for next frame
 	_orderOfArrival = 0;
     
 	if ( _grid && _grid.active)
+    {
 		[_grid afterDraw: self];
+    }
     
 	VEGLPopMatrix();
 }

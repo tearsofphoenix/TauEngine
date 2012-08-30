@@ -218,10 +218,10 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
 	CC_INCREMENT_GL_DRAWS(1);
 }
 
-- (void)renderInContext: (VEContext *)context
-{
-    [self draw];
-}
+//- (void)renderInContext: (VEContext *)context
+//{
+//    [self draw];
+//}
 
 #pragma mark - Animation
 
