@@ -44,8 +44,16 @@
 #import "Platforms/iOS/CCTouchDispatcher.h"
 #import "Platforms/iOS/CCDirectorIOS.h"
 
+#import "VGColor.h"
 
 #pragma mark - Layer
+
+@interface CCLayer ()
+{
+@private
+    CCLayer *_presentationLayer;
+}
+@end
 
 @interface CCLayer (Private)
 
@@ -58,6 +66,18 @@
 
 static NSMutableArray *__CCLayerAnimationStack = nil;
 static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
+
+static inline void __CCLayerPushConfiguration(__VEAnimationConfiguration *config)
+{
+    [__CCLayerAnimationStack addObject: config];
+    __currentBlockAnimationConfiguration = config;
+}
+
+static inline void __CCLayerPopConfiguration(void)
+{
+    [__CCLayerAnimationStack removeLastObject];
+    __currentBlockAnimationConfiguration = nil;
+}
 
 #pragma mark Layer - Init
 
@@ -73,19 +93,24 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
 
 - (id)presentationLayer
 {
-    return nil;
+    if (!_presentationLayer)
+    {
+        //_presentationLayer = [self copy];
+    }
+    
+    return _presentationLayer;
 }
 
 - (id)modelLayer
 {
-    return nil;
+    return self;
 }
 
 
 - (id)init
 {
 	if( (self=[super init]) )
-    {        
+    {
 		_ignoreAnchorPointForPosition = YES;
         
 		_isUserInteractionEnabled = YES;
@@ -93,9 +118,9 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
 		_blendFunc = (ccBlendFunc) { GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA };
         
         _anchorPoint = ccp(0.5f, 0.5f);
-
+        
         [self setBackgroundColor: ccc4(0, 0, 0, 0)];
-
+        
         CCDirector *director = [CCDirector sharedDirector];
 		CGSize s = [director winSize];
 		[self setContentSize: s];
@@ -199,7 +224,7 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
 	}
 }
 
-- (void) draw
+- (void)draw
 {
 	CC_NODE_DRAW_SETUP();
     
@@ -249,8 +274,10 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
 {
     for (NSString *key in _animationKeys)
     {
-//        VEBasicAnimation *animation = [_animations objectForKey: key];
-//        animation
+        VEBasicAnimation *animation = [_animations objectForKey: key];
+        [animation applyForTime: dt
+             presentationObject: [self presentationLayer]
+                    modelObject: [self modelLayer]];
     }
 }
 
@@ -266,7 +293,7 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
     {
         _animations = [[NSMutableDictionary alloc] init];
     }
-
+    
     VEAnimation *copy = [anim copy];
     
     [_animationKeys addObject: key];
@@ -280,7 +307,7 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
     [[director scheduler] scheduleUpdateForTarget: self
                                          priority: CCSchedulerPriorityZero
                                            paused: NO];
-
+    
 }
 
 /* Remove all animations attached to the layer. */
@@ -323,30 +350,37 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
 {
     if (!CCColor4BEqualToColor(_backgroundColor, backgroundColor))
     {
-        [self willChangeValueForKey: @"backgroundColor"];
-
+        NSString * keyPath = @"backgroundColor";
+        [self willChangeValueForKey: keyPath];
+        
         if (__currentBlockAnimationConfiguration)
         {
             //in block animation
-            VEBasicAnimation *animation = [VEBasicAnimation animation];
+            VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
             [animation setDuration: [__currentBlockAnimationConfiguration duration]];
-            [animation setFromValue: [NSData dataWithBytes: &_backgroundColor
-                                                    length: sizeof(_backgroundColor)]];
+            [animation setFromValue: [VGColor colorWithRed: _backgroundColor.r / 255.0
+                                                     green: _backgroundColor.g / 255.0
+                                                      blue: _backgroundColor.b / 255.0
+                                                     alpha: _backgroundColor.a / 255.0]];
             
             _backgroundColor = backgroundColor;
-
-            [animation setToValue: [NSData dataWithBytes: &_backgroundColor
-                                                  length: sizeof(_backgroundColor)]];
+            
+            [animation setToValue: [VGColor colorWithRed: _backgroundColor.r / 255.0
+                                                   green: _backgroundColor.g / 255.0
+                                                    blue: _backgroundColor.b / 255.0
+                                                   alpha: _backgroundColor.a / 255.0]];
             
             [self addAnimation: animation
-                        forKey: @"backgroundColor"];
-
+                        forKey: keyPath];
+            
+            __CCLayerPopConfiguration();
+            
         }else
         {
             _backgroundColor = backgroundColor;
         }
         
-        [self didChangeValueForKey: @"backgroundColor"];
+        [self didChangeValueForKey: keyPath];
         
         [self updateColor];
     }
@@ -371,6 +405,9 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
     return _backgroundColor.a;
 }
 
+#pragma mark - animation
+
+
 + (void)_setupAnimationWithDuration: (NSTimeInterval)duration
                               delay: (NSTimeInterval)delay
                                view: (CCLayer *)layer
@@ -388,14 +425,13 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
     {
         __VEAnimationConfiguration *configuration = [[__VEAnimationConfiguration alloc] init];
         [configuration setDuration: duration];
-        [configuration setDuration: delay];
-        [configuration setOptions: options];
+        [configuration setDelay: delay];
+        //[configuration setOptions: options];
         [configuration setAnimations: animations];
         [configuration setStart: start];
         [configuration setCompletion: completion];
         
-        [__CCLayerAnimationStack addObject: configuration];
-        __currentBlockAnimationConfiguration = configuration;
+        __CCLayerPushConfiguration(configuration);
         
         [configuration release];
         
@@ -517,18 +553,18 @@ static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
 	float opacityf = _backgroundColor.a / 255.0f;
     
     GLKVector4 S = GLKVector4Make(
-		_backgroundColor.r / 255.0f,
-		_backgroundColor.g / 255.0f,
-		_backgroundColor.b / 255.0f,
-		startOpacity_ * opacityf / 255.0f
-	);
+                                  _backgroundColor.r / 255.0f,
+                                  _backgroundColor.g / 255.0f,
+                                  _backgroundColor.b / 255.0f,
+                                  startOpacity_ * opacityf / 255.0f
+                                  );
     
     GLKVector4 E = GLKVector4Make(
-		endColor_.r / 255.0f,
-		endColor_.g / 255.0f,
-		endColor_.b / 255.0f,
-		endOpacity_*opacityf / 255.0f
-	);
+                                  endColor_.r / 255.0f,
+                                  endColor_.g / 255.0f,
+                                  endColor_.b / 255.0f,
+                                  endOpacity_*opacityf / 255.0f
+                                  );
     
     
     // (-1, -1)

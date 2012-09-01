@@ -31,6 +31,8 @@
 
 @property (atomic, retain) VEMediaTimingFunction *timingFunction;
 
+@property (atomic) NSTimeInterval elapsed;
+
 /* The delegate of the animation. This object is retained for the
  * lifetime of the animation object. Defaults to nil. See below for the
  * supported delegate methods. */
@@ -319,7 +321,7 @@ CF_EXPORT NSString * const kVETransitionFromBottom
 
 @property (nonatomic) NSTimeInterval delay;
 
-@property (nonatomic) UIViewAnimationOptions options;
+//@property (nonatomic) UIViewAnimationOptions options;
 
 @property (nonatomic, copy) dispatch_block_t start;
 

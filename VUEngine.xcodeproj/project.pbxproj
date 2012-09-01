@@ -14,6 +14,10 @@
 		228C95BF15EE223400CE9EB1 /* VEMediaTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95BE15EE1C9400CE9EB1 /* VEMediaTiming.m */; };
 		228C95C215EE22E800CE9EB1 /* VEValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 228C95C015EE22E700CE9EB1 /* VEValueFunction.h */; };
 		228C95C315EE22E800CE9EB1 /* VEValueFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95C115EE22E800CE9EB1 /* VEValueFunction.m */; };
+		22923B9B15F0AD19007F5275 /* VGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 22923B9915F0AD19007F5275 /* VGColor.h */; };
+		22923B9C15F0AD19007F5275 /* VGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 22923B9A15F0AD19007F5275 /* VGColor.m */; };
+		22923BA415F0B802007F5275 /* VEBlockAnimationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22923BA215F0B802007F5275 /* VEBlockAnimationDelegate.h */; };
+		22923BA515F0B802007F5275 /* VEBlockAnimationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22923BA315F0B802007F5275 /* VEBlockAnimationDelegate.m */; };
 		50010EC7103B3DB80059EC2E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		50010EC8103B3DB80059EC2E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		50010EC9103B3DB80059EC2E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
@@ -393,6 +397,10 @@
 		228C95BE15EE1C9400CE9EB1 /* VEMediaTiming.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VEMediaTiming.m; sourceTree = "<group>"; };
 		228C95C015EE22E700CE9EB1 /* VEValueFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEValueFunction.h; sourceTree = "<group>"; };
 		228C95C115EE22E800CE9EB1 /* VEValueFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEValueFunction.m; sourceTree = "<group>"; };
+		22923B9915F0AD19007F5275 /* VGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGColor.h; sourceTree = "<group>"; };
+		22923B9A15F0AD19007F5275 /* VGColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGColor.m; sourceTree = "<group>"; };
+		22923BA215F0B802007F5275 /* VEBlockAnimationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEBlockAnimationDelegate.h; sourceTree = "<group>"; };
+		22923BA315F0B802007F5275 /* VEBlockAnimationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEBlockAnimationDelegate.m; sourceTree = "<group>"; };
 		2D500B920D5A79C200DBA0E3 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		2D500B990D5A79CF00DBA0E3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		50010ED2103B3DB80059EC2E /* Box2dTestBed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Box2dTestBed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1060,6 +1068,10 @@
 				5018F2610DFDEAFF00C013A5 /* CCScene.m */,
 				E1E5BCAC15EE7F6900077D98 /* VEContext.h */,
 				E1E5BCAD15EE7F6900077D98 /* VEContext.m */,
+				22923B9915F0AD19007F5275 /* VGColor.h */,
+				22923B9A15F0AD19007F5275 /* VGColor.m */,
+				22923BA215F0B802007F5275 /* VEBlockAnimationDelegate.h */,
+				22923BA315F0B802007F5275 /* VEBlockAnimationDelegate.m */,
 			);
 			name = "Layers, Scenes, Transitions Nodes";
 			sourceTree = "<group>";
@@ -1647,6 +1659,8 @@
 				228C95BC15EDE65900CE9EB1 /* VEMediaTimingFunction.h in Headers */,
 				228C95C215EE22E800CE9EB1 /* VEValueFunction.h in Headers */,
 				E1E5BCAE15EE7F6900077D98 /* VEContext.h in Headers */,
+				22923B9B15F0AD19007F5275 /* VGColor.h in Headers */,
+				22923BA415F0B802007F5275 /* VEBlockAnimationDelegate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2012,6 +2026,8 @@
 				228C95BD15EDE65900CE9EB1 /* VEMediaTimingFunction.m in Sources */,
 				228C95C315EE22E800CE9EB1 /* VEValueFunction.m in Sources */,
 				E1E5BCAF15EE7F6900077D98 /* VEContext.m in Sources */,
+				22923B9C15F0AD19007F5275 /* VGColor.m in Sources */,
+				22923BA515F0B802007F5275 /* VEBlockAnimationDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

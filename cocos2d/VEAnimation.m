@@ -7,6 +7,10 @@
 //
 #import <UIKit/UIKit.h>
 #import "VEAnimation.h"
+#import "VEMediaTimingFunction.h"
+#import "ccTypes.h"
+#import "VGColor.h"
+#import "CCLayer.h"
 
 @implementation VEAnimation
 
@@ -118,6 +122,14 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
 
 @synthesize duration = _duration;
 
+- (void)setDuration: (CFTimeInterval)duration
+{
+    if (_duration != duration)
+    {
+        _duration = MAX(duration, 0.25) ;
+    }
+}
+
 /* The rate of the layer. Used to scale parent time to local time, e.g.
  * if rate is 2, local time progresses twice as fast as parent time.
  * Defaults to 1. */
@@ -165,7 +177,19 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
 
 + (id)animationWithKeyPath:(NSString *)path
 {
-    return nil;
+    id newAnimation = [[self alloc] init];
+    [newAnimation setKeyPath: path];
+    return [newAnimation autorelease];
+}
+
+@synthesize keyPath;
+
+- (id)copyWithZone: (NSZone *)zone
+{
+    id copy = [[[self class] allocWithZone: zone] init];
+    [copy setKeyPath: keyPath];
+    
+    return copy;
 }
 
 @end
@@ -173,7 +197,65 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
 
 /** Subclass for basic (single-keyframe) animations. **/
 
+
 @implementation VEBasicAnimation
+
+@synthesize fromValue;
+@synthesize toValue;
+@synthesize byValue;
+
+- (id)copyWithZone: (NSZone *)zone
+{
+    id copy = [[[self class] allocWithZone: zone] init];
+    
+    [copy setKeyPath: [self keyPath]];
+    
+    [copy setFromValue: fromValue];
+    [copy setToValue: toValue];
+    [copy setByValue: byValue];
+    [copy setDuration: [self duration]];
+    
+    return copy;
+}
+
+typedef void (* VEBasicAnimationProcessor)(VEBasicAnimation *animation, CCLayer *layer, id value1, id value2, VEMediaTimingFunction *f, NSTimeInterval elapsed);
+
+static void _VEAnimationColorProcessor(VEBasicAnimation *animation, CCLayer *layer, VGColor *value1, VGColor *value2, VEMediaTimingFunction *function, NSTimeInterval elapsed)
+{
+    ccColor4B colo1 = [value1 CCColor];
+    ccColor4B color2 = [value2 CCColor];
+    
+    float percent = elapsed / [animation duration];
+    size_t pointIndex = percent * 4 + 1;
+    float controlPoints[2];
+    [function getControlPointAtIndex: pointIndex
+                              values: controlPoints];
+    
+    ccColor4B color;
+    
+    color.r = colo1.r + (color2.r - colo1.r) * percent;
+    color.g = colo1.g + (color2.g - colo1.g) * percent;
+    color.b = colo1.b + (color2.b - colo1.b) * percent;
+    color.a = colo1.a + (color2.a - colo1.a) * percent;
+    
+    [layer setBackgroundColor: color];
+}
+
+static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
+
++ (void)initialize
+{
+    if (!__VEBasicAnimationProcessors)
+    {
+        __VEBasicAnimationProcessors = [[NSMutableDictionary alloc] initWithCapacity: 16];
+        
+#define VEAnimationProcessStore(ptr, name) [__VEBasicAnimationProcessors setObject: [NSValue valueWithPointer: ptr] forKey: name]
+        
+        VEAnimationProcessStore(_VEAnimationColorProcessor, @"backgroundColor");
+        
+#undef VEAnimationProcessStore
+    }
+}
 
 /* The objects defining the property values being interpolated between.
  * All are optional, and no more than two should be non-nil. The object
@@ -198,6 +280,76 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
  *
  * - `byValue' non-nil. Interpolates between the layer's current value
  * of the property in the render tree and that plus `byValue'. */
+
+
+- (void)applyForTime: (NSTimeInterval)time
+  presentationObject: (id)presentation
+         modelObject: (id)model
+{
+    NSString *keyPath = [self keyPath];
+    
+    VEBasicAnimationProcessor funPtr = [[__VEBasicAnimationProcessors objectForKey: keyPath] pointerValue];
+    if (funPtr)
+    {
+        
+        if (fromValue && toValue)
+        {
+            NSTimeInterval elapsed = [self elapsed];
+            if (elapsed == 0 )
+            {
+                id delegate = [self delegate];
+                if ([delegate respondsToSelector: @selector(animationDidStart:)])
+                {
+                    [delegate animationDidStart: self];
+                }
+            }
+            
+            funPtr(self, model, fromValue, toValue, [self timingFunction], elapsed);
+            
+            elapsed += time;
+            
+            [self setElapsed: elapsed];
+            if (elapsed >= [self duration] && [self isRemovedOnCompletion])
+            {
+                [model removeAnimationForKey: keyPath];
+                
+                id delegate = [self delegate];
+                if ([delegate respondsToSelector: @selector(animationDidStop:finished:)])
+                {
+                    [delegate animationDidStop: self
+                                      finished: YES];
+                }
+            }
+            
+            return;
+        }
+        
+        if (fromValue && byValue)
+        {
+            return;
+        }
+        
+        if (byValue && toValue)
+        {
+            return;
+        }
+        
+        if (fromValue)
+        {
+            return;
+        }
+        
+        if (toValue)
+        {
+            return;
+        }
+        
+        if (byValue)
+        {
+            return;
+        }
+    }
+}
 
 @end
 
@@ -274,25 +426,25 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
 
 /* `calculationMode' strings. */
 
- NSString * const kVEAnimationLinear = @"kVEAnimationLinear";
+NSString * const kVEAnimationLinear = @"kVEAnimationLinear";
 
- NSString * const kVEAnimationDiscrete = @"kVEAnimationDiscrete";
+NSString * const kVEAnimationDiscrete = @"kVEAnimationDiscrete";
 
- NSString * const kVEAnimationPaced = @"kVEAnimationPaced";
+NSString * const kVEAnimationPaced = @"kVEAnimationPaced";
 
- NSString * const kVEAnimationCubic = @"kVEAnimationCubic";
+NSString * const kVEAnimationCubic = @"kVEAnimationCubic";
 
- NSString * const kVEAnimationCubicPaced = @"kVEAnimationCubicPaced";
+NSString * const kVEAnimationCubicPaced = @"kVEAnimationCubicPaced";
 
 /* `rotationMode' strings. */
 
- NSString * const kVEAnimationRotateAuto = @"kVEAnimationRotateAuto";
+NSString * const kVEAnimationRotateAuto = @"kVEAnimationRotateAuto";
 
- NSString * const kVEAnimationRotateAutoReverse = @"kVEAnimationRotateAutoReverse";
+NSString * const kVEAnimationRotateAutoReverse = @"kVEAnimationRotateAutoReverse";
 
 /** Transition animation subclass. **/
 
-@implementation VETransition 
+@implementation VETransition
 
 /* The name of the transition. Current legal transition types include
  * `fade', `moveIn', `push' and `reveal'. Defaults to `fade'. */
@@ -326,24 +478,24 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
 
 /* Common transition types. */
 
- NSString * const kVETransitionFade = @"kVETransitionFade"
+NSString * const kVETransitionFade = @"kVETransitionFade"
 ;
- NSString * const kVETransitionMoveIn = @"kVETransitionMoveIn"
+NSString * const kVETransitionMoveIn = @"kVETransitionMoveIn"
 ;
- NSString * const kVETransitionPush = @"kVETransitionPush"
+NSString * const kVETransitionPush = @"kVETransitionPush"
 ;
- NSString * const kVETransitionReveal = @"kVETransitionReveal"
+NSString * const kVETransitionReveal = @"kVETransitionReveal"
 ;
 
 /* Common transition subtypes. */
 
- NSString * const kVETransitionFromRight = @"kVETransitionFromRight"
+NSString * const kVETransitionFromRight = @"kVETransitionFromRight"
 ;
- NSString * const kVETransitionFromLeft = @"kVETransitionFromLeft"
+NSString * const kVETransitionFromLeft = @"kVETransitionFromLeft"
 ;
- NSString * const kVETransitionFromTop = @"kVETransitionFromTop"
+NSString * const kVETransitionFromTop = @"kVETransitionFromTop"
 ;
- NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
+NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 ;
 
 
@@ -366,7 +518,7 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
 
 @synthesize delay;
 
-@synthesize options;
+//@synthesize options;
 
 @synthesize start;
 

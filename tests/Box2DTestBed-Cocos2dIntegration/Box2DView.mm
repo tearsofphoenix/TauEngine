@@ -42,7 +42,8 @@ Settings settings;
         
         _box2DNode = view;
         
-		[self addChild:view z:0];
+		[self addChild: view
+                     z: 0];
 		[view setScale:15];
 		[view setAnchorPoint:ccp(0,0)];
 		[view setPosition:ccp(s.width/2, s.height/3)];
@@ -88,6 +89,16 @@ Settings settings;
 		[self addChild: menu z:1];
         
         [menu release];
+        
+        [CCLayer animateWithDuration: 2.0
+                          animations: (^
+                                       {
+                                           [view setBackgroundColor: ccBLUE];
+                                       })
+                          completion: (^(BOOL finished)
+                                       {
+                                           [view setBackgroundColor: ccBLACK];
+                                       })];
 	}
 	return self;
 }
@@ -191,7 +202,7 @@ Settings settings;
 	id box = [MenuLayer menuWithEntryID: next];
 	[s addChild: box];
 	[[CCDirector sharedDirector] replaceScene: s];
-
+    
 }
 
 @end
