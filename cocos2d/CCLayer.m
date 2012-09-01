@@ -243,10 +243,6 @@ static inline void __CCLayerPopConfiguration(void)
 	CC_INCREMENT_GL_DRAWS(1);
 }
 
-//- (void)renderInContext: (VEContext *)context
-//{
-//    [self draw];
-//}
 
 #pragma mark - Animation
 
@@ -272,9 +268,12 @@ static inline void __CCLayerPopConfiguration(void)
 //
 - (void)update: (NSTimeInterval)dt
 {
-    for (NSString *key in _animationKeys)
+    NSArray *animationKeys = [NSArray arrayWithArray: _animationKeys];
+    NSDictionary *animations = [NSDictionary dictionaryWithDictionary: _animations];
+    
+    for (NSString *key in animationKeys)
     {
-        VEBasicAnimation *animation = [_animations objectForKey: key];
+        VEBasicAnimation *animation = [animations objectForKey: key];
         [animation applyForTime: dt
              presentationObject: [self presentationLayer]
                     modelObject: [self modelLayer]];
@@ -302,11 +301,15 @@ static inline void __CCLayerPopConfiguration(void)
     
     [copy release];
     
-    CCDirector *director = [CCDirector sharedDirector];
-    
-    [[director scheduler] scheduleUpdateForTarget: self
-                                         priority: CCSchedulerPriorityZero
-                                           paused: NO];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, (^
+                               {
+                                   CCDirector *director = [CCDirector sharedDirector];
+                                   
+                                   [[director scheduler] scheduleUpdateForTarget: self
+                                                                        priority: CCSchedulerPriorityZero
+                                                                          paused: NO];
+                               }));
     
 }
 
@@ -322,8 +325,13 @@ static inline void __CCLayerPopConfiguration(void)
 
 - (void)removeAnimationForKey: (NSString *)key
 {
+    [[[CCDirector sharedDirector] scheduler] pauseTarget: self];
+    
     [_animationKeys removeObject: key];
     [_animations removeObjectForKey: key];
+    
+    [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
+    
 }
 
 /* Returns an array containing the keys of all animations currently
@@ -346,6 +354,62 @@ static inline void __CCLayerPopConfiguration(void)
 
 #pragma mark - animatable properties
 
+- (void)setPosition: (CGPoint)position
+{
+    if (!CGPointEqualToPoint(_position, position))
+    {
+        NSString *keyPath = @"position";
+        [self willChangeValueForKey: keyPath];
+        
+        if (__currentBlockAnimationConfiguration)
+        {
+            [[[CCDirector sharedDirector] scheduler] pauseTarget: self];
+            
+            VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
+            [animation setDuration: [__currentBlockAnimationConfiguration duration]];
+            [animation setFromValue: [NSValue valueWithCGPoint: _position]];
+            [animation setToValue: [NSValue valueWithCGPoint: position]];
+            
+            [self addAnimation: animation
+                        forKey: keyPath];
+            
+            [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
+        }
+        
+        [super setPosition: position];
+        
+        [self didChangeValueForKey: keyPath];
+    }
+}
+
+- (void)setAnchorPoint: (CGPoint)anchorPoint
+{
+    if (!CGPointEqualToPoint(_anchorPoint, anchorPoint))
+    {
+        NSString *keyPath = @"anchorPoint";
+        [self willChangeValueForKey: keyPath];
+        
+        if (__currentBlockAnimationConfiguration)
+        {
+            [[[CCDirector sharedDirector] scheduler] pauseTarget: self];
+            
+            VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
+            [animation setDuration: [__currentBlockAnimationConfiguration duration]];
+            [animation setFromValue: [NSValue valueWithCGPoint: _anchorPoint]];
+            [animation setToValue: [NSValue valueWithCGPoint: anchorPoint]];
+            
+            [self addAnimation: animation
+                        forKey: keyPath];
+            
+            [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
+        }
+        
+        [super setAnchorPoint: anchorPoint];
+        
+        [self didChangeValueForKey: keyPath];
+    }
+}
+
 - (void)setBackgroundColor: (ccColor4B)backgroundColor
 {
     if (!CCColor4BEqualToColor(_backgroundColor, backgroundColor))
@@ -355,7 +419,10 @@ static inline void __CCLayerPopConfiguration(void)
         
         if (__currentBlockAnimationConfiguration)
         {
-            //in block animation
+            //in block animation, pause animation update first
+            //
+            [[[CCDirector sharedDirector] scheduler] pauseTarget: self];
+            
             VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
             [animation setDuration: [__currentBlockAnimationConfiguration duration]];
             [animation setFromValue: [VGColor colorWithRed: _backgroundColor.r / 255.0
@@ -363,26 +430,22 @@ static inline void __CCLayerPopConfiguration(void)
                                                       blue: _backgroundColor.b / 255.0
                                                      alpha: _backgroundColor.a / 255.0]];
             
-            _backgroundColor = backgroundColor;
-            
-            [animation setToValue: [VGColor colorWithRed: _backgroundColor.r / 255.0
-                                                   green: _backgroundColor.g / 255.0
-                                                    blue: _backgroundColor.b / 255.0
-                                                   alpha: _backgroundColor.a / 255.0]];
+            [animation setToValue: [VGColor colorWithRed: backgroundColor.r / 255.0
+                                                   green: backgroundColor.g / 255.0
+                                                    blue: backgroundColor.b / 255.0
+                                                   alpha: backgroundColor.a / 255.0]];
             
             [self addAnimation: animation
                         forKey: keyPath];
             
-            __CCLayerPopConfiguration();
+            [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
             
-        }else
-        {
-            _backgroundColor = backgroundColor;
         }
         
-        [self didChangeValueForKey: keyPath];
-        
+        _backgroundColor = backgroundColor;
         [self updateColor];
+        
+        [self didChangeValueForKey: keyPath];
     }
 }
 
@@ -391,12 +454,11 @@ static inline void __CCLayerPopConfiguration(void)
     return _backgroundColor;
 }
 
--(void) setOpacity: (GLubyte) o
+-(void) setOpacity: (GLubyte)opacity
 {
-    if (_backgroundColor.a != o)
+    if (_backgroundColor.a != opacity)
     {
-        _backgroundColor.a = o;
-        [self updateColor];
+        [self setBackgroundColor: ccc4(_backgroundColor.r, _backgroundColor.g, _backgroundColor.b, opacity)];
     }
 }
 
@@ -437,6 +499,7 @@ static inline void __CCLayerPopConfiguration(void)
         
         animations();
         
+        __CCLayerPopConfiguration();
     }
 }
 
@@ -530,27 +593,27 @@ static inline void __CCLayerPopConfiguration(void)
         compressedInterpolation_ = YES;
         [self setBackgroundColor: start];
     }
-	return self;
+    return self;
 }
 
 - (void) updateColor
 {
     [super updateColor];
     
-	float h = ccpLength(vector_);
+    float h = ccpLength(vector_);
     if (h == 0)
-		return;
+        return;
     
-	float c = sqrtf(2);
+    float c = sqrtf(2);
     CGPoint u = ccp(vector_.x / h, vector_.y / h);
     
-	// Compressed Interpolation mode
-	if( compressedInterpolation_ ) {
-		float h2 = 1 / ( fabsf(u.x) + fabsf(u.y) );
-		u = ccpMult(u, h2 * (float)c);
-	}
+    // Compressed Interpolation mode
+    if( compressedInterpolation_ ) {
+        float h2 = 1 / ( fabsf(u.x) + fabsf(u.y) );
+        u = ccpMult(u, h2 * (float)c);
+    }
     
-	float opacityf = _backgroundColor.a / 255.0f;
+    float opacityf = _backgroundColor.a / 255.0f;
     
     GLKVector4 S = GLKVector4Make(
                                   _backgroundColor.r / 255.0f,
@@ -568,35 +631,35 @@ static inline void __CCLayerPopConfiguration(void)
     
     
     // (-1, -1)
-	squareColors_[0].r = E.r + (S.r - E.r) * ((c + u.x + u.y) / (2.0f * c));
-	squareColors_[0].g = E.g + (S.g - E.g) * ((c + u.x + u.y) / (2.0f * c));
-	squareColors_[0].b = E.b + (S.b - E.b) * ((c + u.x + u.y) / (2.0f * c));
-	squareColors_[0].a = E.a + (S.a - E.a) * ((c + u.x + u.y) / (2.0f * c));
+    squareColors_[0].r = E.r + (S.r - E.r) * ((c + u.x + u.y) / (2.0f * c));
+    squareColors_[0].g = E.g + (S.g - E.g) * ((c + u.x + u.y) / (2.0f * c));
+    squareColors_[0].b = E.b + (S.b - E.b) * ((c + u.x + u.y) / (2.0f * c));
+    squareColors_[0].a = E.a + (S.a - E.a) * ((c + u.x + u.y) / (2.0f * c));
     // (1, -1)
-	squareColors_[1].r = E.r + (S.r - E.r) * ((c - u.x + u.y) / (2.0f * c));
-	squareColors_[1].g = E.g + (S.g - E.g) * ((c - u.x + u.y) / (2.0f * c));
-	squareColors_[1].b = E.b + (S.b - E.b) * ((c - u.x + u.y) / (2.0f * c));
-	squareColors_[1].a = E.a + (S.a - E.a) * ((c - u.x + u.y) / (2.0f * c));
-	// (-1, 1)
-	squareColors_[2].r = E.r + (S.r - E.r) * ((c + u.x - u.y) / (2.0f * c));
-	squareColors_[2].g = E.g + (S.g - E.g) * ((c + u.x - u.y) / (2.0f * c));
-	squareColors_[2].b = E.b + (S.b - E.b) * ((c + u.x - u.y) / (2.0f * c));
-	squareColors_[2].a = E.a + (S.a - E.a) * ((c + u.x - u.y) / (2.0f * c));
-	// (1, 1)
-	squareColors_[3].r = E.r + (S.r - E.r) * ((c - u.x - u.y) / (2.0f * c));
-	squareColors_[3].g = E.g + (S.g - E.g) * ((c - u.x - u.y) / (2.0f * c));
-	squareColors_[3].b = E.b + (S.b - E.b) * ((c - u.x - u.y) / (2.0f * c));
-	squareColors_[3].a = E.a + (S.a - E.a) * ((c - u.x - u.y) / (2.0f * c));
+    squareColors_[1].r = E.r + (S.r - E.r) * ((c - u.x + u.y) / (2.0f * c));
+    squareColors_[1].g = E.g + (S.g - E.g) * ((c - u.x + u.y) / (2.0f * c));
+    squareColors_[1].b = E.b + (S.b - E.b) * ((c - u.x + u.y) / (2.0f * c));
+    squareColors_[1].a = E.a + (S.a - E.a) * ((c - u.x + u.y) / (2.0f * c));
+    // (-1, 1)
+    squareColors_[2].r = E.r + (S.r - E.r) * ((c + u.x - u.y) / (2.0f * c));
+    squareColors_[2].g = E.g + (S.g - E.g) * ((c + u.x - u.y) / (2.0f * c));
+    squareColors_[2].b = E.b + (S.b - E.b) * ((c + u.x - u.y) / (2.0f * c));
+    squareColors_[2].a = E.a + (S.a - E.a) * ((c + u.x - u.y) / (2.0f * c));
+    // (1, 1)
+    squareColors_[3].r = E.r + (S.r - E.r) * ((c - u.x - u.y) / (2.0f * c));
+    squareColors_[3].g = E.g + (S.g - E.g) * ((c - u.x - u.y) / (2.0f * c));
+    squareColors_[3].b = E.b + (S.b - E.b) * ((c - u.x - u.y) / (2.0f * c));
+    squareColors_[3].a = E.a + (S.a - E.a) * ((c - u.x - u.y) / (2.0f * c));
 }
 
 - (ccColor4B)startColor
 {
-	return _backgroundColor;
+    return _backgroundColor;
 }
 
 -(void) setStartColor:(ccColor4B)colors
 {
-	[self setBackgroundColor: colors];
+    [self setBackgroundColor: colors];
 }
 
 -(void) setEndColor:(ccColor4B)colors
@@ -607,7 +670,7 @@ static inline void __CCLayerPopConfiguration(void)
 
 -(void) setStartOpacity: (GLubyte) o
 {
-	startOpacity_ = o;
+    startOpacity_ = o;
     [self updateColor];
 }
 
@@ -625,13 +688,13 @@ static inline void __CCLayerPopConfiguration(void)
 
 -(BOOL) compressedInterpolation
 {
-	return compressedInterpolation_;
+    return compressedInterpolation_;
 }
 
 -(void) setCompressedInterpolation:(BOOL)compress
 {
-	compressedInterpolation_ = compress;
-	[self updateColor];
+    compressedInterpolation_ = compress;
+    [self updateColor];
 }
 @end
 
@@ -642,44 +705,44 @@ static inline void __CCLayerPopConfiguration(void)
 
 -(id) initWithLayers: (NSArray*) layers;
 {
-	if( (self=[super init]) ) {
+    if( (self=[super init]) ) {
         
-		layers_ = [[NSMutableArray alloc] initWithArray: layers];
+        layers_ = [[NSMutableArray alloc] initWithArray: layers];
         
-		enabledLayer_ = 0;
-		[self addChild: [layers_ objectAtIndex: enabledLayer_]];
-	}
+        enabledLayer_ = 0;
+        [self addChild: [layers_ objectAtIndex: enabledLayer_]];
+    }
     
-	return self;
+    return self;
 }
 
 -(void) dealloc
 {
-	[layers_ release];
-	[super dealloc];
+    [layers_ release];
+    [super dealloc];
 }
 
 -(void) switchTo: (unsigned int) n
 {
-	NSAssert( n < [layers_ count], @"Invalid index in MultiplexLayer switchTo message" );
+    NSAssert( n < [layers_ count], @"Invalid index in MultiplexLayer switchTo message" );
     
-	[self removeChild: [layers_ objectAtIndex:enabledLayer_] cleanup:YES];
+    [self removeChild: [layers_ objectAtIndex:enabledLayer_] cleanup:YES];
     
-	enabledLayer_ = n;
+    enabledLayer_ = n;
     
-	[self addChild: [layers_ objectAtIndex:n]];
+    [self addChild: [layers_ objectAtIndex:n]];
 }
 
 -(void) switchToAndReleaseMe: (unsigned int) n
 {
-	NSAssert( n < [layers_ count], @"Invalid index in MultiplexLayer switchTo message" );
+    NSAssert( n < [layers_ count], @"Invalid index in MultiplexLayer switchTo message" );
     
-	[self removeChild: [layers_ objectAtIndex:enabledLayer_] cleanup:YES];
+    [self removeChild: [layers_ objectAtIndex:enabledLayer_] cleanup:YES];
     
-	[layers_ replaceObjectAtIndex:enabledLayer_ withObject:[NSNull null]];
+    [layers_ replaceObjectAtIndex:enabledLayer_ withObject:[NSNull null]];
     
-	enabledLayer_ = n;
+    enabledLayer_ = n;
     
-	[self addChild: [layers_ objectAtIndex:n]];
+    [self addChild: [layers_ objectAtIndex:n]];
 }
 @end

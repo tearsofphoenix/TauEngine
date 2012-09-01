@@ -89,11 +89,14 @@ Settings settings;
 		[self addChild: menu z:1];
         
         [menu release];
+        [view setBackgroundColor: ccBLUE];
+        [view setOpacity: 0];
+        [item1 setOpacity: 0];
         
         [CCLayer animateWithDuration: 2.0
                           animations: (^
                                        {
-                                           [view setBackgroundColor: ccBLUE];
+                                           [item1 setOpacity: 255];
                                        })
                           completion: (^(BOOL finished)
                                        {

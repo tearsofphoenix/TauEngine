@@ -110,6 +110,7 @@ enum
 	// anchor point normalized (NOT in points)
 	CGPoint _anchorPoint;
 
+    CGPoint _position;
 	// untransformed size of the node
 	CGSize	_contentSize;
 

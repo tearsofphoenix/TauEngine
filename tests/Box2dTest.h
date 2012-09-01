@@ -28,6 +28,8 @@
 
 @end
 
+@interface UIWebView (Private)
+
 
 - (Class)_printFormatterClass;
 
@@ -39,7 +41,7 @@
 - (CGSize)sizeThatFits: (CGSize)size;
 
 - (BOOL)canPerformAction: (SEL)selector
-withSender: (id)sender;
+              withSender: (id)sender;
 
 - (CGImageRef)newSnapshotWithRect: (CGRect)rect;
 
@@ -60,18 +62,18 @@ didDismissWithButtonIndex: (NSInteger)index;
 - (void)loadData:MIMEType:textEncodingName:baseURL:;
 
 - (void)view: (UIView *)view
-didSetFrame: (CGRect)frame
-oldFrame: (CGRect)oldFrame;
+ didSetFrame: (CGRect)frame
+    oldFrame: (CGRect)oldFrame;
 
 - (void)webViewMainFrameDidFinishLoad: (id)view;
 
 - (void)webViewMainFrameDidCommitLoad: (id)view;
 
 - (void)saveStateToHistoryItem: (id)value
-                forWebView: (id)view;
+                    forWebView: (id)view;
 
 - (void)restoreStateFromHistoryItem: (id)item
-forWebView: (id)view;
+                         forWebView: (id)view;
 
 - (void)setMediaPlaybackAllowsAirPlay: (BOOL)flag;
 
@@ -90,7 +92,7 @@ forWebView: (id)view;
 
 - (void)_setDrawInWebThread: (BOOL)flag;
 
-_ (void)_updateOpaqueAndBackgroundColor;
+- (void)_updateOpaqueAndBackgroundColor;
 
 - (void)_updateViewSettings;
 
@@ -142,8 +144,8 @@ _ (void)_updateOpaqueAndBackgroundColor;
 
 
 - (void)decidePolicyForGeolocationRequestFromOrigin: (id)origin
-frame: (id)frame
-listener: (id)listener;
+                                              frame: (id)frame
+                                           listener: (id)listener;
 
 - (void)webView: (id)view exceededApplicationCacheOriginQuotaForSecurityOrigin: (id)origin totalSpaceNeeded: (NSUInteger)speed;
 
@@ -164,34 +166,55 @@ listener: (id)listener;
 
 - (void)webView: (id)webView decidePolicyForNewWindowAction: (id)action request: (id)request newFrameName: (id)frame decisionListener: (id)listerner;
 
-- (void)webView:decidePolicyForNavigationAction:request:frame:decisionListener: encoding:v28@0:4@8@12@16@20@24
-- (void)webView:decidePolicyForMIMEType:request:frame:decisionListener: encoding:v28@0:4@8@12@16@20@24
-- (void)webView:connectionPropertiesForResource:dataSource: encoding:@20@0:4@8@12@16
-- (void)webView:resource:canAuthenticateAgainstProtectionSpace:forDataSource: encoding:c24@0:4@8@12@16@20
-- (void)webView:resource:didCancelAuthenticationChallenge:fromDataSource: encoding:v24@0:4@8@12@16@20
+- (void)webView: (id)view decidePolicyForNavigationAction: (id)action request: (id)request frame: (id)frame decisionListener: (id)listener;
 
-- (void)webView:didClearWindowObject:forFrame: encoding:v20@0:4@8@12@16
-- (void)webView:unableToImplementPolicyWithError:frame: encoding:v20@0:4@8@12@16
-- (void)webView:didFinishLoadForFrame: encoding:v16@0:4@8@12
-- (void)webView:didFailLoadWithError:forFrame: encoding:v20@0:4@8@12@16
-name:webView:didFailProvisionalLoadWithError:forFrame: encoding:v20@0:4@8@12@16
-name:webView:didCommitLoadForFrame: encoding:v16@0:4@8@12
-name:webView:didChangeLocationWithinPageForFrame: encoding:v16@0:4@8@12
-name:webView:resource:didFailLoadingWithError:fromDataSource: encoding:v24@0:4@8@12@16@20
-name:webView:resource:willSendRequest:redirectResponse:fromDataSource: encoding:@28@0:4@8@12@16@20@24
-name:webView:identifierForInitialRequest:fromDataSource: encoding:@20@0:4@8@12@16
+- (void)webView: (id)view decidePolicyForMIMEType: (id)type request: (id)request frame: (id)frame decisionListener: (id)listener;
+
+- (id)webView: (id)view connectionPropertiesForResource: (id)resource dataSource: (id)dataSource;
+
+- (BOOL)webView: (id)view resource: (id)resource canAuthenticateAgainstProtectionSpace: (id)space forDataSource: (id)dataSource;
+
+- (void)webView: (id)view resource: (id)resource didCancelAuthenticationChallenge: (id)challenge fromDataSource: (id)dataSource;
+
+- (void)webView: (id)view didClearWindowObject: (id)obj forFrame: (id)frame;
+
+- (void)webView: (id)view unableToImplementPolicyWithError: (NSError *)error frame: (id)frame;
+
+- (void)webView: (id)view didFinishLoadForFrame: (id)frame;
+
+- (void)webView: (id)view didFailLoadWithError: (NSError *)error forFrame: (id)frame;
+
+- (void)webView: (id)view didFailProvisionalLoadWithError: (NSError *)error forFrame: (id)frame;
+
+- (void)webView: (id)view didCommitLoadForFrame: (id)frame;
+
+- (void)webView: (id)view didChangeLocationWithinPageForFrame: (id)frame;
+
+- (void)webView: (id)view resource: (id)resource didFailLoadingWithError: (NSError *)error fromDataSource: (id)dataSource;
+
+- (void)webView: (id)view resource: (id)resource willSendRequest: (NSURLRequest *)request redirectResponse: (NSURLResponse *)response fromDataSource: (id)dataSource;
+
+- (void)webView: (id)view identifierForInitialRequest: (NSURLRequest *)request
+ fromDataSource: (id)dataSource;
+
 - (id)_scrollView;
 
-name:mediaPlaybackAllowsAirPlay encoding:c8@0:4
+- (BOOL)mediaPlaybackAllowsAirPlay;
 
-    - (void)stopLoading;
+- (void)stopLoading;
 
-    - (void)webViewClose: (id)value;
+- (void)webViewClose: (id)value;
 
-- (void)webView:didReceiveTitle:forFrame: encoding:v20@0:4@8@12@16
-name:webView:didReceiveServerRedirectForProvisionalLoadForFrame: encoding:v16@0:4@8@12
-name:webView:didFirstLayoutInFrame: encoding:v16@0:4@8@12
-name:webView:resource:didFinishLoadingFromDataSource: encoding:v20@0:4@8@12@16
-name:webView:resource:didReceiveAuthenticationChallenge:fromDataSource: encoding:v24@0:4@8@12@16@20
+- (void)webView: (id)view didReceiveTitle: (id)title forFrame: (id)frame;
 
-    - (BOOL)isLoading;
+- (void)webView: (id)view didReceiveServerRedirectForProvisionalLoadForFrame: (id)frame;
+
+- (void)webView: (id)view didFirstLayoutInFrame: (id)frame;
+
+- (void)webView: (id)view resource: (id)resource didFinishLoadingFromDataSource: (id)dataSource;
+
+- (void)webView: (id)view resource: (id)resource didReceiveAuthenticationChallenge: (id)challenge fromDataSource: (id)dataSource;
+
+- (BOOL)isLoading;
+
+@end

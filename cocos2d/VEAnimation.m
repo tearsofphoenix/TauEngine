@@ -241,6 +241,32 @@ static void _VEAnimationColorProcessor(VEBasicAnimation *animation, CCLayer *lay
     [layer setBackgroundColor: color];
 }
 
+static void _VEAnimationAnchorPointProcessor(VEBasicAnimation *animation, CCLayer *layer, NSValue *value1, NSValue *value2, VEMediaTimingFunction *function, NSTimeInterval elapsed)
+{
+    CGPoint point1 = [value1 CGPointValue];
+    CGPoint point2 = [value2 CGPointValue];
+    
+    float percent = elapsed / [animation duration];
+    CGPoint p;
+    p.x = point1.x + (point2.x - point1.x) * percent;
+    p.y = point1.y + (point2.y - point1.y) * percent;
+    
+    [layer setAnchorPoint: p];
+}
+
+static void _VEAnimationPositionProcessor(VEBasicAnimation *animation, CCLayer *layer, NSValue *value1, NSValue *value2, VEMediaTimingFunction *function, NSTimeInterval elapsed)
+{
+    CGPoint point1 = [value1 CGPointValue];
+    CGPoint point2 = [value2 CGPointValue];
+    
+    float percent = elapsed / [animation duration];
+    CGPoint p;
+    p.x = point1.x + (point2.x - point1.x) * percent;
+    p.y = point1.y + (point2.y - point1.y) * percent;
+    
+    [layer setPosition: p];
+}
+
 static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
 
 + (void)initialize
@@ -252,7 +278,9 @@ static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
 #define VEAnimationProcessStore(ptr, name) [__VEBasicAnimationProcessors setObject: [NSValue valueWithPointer: ptr] forKey: name]
         
         VEAnimationProcessStore(_VEAnimationColorProcessor, @"backgroundColor");
-        
+        VEAnimationProcessStore(_VEAnimationAnchorPointProcessor, @"anchorPoint");
+        VEAnimationProcessStore(_VEAnimationPositionProcessor, @"position");
+
 #undef VEAnimationProcessStore
     }
 }

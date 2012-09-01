@@ -61,10 +61,7 @@
     
 	// openGL real Z vertex
 	float _vertexZ;
-    
-	// position of the node
-	CGPoint _position;
-    
+        
     CCCamera *_camera;
     
     CCNode *_parent;
@@ -756,7 +753,9 @@ static NSInteger globalOrderOfArrival = 1;
         
 		// optimization:
 		// inline anchor point calculation if skew is not needed
-		if( !needsSkewMatrix && !CGPointEqualToPoint(_anchorPointInPoints, CGPointZero) ) {
+		
+        if( !needsSkewMatrix && !CGPointEqualToPoint(_anchorPointInPoints, CGPointZero) )
+        {
 			x += c * -_anchorPointInPoints.x * _scaleX + -s * -_anchorPointInPoints.y * _scaleY;
 			y += s * -_anchorPointInPoints.x * _scaleX +  c * -_anchorPointInPoints.y * _scaleY;
 		}
