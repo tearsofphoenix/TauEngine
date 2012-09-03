@@ -473,7 +473,7 @@ name = name_, maxS = maxS_, maxT = maxT_;
 
 #ifdef __CC_PLATFORM_IOS
 
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)hAlignment vAlignment:(CCVerticalTextAlignment) vAlignment lineBreakMode:(UILineBreakMode)lineBreakMode font:(UIFont*)uifont
+- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(UITextAlignment)hAlignment vAlignment:(CCVerticalTextAlignment) vAlignment lineBreakMode:(UILineBreakMode)lineBreakMode font:(UIFont*)uifont
 {
 	NSAssert( uifont, @"Invalid font");
 
@@ -554,7 +554,7 @@ name = name_, maxS = maxS_, maxT = maxT_;
 
 #elif defined(__CC_PLATFORM_MAC)
 
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)hAlignment vAlignment:(CCVerticalTextAlignment)vAlignment attributedString:(NSAttributedString*)stringWithAttributes
+- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(UITextAlignment)hAlignment vAlignment:(CCVerticalTextAlignment)vAlignment attributedString:(NSAttributedString*)stringWithAttributes
 {
 	NSAssert(stringWithAttributes, @"Invalid stringWithAttributes");
 
@@ -652,12 +652,12 @@ name = name_, maxS = maxS_, maxT = maxT_;
 
 }
 
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment vAlignment:(CCVerticalTextAlignment)vAlignment fontName:(NSString*)name fontSize:(CGFloat)size
+- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(UITextAlignment)alignment vAlignment:(CCVerticalTextAlignment)vAlignment fontName:(NSString*)name fontSize:(CGFloat)size
 {
 	return [self initWithString:string dimensions:dimensions hAlignment:alignment vAlignment:vAlignment lineBreakMode:UILineBreakModeWordWrap fontName:name fontSize:size];
 }
 
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)hAlignment vAlignment:(CCVerticalTextAlignment)vAlignment lineBreakMode:(UILineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size
+- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(UITextAlignment)hAlignment vAlignment:(CCVerticalTextAlignment)vAlignment lineBreakMode:(UILineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size
 {
 
 	UIFont *uifont = [UIFont fontWithName:name size:size];

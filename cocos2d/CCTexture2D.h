@@ -214,9 +214,9 @@ Note that the generated textures are of type A8 - use the blending mode (GL_SRC_
 	- Mac: Only NSLineBreakByWordWrapping is supported.
  @since v1.0
  */
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment lineBreakMode:(UILineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
+- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(UITextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment lineBreakMode:(UILineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
 /** Initializes a texture from a string with dimensions, alignment, font name and font size */
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment fontName:(NSString*)name fontSize:(CGFloat)size;
+- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(UITextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment fontName:(NSString*)name fontSize:(CGFloat)size;
 /** Initializes a texture from a string with font name and font size */
 - (id) initWithString:(NSString*)string fontName:(NSString*)name fontSize:(CGFloat)size;
 @end

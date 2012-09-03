@@ -40,7 +40,7 @@
 @interface CCTTFLabel : CCSprite <CCLabelProtocol>
 {
 	CGSize dimensions_;
-	NSTextAlignment			hAlignment_;
+	UITextAlignment			hAlignment_;
 	NSString * fontName_;
 	CGFloat fontSize_;
 	UILineBreakMode lineBreakMode_;
@@ -49,38 +49,21 @@
 /** Font name used in the label */
 @property (nonatomic,retain) NSString* fontName;
 /** Font size of the label */
-@property (nonatomic,assign) float fontSize;
+@property (nonatomic) float fontSize;
 /** Dimensions of the label in Points */
-@property (nonatomic,assign) CGSize dimensions;
+@property (nonatomic) CGSize dimensions;
 /** The alignment of the label */
-@property (nonatomic,assign) UITextAlignment horizontalAlignment;
+@property (nonatomic) UITextAlignment horizontalAlignment;
 /** The vertical alignment of the label */
 @property (nonatomic) CCVerticalTextAlignment verticalAlignment;
 
 /** initializes the CCTTFLabel with a font name and font size in points */
 - (id) initWithString:(NSString*)string  fontName:(NSString*)name fontSize:(CGFloat)size;
 
-/** initializes the CCTTFLabel with a font name, horizonal alignment, dimension in points, and font size in points.
- Default verticalAlignment: kCCVerticalTextAlignmentTop 
- Default lineBreakMode: CCLineBreakModeWordWrap
- @since v1.0
- */
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size;
-
-/** initializes the CCTTFLabel with a font name, horizontal alignment, dimension in points, line break mode and font size in points.
- Default verticalAlignment: kCCVerticalTextAlignmentTop 
-
- Supported lineBreakModes:
- - iOS: all UILineBreakMode supported modes
- - Mac: Only NSLineBreakByWordWrapping is supported.
- @since v1.0
- */
-- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment lineBreakMode:(UILineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
-
 /** initializes the CCTTFLabel with a font name, horiozntal alignment, vertical alignment,  dimension in points and font size in points. 
  Default lineBreakMode: CCLineBreakModeWordWrap
  */
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment vAlignment:(CCVerticalTextAlignment)vertAlignment fontName:(NSString*)name fontSize:(CGFloat)size;
+- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(UITextAlignment)alignment vAlignment:(CCVerticalTextAlignment)vertAlignment fontName:(NSString*)name fontSize:(CGFloat)size;
 
 /** initializes the CCTTFLabel with a font name, horizontal alignment, vertical aligment, dimension in points, line break mode and font size in points.
  Supported lineBreakModes:
@@ -88,7 +71,7 @@
  - Mac: Only NSLineBreakByWordWrapping is supported.
  @since v2.0
  */
-- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment vAlignment:(CCVerticalTextAlignment)vAlignment lineBreakMode:(UILineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
+- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(UITextAlignment)alignment vAlignment:(CCVerticalTextAlignment)vAlignment lineBreakMode:(UILineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
 
 /** changes the string to render
  * @warning Changing the string is as expensive as creating a new CCTTFLabel. To obtain better performance use CCAtlasLabel or CCBMFontLabel.

@@ -150,7 +150,7 @@ typedef struct _BMFontPadding
     // max width until a line break is added
     float width_;
     // alignment of all lines
-    NSTextAlignment alignment_;
+    UITextAlignment alignment_;
 
 	CCBMFontConfiguration	*configuration_;
 
@@ -170,7 +170,7 @@ typedef struct _BMFontPadding
 +(void) purgeCachedData;
 
 /** alignment used for the label */
-@property (nonatomic) NSTextAlignment alignment;
+@property (nonatomic) UITextAlignment alignment;
 /** fntFile used for the font */
 @property (nonatomic, retain) NSString* fntFile;
 
@@ -182,12 +182,12 @@ typedef struct _BMFontPadding
 -(id) initWithString: (NSString*)string
              fntFile: (NSString*)fntFile
                width: (float)width
-           alignment: (NSTextAlignment)alignment;
+           alignment: (UITextAlignment)alignment;
 /** init a BMFont label with an initial string and the FNT file, width, alignment option and the offset of where the glyphs start on the .PNG image */
 -(id) initWithString: (NSString*)string
              fntFile: (NSString*)fntFile
                width: (float)width
-           alignment: (NSTextAlignment)alignment
+           alignment: (UITextAlignment)alignment
          imageOffset: (CGPoint)offset;
 
 /** updates the font chars based on the string to render */

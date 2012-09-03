@@ -460,13 +460,13 @@ typedef struct _FontDefHashElement
     return [self initWithString:theString fntFile:fntFile width:kCCLabelAutomaticWidth alignment:UITextAlignmentLeft];
 }
 
--(id) initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(NSTextAlignment)alignment
+-(id) initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(UITextAlignment)alignment
 {
 	return [self initWithString:theString fntFile:fntFile width:width alignment:alignment imageOffset:CGPointZero];
 }
 
 // designated initializer
--(id) initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(NSTextAlignment)alignment imageOffset:(CGPoint)offset
+-(id) initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(UITextAlignment)alignment imageOffset:(CGPoint)offset
 {
 	NSAssert(!configuration_, @"re-init is no longer supported");
 	
@@ -878,7 +878,7 @@ typedef struct _FontDefHashElement
     [self updateLabel];
 }
 
-- (void)setAlignment: (NSTextAlignment)alignment
+- (void)setAlignment: (UITextAlignment)alignment
 {
     if (alignment_ != alignment)
     {

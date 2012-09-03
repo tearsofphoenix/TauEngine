@@ -65,26 +65,14 @@
                        fontSize: size];
 }
 
-// hAlignment
-- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
-{
-	return [self initWithString:str dimensions:dimensions hAlignment:alignment vAlignment:kCCVerticalTextAlignmentTop lineBreakMode:UILineBreakModeWordWrap fontName:name fontSize:size];
-}
-
 // hAlignment, vAlignment
-- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment fontName:(NSString*)name fontSize:(CGFloat)size
+- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(UITextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment fontName:(NSString*)name fontSize:(CGFloat)size
 {
 	return [self initWithString:str dimensions:dimensions hAlignment:alignment vAlignment:vertAlignment lineBreakMode:UILineBreakModeWordWrap fontName:name fontSize:size];
 }
 
-// hAlignment, lineBreakMode
-- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment lineBreakMode:(UILineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size
-{
-	return [self initWithString:str dimensions:dimensions hAlignment:alignment vAlignment:kCCVerticalTextAlignmentTop lineBreakMode:lineBreakMode fontName:name fontSize:size];
-}
-
 // hAlignment, vAligment, lineBreakMode
-- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(NSTextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment lineBreakMode:(UILineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size
+- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(UITextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment lineBreakMode:(UILineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size
 {
 	if( (self=[super init]) )
     {
@@ -181,7 +169,7 @@
     return dimensions_;
 }
 
--(void) setHorizontalAlignment:(NSTextAlignment)alignment
+-(void) setHorizontalAlignment:(UITextAlignment)alignment
 {
     if (alignment != hAlignment_)
     {
@@ -194,7 +182,7 @@
     }
 }
 
-- (NSTextAlignment) horizontalAlignment
+- (UITextAlignment) horizontalAlignment
 {
     return hAlignment_;
 }
