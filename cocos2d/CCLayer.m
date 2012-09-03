@@ -48,6 +48,28 @@
 
 #pragma mark - Layer
 
+
+//@interface CCLayerAnimationTransaction : NSObject
+//{
+//
+//}
+//@end
+//
+//@implementation CCLayerAnimationTransaction
+//
+//- (void)animationDidStart: (VEAnimation *)anim
+//{
+//
+//}
+//
+//- (void)animationDidStop: (VEAnimation *)anim
+//                finished: (BOOL)flag
+//{
+//
+//}
+//
+//@end
+
 @interface CCLayer ()
 {
 @private
@@ -65,18 +87,38 @@
 @implementation CCLayer
 
 static NSMutableArray *__CCLayerAnimationStack = nil;
-static __VEAnimationConfiguration *__currentBlockAnimationConfiguration = nil;
+static VEAnimationTransaction *__currentBlockAnimationTransaction = nil;
+static VEViewAnimationBlockDelegate *__animationBlockDelegate = nil;
 
-static inline void __CCLayerPushConfiguration(__VEAnimationConfiguration *config)
+static inline void __CCLayerPushConfiguration(VEAnimationTransaction *config)
 {
+    if (__currentBlockAnimationTransaction)
+    {
+        [__CCLayerAnimationStack addObject: __currentBlockAnimationTransaction];
+    }
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, (^
+                               {
+                                   __animationBlockDelegate = [[VEViewAnimationBlockDelegate alloc] init];
+                               }));
+    
+    [__animationBlockDelegate addTransaction: config];
+    
     [__CCLayerAnimationStack addObject: config];
-    __currentBlockAnimationConfiguration = config;
+    __currentBlockAnimationTransaction = config;
 }
 
 static inline void __CCLayerPopConfiguration(void)
 {
     [__CCLayerAnimationStack removeLastObject];
-    __currentBlockAnimationConfiguration = nil;
+    __currentBlockAnimationTransaction = [__CCLayerAnimationStack lastObject];
+    if (!__currentBlockAnimationTransaction)
+    {
+        //should flush all animation transactions
+        //
+        [__animationBlockDelegate flushTransactions];
+    }
 }
 
 #pragma mark Layer - Init
@@ -266,19 +308,6 @@ static inline void __CCLayerPopConfiguration(void)
 
 //for animation
 //
-- (void)update: (NSTimeInterval)dt
-{
-    NSArray *animationKeys = [NSArray arrayWithArray: _animationKeys];
-    NSDictionary *animations = [NSDictionary dictionaryWithDictionary: _animations];
-    
-    for (NSString *key in animationKeys)
-    {
-        VEBasicAnimation *animation = [animations objectForKey: key];
-        [animation applyForTime: dt
-             presentationObject: [self presentationLayer]
-                    modelObject: [self modelLayer]];
-    }
-}
 
 - (void)addAnimation: (VEAnimation *)anim
               forKey: (NSString *)key
@@ -300,17 +329,7 @@ static inline void __CCLayerPopConfiguration(void)
                     forKey: key];
     
     [copy release];
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, (^
-                               {
-                                   CCDirector *director = [CCDirector sharedDirector];
-                                   
-                                   [[director scheduler] scheduleUpdateForTarget: self
-                                                                        priority: CCSchedulerPriorityZero
-                                                                          paused: NO];
-                               }));
-    
+        
 }
 
 /* Remove all animations attached to the layer. */
@@ -361,17 +380,18 @@ static inline void __CCLayerPopConfiguration(void)
         NSString *keyPath = @"position";
         [self willChangeValueForKey: keyPath];
         
-        if (__currentBlockAnimationConfiguration)
+        if (__currentBlockAnimationTransaction)
         {
             [[[CCDirector sharedDirector] scheduler] pauseTarget: self];
             
             VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
-            [animation setDuration: [__currentBlockAnimationConfiguration duration]];
+            [animation setDuration: [__currentBlockAnimationTransaction duration]];
             [animation setFromValue: [NSValue valueWithCGPoint: _position]];
             [animation setToValue: [NSValue valueWithCGPoint: position]];
+            [animation setDelegate: __currentBlockAnimationTransaction];
+            [animation setModelObject: self];
             
-            [self addAnimation: animation
-                        forKey: keyPath];
+            [__currentBlockAnimationTransaction addAnimation: animation];
             
             [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
         }
@@ -389,17 +409,18 @@ static inline void __CCLayerPopConfiguration(void)
         NSString *keyPath = @"anchorPoint";
         [self willChangeValueForKey: keyPath];
         
-        if (__currentBlockAnimationConfiguration)
+        if (__currentBlockAnimationTransaction)
         {
             [[[CCDirector sharedDirector] scheduler] pauseTarget: self];
             
             VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
-            [animation setDuration: [__currentBlockAnimationConfiguration duration]];
+            [animation setDuration: [__currentBlockAnimationTransaction duration]];
             [animation setFromValue: [NSValue valueWithCGPoint: _anchorPoint]];
             [animation setToValue: [NSValue valueWithCGPoint: anchorPoint]];
+            [animation setDelegate: __currentBlockAnimationTransaction];
+            [animation setModelObject: self];
             
-            [self addAnimation: animation
-                        forKey: keyPath];
+            [__currentBlockAnimationTransaction addAnimation: animation];
             
             [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
         }
@@ -417,14 +438,14 @@ static inline void __CCLayerPopConfiguration(void)
         NSString * keyPath = @"backgroundColor";
         [self willChangeValueForKey: keyPath];
         
-        if (__currentBlockAnimationConfiguration)
+        if (__currentBlockAnimationTransaction)
         {
             //in block animation, pause animation update first
             //
             [[[CCDirector sharedDirector] scheduler] pauseTarget: self];
             
             VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
-            [animation setDuration: [__currentBlockAnimationConfiguration duration]];
+            [animation setDuration: [__currentBlockAnimationTransaction duration]];
             [animation setFromValue: [VGColor colorWithRed: _backgroundColor.r / 255.0
                                                      green: _backgroundColor.g / 255.0
                                                       blue: _backgroundColor.b / 255.0
@@ -434,9 +455,10 @@ static inline void __CCLayerPopConfiguration(void)
                                                    green: backgroundColor.g / 255.0
                                                     blue: backgroundColor.b / 255.0
                                                    alpha: backgroundColor.a / 255.0]];
+            [animation setDelegate: __currentBlockAnimationTransaction];
+            [animation setModelObject: self];
             
-            [self addAnimation: animation
-                        forKey: keyPath];
+            [__currentBlockAnimationTransaction addAnimation: animation];
             
             [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
             
@@ -485,11 +507,10 @@ static inline void __CCLayerPopConfiguration(void)
     
     if (animations)
     {
-        __VEAnimationConfiguration *configuration = [[__VEAnimationConfiguration alloc] init];
+        VEAnimationTransaction *configuration = [[VEAnimationTransaction alloc] init];
         [configuration setDuration: duration];
         [configuration setDelay: delay];
         //[configuration setOptions: options];
-        [configuration setAnimations: animations];
         [configuration setStart: start];
         [configuration setCompletion: completion];
         

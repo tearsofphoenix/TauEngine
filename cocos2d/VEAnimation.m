@@ -11,6 +11,8 @@
 #import "ccTypes.h"
 #import "VGColor.h"
 #import "CCLayer.h"
+#import "CCDirector.h"
+#import "CCScheduler.h"
 
 @implementation VEAnimation
 
@@ -214,6 +216,8 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
     [copy setToValue: toValue];
     [copy setByValue: byValue];
     [copy setDuration: [self duration]];
+    [copy setPresentationObject: [self presentationObject]];
+    [copy setModelObject: [self modelObject]];
     
     return copy;
 }
@@ -326,10 +330,9 @@ static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
             if (elapsed == 0 )
             {
                 id delegate = [self delegate];
-                if ([delegate respondsToSelector: @selector(animationDidStart:)])
-                {
-                    [delegate animationDidStart: self];
-                }
+
+                [delegate animationDidStart: self];
+
             }
             
             funPtr(self, model, fromValue, toValue, [self timingFunction], elapsed);
@@ -342,11 +345,9 @@ static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
                 [model removeAnimationForKey: keyPath];
                 
                 id delegate = [self delegate];
-                if ([delegate respondsToSelector: @selector(animationDidStop:finished:)])
-                {
-                    [delegate animationDidStop: self
-                                      finished: YES];
-                }
+            
+                [delegate animationDidStop: self
+                                  finished: YES];
             }
             
             return;
@@ -540,7 +541,28 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 @end
 
 
-@implementation __VEAnimationConfiguration
+#pragma mark - transaction
+
+@interface VEAnimationTransaction ()
+{
+@private
+    NSMutableArray *_animations;
+}
+
+@end
+
+
+@implementation VEAnimationTransaction
+
+- (id)init
+{
+    if ((self = [super init]))
+    {
+        _animations = [[NSMutableArray alloc] init];
+    }
+    
+    return self;
+}
 
 @synthesize duration;
 
@@ -550,8 +572,88 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 
 @synthesize start;
 
-@synthesize animations;
-
 @synthesize completion;
+
+- (void)addAnimation: (VEBasicAnimation *)animation
+{
+    [_animations addObject: animation];
+}
+
+- (void)update: (NSTimeInterval)dt
+{
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, (^
+                               {
+                                   CCDirector *director = [CCDirector sharedDirector];
+                                   
+                                   [[director scheduler] scheduleUpdateForTarget: self
+                                                                        priority: CCSchedulerPriorityZero
+                                                                          paused: NO];
+                               }));
+    
+    NSArray *animations = [NSArray arrayWithArray: _animations];
+    
+    for (VEBasicAnimation *animation in animations)
+    {
+        [animation applyForTime: dt
+             presentationObject: [animation presentationObject]
+                    modelObject: [animation modelObject]];
+    }
+    
+}
+
+- (void)animationDidStart:(VEAnimation *)anim
+{
+    
+}
+
+- (void)animationDidStop: (VEAnimation *)anim
+                finished: (BOOL)flag
+{
+    
+}
+
+
+@end
+
+@interface VEViewAnimationBlockDelegate ()
+{
+@private
+    NSMutableArray *_transactions;
+}
+@end
+
+@implementation VEViewAnimationBlockDelegate
+
+- (id)init
+{
+    if ((self = [super init]))
+    {
+        _transactions = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (void)addTransaction: (VEAnimationTransaction *)transaction
+{
+    [_transactions addObject: transaction];
+}
+
+- (void)flushTransactions
+{
+    
+}
+
+- (void)animationDidStart: (VEAnimation *)anim
+{
+    
+}
+
+- (void)animationDidStop: (VEAnimation *)anim
+                finished: (BOOL)flag
+{
+    
+}
 
 @end

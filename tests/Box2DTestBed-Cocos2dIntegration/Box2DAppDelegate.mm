@@ -59,7 +59,7 @@
                      animations: (^
                                   {
                                       [entriesView setAlpha: 1];
-                                      printf("\t\t\t%f\n", [NSDate timeIntervalSinceReferenceDate]);
+                                      NSLog(@"\t\t\t%@\n", [NSThread callStackSymbols]);
                                       printf("\t\t\tanimation\n");
                                   }
                                   )
@@ -67,7 +67,7 @@
                                   {
                                       NSLog(@"%@", [[entriesView layer] presentationLayer]);
 
-                                      printf("\t\t\t%f\n", [NSDate timeIntervalSinceReferenceDate]);
+                                      NSLog(@"\t\t\t%@\n", [NSThread callStackSymbols]);
                                       printf("\t\t\tfinished\n");
                                   })];
 

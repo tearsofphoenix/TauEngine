@@ -91,12 +91,12 @@ Settings settings;
         [menu release];
         [view setBackgroundColor: ccBLUE];
         [view setOpacity: 0];
-        [item1 setOpacity: 0];
         
         [CCLayer animateWithDuration: 2.0
                           animations: (^
                                        {
-                                           [item1 setOpacity: 255];
+                                           [view setOpacity: 255];
+                                           
                                        })
                           completion: (^(BOOL finished)
                                        {

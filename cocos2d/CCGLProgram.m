@@ -311,7 +311,6 @@ BOOL CCGLProgramLink(CCGLProgram *program)
     
 #if DEBUG
 	GLint status;
-    glValidateProgram(_program);
     
     glGetProgramiv(_program, GL_LINK_STATUS, &status);
     if (status == GL_FALSE)

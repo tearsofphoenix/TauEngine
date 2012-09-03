@@ -55,11 +55,15 @@
          modelObject: (id)model;
 
 @property (atomic, getter = isEnabled) BOOL enabled;
+//
+//- (NSUInteger)_propertyFlagsForLayer: (id)layer;
+//
+//- (BOOL)_setCARenderAnimation: (void *)animation
+//                        layer: (id)layer;
 
-- (NSUInteger)_propertyFlagsForLayer: (id)layer;
+@property (atomic, retain) id presentationObject;
 
-- (BOOL)_setCARenderAnimation: (void *)animation
-                        layer: (id)layer;
+@property (atomic, retain) id modelObject;
 
 @end
 
@@ -315,7 +319,7 @@ CF_EXPORT NSString * const kVETransitionFromBottom
 @end
 
 
-@interface __VEAnimationConfiguration : NSObject
+@interface VEAnimationTransaction : NSObject
 
 @property (nonatomic) NSTimeInterval duration;
 
@@ -325,8 +329,18 @@ CF_EXPORT NSString * const kVETransitionFromBottom
 
 @property (nonatomic, copy) dispatch_block_t start;
 
-@property (nonatomic, copy) dispatch_block_t animations;
-
 @property (nonatomic, copy) void (^completion)(BOOL fnished);
 
+- (void)addAnimation: (VEBasicAnimation *)animation;
+
 @end
+
+@interface VEViewAnimationBlockDelegate : NSObject
+
+- (void)addTransaction: (VEAnimationTransaction *)transaction;
+
+- (void)flushTransactions;
+
+@end
+
+
