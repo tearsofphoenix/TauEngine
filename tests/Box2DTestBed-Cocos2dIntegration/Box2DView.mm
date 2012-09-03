@@ -97,7 +97,7 @@ Settings settings;
         [CCLayer animateWithDuration: 2.0
                           animations: (^
                                        {
-                                           [view setOpacity: 255];
+                                           [view setOpacity: 1];
                                            [view setPosition: CGPointMake(0, 10)];
                                        })
                           completion: (^(BOOL finished)

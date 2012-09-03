@@ -46,7 +46,7 @@
 
 @interface CCLayer : CCNode <CCStandardTouchDelegate, CCTargetedTouchDelegate, CCBlendProtocol>
 {
-	ccColor4B	_backgroundColor;
+	GLKVector4	_backgroundColor;
 	GLKVector2	squareVertices_[4];
 	GLKVector4	squareColors_[4];
     
@@ -89,7 +89,7 @@
  */
 @property (nonatomic,getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
 
-@property (atomic) ccColor4B backgroundColor;
+@property (atomic) GLKVector4 backgroundColor;
 
 @property (atomic) GLubyte opacity;
 
@@ -186,7 +186,7 @@
  */
 @interface CCGradientLayer : CCLayer
 {
-	ccColor4B endColor_;
+	GLKVector4 endColor_;
 	GLubyte startOpacity_;
 	GLubyte endOpacity_;
 	CGPoint vector_;
@@ -194,14 +194,14 @@
 }
 
 /** Initializes the CCLayer with a gradient between start and end. */
-- (id) initWithColor: (ccColor4B) start fadingTo: (ccColor4B) end;
+- (id) initWithColor: (GLKVector4) start fadingTo: (GLKVector4) end;
 /** Initializes the CCLayer with a gradient between start and end in the direction of v. */
-- (id) initWithColor: (ccColor4B) start fadingTo: (ccColor4B) end alongVector: (CGPoint) v;
+- (id) initWithColor: (GLKVector4) start fadingTo: (GLKVector4) end alongVector: (CGPoint) v;
 
 /** The starting color. */
-@property (nonatomic) ccColor4B startColor;
+@property (nonatomic) GLKVector4 startColor;
 /** The ending color. */
-@property (nonatomic) ccColor4B endColor;
+@property (nonatomic) GLKVector4 endColor;
 /** The starting opacity. */
 @property (nonatomic) GLubyte startOpacity;
 /** The ending color. */

@@ -59,9 +59,9 @@
 	ccBlendFunc		_blendFunc;
 
 	// texture RGBA.
-	GLubyte		_opacity;
-	ccColor4B	_color;
-	ccColor4B	colorUnmodified_;
+	GLfloat		_opacity;
+	GLKVector4	_color;
+	GLKVector4	colorUnmodified_;
 	BOOL opacityModifyRGB_;
 
 	// color uniform

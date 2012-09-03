@@ -141,7 +141,7 @@ static NSString *CCFontMenuItem_fontName = @"Marker Felt";
     {
 		originalScale_ = 1;
 		colorBackup = ccWHITE;
-		disabledColor_ = ccc4( 126,126,126, 255);
+		disabledColor_ = ccGRAY;
 		self.label = label;
 	}
     
@@ -206,22 +206,22 @@ static NSString *CCFontMenuItem_fontName = @"Marker Felt";
 	[super setEnabled: enabled];
 }
 
-- (void) setOpacity: (GLubyte)opacity
+- (void) setOpacity: (GLfloat)opacity
 {
     [label_ setOpacity:opacity];
 }
 
--(GLubyte) opacity
+- (GLfloat) opacity
 {
 	return [label_ opacity];
 }
 
--(void) setColor:(ccColor4B)color
+-(void) setColor:(GLKVector4)color
 {
 	[label_ setColor: color];
 }
 
-- (ccColor4B)color
+- (GLKVector4)color
 {
 	return [label_ color];
 }
@@ -419,26 +419,26 @@ static NSString *CCFontMenuItem_fontName = @"Marker Felt";
 
 #pragma mark CCMenuItemSprite - CCRGBAProtocol protocol
 
-- (void) setOpacity: (GLubyte)opacity
+- (void) setOpacity: (GLfloat)opacity
 {
 	[normalImage_ setOpacity:opacity];
 	[selectedImage_ setOpacity:opacity];
 	[disabledImage_ setOpacity:opacity];
 }
 
--(void) setColor:(ccColor4B)color
+-(void) setColor:(GLKVector4)color
 {
 	[normalImage_ setColor: color];
 	[selectedImage_ setColor: color];
 	[disabledImage_ setColor: color];
 }
 
--(GLubyte) opacity
+-(GLfloat) opacity
 {
 	return [normalImage_ opacity];
 }
 
--(ccColor4B) color
+-(GLKVector4) color
 {
 	return [normalImage_ color];
 }
@@ -647,14 +647,14 @@ static NSString *CCFontMenuItem_fontName = @"Marker Felt";
 
 #pragma mark CCMenuItemToggle - CCRGBAProtocol protocol
 
-- (void) setOpacity: (GLubyte)opacity
+- (void) setOpacity: (GLfloat)opacity
 {
 	_opacity = opacity;
 	for(CCMenuItem<CCRGBAProtocol>* item in subItems_)
 		[item setOpacity:opacity];
 }
 
-- (void) setColor:(ccColor4B)color
+- (void) setColor:(GLKVector4)color
 {
 	_color = color;
 	for(CCMenuItem<CCRGBAProtocol>* item in subItems_)

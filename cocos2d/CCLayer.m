@@ -161,7 +161,7 @@ static inline void __CCLayerPopConfiguration(void)
         
         _anchorPoint = ccp(0.5f, 0.5f);
         
-        [self setBackgroundColor: ccc4(0, 0, 0, 0)];
+        [self setBackgroundColor: ccBLACK];
         
         CCDirector *director = [CCDirector sharedDirector];
 		CGSize s = [director winSize];
@@ -259,10 +259,10 @@ static inline void __CCLayerPopConfiguration(void)
 {
 	for( NSUInteger i = 0; i < 4; i++ )
 	{
-		squareColors_[i].r = _backgroundColor.r / 255.0f;
-		squareColors_[i].g = _backgroundColor.g / 255.0f;
-		squareColors_[i].b = _backgroundColor.b / 255.0f;
-		squareColors_[i].a = _backgroundColor.a / 255.0f;
+		squareColors_[i].r = _backgroundColor.r ;
+		squareColors_[i].g = _backgroundColor.g ;
+		squareColors_[i].b = _backgroundColor.b ;
+		squareColors_[i].a = _backgroundColor.a ;
 	}
 }
 
@@ -431,9 +431,9 @@ static inline void __CCLayerPopConfiguration(void)
     }
 }
 
-- (void)setBackgroundColor: (ccColor4B)backgroundColor
+- (void)setBackgroundColor: (GLKVector4)backgroundColor
 {
-    if (!CCColor4BEqualToColor(_backgroundColor, backgroundColor))
+    if (!GLKVector4AllEqualToVector4(_backgroundColor, backgroundColor))
     {
         NSString * keyPath = @"backgroundColor";
         [self willChangeValueForKey: keyPath];
@@ -446,15 +446,15 @@ static inline void __CCLayerPopConfiguration(void)
             
             VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
             [animation setDuration: [__currentBlockAnimationTransaction duration]];
-            [animation setFromValue: [VGColor colorWithRed: _backgroundColor.r / 255.0
-                                                     green: _backgroundColor.g / 255.0
-                                                      blue: _backgroundColor.b / 255.0
-                                                     alpha: _backgroundColor.a / 255.0]];
+            [animation setFromValue: [VGColor colorWithRed: _backgroundColor.r
+                                                     green: _backgroundColor.g
+                                                      blue: _backgroundColor.b
+                                                     alpha: _backgroundColor.a]];
             
-            [animation setToValue: [VGColor colorWithRed: backgroundColor.r / 255.0
-                                                   green: backgroundColor.g / 255.0
-                                                    blue: backgroundColor.b / 255.0
-                                                   alpha: backgroundColor.a / 255.0]];
+            [animation setToValue: [VGColor colorWithRed: backgroundColor.r 
+                                                   green: backgroundColor.g 
+                                                    blue: backgroundColor.b 
+                                                   alpha: backgroundColor.a ]];
             [animation setDelegate: __currentBlockAnimationTransaction];
             [animation setModelObject: self];
             
@@ -471,7 +471,7 @@ static inline void __CCLayerPopConfiguration(void)
     }
 }
 
-- (ccColor4B)backgroundColor
+- (GLKVector4)backgroundColor
 {
     return _backgroundColor;
 }
@@ -480,7 +480,7 @@ static inline void __CCLayerPopConfiguration(void)
 {
     if (_backgroundColor.a != opacity)
     {
-        [self setBackgroundColor: ccc4(_backgroundColor.r, _backgroundColor.g, _backgroundColor.b, opacity)];
+        [self setBackgroundColor: GLKVector4Make(_backgroundColor.r, _backgroundColor.g, _backgroundColor.b, opacity)];
     }
 }
 
@@ -590,13 +590,13 @@ static inline void __CCLayerPopConfiguration(void)
 @synthesize endColor = endColor_, endOpacity = endOpacity_;
 @synthesize vector = vector_;
 
-- (id) initWithColor: (ccColor4B) start fadingTo: (ccColor4B) end
+- (id) initWithColor: (GLKVector4) start fadingTo: (GLKVector4) end
 {
     return [self initWithColor:start fadingTo:end alongVector:ccp(0, -1)];
 }
 
-- (id) initWithColor: (ccColor4B) start
-            fadingTo: (ccColor4B) end
+- (id) initWithColor: (GLKVector4) start
+            fadingTo: (GLKVector4) end
          alongVector: (CGPoint) v
 {
     if ((self = [super init]))
@@ -610,7 +610,7 @@ static inline void __CCLayerPopConfiguration(void)
         startOpacity_	= start.a;
         vector_ = v;
         
-        start.a	= 255;
+        start.a	= 1;
         compressedInterpolation_ = YES;
         [self setBackgroundColor: start];
     }
@@ -634,20 +634,20 @@ static inline void __CCLayerPopConfiguration(void)
         u = ccpMult(u, h2 * (float)c);
     }
     
-    float opacityf = _backgroundColor.a / 255.0f;
+    float opacityf = _backgroundColor.a;
     
     GLKVector4 S = GLKVector4Make(
-                                  _backgroundColor.r / 255.0f,
-                                  _backgroundColor.g / 255.0f,
-                                  _backgroundColor.b / 255.0f,
-                                  startOpacity_ * opacityf / 255.0f
+                                  _backgroundColor.r ,
+                                  _backgroundColor.g ,
+                                  _backgroundColor.b ,
+                                  startOpacity_ * opacityf
                                   );
     
     GLKVector4 E = GLKVector4Make(
-                                  endColor_.r / 255.0f,
-                                  endColor_.g / 255.0f,
-                                  endColor_.b / 255.0f,
-                                  endOpacity_*opacityf / 255.0f
+                                  endColor_.r ,
+                                  endColor_.g ,
+                                  endColor_.b ,
+                                  endOpacity_*opacityf
                                   );
     
     
@@ -673,17 +673,17 @@ static inline void __CCLayerPopConfiguration(void)
     squareColors_[3].a = E.a + (S.a - E.a) * ((c - u.x - u.y) / (2.0f * c));
 }
 
-- (ccColor4B)startColor
+- (GLKVector4)startColor
 {
     return _backgroundColor;
 }
 
--(void) setStartColor:(ccColor4B)colors
+-(void) setStartColor:(GLKVector4)colors
 {
     [self setBackgroundColor: colors];
 }
 
--(void) setEndColor:(ccColor4B)colors
+-(void) setEndColor:(GLKVector4)colors
 {
     endColor_ = colors;
     [self updateColor];

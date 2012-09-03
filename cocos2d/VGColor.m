@@ -373,12 +373,9 @@ static VGColor *_clearColorCache = nil;
     return copy;
 }
 
-- (ccColor4B)CCColor
+- (GLKVector4)CCColor
 {
-    return (ccColor4B){(GLubyte)(_color.r * 255),
-                       (GLubyte)(_color.g * 255),
-                       (GLubyte)(_color.b * 255),
-                       (GLubyte)(_color.a * 255)};
+    return _color;
 }
 
 @end

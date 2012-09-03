@@ -153,24 +153,24 @@ const char kCCProgressTextureCoords = 0x4b;
 	}
 }
 
--(void)setColor:(ccColor4B)c
+-(void)setColor:(GLKVector4)c
 {
 	sprite_.color = c;
 	[self updateColor];
 }
 
--(ccColor4B)color
+-(GLKVector4)color
 {
 	return sprite_.color;
 }
 
--(void)setOpacity:(GLubyte)o
+-(void)setOpacity:(GLfloat)o
 {
 	sprite_.opacity = o;
 	[self updateColor];
 }
 
--(GLubyte)opacity
+-(GLfloat)opacity
 {
 	return sprite_.opacity;
 }
@@ -213,7 +213,7 @@ const char kCCProgressTextureCoords = 0x4b;
 		return;
 	}
 	if(vertexData_){
-		ccColor4B sc = sprite_.quad.tl.colors;
+		GLKVector4 sc = sprite_.quad.tl.colors;
 		for (int i=0; i < vertexDataCount_; ++i) {
 			vertexData_[i].colors = sc;
 		}

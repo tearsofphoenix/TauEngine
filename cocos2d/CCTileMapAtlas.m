@@ -32,7 +32,7 @@
 @interface CCTileMapAtlas (Private)
 -(void) loadTGAfile:(NSString*)file;
 -(void) calculateItemsToRender;
--(void) updateAtlasValueAt:(ccGridSize)pos withValue:(ccColor3B)value withIndex:(NSUInteger)idx;
+-(void) updateAtlasValueAt:(ccGridSize)pos withValue:(GLKVector3)value withIndex:(NSUInteger)idx;
 @end
 
 
@@ -95,8 +95,8 @@
 	itemsToRender = 0;
 	for(int x = 0;x < tgaInfo->width; x++ ) {
 		for(int y = 0; y < tgaInfo->height; y++ ) {
-			ccColor3B *ptr = (ccColor3B*) tgaInfo->imageData;
-			ccColor3B value = ptr[x + y * tgaInfo->width];
+			GLKVector3 *ptr = (GLKVector3*) tgaInfo->imageData;
+			GLKVector3 value = ptr[x + y * tgaInfo->width];
 			if( value.r )
 				itemsToRender++;
 		}
@@ -124,7 +124,7 @@
 
 #pragma mark CCTileMapAtlas - Atlas generation / updates
 
--(void) setTile:(ccColor3B) tile at:(ccGridSize) pos
+-(void) setTile:(GLKVector3) tile at:(ccGridSize) pos
 {
 	NSAssert( tgaInfo != nil, @"tgaInfo must not be nil");
 	NSAssert( posToAtlasIndex != nil, @"posToAtlasIndex must not be nil");
@@ -132,8 +132,8 @@
 	NSAssert( pos.y < tgaInfo->height, @"Invalid position.x");
 	NSAssert( tile.r != 0, @"R component must be non 0");
 
-	ccColor3B *ptr = (ccColor3B*) tgaInfo->imageData;
-	ccColor3B value = ptr[pos.x + pos.y * tgaInfo->width];
+	GLKVector3 *ptr = (GLKVector3*) tgaInfo->imageData;
+	GLKVector3 value = ptr[pos.x + pos.y * tgaInfo->width];
 	if( value.r == 0 )
 		CCLOG(@"cocos2d: Value.r must be non 0.");
 	else {
@@ -146,25 +146,26 @@
 	}
 }
 
--(ccColor3B) tileAt:(ccGridSize) pos
+-(GLKVector3) tileAt:(ccGridSize) pos
 {
 	NSAssert( tgaInfo != nil, @"tgaInfo must not be nil");
 	NSAssert( pos.x < tgaInfo->width, @"Invalid position.x");
 	NSAssert( pos.y < tgaInfo->height, @"Invalid position.y");
 
-	ccColor3B *ptr = (ccColor3B*) tgaInfo->imageData;
-	ccColor3B value = ptr[pos.x + pos.y * tgaInfo->width];
+	GLKVector3 *ptr = (GLKVector3*) tgaInfo->imageData;
+	GLKVector3 value = ptr[pos.x + pos.y * tgaInfo->width];
 
 	return value;
 }
 
--(void) updateAtlasValueAt:(ccGridSize)pos withValue:(ccColor3B)value withIndex:(NSUInteger)idx
+-(void) updateAtlasValueAt:(ccGridSize)pos withValue:(GLKVector3)value withIndex:(NSUInteger)idx
 {
 	ccV3F_C4B_T2F_Quad quad;
 
 	NSInteger x = pos.x;
 	NSInteger y = pos.y;
-	float row = (value.r % itemsPerRow_);
+    //TODO
+	float row = (value.r / itemsPerRow_);
 	float col = (value.r / itemsPerRow_);
 
 	float textureWide = [[_textureAtlas texture] pixelsWide];
@@ -212,7 +213,7 @@
 	quad.tr.vertices.y = (int)(y * itemHeight_ + itemHeight_);
 	quad.tr.vertices.z = 0.0f;
 
-	ccColor4B color = { _color.r, _color.g, _color.b, _opacity };
+	GLKVector4 color = { {_color.r, _color.g, _color.b, _opacity} };
 	quad.tr.colors = color;
 	quad.tl.colors = color;
 	quad.br.colors = color;
@@ -230,8 +231,8 @@
 	for(int x = 0;x < tgaInfo->width; x++ ) {
 		for(int y = 0; y < tgaInfo->height; y++ ) {
 			if( total < itemsToRender ) {
-				ccColor3B *ptr = (ccColor3B*) tgaInfo->imageData;
-				ccColor3B value = ptr[x + y * tgaInfo->width];
+				GLKVector3 *ptr = (GLKVector3*) tgaInfo->imageData;
+				GLKVector3 value = ptr[x + y * tgaInfo->width];
 
 				if( value.r != 0 ) {
 					[self updateAtlasValueAt:ccg(x,y) withValue:value withIndex:total];

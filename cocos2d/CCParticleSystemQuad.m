@@ -333,9 +333,9 @@
 	else
 		quad = &(quads_[particleIdx]);
     
-	ccColor4B color = (opacityModifyRGB_)
-    ? (ccColor4B){ p->color.r*p->color.a*255, p->color.g*p->color.a*255, p->color.b*p->color.a*255, p->color.a*255}
-    : (ccColor4B){ p->color.r*255, p->color.g*255, p->color.b*255, p->color.a*255};
+	GLKVector4 color = (opacityModifyRGB_)
+    ? (GLKVector4){{ p->color.r*p->color.a , p->color.g*p->color.a , p->color.b*p->color.a , p->color.a }}
+    : (GLKVector4){{ p->color.r, p->color.g, p->color.b, p->color.a}};
     
 	quad->bl.colors = color;
 	quad->br.colors = color;

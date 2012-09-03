@@ -387,7 +387,7 @@ typedef void (*CC_UPDATE_PARTICLE_IMP)(id, SEL, tCCParticle*, CGPoint);
 /** conforms to CocosNodeTexture protocol */
 @property (nonatomic) ccBlendFunc blendFunc;
 /** does the alpha value modify color */
-@property (nonatomic, getter=doesOpacityModifyRGB, assign) BOOL opacityModifyRGB;
+@property (nonatomic, getter=isOpacityModifyRGB) BOOL opacityModifyRGB;
 /** whether or not the particles are using blend additive.
  If enabled, the following blending function will be used.
  @code

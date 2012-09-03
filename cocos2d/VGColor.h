@@ -86,6 +86,6 @@
 // Returns a color in the same color space as the receiver with the specified alpha component.
 - (VGColor *)colorWithAlphaComponent: (float)alpha;
 
-- (ccColor4B)CCColor;
+- (GLKVector4)CCColor;
 
 @end

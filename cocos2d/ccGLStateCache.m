@@ -167,7 +167,8 @@ void VEGLEnable( ccGLServerState flags )
 	/* GL_BLEND */
 	if( (enabled=(flags & CC_GL_BLEND)) != (_ccGLServerState & CC_GL_BLEND) )
     {
-		if( enabled ) {
+		if( enabled )
+        {
 			glEnable( GL_BLEND );
 			_ccGLServerState |= CC_GL_BLEND;
 		} else {
@@ -191,7 +192,8 @@ void VEGLEnableVertexAttribs( unsigned int flags )
 	/* Position */
 	BOOL enablePosition = flags & kCCVertexAttribFlag_Position;
 
-	if( enablePosition != _vertexAttribPosition ) {
+	if( enablePosition != _vertexAttribPosition )
+    {
 		if( enablePosition )
 			glEnableVertexAttribArray( kCCVertexAttrib_Position );
 		else
@@ -203,7 +205,8 @@ void VEGLEnableVertexAttribs( unsigned int flags )
 	/* Color */
 	BOOL enableColor = flags & kCCVertexAttribFlag_Color;
 
-	if( enableColor != _vertexAttribColor ) {
+	if( enableColor != _vertexAttribColor )
+    {
 		if( enableColor )
 			glEnableVertexAttribArray( kCCVertexAttrib_Color );
 		else

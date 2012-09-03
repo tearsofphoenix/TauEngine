@@ -72,12 +72,12 @@
 /** returns a tile from position x,y.
  For the moment only channel R is used
  */
--(ccColor3B) tileAt: (ccGridSize) position;
+-(GLKVector3) tileAt: (ccGridSize) position;
 
 /** sets a tile at position x,y.
  For the moment only channel R is used
  */
--(void) setTile:(ccColor3B)tile at:(ccGridSize)position;
+-(void) setTile:(GLKVector3)tile at:(ccGridSize)position;
 /** dealloc the map from memory */
 -(void) releaseMap;
 @end

@@ -41,7 +41,7 @@
 @synthesize blendFunc = _blendFunc;
 @synthesize fastMode = fastMode_;
 
-- (id) initWithFade:(float)fade minSeg:(float)minSeg width:(float)stroke color:(ccColor4B)color textureFilename:(NSString*)path
+- (id) initWithFade:(float)fade minSeg:(float)minSeg width:(float)stroke color:(GLKVector4)color textureFilename:(NSString*)path
 {
     NSAssert(path != nil, @"Invalid filename");
 
@@ -52,7 +52,7 @@
 - (id) initWithFade: (float)fade
              minSeg: (float)minSeg
               width: (float)stroke
-              color: (ccColor4B)color
+              color: (GLKVector4)color
             texture: (CCTexture2D*)texture
 {
     self = [super init];
@@ -104,25 +104,25 @@
     positionR_ = position;
 }
 
-- (void) tintWithColor:(ccColor4B)colors
+- (void) tintWithColor:(GLKVector4)colors
 {
     [self setColor:colors];
 
     // Fast assignation
     for(int i = 0; i<nuPoints_*2; i++)
     {
-        *((ccColor4B*) (colorPointer_+i*4)) = colors;
+        *((GLKVector4*) (colorPointer_+i*4)) = colors;
     }
 }
 
 @synthesize color = _color;
 
-- (void) setOpacity:(GLubyte)opacity
+- (void) setOpacity:(GLfloat)opacity
 {
     NSAssert(NO, @"Set opacity no supported");
 }
 
-- (GLubyte) opacity
+- (GLfloat) opacity
 {
     NSAssert(NO, @"Opacity no supported");
     return 0;
@@ -177,7 +177,7 @@
             }else
                 newIdx2 = newIdx*8;
 
-            const GLubyte op = pointState_[newIdx] * 255.0f;
+            const GLubyte op = pointState_[newIdx];
             colorPointer_[newIdx2+3] = op;
             colorPointer_[newIdx2+7] = op;
         }
@@ -204,12 +204,12 @@
 
         // Color asignation
         const NSUInteger offset = nuPoints_*8;
-        *((ccColor4B*)(colorPointer_ + offset)) = _color;
-        *((ccColor4B*)(colorPointer_ + offset+4)) = _color;
+        *((GLKVector4*)(colorPointer_ + offset)) = _color;
+        *((GLKVector4*)(colorPointer_ + offset+4)) = _color;
 
         // Opacity
-        colorPointer_[offset+3] = 255;
-        colorPointer_[offset+7] = 255;
+        colorPointer_[offset+3] = 1;
+        colorPointer_[offset+7] = 1;
 
         // Generate polygon
         if(nuPoints_ > 0 && fastMode_ )

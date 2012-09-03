@@ -87,13 +87,13 @@
 @interface CCMenuItemLabel : CCMenuItem  <CCRGBAProtocol>
 {
 	CCNode<CCLabelProtocol, CCRGBAProtocol> *label_;
-	ccColor4B	colorBackup;
-	ccColor4B	disabledColor_;
+	GLKVector4	colorBackup;
+	GLKVector4	disabledColor_;
 	float		originalScale_;
 }
 
 /** the color that will be used to disable the item */
-@property (nonatomic) ccColor4B disabledColor;
+@property (nonatomic) GLKVector4 disabledColor;
 
 /** Label that is rendered. It can be any CCNode that implements the CCLabelProtocol */
 @property (nonatomic, assign) CCNode<CCLabelProtocol, CCRGBAProtocol>* label;

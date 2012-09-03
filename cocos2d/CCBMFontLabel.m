@@ -489,11 +489,12 @@ typedef struct _FontDefHashElement
 		texture = [[[CCTexture2D alloc] init] autorelease];
     
     
-	if( (self=[super initWithTexture:texture capacity:[theString length]]) ) {
+	if( (self=[super initWithTexture:texture capacity:[theString length]]) )
+    {
         width_ = width;
         alignment_ = alignment;
         
-		_opacity = 255;
+		_opacity = 1;
 		_color = ccWHITE;
 		
 		_contentSize = CGSizeZero;
@@ -757,7 +758,7 @@ typedef struct _FontDefHashElement
             
 			// restore to default in case they were modified
 			fontChar.visible = YES;
-			fontChar.opacity = 255;
+			fontChar.opacity = 1;
 		}
         
 		// See issue 1343. cast( signed short + unsigned integer ) == unsigned integer (sign is lost!)
@@ -777,8 +778,10 @@ typedef struct _FontDefHashElement
         
 		// only apply opacity if it is different than 255 )
 		// to prevent modifying the color too (issue #610)
-		if( _opacity != 255 )
+		if( _opacity != 1 )
+        {
 			[fontChar setOpacity: _opacity];
+        }
         
 		if (longestLine < nextFontPositionX)
 			longestLine = nextFontPositionX;
@@ -827,7 +830,7 @@ typedef struct _FontDefHashElement
 
 #pragma mark LabelBMFont - CCRGBAProtocol protocol
 
--(void) setColor:(ccColor4B)color
+-(void) setColor:(GLKVector4)color
 {
 	_color = color;
     
@@ -837,7 +840,7 @@ typedef struct _FontDefHashElement
     }
 }
 
--(void) setOpacity:(GLubyte)opacity
+-(void) setOpacity:(GLfloat)opacity
 {
 	_opacity = opacity;
     
@@ -846,6 +849,9 @@ typedef struct _FontDefHashElement
         [child setOpacity:_opacity];
     }
 }
+
+@synthesize opacityModifyRGB = opacityModifyRGB_;
+
 -(void) setOpacityModifyRGB:(BOOL)modify
 {
 	opacityModifyRGB_ = modify;
@@ -854,11 +860,6 @@ typedef struct _FontDefHashElement
     {
         [child setOpacityModifyRGB:modify];
     }
-}
-
--(BOOL) doesOpacityModifyRGB
-{
-	return opacityModifyRGB_;
 }
 
 #pragma mark LabelBMFont - AnchorPoint

@@ -439,7 +439,7 @@ enum
     }
 }
 
--(void) setColor: (ccColor4B)color
+-(void) setColor: (GLKVector4)color
 {
     
 	_backgroundColor = color;

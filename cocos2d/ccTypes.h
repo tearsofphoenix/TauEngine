@@ -38,91 +38,29 @@
 
 #import "Platforms/CCGL.h"
 
-/** RGB color composed of bytes 3 bytes
-@since v0.8
- */
-typedef struct _ccColor3B
-{
-	GLubyte	r;
-	GLubyte	g;
-	GLubyte b;
-} ccColor3B;
+static const GLKVector4 ccWHITE = {{1,1,1, 1}};
 
-//! helper macro that creates an ccColor3B type
-static inline ccColor3B
-ccc3(const GLubyte r, const GLubyte g, const GLubyte b)
-{
-	ccColor3B c = {r, g, b};
-	return c;
-}
+static const GLKVector4 ccYELLOW = {{1,1,0, 1}};
 
-/** RGBA color composed of 4 bytes
-@since v0.8
-*/
-typedef struct _ccColor4B
-{
-	GLubyte	r;
-	GLubyte	g;
-	GLubyte	b;
-	GLubyte a;
-} ccColor4B;
-//! helper macro that creates an ccColor4B type
-static inline ccColor4B
-ccc4(const GLubyte r, const GLubyte g, const GLubyte b, const GLubyte o)
-{
-	ccColor4B c = {r, g, b, o};
-	return c;
-}
+static const GLKVector4 ccBLUE = {{0,0,1, 1}};
 
-static inline bool CCColor4BEqualToColor(ccColor4B c1, ccColor4B c2)
-{
-    if(c1.r == c2.r && c1.g == c2.g && c1.b == c2.b && c1.a == c2.a)
-    {
-        return true;
-    }
-    
-    return false;
-}
+static const GLKVector4 ccGREEN = {{0,1,0, 1}};
 
-//! White color (255,255,255)
-static const ccColor4B ccWHITE = {255,255,255, 255};
-//! Yellow color (255,255,0)
-static const ccColor4B ccYELLOW = {255,255,0, 255};
-//! Blue color (0,0,255)
-static const ccColor4B ccBLUE = {0,0,255, 255};
-//! Green Color (0,255,0)
-static const ccColor4B ccGREEN = {0,255,0, 255};
-//! Red Color (255,0,0,)
-static const ccColor4B ccRED = {255,0,0, 255};
-//! Magenta Color (255,0,255)
-static const ccColor4B ccMAGENTA = {255,0,255, 255};
-//! Black Color (0,0,0)
-static const ccColor4B ccBLACK = {0,0,0, 255};
-//! Orange Color (255,127,0)
-static const ccColor4B ccORANGE = {255,127,0, 255};
-//! Gray Color (166,166,166)
-static const ccColor4B ccGRAY = {166,166,166, 255};
+static const GLKVector4 ccRED = {{1,0,0, 1}};
 
-/** Returns a GLKVector4 from a ccColor3B. Alpha will be 1.
- @since v0.99.1
- */
-static inline GLKVector4 ccc4FFromccc3B(ccColor3B c)
-{
-	return GLKVector4Make(c.r/255.f, c.g/255.f, c.b/255.f, 1.f);
-}
+static const GLKVector4 ccMAGENTA = {{1,0,1, 1}};
 
-/** Returns a GLKVector4 from a ccColor4B.
- @since v0.99.1
- */
-static inline GLKVector4 ccc4FFromccc4B(ccColor4B c)
-{
-	return GLKVector4Make(c.r/255.f, c.g/255.f, c.b/255.f, c.a/255.f);
-}
+static const GLKVector4 ccBLACK = {{0,0,0, 1}};
+
+static const GLKVector4 ccORANGE = {{1, 0.5,0, 1}};
+
+static const GLKVector4 ccGRAY = {{0.5, 0.5, 0.5, 1}};
 
 /** A texcoord composed of 2 floats: u, y
  @since v0.8
  */
-typedef struct _ccTex2F {
+typedef struct _ccTex2F
+{
 	 GLfloat u;
 	 GLfloat v;
 } ccTex2F;
@@ -132,7 +70,7 @@ typedef struct _ccTex2F {
 typedef struct _ccPointSprite
 {
 	GLKVector2	pos;		// 8 bytes
-	ccColor4B	color;		// 4 bytes
+	GLKVector4	color;		// 4 bytes
 	GLfloat		size;		// 4 bytes
 } ccPointSprite;
 
@@ -174,7 +112,7 @@ typedef struct _ccV2F_C4B_T2F
 	//! vertices (2F)
 	GLKVector2		vertices;
 	//! colors (4B)
-	ccColor4B		colors;
+	GLKVector4		colors;
 	//! tex coords (2F)
 	ccTex2F			texCoords;
 } ccV2F_C4B_T2F;
@@ -222,7 +160,7 @@ typedef struct _ccV3F_C4B_T2F
 //	char __padding__[4];
 
 	//! colors (4B)
-	ccColor4B		colors;				// 4 bytes
+	GLKVector4		colors;				// 4 bytes
 //	char __padding2__[4];
 
 	// tex coords (2F)

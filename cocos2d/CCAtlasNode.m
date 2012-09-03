@@ -61,13 +61,13 @@
 	if( (self=[super init]) )
     {
         _itemSize = size;
-		_opacity = 255;
+		_opacity = 1;
 		_color = colorUnmodified_ = ccWHITE;
 		opacityModifyRGB_ = YES;
-
+        
 		_blendFunc.src = CC_BLEND_SRC;
 		_blendFunc.dst = CC_BLEND_DST;
-
+        
 		_textureAtlas = [[CCAtlasTexture alloc] initWithFile:tile capacity:c];
 		
 		if( ! _textureAtlas )
@@ -76,14 +76,14 @@
 			[self release];
 			return nil;
 		}
-
+        
 		[self updateBlendFunc];
 		[self updateOpacityModifyRGB];
-
+        
 		[self calculateMaxItems];
-
+        
 		self.quadsToDraw = c;
-
+        
 		// shader stuff
 		[self setShaderProgram: CCShaderCacheGetProgramByName(kCCShader_PositionTexture_uColor)];
 		uniformColor_ = CCGLProgramGetUniformLocation(_shaderProgram, "u_color");
@@ -94,7 +94,7 @@
 -(void) dealloc
 {
 	[_textureAtlas release];
-
+    
 	[super dealloc];
 }
 
@@ -116,10 +116,10 @@
 - (void) draw
 {
 	CC_NODE_DRAW_SETUP();
-
+    
 	CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
 	
-	GLfloat colors[4] = {_color.r / 255.0f, _color.g / 255.0f, _color.b / 255.0f, _opacity / 255.0f};
+	GLfloat colors[4] = {_color.r , _color.g , _color.b  , _opacity };
     
     CCGLProgramUniformfv(_shaderProgram, uniformColor_, colors, 1, CCGLUniform4fv);
 	
@@ -128,32 +128,32 @@
 
 #pragma mark CCAtlasNode - RGBA protocol
 
-- (ccColor4B) color
+- (GLKVector4) color
 {
 	if(opacityModifyRGB_)
 		return colorUnmodified_;
-
+    
 	return _color;
 }
 
--(void) setColor:(ccColor4B)color3
+-(void) setColor:(GLKVector4)color3
 {
 	_color = colorUnmodified_ = color3;
-
+    
 	if( opacityModifyRGB_ )
     {
-		_color.r = color3.r * _opacity/255;
-		_color.g = color3.g * _opacity/255;
-		_color.b = color3.b * _opacity/255;
+		_color.r = color3.r * _opacity;
+		_color.g = color3.g * _opacity;
+		_color.b = color3.b * _opacity;
 	}
 }
 
 @synthesize opacity = _opacity;
 
--(void) setOpacity:(GLubyte) anOpacity
+-(void) setOpacity: (GLfloat) anOpacity
 {
 	_opacity			= anOpacity;
-
+    
 	// special opacity for premultiplied textures
 	if( opacityModifyRGB_ )
     {
@@ -161,16 +161,16 @@
     }
 }
 
+@synthesize opacityModifyRGB = opacityModifyRGB_;
+
 -(void) setOpacityModifyRGB:(BOOL)modify
 {
-	ccColor4B oldColor	= self.color;
-	opacityModifyRGB_	= modify;
-	self.color			= oldColor;
-}
-
--(BOOL) doesOpacityModifyRGB
-{
-	return opacityModifyRGB_;
+    if (opacityModifyRGB_ != modify)
+    {
+        GLKVector4 oldColor	= self.color;
+        opacityModifyRGB_	= modify;
+        self.color			= oldColor;
+    }
 }
 
 -(void) updateOpacityModifyRGB

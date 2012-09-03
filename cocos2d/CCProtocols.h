@@ -31,27 +31,13 @@
 
 @protocol CCRGBAProtocol <NSObject>
 
-@property (nonatomic) ccColor4B color;
+@property (nonatomic) GLKVector4 color;
 
-/** sets the opacity.
- @warning If the the texture has premultiplied alpha then, the R, G and B channels will be modifed.
- Values goes from 0 to 255, where 255 means fully opaque.
- */
-
-@property (nonatomic) GLubyte opacity;
+@property (nonatomic) GLfloat opacity;
 
 @optional
-/** sets the premultipliedAlphaOpacity property.
- If set to NO then opacity will be applied as: glColor(R,G,B,opacity);
- If set to YES then oapcity will be applied as: glColor(opacity, opacity, opacity, opacity );
- Textures with premultiplied alpha will have this property by default on YES. Otherwise the default value is NO
- @since v0.8
- */
--(void) setOpacityModifyRGB:(BOOL)boolean;
-/** returns whether or not the opacity will be applied using glColor(R,G,B,opacity) or glColor(opacity, opacity, opacity, opacity);
- @since v0.8
- */
- -(BOOL) doesOpacityModifyRGB;
+
+@property (nonatomic, getter = isOpacityModifyRGB) BOOL opacityModifyRGB;
 
 @end
 

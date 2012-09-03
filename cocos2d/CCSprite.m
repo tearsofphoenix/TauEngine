@@ -88,7 +88,7 @@
 		dirty_ = recursiveDirty_ = NO;
         
 		opacityModifyRGB_			= YES;
-		_opacity					= 255;
+		_opacity					= 1;
 		_color = colorUnmodified_	= ccWHITE;
         
 		_blendFunc.src = CC_BLEND_SRC;
@@ -109,7 +109,7 @@
 		bzero(&quad_, sizeof(quad_));
         
 		// Atlas: Color
-		ccColor4B tmpColor = {255,255,255,255};
+		GLKVector4 tmpColor = {{1, 1, 1, 1}};
 		quad_.bl.colors = tmpColor;
 		quad_.br.colors = tmpColor;
 		quad_.tl.colors = tmpColor;
@@ -762,7 +762,7 @@ if( hasChildren_)							\
 #pragma mark CCSprite - RGBA protocol
 -(void) updateColor
 {
-	ccColor4B color4 = {_color.r, _color.g, _color.b, _opacity};
+	GLKVector4 color4 = {{_color.r, _color.g, _color.b, _opacity}};
     
 	quad_.bl.colors = color4;
 	quad_.br.colors = color4;
@@ -782,12 +782,12 @@ if( hasChildren_)							\
 	// do nothing
 }
 
--(GLubyte) opacity
+-(GLfloat) opacity
 {
 	return _opacity;
 }
 
--(void) setOpacity:(GLubyte) anOpacity
+-(void) setOpacity:(GLfloat) anOpacity
 {
 	_opacity			= anOpacity;
     
@@ -798,7 +798,7 @@ if( hasChildren_)							\
 	[self updateColor];
 }
 
-- (ccColor4B) color
+- (GLKVector4) color
 {
 	if(opacityModifyRGB_)
 		return colorUnmodified_;
@@ -806,29 +806,29 @@ if( hasChildren_)							\
 	return _color;
 }
 
--(void) setColor:(ccColor4B)color3
+-(void) setColor:(GLKVector4)color3
 {
 	_color = colorUnmodified_ = color3;
     
 	if( opacityModifyRGB_ ){
-		_color.r = color3.r * _opacity/255.0f;
-		_color.g = color3.g * _opacity/255.0f;
-		_color.b = color3.b * _opacity/255.0f;
+		_color.r = color3.r * _opacity;
+		_color.g = color3.g * _opacity;
+		_color.b = color3.b * _opacity;
 	}
     
 	[self updateColor];
 }
 
--(void) setOpacityModifyRGB:(BOOL)modify
-{
-	ccColor4B oldColor	= self.color;
-	opacityModifyRGB_	= modify;
-	self.color			= oldColor;
-}
+@synthesize opacityModifyRGB = opacityModifyRGB_;
 
--(BOOL) doesOpacityModifyRGB
+-(void) setOpacityModifyRGB: (BOOL)modify
 {
-	return opacityModifyRGB_;
+    if (opacityModifyRGB_ != modify)
+    {
+        GLKVector4 oldColor	= self.color;
+        opacityModifyRGB_	= modify;
+        self.color			= oldColor;
+    }
 }
 
 //

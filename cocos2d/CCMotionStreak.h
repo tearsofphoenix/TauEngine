@@ -36,7 +36,7 @@
 {
     CCTexture2D *texture_;
     CGPoint positionR_;
-    ccColor4B _color;
+    GLKVector4 _color;
     ccBlendFunc _blendFunc;
     float stroke_;
     float fadeDelta_;
@@ -72,18 +72,18 @@
 - (id) initWithFade:(float)fade
              minSeg:(float)minSeg
               width:(float)stroke
-              color:(ccColor4B)color
+              color:(GLKVector4)color
     textureFilename:(NSString*)path;
 
 /** initializes a motion streak with fade in seconds, minimum segments, stroke's width, color and texture  */
 - (id) initWithFade: (float)fade
              minSeg: (float)minSeg
               width: (float)stroke
-              color: (ccColor4B)color
+              color: (GLKVector4)color
             texture: (CCTexture2D*)texture;
 
 /** color used for the tint */
-- (void) tintWithColor:(ccColor4B)colors;
+- (void) tintWithColor:(GLKVector4)colors;
 
 /** Remove all living segments of the ribbon */
 - (void) reset;

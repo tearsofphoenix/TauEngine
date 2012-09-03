@@ -226,8 +226,8 @@ typedef void (* VEBasicAnimationProcessor)(VEBasicAnimation *animation, CCLayer 
 
 static void _VEAnimationColorProcessor(VEBasicAnimation *animation, CCLayer *layer, VGColor *value1, VGColor *value2, VEMediaTimingFunction *function, NSTimeInterval elapsed)
 {
-    ccColor4B colo1 = [value1 CCColor];
-    ccColor4B color2 = [value2 CCColor];
+    GLKVector4 colo1 = [value1 CCColor];
+    GLKVector4 color2 = [value2 CCColor];
     
     float percent = elapsed / [animation duration];
     size_t pointIndex = percent * 4 + 1;
@@ -235,7 +235,7 @@ static void _VEAnimationColorProcessor(VEBasicAnimation *animation, CCLayer *lay
     [function getControlPointAtIndex: pointIndex
                               values: controlPoints];
     
-    ccColor4B color;
+    GLKVector4 color;
     
     color.r = colo1.r + (color2.r - colo1.r) * percent;
     color.g = colo1.g + (color2.g - colo1.g) * percent;

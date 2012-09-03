@@ -100,8 +100,8 @@
 
 	// opacity and RGB protocol
 	GLubyte		_opacity;
-	ccColor4B	_color;
-	ccColor4B	colorUnmodified_;
+	GLKVector4	_color;
+	GLKVector4	colorUnmodified_;
 	BOOL		opacityModifyRGB_;
 
 	// image is flipped
