@@ -92,15 +92,23 @@ Settings settings;
         [view setBackgroundColor: ccBLUE];
         [view setOpacity: 0];
         
+        CGPoint origin = [view position];
+        
         [CCLayer animateWithDuration: 2.0
                           animations: (^
                                        {
                                            [view setOpacity: 255];
-                                           
+                                           [view setPosition: CGPointMake(0, 10)];
                                        })
                           completion: (^(BOOL finished)
                                        {
                                            [view setBackgroundColor: ccBLACK];
+                                           [view setPosition: origin];
+                                           [CCLayer animateWithDuration: 3.0
+                                                             animations: (^
+                                                                          {
+                                                                              [view setBackgroundColor: ccRED];
+                                                                          })];
                                        })];
 	}
 	return self;

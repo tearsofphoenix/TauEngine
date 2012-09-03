@@ -284,7 +284,7 @@ static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
         VEAnimationProcessStore(_VEAnimationColorProcessor, @"backgroundColor");
         VEAnimationProcessStore(_VEAnimationAnchorPointProcessor, @"anchorPoint");
         VEAnimationProcessStore(_VEAnimationPositionProcessor, @"position");
-
+        
 #undef VEAnimationProcessStore
     }
 }
@@ -330,9 +330,9 @@ static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
             if (elapsed == 0 )
             {
                 id delegate = [self delegate];
-
+                
                 [delegate animationDidStart: self];
-
+                
             }
             
             funPtr(self, model, fromValue, toValue, [self timingFunction], elapsed);
@@ -345,7 +345,7 @@ static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
                 [model removeAnimationForKey: keyPath];
                 
                 id delegate = [self delegate];
-            
+                
                 [delegate animationDidStop: self
                                   finished: YES];
             }
@@ -572,7 +572,7 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 
 @synthesize start;
 
-@synthesize completion;
+@synthesize completion = _completion;
 
 - (void)addAnimation: (VEBasicAnimation *)animation
 {
@@ -581,17 +581,6 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 
 - (void)update: (NSTimeInterval)dt
 {
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, (^
-                               {
-                                   CCDirector *director = [CCDirector sharedDirector];
-                                   
-                                   [[director scheduler] scheduleUpdateForTarget: self
-                                                                        priority: CCSchedulerPriorityZero
-                                                                          paused: NO];
-                               }));
-    
     NSArray *animations = [NSArray arrayWithArray: _animations];
     
     for (VEBasicAnimation *animation in animations)
@@ -611,11 +600,22 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 - (void)animationDidStop: (VEAnimation *)anim
                 finished: (BOOL)flag
 {
-    
+    [_animations removeObject: anim];
+    if ([_animations count] == 0 && _completion)
+    {
+        _completion(flag);
+    }
 }
 
 
 @end
+
+@protocol VEAnimationTransactionDelegate <NSObject>
+
+//- (void)animationTransaction: ()
+
+@end
+
 
 @interface VEViewAnimationBlockDelegate ()
 {
@@ -642,6 +642,11 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 
 - (void)flushTransactions
 {
+    CCDirector *director = [CCDirector sharedDirector];
+    
+    [[director scheduler] scheduleUpdateForTarget: [_transactions lastObject]
+                                         priority: CCSchedulerPriorityZero
+                                           paused: NO];
     
 }
 

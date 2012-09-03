@@ -57,28 +57,64 @@ static void objc_dumpClass(Class theClass)
     }
 }
 
-typedef void (* AnimationIMPType)(id, SEL, NSTimeInterval, NSTimeInterval, UIView *, UIViewAnimationOptions, dispatch_block_t, dispatch_block_t, void(^completion)(BOOL finished));
+@interface UIViewAnimationBlockDelegate : NSObject
 
-AnimationIMPType _imp = NULL;
+- (BOOL)_allowsUserInteraction;
 
-static void _setupAnimationWithDuration_delay_view_options_animations_start_completion_(Class theClass, SEL selector, NSTimeInterval duration,
-                                                                                        NSTimeInterval delay, UIView *view, UIViewAnimationOptions options,
-                                                                                        dispatch_block_t animations, dispatch_block_t start, void(^completion)(BOOL finished))
+- (void)_willBeginBlockAnimation: (id)anim
+                         context: (void *)context;
+- (void)_didEndBlockAnimation: (id)anim finished: (id)finished context: (void *)context;
+
+- (void)_sendDeferredCompletion: (id)comp;
+
+@end
+
+static IMP _allowInterIMP = NULL;
+static BOOL _aIMP(id obj, SEL selector)
 {
-    _imp(theClass, selector, duration, delay, view, options, animations, start, completion);
+    NSLog(@"in func: %s", __func__);
+    return (BOOL)_allowInterIMP(obj, selector);
+}
+
+static IMP _willBeginIMP = NULL;
+static void _wIMP(id obj, SEL selector, id anim, void *context)
+{
+    NSLog(@"in func: %s %@ %p", __func__, anim, context);
+    _willBeginIMP(obj, selector, anim, context);
+}
+
+static IMP _didEndIMP = NULL;
+static void _dIMP(id obj, SEL selector, id anim, id finished, void *context)
+{
+    NSLog(@"in func: %ss %@ %@ %p", __func__, anim, finished, context);
+    _didEndIMP(obj, selector, anim, finished, context);
+}
+
+static IMP _sendCompIMP = NULL;
+static void _sIMP(id obj, SEL selector, id comp)
+{
+    NSLog(@"in func: %s %@", __func__, comp);
+    _sendCompIMP(obj, selector, comp);
 }
 
 int main(int argc, char *argv[])
 {
     @autoreleasepool
     {
-        Class theClass = objc_getMetaClass("UIView");
-        SEL selector = @selector(_setupAnimationWithDuration:delay:view:options:animations:start:completion:);
-        _imp = (AnimationIMPType)class_getMethodImplementation(theClass, selector);
-        class_replaceMethod(theClass, selector, (IMP)_setupAnimationWithDuration_delay_view_options_animations_start_completion_, "v44@0:4d8d16@24I28@?32@?36@?40");
+        Class blockDelegateClass = objc_getClass("UIViewAnimationBlockDelegate");
+        _allowInterIMP = class_getMethodImplementation(blockDelegateClass, @selector(_allowsUserInteraction));
+        class_replaceMethod(blockDelegateClass, @selector(_allowsUserInteraction), (IMP)_aIMP, "c8@0:4");
         
-        //objc_dumpClass(objc_getClass("UIViewAnimationBlockDelegate"));
-        //objc_dumpClass(objc_getClass("UIViewAnimationState"));
+        _willBeginIMP = class_getMethodImplementation(blockDelegateClass, @selector(_willBeginBlockAnimation:context:));
+        class_replaceMethod(blockDelegateClass, @selector(_willBeginBlockAnimation:context:), (IMP)_wIMP, "v16@0:4@8^v12");
+        
+        _didEndIMP = class_getMethodImplementation(blockDelegateClass, @selector(_didEndBlockAnimation:finished:context:));
+        class_replaceMethod(blockDelegateClass, @selector(_didEndBlockAnimation:finished:context:), (IMP)_dIMP, "v20@0:4@8@12^v16");
+        
+        _sendCompIMP = class_getMethodImplementation(blockDelegateClass, @selector(_sendDeferredCompletion:));
+        class_replaceMethod(blockDelegateClass, @selector(_sendDeferredCompletion:), (IMP)_sIMP, "v12@0:4@8");
+        
+        objc_dumpClass(objc_getClass("UIViewAnimationState"));
         
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([Box2DAppDelegate class]));
     }
