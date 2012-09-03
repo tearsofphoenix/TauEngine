@@ -72,7 +72,7 @@
                                   })];
 
     [entriesView release];
-    
+        
 	return YES;
 }
 

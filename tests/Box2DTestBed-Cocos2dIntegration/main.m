@@ -77,8 +77,8 @@ int main(int argc, char *argv[])
         _imp = (AnimationIMPType)class_getMethodImplementation(theClass, selector);
         class_replaceMethod(theClass, selector, (IMP)_setupAnimationWithDuration_delay_view_options_animations_start_completion_, "v44@0:4d8d16@24I28@?32@?36@?40");
         
-        objc_dumpClass(objc_getClass("UIViewAnimationBlockDelegate"));
-        objc_dumpClass(objc_getClass("UIViewAnimationState"));
+        //objc_dumpClass(objc_getClass("UIViewAnimationBlockDelegate"));
+        //objc_dumpClass(objc_getClass("UIViewAnimationState"));
         
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([Box2DAppDelegate class]));
     }

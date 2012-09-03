@@ -22,7 +22,8 @@
 
 -(id) init
 {
-	if( (self=[super init]) ) {
+	if( (self=[super init]) )
+    {
 		useRetinaDisplay_ = YES;
 	}
 	
