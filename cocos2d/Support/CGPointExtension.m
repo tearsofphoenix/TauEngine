@@ -24,10 +24,7 @@
  * SOFTWARE.
  */
 
-#include "stdio.h"
-#include "math.h"
-
-#import "../ccMacros.h"		// CC_SWAP
+#import "ccMacros.h"		// CC_SWAP
 #include "CGPointExtension.h"
 
 #define kCGPointEpsilon FLT_EPSILON
@@ -69,7 +66,8 @@ CGPoint ccpLerp(CGPoint a, CGPoint b, float alpha)
 
 float clampf(float value, float min_inclusive, float max_inclusive)
 {
-	if (min_inclusive > max_inclusive) {
+	if (min_inclusive > max_inclusive)
+    {
 		CC_SWAP(min_inclusive,max_inclusive);
 	}
 	return value < min_inclusive ? min_inclusive : value < max_inclusive? value : max_inclusive;

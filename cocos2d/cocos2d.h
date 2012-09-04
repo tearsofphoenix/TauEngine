@@ -96,11 +96,9 @@
 // cocos2d helper files
 //
 #import "Support/OpenGL_Internal.h"
-#import "Support/CCFileUtils.h"
+
 #import "Support/CGPointExtension.h"
 
-
-#import "Support/ccUtils.h"
 #import "Support/TransformUtils.h"
 
 

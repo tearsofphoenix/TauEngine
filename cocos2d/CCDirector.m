@@ -50,17 +50,10 @@
 #import "Support/OpenGL_Internal.h"
 #import "Support/CGPointExtension.h"
 
-#import "Support/CCFileUtils.h"
-
-#ifdef __CC_PLATFORM_IOS
 #import "Platforms/iOS/CCDirectorIOS.h"
 #import "CCGLView.h"
 
 #define CC_DIRECTOR_DEFAULT CCDirectorDisplayLink
-#elif defined(__CC_PLATFORM_MAC)
-#import "Platforms/Mac/CCDirectorMac.h"
-#define CC_DIRECTOR_DEFAULT CCDirectorDisplayLink
-#endif
 
 
 #pragma mark -
@@ -257,7 +250,7 @@ static CCDirector *_sharedDirector = nil;
 
 -(void) purgeCachedData
 {
-	[[CCFileUtils sharedFileUtils] purgeCachedEntries];
+
 }
 
 #pragma mark Director - Scene OpenGL Helper
@@ -467,14 +460,6 @@ static CCDirector *_sharedDirector = nil;
     
     CCShaderCacheFinalize();
 
-	[[CCFileUtils sharedFileUtils] purgeCachedEntries];
-
-	// Since the director doesn't attach the openglview to the window
-	// it shouldn't remove it from the window too.
-//	[openGLView_ removeFromSuperview];
-
-
-	// Invalidate GL state cache
 	CCGLInvalidateStateCache();
 
 	CHECK_GL_ERROR();

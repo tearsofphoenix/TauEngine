@@ -35,8 +35,15 @@
 {
 	if( (self=[super init]) )
     {
-		[self restore];
+        _eye = GLKVector3Make(0, 0, [CCCamera getZEye]);
+        _center = GLKVector3Make(0, 0, 0);
+        _up = GLKVector3Make(0, 1, 0);
+        
+        _lookupMatrix = GLKMatrix4Identity;
+        
+        _dirty = NO;
     }
+    
 	return self;
 }
 
@@ -50,17 +57,6 @@
 {
 	CCLOGINFO(@"cocos2d: deallocing %@", self);
 	[super dealloc];
-}
-
-- (void)restore
-{
-    _eye = GLKVector3Make(0, 0, [CCCamera getZEye]);
-    _center = GLKVector3Make(0, 0, 0);
-    _up = GLKVector3Make(0, 1, 0);
-    
-	_lookupMatrix = GLKMatrix4Identity;
-
-	_dirty = NO;
 }
 
 - (void)locate

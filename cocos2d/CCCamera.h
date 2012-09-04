@@ -68,9 +68,6 @@
 /** returns the Z eye */
 + (float)getZEye;
 
-/** sets the camera in the defaul position */
-- (void)restore;
-
 /** Sets the camera using gluLookAt using its eye, center and up_vector */
 - (void)locate;
 
