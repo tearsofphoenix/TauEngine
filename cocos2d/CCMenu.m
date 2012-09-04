@@ -426,7 +426,7 @@ enum
 
 #pragma mark Menu - Opacity Protocol
 
-- (void) setOpacity: (GLubyte)newOpacity
+- (void) setOpacity: (GLfloat)newOpacity
 {
     if (_backgroundColor.a != newOpacity)
     {        

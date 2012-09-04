@@ -1,4 +1,6 @@
-"															\n\
+#include <OpenGLES/ES2/gl.h>
+
+const GLchar * ccPositionTextureColorAlphaTest_frag = "															\n\
 #ifdef GL_ES												\n\
 precision lowp float;										\n\
 #endif														\n\

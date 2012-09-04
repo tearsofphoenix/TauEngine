@@ -476,7 +476,7 @@ static inline void __CCLayerPopConfiguration(void)
     return _backgroundColor;
 }
 
--(void) setOpacity: (GLubyte)opacity
+-(void) setOpacity: (GLfloat)opacity
 {
     if (_backgroundColor.a != opacity)
     {
@@ -484,7 +484,7 @@ static inline void __CCLayerPopConfiguration(void)
     }
 }
 
-- (GLubyte)opacity
+- (GLfloat)opacity
 {
     return _backgroundColor.a;
 }
@@ -689,13 +689,13 @@ static inline void __CCLayerPopConfiguration(void)
     [self updateColor];
 }
 
--(void) setStartOpacity: (GLubyte) o
+-(void) setStartOpacity: (GLfloat) o
 {
     startOpacity_ = o;
     [self updateColor];
 }
 
--(void) setEndOpacity: (GLubyte) o
+-(void) setEndOpacity: (GLfloat) o
 {
     endOpacity_ = o;
     [self updateColor];

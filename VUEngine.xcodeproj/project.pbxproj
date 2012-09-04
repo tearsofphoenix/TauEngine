@@ -18,6 +18,13 @@
 		22923B9C15F0AD19007F5275 /* VGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 22923B9A15F0AD19007F5275 /* VGColor.m */; };
 		22923BA415F0B802007F5275 /* VEBlockAnimationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22923BA215F0B802007F5275 /* VEBlockAnimationDelegate.h */; };
 		22923BA515F0B802007F5275 /* VEBlockAnimationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22923BA315F0B802007F5275 /* VEBlockAnimationDelegate.m */; };
+		22DB6A7515F5936900856C9E /* ccShader_Position_uColor_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A09CEE8B150EB30D001E49B8 /* ccShader_Position_uColor_shaders.c */; };
+		22DB6A7615F5936900856C9E /* ccShader_PositionColor_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A09CEE8D150EB30D001E49B8 /* ccShader_PositionColor_shaders.c */; };
+		22DB6A7715F5936900856C9E /* ccShader_PositionTexture_uColor_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A09CEE90150EB30D001E49B8 /* ccShader_PositionTexture_uColor_shaders.c */; };
+		22DB6A7815F5936900856C9E /* ccShader_PositionTexture_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A09CEE91150EB30D001E49B8 /* ccShader_PositionTexture_shaders.c */; };
+		22DB6A7915F5936900856C9E /* ccShader_PositionTextureA8Color_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A09CEE93150EB30D001E49B8 /* ccShader_PositionTextureA8Color_shaders.c */; };
+		22DB6A7A15F5936900856C9E /* ccShader_PositionTextureColor_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A09CEE95150EB30D001E49B8 /* ccShader_PositionTextureColor_shaders.c */; };
+		22DB6A7B15F5936900856C9E /* ccShader_PositionTextureColorAlphaTest_frag.c in Sources */ = {isa = PBXBuildFile; fileRef = A09CEE96150EB30D001E49B8 /* ccShader_PositionTextureColorAlphaTest_frag.c */; };
 		50010EC7103B3DB80059EC2E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		50010EC8103B3DB80059EC2E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		50010EC9103B3DB80059EC2E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
@@ -142,20 +149,13 @@
 		A039EBFF155C686B0061EE37 /* CCNode+Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = A039EBFD155C686B0061EE37 /* CCNode+Debug.h */; };
 		A039EC00155C686B0061EE37 /* CCNode+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = A039EBFE155C686B0061EE37 /* CCNode+Debug.m */; };
 		A093FF09150E9BE00039327A /* ccShaders.h in Headers */ = {isa = PBXBuildFile; fileRef = A093FF07150E9BE00039327A /* ccShaders.h */; };
-		A093FF0A150E9BE00039327A /* ccShaders.m in Sources */ = {isa = PBXBuildFile; fileRef = A093FF08150E9BE00039327A /* ccShaders.m */; };
-		A09CEE97150EB30D001E49B8 /* ccShader_Position_uColor_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE8A150EB30D001E49B8 /* ccShader_Position_uColor_frag.h */; };
-		A09CEE98150EB30D001E49B8 /* ccShader_Position_uColor_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE8B150EB30D001E49B8 /* ccShader_Position_uColor_vert.h */; };
-		A09CEE99150EB30D001E49B8 /* ccShader_PositionColor_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE8C150EB30D001E49B8 /* ccShader_PositionColor_frag.h */; };
-		A09CEE9A150EB30D001E49B8 /* ccShader_PositionColor_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE8D150EB30D001E49B8 /* ccShader_PositionColor_vert.h */; };
-		A09CEE9B150EB30D001E49B8 /* ccShader_PositionTexture_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE8E150EB30D001E49B8 /* ccShader_PositionTexture_frag.h */; };
-		A09CEE9C150EB30D001E49B8 /* ccShader_PositionTexture_uColor_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE8F150EB30D001E49B8 /* ccShader_PositionTexture_uColor_frag.h */; };
-		A09CEE9D150EB30D001E49B8 /* ccShader_PositionTexture_uColor_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE90150EB30D001E49B8 /* ccShader_PositionTexture_uColor_vert.h */; };
-		A09CEE9E150EB30D001E49B8 /* ccShader_PositionTexture_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE91150EB30D001E49B8 /* ccShader_PositionTexture_vert.h */; };
-		A09CEE9F150EB30D001E49B8 /* ccShader_PositionTextureA8Color_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE92150EB30D001E49B8 /* ccShader_PositionTextureA8Color_frag.h */; };
-		A09CEEA0150EB30D001E49B8 /* ccShader_PositionTextureA8Color_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE93150EB30D001E49B8 /* ccShader_PositionTextureA8Color_vert.h */; };
-		A09CEEA1150EB30D001E49B8 /* ccShader_PositionTextureColor_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE94150EB30D001E49B8 /* ccShader_PositionTextureColor_frag.h */; };
-		A09CEEA2150EB30D001E49B8 /* ccShader_PositionTextureColor_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE95150EB30D001E49B8 /* ccShader_PositionTextureColor_vert.h */; };
-		A09CEEA3150EB30D001E49B8 /* ccShader_PositionTextureColorAlphaTest_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE96150EB30D001E49B8 /* ccShader_PositionTextureColorAlphaTest_frag.h */; };
+		A09CEE98150EB30D001E49B8 /* ccShader_Position_uColor_shaders.c in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE8B150EB30D001E49B8 /* ccShader_Position_uColor_shaders.c */; };
+		A09CEE9A150EB30D001E49B8 /* ccShader_PositionColor_shaders.c in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE8D150EB30D001E49B8 /* ccShader_PositionColor_shaders.c */; };
+		A09CEE9D150EB30D001E49B8 /* ccShader_PositionTexture_uColor_shaders.c in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE90150EB30D001E49B8 /* ccShader_PositionTexture_uColor_shaders.c */; };
+		A09CEE9E150EB30D001E49B8 /* ccShader_PositionTexture_shaders.c in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE91150EB30D001E49B8 /* ccShader_PositionTexture_shaders.c */; };
+		A09CEEA0150EB30D001E49B8 /* ccShader_PositionTextureA8Color_shaders.c in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE93150EB30D001E49B8 /* ccShader_PositionTextureA8Color_shaders.c */; };
+		A09CEEA2150EB30D001E49B8 /* ccShader_PositionTextureColor_shaders.c in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE95150EB30D001E49B8 /* ccShader_PositionTextureColor_shaders.c */; };
+		A09CEEA3150EB30D001E49B8 /* ccShader_PositionTextureColorAlphaTest_frag.c in Headers */ = {isa = PBXBuildFile; fileRef = A09CEE96150EB30D001E49B8 /* ccShader_PositionTextureColorAlphaTest_frag.c */; };
 		A0A10B5714F3011F00FA38C1 /* ccGLStateCache.h in Headers */ = {isa = PBXBuildFile; fileRef = A0A10B5514F3011F00FA38C1 /* ccGLStateCache.h */; };
 		A0A10B5814F3011F00FA38C1 /* ccGLStateCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A10B5614F3011F00FA38C1 /* ccGLStateCache.m */; };
 		A0B0377713EA1FDB0073E59A /* b1-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B0376D13EA1FDB0073E59A /* b1-ipad.png */; };
@@ -590,20 +590,13 @@
 		A0793479141990CD00AC44D4 /* VerticalStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalStack.h; sourceTree = "<group>"; };
 		A079347A141990CD00AC44D4 /* Web.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Web.h; sourceTree = "<group>"; };
 		A093FF07150E9BE00039327A /* ccShaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShaders.h; sourceTree = "<group>"; };
-		A093FF08150E9BE00039327A /* ccShaders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ccShaders.m; sourceTree = "<group>"; };
-		A09CEE8A150EB30D001E49B8 /* ccShader_Position_uColor_frag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_Position_uColor_frag.h; sourceTree = "<group>"; };
-		A09CEE8B150EB30D001E49B8 /* ccShader_Position_uColor_vert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_Position_uColor_vert.h; sourceTree = "<group>"; };
-		A09CEE8C150EB30D001E49B8 /* ccShader_PositionColor_frag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_PositionColor_frag.h; sourceTree = "<group>"; };
-		A09CEE8D150EB30D001E49B8 /* ccShader_PositionColor_vert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_PositionColor_vert.h; sourceTree = "<group>"; };
-		A09CEE8E150EB30D001E49B8 /* ccShader_PositionTexture_frag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_PositionTexture_frag.h; sourceTree = "<group>"; };
-		A09CEE8F150EB30D001E49B8 /* ccShader_PositionTexture_uColor_frag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_PositionTexture_uColor_frag.h; sourceTree = "<group>"; };
-		A09CEE90150EB30D001E49B8 /* ccShader_PositionTexture_uColor_vert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_PositionTexture_uColor_vert.h; sourceTree = "<group>"; };
-		A09CEE91150EB30D001E49B8 /* ccShader_PositionTexture_vert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_PositionTexture_vert.h; sourceTree = "<group>"; };
-		A09CEE92150EB30D001E49B8 /* ccShader_PositionTextureA8Color_frag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_PositionTextureA8Color_frag.h; sourceTree = "<group>"; };
-		A09CEE93150EB30D001E49B8 /* ccShader_PositionTextureA8Color_vert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_PositionTextureA8Color_vert.h; sourceTree = "<group>"; };
-		A09CEE94150EB30D001E49B8 /* ccShader_PositionTextureColor_frag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_PositionTextureColor_frag.h; sourceTree = "<group>"; };
-		A09CEE95150EB30D001E49B8 /* ccShader_PositionTextureColor_vert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_PositionTextureColor_vert.h; sourceTree = "<group>"; };
-		A09CEE96150EB30D001E49B8 /* ccShader_PositionTextureColorAlphaTest_frag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShader_PositionTextureColorAlphaTest_frag.h; sourceTree = "<group>"; };
+		A09CEE8B150EB30D001E49B8 /* ccShader_Position_uColor_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_Position_uColor_shaders.c; sourceTree = "<group>"; };
+		A09CEE8D150EB30D001E49B8 /* ccShader_PositionColor_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionColor_shaders.c; sourceTree = "<group>"; };
+		A09CEE90150EB30D001E49B8 /* ccShader_PositionTexture_uColor_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionTexture_uColor_shaders.c; sourceTree = "<group>"; };
+		A09CEE91150EB30D001E49B8 /* ccShader_PositionTexture_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionTexture_shaders.c; sourceTree = "<group>"; };
+		A09CEE93150EB30D001E49B8 /* ccShader_PositionTextureA8Color_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionTextureA8Color_shaders.c; sourceTree = "<group>"; };
+		A09CEE95150EB30D001E49B8 /* ccShader_PositionTextureColor_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionTextureColor_shaders.c; sourceTree = "<group>"; };
+		A09CEE96150EB30D001E49B8 /* ccShader_PositionTextureColorAlphaTest_frag.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionTextureColorAlphaTest_frag.c; sourceTree = "<group>"; };
 		A0A10B5514F3011F00FA38C1 /* ccGLStateCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccGLStateCache.h; sourceTree = "<group>"; };
 		A0A10B5614F3011F00FA38C1 /* ccGLStateCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ccGLStateCache.m; sourceTree = "<group>"; };
 		A0B0376D13EA1FDB0073E59A /* b1-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "b1-ipad.png"; sourceTree = "<group>"; };
@@ -1506,21 +1499,14 @@
 		E0BC7DA11342CE83001B4DCC /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				A09CEE8A150EB30D001E49B8 /* ccShader_Position_uColor_frag.h */,
-				A09CEE8B150EB30D001E49B8 /* ccShader_Position_uColor_vert.h */,
-				A09CEE8C150EB30D001E49B8 /* ccShader_PositionColor_frag.h */,
-				A09CEE8D150EB30D001E49B8 /* ccShader_PositionColor_vert.h */,
-				A09CEE8F150EB30D001E49B8 /* ccShader_PositionTexture_uColor_frag.h */,
-				A09CEE90150EB30D001E49B8 /* ccShader_PositionTexture_uColor_vert.h */,
-				A09CEE8E150EB30D001E49B8 /* ccShader_PositionTexture_frag.h */,
-				A09CEE91150EB30D001E49B8 /* ccShader_PositionTexture_vert.h */,
-				A09CEE92150EB30D001E49B8 /* ccShader_PositionTextureA8Color_frag.h */,
-				A09CEE93150EB30D001E49B8 /* ccShader_PositionTextureA8Color_vert.h */,
-				A09CEE94150EB30D001E49B8 /* ccShader_PositionTextureColor_frag.h */,
-				A09CEE95150EB30D001E49B8 /* ccShader_PositionTextureColor_vert.h */,
-				A09CEE96150EB30D001E49B8 /* ccShader_PositionTextureColorAlphaTest_frag.h */,
+				A09CEE8B150EB30D001E49B8 /* ccShader_Position_uColor_shaders.c */,
+				A09CEE8D150EB30D001E49B8 /* ccShader_PositionColor_shaders.c */,
+				A09CEE90150EB30D001E49B8 /* ccShader_PositionTexture_uColor_shaders.c */,
+				A09CEE91150EB30D001E49B8 /* ccShader_PositionTexture_shaders.c */,
+				A09CEE93150EB30D001E49B8 /* ccShader_PositionTextureA8Color_shaders.c */,
+				A09CEE95150EB30D001E49B8 /* ccShader_PositionTextureColor_shaders.c */,
+				A09CEE96150EB30D001E49B8 /* ccShader_PositionTextureColorAlphaTest_frag.c */,
 				A093FF07150E9BE00039327A /* ccShaders.h */,
-				A093FF08150E9BE00039327A /* ccShaders.m */,
 				A0A10B5514F3011F00FA38C1 /* ccGLStateCache.h */,
 				A0A10B5614F3011F00FA38C1 /* ccGLStateCache.m */,
 				E0BC7D991342CE7B001B4DCC /* CCShaderCache.h */,
@@ -1638,19 +1624,13 @@
 				A0C20AC8144FDAF700D84B47 /* CCParticleBatchNode.h in Headers */,
 				A0A10B5714F3011F00FA38C1 /* ccGLStateCache.h in Headers */,
 				A093FF09150E9BE00039327A /* ccShaders.h in Headers */,
-				A09CEE97150EB30D001E49B8 /* ccShader_Position_uColor_frag.h in Headers */,
-				A09CEE98150EB30D001E49B8 /* ccShader_Position_uColor_vert.h in Headers */,
-				A09CEE99150EB30D001E49B8 /* ccShader_PositionColor_frag.h in Headers */,
-				A09CEE9A150EB30D001E49B8 /* ccShader_PositionColor_vert.h in Headers */,
-				A09CEE9B150EB30D001E49B8 /* ccShader_PositionTexture_frag.h in Headers */,
-				A09CEE9C150EB30D001E49B8 /* ccShader_PositionTexture_uColor_frag.h in Headers */,
-				A09CEE9D150EB30D001E49B8 /* ccShader_PositionTexture_uColor_vert.h in Headers */,
-				A09CEE9E150EB30D001E49B8 /* ccShader_PositionTexture_vert.h in Headers */,
-				A09CEE9F150EB30D001E49B8 /* ccShader_PositionTextureA8Color_frag.h in Headers */,
-				A09CEEA0150EB30D001E49B8 /* ccShader_PositionTextureA8Color_vert.h in Headers */,
-				A09CEEA1150EB30D001E49B8 /* ccShader_PositionTextureColor_frag.h in Headers */,
-				A09CEEA2150EB30D001E49B8 /* ccShader_PositionTextureColor_vert.h in Headers */,
-				A09CEEA3150EB30D001E49B8 /* ccShader_PositionTextureColorAlphaTest_frag.h in Headers */,
+				A09CEE98150EB30D001E49B8 /* ccShader_Position_uColor_shaders.c in Headers */,
+				A09CEE9A150EB30D001E49B8 /* ccShader_PositionColor_shaders.c in Headers */,
+				A09CEE9D150EB30D001E49B8 /* ccShader_PositionTexture_uColor_shaders.c in Headers */,
+				A09CEE9E150EB30D001E49B8 /* ccShader_PositionTexture_shaders.c in Headers */,
+				A09CEEA0150EB30D001E49B8 /* ccShader_PositionTextureA8Color_shaders.c in Headers */,
+				A09CEEA2150EB30D001E49B8 /* ccShader_PositionTextureColor_shaders.c in Headers */,
+				A09CEEA3150EB30D001E49B8 /* ccShader_PositionTextureColorAlphaTest_frag.c in Headers */,
 				A039EBFF155C686B0061EE37 /* CCNode+Debug.h in Headers */,
 				E1CDA48815E7D58500F93FE9 /* VEMetaService.h in Headers */,
 				E1CDA49115E7D8A800F93FE9 /* VEDataSource.h in Headers */,
@@ -1963,6 +1943,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22DB6A7515F5936900856C9E /* ccShader_Position_uColor_shaders.c in Sources */,
+				22DB6A7615F5936900856C9E /* ccShader_PositionColor_shaders.c in Sources */,
+				22DB6A7715F5936900856C9E /* ccShader_PositionTexture_uColor_shaders.c in Sources */,
+				22DB6A7815F5936900856C9E /* ccShader_PositionTexture_shaders.c in Sources */,
+				22DB6A7915F5936900856C9E /* ccShader_PositionTextureA8Color_shaders.c in Sources */,
+				22DB6A7A15F5936900856C9E /* ccShader_PositionTextureColor_shaders.c in Sources */,
+				22DB6A7B15F5936900856C9E /* ccShader_PositionTextureColorAlphaTest_frag.c in Sources */,
 				228C95BF15EE223400CE9EB1 /* VEMediaTiming.m in Sources */,
 				506887F70E96D4F000F943E5 /* CCAtlasNode.m in Sources */,
 				506884D70E96921100F943E5 /* CCAtlasLabel.m in Sources */,
@@ -2017,7 +2004,6 @@
 				A0BE62DA140535F000DAA336 /* CCVertex.m in Sources */,
 				A0C20AC9144FDAF700D84B47 /* CCParticleBatchNode.m in Sources */,
 				A0A10B5814F3011F00FA38C1 /* ccGLStateCache.m in Sources */,
-				A093FF0A150E9BE00039327A /* ccShaders.m in Sources */,
 				A039EC00155C686B0061EE37 /* CCNode+Debug.m in Sources */,
 				E1CDA48915E7D58500F93FE9 /* VEMetaService.m in Sources */,
 				E1CDA49215E7D8A800F93FE9 /* VEDataSource.m in Sources */,

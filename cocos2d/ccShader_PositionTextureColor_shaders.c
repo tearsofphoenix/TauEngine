@@ -1,7 +1,25 @@
-"													\n\
+#include <OpenGLES/ES2/gl.h>
+
+const GLchar * ccPositionTextureColor_frag = "											\n\
+#ifdef GL_ES								\n\
+precision lowp float;						\n\
+#endif										\n\
+\n\
+varying vec4 v_fragmentColor;				\n\
+varying vec2 v_texCoord;					\n\
+uniform sampler2D u_texture;				\n\
+\n\
+void main()									\n\
+{											\n\
+gl_FragColor = v_fragmentColor * texture2D(u_texture, v_texCoord);			\n\
+}											\n\
+";
+
+const GLchar * ccPositionTextureColor_vert = "													\n\
 attribute vec4 a_position;							\n\
 attribute vec2 a_texCoord;							\n\
 attribute vec4 a_color;								\n\
+													\n\
 uniform		mat4 u_MVPMatrix;						\n\
 													\n\
 #ifdef GL_ES										\n\

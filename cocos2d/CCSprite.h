@@ -99,7 +99,7 @@
 	ccV3F_C4B_T2F_Quad quad_;
 
 	// opacity and RGB protocol
-	GLubyte		_opacity;
+	GLfloat		_opacity;
 	GLKVector4	_color;
 	GLKVector4	colorUnmodified_;
 	BOOL		opacityModifyRGB_;

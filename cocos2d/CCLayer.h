@@ -91,7 +91,7 @@
 
 @property (atomic) GLKVector4 backgroundColor;
 
-@property (atomic) GLubyte opacity;
+@property (atomic) GLfloat opacity;
 
 /** Animation methods. **/
 
@@ -187,8 +187,8 @@
 @interface CCGradientLayer : CCLayer
 {
 	GLKVector4 endColor_;
-	GLubyte startOpacity_;
-	GLubyte endOpacity_;
+	GLfloat startOpacity_;
+	GLfloat endOpacity_;
 	CGPoint vector_;
 	BOOL	compressedInterpolation_;
 }
@@ -203,9 +203,9 @@
 /** The ending color. */
 @property (nonatomic) GLKVector4 endColor;
 /** The starting opacity. */
-@property (nonatomic) GLubyte startOpacity;
+@property (nonatomic) GLfloat startOpacity;
 /** The ending color. */
-@property (nonatomic) GLubyte endOpacity;
+@property (nonatomic) GLfloat endOpacity;
 /** The vector along which to fade color. */
 @property (nonatomic) CGPoint vector;
 /** Whether or not the interpolation will be compressed in order to display all the colors of the gradient both in canonical and non canonical vectors
