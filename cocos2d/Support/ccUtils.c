@@ -4,7 +4,7 @@
  */
 
 /*
- ccNextPOT function is licensed under the same license that is used in CCTexture2D.m.
+ ccNextPOT function is licensed under the same license that is used in GLKEffectPropertyTexture.m.
  */
 #include "ccUtils.h"
 

@@ -173,7 +173,7 @@
 #endif
 
 /** @def CC_TEXTURE_ATLAS_USE_VAO
- By default, CCAtlasTexture (used by many cocos2d classes) will use VAO (Vertex Array Objects).
+ By default, GLKEffectPropertyTexture (used by many cocos2d classes) will use VAO (Vertex Array Objects).
  Apple recommends its usage but they might consume a lot of memory, specially if you use many of them.
  So for certain cases, where you might need hundreds of VAO objects, it might be a good idea to disable it.
  

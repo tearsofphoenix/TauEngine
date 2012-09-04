@@ -22,11 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-#import "ccMacros.h"
+//#import <GLKit/GLKit.h>
 #import "ccTypes.h"
-#import "CCTexture2D.h"
 
+@class GLKEffectPropertyTexture;
 #pragma mark - CCRGBAProtocol
 
 @protocol CCRGBAProtocol <NSObject>
@@ -65,7 +64,7 @@
  */
 @protocol CCTextureProtocol <CCBlendProtocol>
 
-@property (nonatomic, retain) CCTexture2D *texture;
+@property (nonatomic, retain) GLKEffectPropertyTexture *texture;
 
 @end
 

@@ -51,46 +51,15 @@
 #import "CCActionManager.h"
 #import "CCAction.h"
 
-#import "CCAnimation.h"
-#import "CCAnimationCacheService.h"
-#import "CCSprite.h"
-#import "CCSpriteFrame.h"
-#import "CCSpriteBatchNode.h"
-#import "CCSpriteFrameCache.h"
-
-#import "CCTTFLabel.h"
-#import "CCBMFontLabel.h"
-#import "CCAtlasLabel.h"
-
-#import "CCParticleSystem.h"
-#import "CCParticleSystemQuad.h"
-#import "CCParticleExamples.h"
-#import "CCParticleBatchNode.h"
-
-#import "CCTexture2D.h"
-#import "CCTexturePVR.h"
-#import "CCTextureCache.h"
-#import "CCAtlasTexture.h"
-
-#import "CCTileMapAtlas.h"
-
 #import "CCLayer.h"
-#import "CCMenu.h"
-#import "CCMenuItem.h"
 
 #import "CCScene.h"
 #import "CCScheduler.h"
 #import "CCCamera.h"
 #import "CCProtocols.h"
 #import "CCNode.h"
-#import "CCNode+Debug.h"
 #import "CCDirector.h"
-#import "CCAtlasNode.h"
-#import "CCGrabber.h"
-#import "CCGrid.h"
-#import "CCParallaxNode.h"
-#import "CCRenderTexture.h"
-#import "CCMotionStreak.h"
+
 #import "CCConfiguration.h"
 
 // Shaders

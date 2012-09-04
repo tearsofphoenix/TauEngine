@@ -34,7 +34,6 @@ enum
 };
 
 @class CCCamera;
-@class CCGridBase;
 @class CCGLProgram;
 @class CCScheduler;
 @class CCActionManager;
@@ -117,8 +116,6 @@ enum
 	CGAffineTransform _transform;
     CGAffineTransform _inverse;
 
-	CCGridBase *_grid;
-
 	// z-order value
 	NSInteger _zOrder;
 
@@ -183,9 +180,6 @@ enum
 
 /** A CCCamera object that lets you move the node using a gluLookAt */
 @property(nonatomic,readonly) CCCamera* camera;
-
-/** A CCGrid object that is used when applying effects */
-@property(nonatomic, strong) CCGridBase* grid;
 
 /** Whether of not the node is visible. Default is YES */
 @property(nonatomic, getter = isVisible) BOOL visible;

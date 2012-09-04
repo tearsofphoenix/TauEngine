@@ -48,47 +48,7 @@ Settings settings;
 		[view setAnchorPoint:ccp(0,0)];
 		[view setPosition:ccp(s.width/2, s.height/3)];
         
-		CCTTFLabel* label = [[CCTTFLabel alloc] initWithString:[view title] fontName:@"Helvetica" fontSize:32];
-        
-		[self addChild: label z:1];
-        [label release];
-		[label setPosition: ccp(s.width/2, s.height-50)];
-        
-		CCMenuItemImage *item1 = [[CCMenuItemImage alloc] initWithNormalImage: @"b1.png"
-                                                                selectedImage: @"b2.png"
-                                                                disabledImage: nil
-                                                                        block: nil];
-        [item1 addTarget: self
-               forAction: @selector(backCallback:)];
-        
-		CCMenuItemImage *item2 = [[CCMenuItemImage alloc] initWithNormalImage: @"r1.png"
-                                                                selectedImage: @"r2.png"
-                                                                disabledImage: nil
-                                                                        block: nil];
-        [item2 addTarget: self
-               forAction: @selector(restartCallback:)];
-        
-		CCMenuItemImage *item3 = [[CCMenuItemImage alloc] initWithNormalImage: @"f1.png"
-                                                                selectedImage: @"f2.png"
-                                                                disabledImage: nil
-                                                                        block: nil];
-        
-        [item3 addTarget: self
-               forAction: @selector(nextCallback:)];
-        
-		CCMenu *menu = [[CCMenu alloc] initWithArray: [NSArray arrayWithObjects:item1, item2, item3, nil]];
-        
-        [item1 release];
-        [item2 release];
-        [item3 release];
-        
-		menu.position = CGPointZero;
-		item1.position = ccp( s.width/2 - 150,30);
-		item2.position = ccp( s.width/2, 30);
-		item3.position = ccp( s.width/2 + 150,30);
-		[self addChild: menu z:1];
-        
-        [menu release];
+
         [view setBackgroundColor: ccBLUE];
         [view setOpacity: 0];
         

@@ -232,7 +232,7 @@ typedef NS_ENUM(NSUInteger, ccResolutionType)
 
 } ;
 
-// XXX: If any of these enums are edited and/or reordered, udpate CCTexture2D.m
+// XXX: If any of these enums are edited and/or reordered, udpate GLKEffectPropertyTexture.m
 //! Vertical text alignment type
 typedef NS_ENUM(NSUInteger, CCVerticalTextAlignment)
 {

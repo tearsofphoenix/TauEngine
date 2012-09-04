@@ -26,7 +26,6 @@
  */
 
 #import "CCNode.h"
-#import "CCGrid.h"
 #import "CCDirector.h"
 #import "CCActionManager.h"
 #import "CCCamera.h"
@@ -83,7 +82,6 @@ static NSInteger globalOrderOfArrival = 1;
 
 @synthesize visible = _visible;
 
-@synthesize grid = _grid;
 @synthesize zOrder = _zOrder;
 @synthesize tag = _tag;
 @synthesize vertexZ = _vertexZ;
@@ -177,8 +175,6 @@ static NSInteger globalOrderOfArrival = 1;
         
 		_vertexZ = 0;
         
-		_grid = nil;
-        
 		_visible = YES;
         
 		_tag = kCCNodeTagInvalid;
@@ -235,7 +231,6 @@ static NSInteger globalOrderOfArrival = 1;
 	CCLOGINFO( @"cocos2d: deallocing %@", self);
     
 	[_camera release];
-	[_grid release];
 	[_shaderProgram release];
 	[userObject_ release];
     
@@ -397,12 +392,7 @@ static NSInteger globalOrderOfArrival = 1;
 		return;
     
 	VEGLPushMatrix();
-    
-	if ( _grid && _grid.active)
-    {
-		[_grid beforeDraw];
-    }
-    
+        
 	[self transform];
     
     [self draw];
@@ -422,12 +412,7 @@ static NSInteger globalOrderOfArrival = 1;
     
 	// reset for next frame
 	_orderOfArrival = 0;
-    
-	if ( _grid && _grid.active)
-    {
-		[_grid afterDraw: self];
-    }
-    
+
 	VEGLPopMatrix();
 }
 
@@ -706,7 +691,7 @@ static NSInteger globalOrderOfArrival = 1;
     
     
 	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
-	if ( _camera && !(_grid && _grid.active) )
+	if ( _camera )
 	{
 		BOOL translate = (_anchorPointInPoints.x != 0.0f || _anchorPointInPoints.y != 0.0f);
         

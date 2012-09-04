@@ -34,15 +34,11 @@
 #import "VEContext.h"
 #import "CCScheduler.h"
 #import "CCActionManager.h"
-#import "CCTextureCache.h"
-#import "CCAnimationCacheService.h"
-#import "CCAtlasLabel.h"
+
 #import "ccMacros.h"
 
 #import "CCScene.h"
-#import "CCSpriteFrameCache.h"
-#import "CCTexture2D.h"
-#import "CCBMFontLabel.h"
+
 #import "CCLayer.h"
 #import "ccGLStateCache.h"
 #import "CCShaderCache.h"
@@ -261,8 +257,6 @@ static CCDirector *_sharedDirector = nil;
 
 -(void) purgeCachedData
 {
-	[CCBMFontLabel purgeCachedData];
-	[[CCTextureCache sharedTextureCache] removeUnusedTextures];
 	[[CCFileUtils sharedFileUtils] purgeCachedEntries];
 }
 
@@ -470,21 +464,10 @@ static CCDirector *_sharedDirector = nil;
 
 	[self setView:nil];
 	
-	// Purge bitmap cache
-	[CCBMFontLabel purgeCachedData];
-
-	// Purge all managers / caches
-    VSC(CCAnimationCacheServiceID, CCAnimationCacheServiceClearup, nil, nil);
-
-	[CCSpriteFrameCache purgeSharedSpriteFrameCache];
-	[CCTextureCache purgeSharedTextureCache];
     
     CCShaderCacheFinalize();
 
 	[[CCFileUtils sharedFileUtils] purgeCachedEntries];
-
-    [VEDataSource unloadAllService];
-	// OpenGL view
 
 	// Since the director doesn't attach the openglview to the window
 	// it shouldn't remove it from the window too.
@@ -622,41 +605,6 @@ NSTimeInterval CCDirectorCalculateMPF(struct timeval lastUpdate_)
 
 -(void) createStatsLabel
 {
-	if( FPSLabel_ && SPFLabel_ ) {
-		CCTexture2D *texture = [FPSLabel_ texture];
-
-		[FPSLabel_ release];
-		[SPFLabel_ release];
-		[drawsLabel_ release];
-		[[CCTextureCache sharedTextureCache ] removeTexture:texture];
-		FPSLabel_ = nil;
-		SPFLabel_ = nil;
-		drawsLabel_ = nil;
-		
-		[[CCFileUtils sharedFileUtils] purgeCachedEntries];
-	}
-
-	CCTexture2DPixelFormat currentFormat = [CCTexture2D defaultAlphaPixelFormat];
-	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
-	FPSLabel_ = [[CCAtlasLabel alloc]  initWithString: @"00.0"
-                                          charMapFile: @"fps_images.png"
-                                             itemSize: CGSizeMake(12, 32)
-                                         startCharMap: '.'];
-    
-	SPFLabel_ = [[CCAtlasLabel alloc]  initWithString: @"0.000"
-                                          charMapFile: @"fps_images.png"
-                                             itemSize: CGSizeMake(12, 32)
-                                         startCharMap:'.'];
-	drawsLabel_ = [[CCAtlasLabel alloc]  initWithString: @"000"
-                                            charMapFile: @"fps_images.png"
-                                               itemSize: CGSizeMake(12, 32)
-                                           startCharMap: '.'];
-
-	[CCTexture2D setDefaultAlphaPixelFormat:currentFormat];
-
-	[drawsLabel_ setPosition: ccpAdd( ccp(0,34), CC_DIRECTOR_STATS_POSITION ) ];
-	[SPFLabel_ setPosition: ccpAdd( ccp(0,17), CC_DIRECTOR_STATS_POSITION ) ];
-	[FPSLabel_ setPosition: CC_DIRECTOR_STATS_POSITION ];
 }
 
 @end
