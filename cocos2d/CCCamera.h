@@ -47,29 +47,29 @@
 
 */
 
-@interface CCCamera : NSObject
-{
-    GLKVector3 _eye;
-    GLKVector3 _center;
-    GLKVector3 _up;
 
-	GLKMatrix4	_lookupMatrix;
-}
+typedef struct _VECamera VECamera;
 
-/** whether of not the camera is dirty */
-@property (nonatomic) BOOL dirty;
+typedef VECamera *VECameraRef;
 
-@property (nonatomic) GLKVector3 eye;
+extern VECameraRef VECameraCreate(void);
 
-@property (nonatomic) GLKVector3 center;
+extern void VECameraLocate(VECameraRef camera);
 
-@property (nonatomic) GLKVector3 up;
+extern void VECameraFinalize(VECameraRef camera);
 
-/** returns the Z eye */
-+ (float)getZEye;
+#pragma mark - getter
 
-/** Sets the camera using gluLookAt using its eye, center and up_vector */
-- (void)locate;
+extern GLKVector3 VECameraGetEye(VECameraRef camera);
 
+extern GLKVector3 VECameraGetCenter(VECameraRef camera);
 
-@end
+extern GLKVector3 VECameraGetUp(VECameraRef camera);
+
+#pragma mark - setter
+
+extern void VECameraSetEye(VECameraRef camera, GLKVector3 eye);
+
+extern void VECameraSetCenter(VECameraRef camera, GLKVector3 center);
+
+extern void VECameraSetUp(VECameraRef camera, GLKVector3 up);

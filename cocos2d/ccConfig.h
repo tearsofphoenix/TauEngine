@@ -72,21 +72,6 @@
 #define CC_DIRECTOR_STATS_POSITION ccp(0,0)
 #endif
 
-/** @def CC_DIRECTOR_IOS_USE_BACKGROUND_THREAD
- If enabled, cocos2d-ios will run on a background thread. If disabled cocos2d-ios will run the main thread.
-
- To enable set it to a 1, to disable it set to 0. Enabled by default.
-
- Only valid for cocos2d-ios. Not supported on cocos2d-mac.
- 
- This is an EXPERIMENTAL feature. Do not use it unless you are a developer.
-
- */
-#ifndef CC_DIRECTOR_IOS_USE_BACKGROUND_THREAD
-#define CC_DIRECTOR_IOS_USE_BACKGROUND_THREAD 0
-#endif
-
-
 #define CC_MAC_USE_DISPLAY_LINK_THREAD 0
 #define CC_MAC_USE_OWN_THREAD 1
 #define CC_MAC_USE_MAIN_THREAD 2

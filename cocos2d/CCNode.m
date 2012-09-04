@@ -54,17 +54,19 @@
 @interface CCNode ()
 {
 @private
+    IMP _renderInContextIMP;
+    IMP _drawInContextIMP;
     
     // scaling factors
 	float _scaleX, _scaleY;
     
 	// openGL real Z vertex
 	float _vertexZ;
-        
-    CCCamera *_camera;
+    
+    VECameraRef _camera;
     
     CCNode *_parent;
-            
+    
 }
 
 // helper that reorder a child
@@ -77,9 +79,6 @@
 
 @implementation CCNode
 
-// XXX: Yes, nodes might have a sort problem once every 15 days if the game runs at 60 FPS and each frame sprites are reordered.
-static NSInteger globalOrderOfArrival = 1;
-
 @synthesize visible = _visible;
 
 @synthesize zOrder = _zOrder;
@@ -88,7 +87,6 @@ static NSInteger globalOrderOfArrival = 1;
 @synthesize isRunning = _isRunning;
 @synthesize userObject = userObject_;
 @synthesize	shaderProgram = _shaderProgram;
-@synthesize orderOfArrival = _orderOfArrival;
 @synthesize glServerState = _glServerState;
 
 #pragma mark CCNode - Transform related properties
@@ -195,10 +193,11 @@ static NSInteger globalOrderOfArrival = 1;
         
 		_shaderProgram = nil;
         
-		_orderOfArrival = 0;
-        
 		_glServerState = CC_GL_BLEND;
 		
+        _renderInContextIMP = [self methodForSelector: @selector(visitWithContext:)];
+        _drawInContextIMP = [self methodForSelector: @selector(drawInContext:)];
+        
 		// set default scheduler and actionManager
 		CCDirector *director = [CCDirector sharedDirector];
         
@@ -229,8 +228,7 @@ static NSInteger globalOrderOfArrival = 1;
 - (void)dealloc
 {
 	CCLOGINFO( @"cocos2d: deallocing %@", self);
-    
-	[_camera release];
+    VECameraFinalize(_camera);
 	[_shaderProgram release];
 	[userObject_ release];
     
@@ -309,11 +307,11 @@ static NSInteger globalOrderOfArrival = 1;
 #pragma mark CCNode Composition
 
 // camera: lazy alloc
-- (CCCamera*)camera
+- (VECameraRef)camera
 {
 	if( ! _camera )
     {
-		_camera = [[CCCamera alloc] init];
+		_camera = VECameraCreate();
 	}
     
 	return _camera;
@@ -323,12 +321,9 @@ static NSInteger globalOrderOfArrival = 1;
 {
     if (_zOrder != zOrder)
     {
-        [self _setZOrder: zOrder];
+        _zOrder = zOrder;
         
-        if (_parent)
-        {
-            [_parent reorderChild:self z:zOrder];
-        }
+        [_parent sortAllChildren];
     }
 }
 
@@ -368,11 +363,10 @@ static NSInteger globalOrderOfArrival = 1;
 - (void)insertChild: (CCNode*)child
                   z: (NSInteger)z
 {
-	_isReorderChildDirty=YES;
-    
     CFArrayAppendValue(_children, [child retain]);
     
 	[child _setZOrder:z];
+    [self sortAllChildren];
 }
 
 @end
@@ -381,39 +375,33 @@ static NSInteger globalOrderOfArrival = 1;
 
 @implementation  CCNode (CCNodeRendering)
 
-- (void) draw
+- (void)drawInContext: (VEContext *)context
 {
+    
 }
 
--(void)renderInContext: (VEContext *)context
+-(void)visitWithContext: (VEContext *)context
 {
 	// quick return if not visible. children won't be drawn.
-	if (!_visible)
-		return;
-    
-	VEGLPushMatrix();
-        
-	[self transform];
-    
-    [self draw];
-
-	if(_children)
+	if (_visible)
     {
-		[self sortAllChildren];
+        VEGLPushMatrix();
         
-		// draw children zOrder >= 0
-		for(CFIndex i = 0 ; i < CFArrayGetCount(_children); i++ )
-        {
-			CCNode *child =  CFArrayGetValueAtIndex(_children, i);
-			[child renderInContext: context];
-		}
-                
-	}
-    
-	// reset for next frame
-	_orderOfArrival = 0;
-
-	VEGLPopMatrix();
+        [self transform];
+        
+        _drawInContextIMP(self, @selector(drawInContext:), context);
+        
+        if(_children)
+        {            
+            for(CFIndex i = 0 ; i < CFArrayGetCount(_children); i++ )
+            {
+                CCNode *child =  CFArrayGetValueAtIndex(_children, i);
+                _renderInContextIMP(child, _cmd, context);
+            }            
+        }
+        
+        VEGLPopMatrix();
+    }
 }
 
 @end
@@ -461,7 +449,7 @@ static NSInteger globalOrderOfArrival = 1;
 {
     [_scheduler pauseTarget: self];
     [_actionManager pauseTarget: self];
-
+    
 	_isRunning = NO;
     
 	[(NSArray *)_children makeObjectsPerformSelector:@selector(onExit)];
@@ -500,10 +488,8 @@ static NSInteger globalOrderOfArrival = 1;
     
 	[self insertChild: child
                     z: z];
-        
-	[child setParent: self];
     
-	[child setOrderOfArrival: globalOrderOfArrival++];
+	[child setParent: self];
     
 	if( _isRunning )
     {
@@ -564,40 +550,22 @@ static NSInteger globalOrderOfArrival = 1;
     [(NSMutableArray *)_children removeAllObjects];
 }
 
-- (void)reorderChild: (CCNode*)child
-                   z: (NSInteger)z
-{
-	NSAssert( child != nil, @"Child must be non-nil");
-    
-	_isReorderChildDirty = YES;
-    
-	[child setOrderOfArrival: globalOrderOfArrival++];
-	[child _setZOrder:z];
-}
-
 - (void) sortAllChildren
 {
-	if (_isReorderChildDirty)
-	{
-        [(NSMutableArray *)_children sortUsingComparator: (^NSComparisonResult(CCNode *obj1, CCNode *obj2)
+    [(NSMutableArray *)_children sortUsingComparator: (^NSComparisonResult(CCNode *obj1, CCNode *obj2)
+                                                       {
+                                                           NSInteger z1 = [obj1 zOrder];
+                                                           NSInteger z2 = [obj2 zOrder];
+                                                           if (z1 < z2)
                                                            {
-                                                               NSInteger z1 = [obj1 zOrder];
-                                                               NSInteger z2 = [obj2 zOrder];
-                                                               if (z1 < z2)
-                                                               {
-                                                                   return NSOrderedAscending;
-                                                               }
-                                                               if (z1 > z2)
-                                                               {
-                                                                   return NSOrderedDescending;
-                                                               }
-                                                               return NSOrderedSame;
-                                                           })];
-        
-		//don't need to check children recursively, that's done in visit of each child
-        
-		_isReorderChildDirty = NO;
-	}
+                                                               return NSOrderedAscending;
+                                                           }
+                                                           if (z1 > z2)
+                                                           {
+                                                               return NSOrderedDescending;
+                                                           }
+                                                           return NSOrderedSame;
+                                                       })];
 }
 
 @end
@@ -700,7 +668,7 @@ static NSInteger globalOrderOfArrival = 1;
 			VEGLTranslatef(RENDER_IN_SUBPIXEL(_anchorPointInPoints.x), RENDER_IN_SUBPIXEL(_anchorPointInPoints.y), 0 );
         }
         
-		[_camera locate];
+        VECameraLocate(_camera);
         
 		if( translate )
         {

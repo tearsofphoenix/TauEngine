@@ -216,9 +216,9 @@ Settings settings;
     test->Step(&settings);
 }
 
-- (void)draw
+- (void)drawInContext: (VEContext *)context
 {
-	[super draw];
+	[super drawInContext: context];
     
 	VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
     

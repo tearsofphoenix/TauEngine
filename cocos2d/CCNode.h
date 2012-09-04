@@ -27,13 +27,13 @@
 
 #import "ccTypes.h"
 #import "ccGLStateCache.h"
+#import "CCCamera.h"
 
 enum
 {
 	kCCNodeTagInvalid = -1,
 };
 
-@class CCCamera;
 @class CCGLProgram;
 @class CCScheduler;
 @class CCActionManager;
@@ -132,9 +132,6 @@ enum
 	// Server side state
 	ccGLServerState _glServerState;
 
-	// used to preserve sequence while sorting children with the same zOrder
-	NSUInteger _orderOfArrival;
-
 	// Is running
 	BOOL _isRunning;
 
@@ -146,8 +143,6 @@ enum
 	// If YES, the Anchor Point will be (0,0) when you position the CCNode.
 	// Used by CCLayer and CCScene
 	BOOL _ignoreAnchorPointForPosition;
-
-	BOOL _isReorderChildDirty;
 }
 
 /** The z order of the node relative to its "siblings": children of the same parent */
@@ -179,7 +174,7 @@ enum
 @property(nonatomic) float rotation;
 
 /** A CCCamera object that lets you move the node using a gluLookAt */
-@property(nonatomic,readonly) CCCamera* camera;
+@property(nonatomic,readonly) VECameraRef camera;
 
 /** Whether of not the node is visible. Default is YES */
 @property(nonatomic, getter = isVisible) BOOL visible;
@@ -222,9 +217,6 @@ enum
  @since v2.0
  */
 @property(nonatomic, strong) CCGLProgram *shaderProgram;
-
-/** used internally for zOrder sorting, don't change this manually */
-@property(nonatomic) NSUInteger orderOfArrival;
 
 /** GL server side state
  @since v2.0
@@ -324,12 +316,6 @@ enum
  */
 - (CCNode*)getChildByTag: (NSInteger)tag;
 
-/** Reorders a child according to a new z value.
- * The child MUST be already added.
- */
--(void) reorderChild: (CCNode*)child
-                   z: (NSInteger)zOrder;
-
 /** performance improvement, Sort the children array once before drawing, instead of every time when a child is added or reordered
  don't call this manually unless a child added needs to be removed in the same frame */
 - (void) sortAllChildren;
@@ -345,10 +331,10 @@ enum
  For further info, please see ccGLstate.h.
  You shall NOT call [super draw];
  */
--(void) draw;
+- (void)drawInContext: (VEContext *)context;
 
 /** recursive method that visit its children and draw them */
--(void)renderInContext: (VEContext *)context;
+-(void)visitWithContext: (VEContext *)context;
 
 
 @end

@@ -62,7 +62,6 @@ typedef NS_ENUM(NSUInteger, ccDirectorProjection)
 
 } ;
 
-@class CCAtlasLabel;
 @class CCScene;
 @class CCScheduler;
 @class CCActionManager;
@@ -107,9 +106,6 @@ and when to execute the Scenes.
 
 	NSTimeInterval		accumDt_;
 	NSTimeInterval		frameRate_;
-	CCAtlasLabel *FPSLabel_;
-	CCAtlasLabel *SPFLabel_;
-	CCAtlasLabel *drawsLabel_;
 
 	/* is the running scene paused */
 	BOOL isPaused_;
@@ -152,9 +148,6 @@ and when to execute the Scenes.
 
 	/* window size in pixels */
 	CGSize	winSizeInPixels_;
-
-	/* the cocos2d running thread */
-	NSThread	*runningThread_;
     
     dispatch_queue_t _dispatchQueue;
     dispatch_queue_t _runningQueue;
@@ -168,13 +161,6 @@ and when to execute the Scenes.
 	/*  OpenGLView. On iOS it is a copy of self.view */
 	CCGLView		*view_;
 }
-
-/** returns the cocos2d thread.
- If you want to run any cocos2d task, run it in this thread.
- On iOS usually it is the main thread.
- @since v0.99.5
- */
-@property (readonly, nonatomic ) NSThread *runningThread;
 
 @property (nonatomic, readonly) dispatch_queue_t dispatchQueue;
 

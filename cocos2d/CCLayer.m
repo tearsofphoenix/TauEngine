@@ -260,7 +260,7 @@ static inline void __CCLayerPopConfiguration(void)
 	}
 }
 
-- (void)draw
+- (void)drawInContext: (VEContext *)context
 {
 	CC_NODE_DRAW_SETUP();
     

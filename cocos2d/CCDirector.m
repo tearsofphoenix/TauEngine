@@ -51,8 +51,6 @@
 #import "Platforms/iOS/CCDirectorIOS.h"
 #import "CCGLView.h"
 
-#define CC_DIRECTOR_DEFAULT CCDirectorDisplayLink
-
 
 #pragma mark -
 #pragma mark Director - global variables (optimization)
@@ -80,7 +78,6 @@ NSUInteger	__ccNumberOfDraws = 0;
 @synthesize isPaused = isPaused_;
 @synthesize isAnimating = isAnimating_;
 @synthesize sendCleanupToScene = sendCleanupToScene_;
-@synthesize runningThread = runningThread_;
 @synthesize notificationNode = notificationNode_;
 @synthesize delegate = delegate_;
 @synthesize totalFrames = totalFrames_;
@@ -103,16 +100,20 @@ static CCDirector *_sharedDirector = nil;
 		//
 		// Default Director is DisplayLink
 		//
-		if( [ [CCDirector class] isEqual:[self class]] )
-			_sharedDirector = [[CC_DIRECTOR_DEFAULT alloc] init];
-		else
+		if( [CCDirector class] == [self class] )
+        {
+			_sharedDirector = [[CCDirectorDisplayLink alloc] init];
+            
+        }else
+        {
 			_sharedDirector = [[self alloc] init];
+        }
 	}
 
 	return _sharedDirector;
 }
 
-+(id)alloc
++ (id)alloc
 {
 	NSAssert(_sharedDirector == nil, @"Attempted to allocate a second instance of a singleton.");
 	return [super alloc];
@@ -146,10 +147,7 @@ static CCDirector *_sharedDirector = nil;
 
 		// paused ?
 		isPaused_ = NO;
-
-		// running thread
-		runningThread_ = nil;
-
+        
 		// scheduler
 		scheduler_ = [[CCScheduler alloc] init];
 
@@ -176,9 +174,6 @@ static CCDirector *_sharedDirector = nil;
 {
 	CCLOGINFO(@"cocos2d: deallocing %@", self);
 
-	[FPSLabel_ release];
-	[SPFLabel_ release];
-	[drawsLabel_ release];
 	[runningScene_ release];
 	[notificationNode_ release];
 	[scenesStack_ release];
@@ -441,11 +436,6 @@ static CCDirector *_sharedDirector = nil;
 
 	[self stopAnimation];
 
-	[FPSLabel_ release];
-	[SPFLabel_ release];
-	[drawsLabel_ release];
-	FPSLabel_ = nil, SPFLabel_=nil, drawsLabel_=nil;
-
 	[delegate_ release];
 	delegate_ = nil;
 
@@ -542,31 +532,23 @@ static CCDirector *_sharedDirector = nil;
 	frames_++;
 	accumDt_ += dt;
 
-	if( displayStats_ ) {
+	if( displayStats_ )
+    {
 		// Ms per Frame
 
 		if( accumDt_ > CC_DIRECTOR_STATS_INTERVAL)
 		{
-			NSString *spfstr = [[NSString alloc] initWithFormat:@"%.3f", secondsPerFrame_];
-			[SPFLabel_ setString:spfstr];
-			[spfstr release];
-
+            printf("spf: %.3f\n", secondsPerFrame_);
+            
 			frameRate_ = frames_/accumDt_;
 			frames_ = 0;
 			accumDt_ = 0;
 
-			NSString *fpsstr = [[NSString alloc] initWithFormat:@"%.1f", frameRate_];
-			[FPSLabel_ setString:fpsstr];
-			[fpsstr release];
+            printf("fps: %.1f\n", frameRate_);
 			
-			NSString *draws = [[NSString alloc] initWithFormat:@"%4lu", (unsigned long)__ccNumberOfDraws];
-			[drawsLabel_ setString:draws];
-			[draws release];
-		}
+            printf("draws: %4d\n", (NSInteger)__ccNumberOfDraws);
 
-		[drawsLabel_ renderInContext: _renderContext];
-		[FPSLabel_ renderInContext: _renderContext];
-		[SPFLabel_ renderInContext: _renderContext];
+		}
 	}
 	
 	__ccNumberOfDraws = 0;

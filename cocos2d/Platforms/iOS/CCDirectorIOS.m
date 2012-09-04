@@ -118,8 +118,6 @@ CGFloat	__ccContentScaleFactor = 1;
         
 		touchDispatcher_ = [[CCTouchDispatcher alloc] init];
         
-		// running thread is main thread on iOS
-		runningThread_ = [NSThread currentThread];
 		_dispatchQueue = dispatch_queue_create(CCDirectorIOSDispatchQueue, DISPATCH_QUEUE_CONCURRENT);
         _runningQueue = dispatch_get_current_queue();
 		// Apparently it comes with a default view, and we don't want it
@@ -163,9 +161,9 @@ CGFloat	__ccContentScaleFactor = 1;
     
 	VEGLPushMatrix();
     
-	[runningScene_ renderInContext: _renderContext];
+	[runningScene_ visitWithContext: _renderContext];
     
-	[notificationNode_ renderInContext: _renderContext];
+	[notificationNode_ visitWithContext: _renderContext];
     
 	if( displayStats_ )
 		[self showStats];
@@ -484,16 +482,9 @@ CGFloat	__ccContentScaleFactor = 1;
                                                selector: @selector(mainLoop:)];
 	[displayLink_ setFrameInterval: frameInterval];
     
-#if CC_DIRECTOR_IOS_USE_BACKGROUND_THREAD
-	//
-	runningThread_ = [[NSThread alloc] initWithTarget:self selector:@selector(threadMainLoop) object:nil];
-	[runningThread_ start];
-    
-#else
 	// setup DisplayLink in main thread
 	[displayLink_ addToRunLoop: [NSRunLoop currentRunLoop]
                        forMode: NSDefaultRunLoopMode];
-#endif
     
     isAnimating_ = YES;
 }
@@ -504,12 +495,6 @@ CGFloat	__ccContentScaleFactor = 1;
         return;
     
 	CCLOG(@"cocos2d: animation stopped");
-    
-#if CC_DIRECTOR_IOS_USE_BACKGROUND_THREAD
-	[runningThread_ cancel];
-	[runningThread_ release];
-	runningThread_ = nil;
-#endif
     
 	[displayLink_ invalidate];
 	displayLink_ = nil;
@@ -555,7 +540,8 @@ CGFloat	__ccContentScaleFactor = 1;
     @autoreleasepool
     {
         
-        [displayLink_ addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [displayLink_ addToRunLoop: [NSRunLoop currentRunLoop]
+                           forMode: NSDefaultRunLoopMode];
         
         // start the run loop
         [[NSRunLoop currentRunLoop] run];

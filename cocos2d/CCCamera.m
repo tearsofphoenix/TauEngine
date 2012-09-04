@@ -28,90 +28,86 @@
 #import "ccGLStateCache.h"
 #import "ccMacros.h"
 
-@implementation CCCamera
 
-@synthesize dirty = _dirty;
-
-- (id) init
+struct _VECamera
 {
-	if( (self=[super init]) )
+    GLKVector3 _eye;
+    GLKVector3 _center;
+    GLKVector3 _up;
+    GLKMatrix4 _cachedLookupMatrix;
+    BOOL _isDirty;
+};
+
+VECameraRef VECameraCreate(void)
+{
+    VECameraRef camera = malloc(sizeof(struct _VECamera));
+    camera->_eye = GLKVector3Make(0, 0, FLT_EPSILON);
+    camera->_center = GLKVector3Make(0, 0, 0);
+    camera->_up = GLKVector3Make(0, 1, 0);
+    
+    return camera;
+}
+
+void VECameraLocate(VECameraRef camera)
+{
+    if (camera->_isDirty)
     {
-        _eye = GLKVector3Make(0, 0, [CCCamera getZEye]);
-        _center = GLKVector3Make(0, 0, 0);
-        _up = GLKVector3Make(0, 1, 0);
-        
-        _lookupMatrix = GLKMatrix4Identity;
-        
-        _dirty = NO;
+        camera->_cachedLookupMatrix = GLKMatrix4MakeLookAt(camera->_eye.x,camera->_eye.y, camera->_eye.z ,
+                                                           camera->_center.x, camera->_center.y, camera->_center.z,
+                                                           camera->_up.x, camera->_up.y, camera->_up.z);
+        camera->_isDirty = NO;
     }
     
-	return self;
+	VECurrentGLMatrixStackMultiplyMatrix4( camera->_cachedLookupMatrix );
 }
 
-- (NSString*) description
+void VECameraFinalize(VECameraRef camera)
 {
-	return [NSString stringWithFormat:@"<%@ = %p | center = (%.2f,%.2f,%.2f)>", [self class], self, _center.v[0], _center.v[1], _center.v[2]];
+    free(camera);
+}
+#pragma mark - getter
+
+ GLKVector3 VECameraGetEye(VECameraRef camera)
+{
+    return camera->_eye;
 }
 
-
-- (void)dealloc
+ GLKVector3 VECameraGetCenter(VECameraRef camera)
 {
-	CCLOGINFO(@"cocos2d: deallocing %@", self);
-	[super dealloc];
+    return camera->_center;
 }
 
-- (void)locate
+ GLKVector3 VECameraGetUp(VECameraRef camera)
 {
-	if( _dirty )
+    return camera->_up;
+}
+
+#pragma mark - setter
+
+ void VECameraSetEye(VECameraRef camera, GLKVector3 eye)
+{
+    if (!GLKVector3AllEqualToVector3(camera->_eye, eye))
     {
-
-        _lookupMatrix = GLKMatrix4MakeLookAt(_eye.v[0], _eye.v[1] , _eye.v[2],
-                                             _center.v[0], _center.v[1], _center.v[2],
-                                             _up.v[0], _up.v[1], _up.v[2]);
-		_dirty = NO;
-
-	}
-
-	VECurrentGLMatrixStackMultiplyMatrix4( _lookupMatrix );
-
-}
-
-+(float) getZEye
-{
-	return FLT_EPSILON;
-}
-
-@synthesize eye = _eye;
-
-- (void)setEye: (GLKVector3)eye
-{
-    if (!GLKVector3AllEqualToVector3(_eye, eye))
-    {
-        _eye = eye;
-        _dirty = YES;
+        camera->_eye = eye;
+        camera->_isDirty = YES;
     }
 }
 
-@synthesize center = _center;
-
-- (void)setCenter: (GLKVector3)center
+ void VECameraSetCenter(VECameraRef camera, GLKVector3 center)
 {
-    if (!GLKVector3AllEqualToVector3(_center, center))
+    if (!GLKVector3AllEqualToVector3(camera->_center, center))
     {
-        _center = center;
-        _dirty = YES;
+        camera->_center = center;
+        camera->_isDirty = YES;
     }
 }
 
-@synthesize up = _up;
-
-- (void)setUp: (GLKVector3)up
+ void VECameraSetUp(VECameraRef camera, GLKVector3 up)
 {
-    if (!GLKVector3AllEqualToVector3(_up, up))
+    if (!GLKVector3AllEqualToVector3(camera->_up, up))
     {
-        _up = up;
-        _dirty = YES;
+        camera->_up = up;
+        camera->_isDirty = YES;
     }
 }
 
-@end
