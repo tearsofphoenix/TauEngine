@@ -104,7 +104,7 @@ extern "C" {
 
     CF_EXPORT void CCGLProgramUse(CCGLProgram *program);
 
-    CF_EXPORT void CCGLProgramUniformForModelViewProjectionMatrix(CCGLProgram *program);
+    CF_EXPORT void CCGLProgramUniformForMVPMatrix(CCGLProgram *program);
 
     CF_EXPORT void CCGLProgramUniformf(CCGLProgram *program, GLint location, GLfloat *floats, GLsizei count);
 

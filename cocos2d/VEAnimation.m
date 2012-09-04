@@ -11,8 +11,8 @@
 #import "ccTypes.h"
 #import "VGColor.h"
 #import "CCLayer.h"
-#import "CCDirector.h"
 #import "CCScheduler.h"
+#import "VEDataSource.h"
 
 @implementation VEAnimation
 
@@ -641,12 +641,10 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 }
 
 - (void)flushTransactions
-{
-    CCDirector *director = [CCDirector sharedDirector];
-    
-    [[director scheduler] scheduleUpdateForTarget: [_transactions lastObject]
-                                         priority: CCSchedulerPriorityZero
-                                           paused: NO];
+{    
+    [[VEDataSource serviceByIdentity: CCScheduleServiceID ] scheduleUpdateForTarget: [_transactions lastObject]
+                                                                           priority: CCSchedulerPriorityZero
+                                                                             paused: NO];
     
 }
 

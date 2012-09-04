@@ -27,7 +27,7 @@
 
 #import "CCNode.h"
 #import "CCDirector.h"
-
+#import "VEDataSource.h"
 #import "CCCamera.h"
 #import "ccConfig.h"
 #import "ccMacros.h"
@@ -167,10 +167,8 @@
         _renderInContextIMP = [self methodForSelector: @selector(visitWithContext:)];
         _drawInContextIMP = [self methodForSelector: @selector(drawInContext:)];
         
-		// set default scheduler and actionManager
-		CCDirector *director = [CCDirector sharedDirector];
         
-        [self setScheduler: [director scheduler]];
+        [self setScheduler: [VEDataSource serviceByIdentity: CCScheduleServiceID]];
 	}
     
 	return self;

@@ -20,7 +20,7 @@ static VEContext *__currentContext = nil;
     GLKMatrixStackRef _textureMatrixStack;
     
     GLKMatrixStackRef _currentStack;
-
+    dispatch_queue_t _dispatchQueue;
     NSMutableArray *_renderQueue;
 }
 @end
@@ -42,6 +42,8 @@ static VEContext *__currentContext = nil;
         _renderQueue = [[NSMutableArray alloc] init];
         
         __currentContext = self;
+        
+        _dispatchQueue = dispatch_queue_create(NULL, DISPATCH_QUEUE_CONCURRENT);
     }
     
     return self;
@@ -49,7 +51,13 @@ static VEContext *__currentContext = nil;
 
 - (void)dealloc
 {
+    CFRelease(_modelViewMatrixStack);
+    CFRelease(_projectionMatrixStack);
+    CFRelease(_textureMatrixStack);
+    _currentStack = NULL;
+    
     [_renderQueue release];
+    
     [super dealloc];
 }
 
@@ -60,25 +68,7 @@ void VEContextAddLayer(VEContext *context, CCLayer *layer)
 
 void VEContextRender(VEContext *context)
 {
-    for (CCLayer *layer in context->_renderQueue)
-    {
-        /*
-        CC_NODE_DRAW_SETUP();
-        
-        VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color );
-        
-        //
-        // Attributes
-        //
-        glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, squareVertices_);
-        glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_FLOAT, GL_FALSE, 0, squareColors_);
-        
-        CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
-        
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        */
-        CC_INCREMENT_GL_DRAWS(1);
-    }
+
 }
 
 void VEContextSaveState(VEContext *context)

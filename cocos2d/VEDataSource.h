@@ -14,7 +14,7 @@
 
 + (void)registerServiceByClass: (Class)serviceClass;
 
-+ (id<VEService>)serviceByIdentity: (NSString *)identity;
++ (id)serviceByIdentity: (NSString *)identity;
 
 + (void)unloadServiceByIdentity: (NSString *)identity;
 

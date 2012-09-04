@@ -127,7 +127,7 @@ do {																							\
 	VEGLEnable( _glServerState );																\
     NSAssert1(_shaderProgram, @"No shader program set for node: %@", self);						\
 	CCGLProgramUse(_shaderProgram);																		\
-	CCGLProgramUniformForModelViewProjectionMatrix(_shaderProgram);									\
+	CCGLProgramUniformForMVPMatrix(_shaderProgram);									\
 } while(0)
 
 

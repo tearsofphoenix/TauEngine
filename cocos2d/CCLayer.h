@@ -196,9 +196,12 @@
 }
 
 /** Initializes the CCLayer with a gradient between start and end. */
-- (id) initWithColor: (GLKVector4) start fadingTo: (GLKVector4) end;
+- (id) initWithColor: (GLKVector4) start
+            fadingTo: (GLKVector4) end;
 /** Initializes the CCLayer with a gradient between start and end in the direction of v. */
-- (id) initWithColor: (GLKVector4) start fadingTo: (GLKVector4) end alongVector: (CGPoint) v;
+- (id) initWithColor: (GLKVector4) start
+            fadingTo: (GLKVector4) end
+         alongVector: (CGPoint) v;
 
 /** The starting color. */
 @property (nonatomic) GLKVector4 startColor;
@@ -215,30 +218,5 @@
  */
 @property (nonatomic) BOOL compressedInterpolation;
 
-@end
-
-#pragma mark - CCMultiplexLayer
-
-/** CCMultiplexLayer is a CCLayer with the ability to multiplex its children.
- Features:
- - It supports one or more children
- - Only one children will be active a time
- */
-@interface CCMultiplexLayer : CCLayer
-{
-	unsigned int enabledLayer_;
-	NSMutableArray *layers_;
-}
-
-/** initializes a MultiplexLayer with one or more layers using a variable argument list. */
--(id) initWithLayers: (NSArray*) layers;
-/** switches to a certain layer indexed by n.
- The current (old) layer will be removed from its parent with 'cleanup:YES'.
- */
--(void) switchTo: (unsigned int) n;
-/** release the current layer and switches to another layer indexed by n.
- The current (old) layer will be removed from its parent with 'cleanup:YES'.
- */
--(void) switchToAndReleaseMe: (unsigned int) n;
 @end
 

@@ -99,7 +99,8 @@
 	[array insertObject:handler atIndex:i];
 }
 
--(void) addStandardDelegate:(id<CCStandardTouchDelegate>) delegate priority:(int)priority
+-(void) addStandardDelegate: (id<CCStandardTouchDelegate>) delegate
+                   priority: (int)priority
 {
 	CCTouchHandler *handler = [[CCStandardTouchHandler alloc] initWithDelegate: delegate
                                                                       priority: priority];

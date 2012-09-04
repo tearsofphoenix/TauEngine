@@ -63,7 +63,6 @@ typedef NS_ENUM(NSUInteger, ccDirectorProjection)
 } ;
 
 @class CCScene;
-@class CCScheduler;
 @class CCGLView;
 
 /**Class that creates and handle the main Window and manages how
@@ -142,9 +141,6 @@ and when to execute the Scenes.
     dispatch_queue_t _dispatchQueue;
     dispatch_queue_t _runningQueue;
     
-	/* scheduler associated with this director */
-	CCScheduler *scheduler_;
-	
 	/*  OpenGLView. On iOS it is a copy of self.view */
 	CCGLView		*view_;
 }
@@ -190,11 +186,6 @@ and when to execute the Scenes.
  @since v0.99.5
  */
 @property (nonatomic, retain) id<CCDirectorDelegate> delegate;
-
-/** CCScheduler associated with this director
- @since v2.0
- */
-@property (nonatomic,retain) CCScheduler *scheduler;
 
 /** returns a shared instance of the director */
 +(CCDirector*)sharedDirector;

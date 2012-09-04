@@ -186,7 +186,7 @@ void CCGLProgramUse(CCGLProgram *program)
     CCGLUseProgram(program->_program);
 }
 
-void CCGLProgramUniformForModelViewProjectionMatrix(CCGLProgram *program)
+void CCGLProgramUniformForMVPMatrix(CCGLProgram *program)
 {
     CCGLProgramUniformMatrix4fv(program, program->_uniforms[kCCUniformMVPMatrix], VEContextGetMVPMatrix(VEContextGetCurrentContext()).m, 1);
 }

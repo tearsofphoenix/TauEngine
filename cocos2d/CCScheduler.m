@@ -215,8 +215,8 @@
             
 			if (nTimesExecuted > repeat)
 			{	//unschedule timer
-				[[[CCDirector sharedDirector] scheduler] unscheduleSelector: selector
-                                                                  forTarget: target];
+				[[VEDataSource serviceByIdentity: CCScheduleServiceID] unscheduleSelector: selector
+                                                                                forTarget: target];
 			}
 		}
 	}
@@ -261,7 +261,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 
 + (void)load
 {
-    //[VEDataSource registerServiceByClass: self];
+    [VEDataSource registerServiceByClass: self];
 }
 
 + (NSString *)identity

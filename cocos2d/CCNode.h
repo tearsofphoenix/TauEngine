@@ -122,7 +122,6 @@ enum
 
     NSInteger _tag;
 
-    // Shader
     CCScheduler *_scheduler;
     
 	CCGLProgram	*_shaderProgram;

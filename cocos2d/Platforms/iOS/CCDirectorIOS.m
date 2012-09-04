@@ -52,6 +52,7 @@
 
 #import "VEContext.h"
 
+#import "VEDataSource.h"
 
 #if CC_ENABLE_PROFILERS
 #import "Support/CCProfiling.h"
@@ -104,15 +105,21 @@ CGFloat	__ccContentScaleFactor = 1;
 #pragma mark CCDirectorIOS
 
 @interface CCDirectorIOS ()
+{
+@private
+    CCScheduler *_scheduler;
+}
+
 -(void) updateContentScaleFactor;
+
 @end
 
 @implementation CCDirectorIOS
 
 - (id) init
 {
-	if( (self=[super init]) ) {
-        
+	if( (self=[super init]) )
+    {
 		__ccContentScaleFactor = 1;
 		isContentScaleSupported_ = NO;
         
@@ -120,8 +127,7 @@ CGFloat	__ccContentScaleFactor = 1;
         
 		_dispatchQueue = dispatch_queue_create(CCDirectorIOSDispatchQueue, DISPATCH_QUEUE_CONCURRENT);
         _runningQueue = dispatch_get_current_queue();
-		// Apparently it comes with a default view, and we don't want it
-        //		[self setView:nil];
+        _scheduler = [VEDataSource serviceByIdentity: CCScheduleServiceID];
 	}
     
 	return self;
@@ -149,7 +155,7 @@ CGFloat	__ccContentScaleFactor = 1;
 	/* tick before glClear: issue #533 */
 	if( ! isPaused_ )
     {
-        [scheduler_ update: dt];
+        [_scheduler update: dt];
     }
     
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

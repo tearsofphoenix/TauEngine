@@ -24,25 +24,15 @@
  *
  */
 
-
-#import <stdarg.h>
-
-
-
 #import "CCLayer.h"
-#import "CCScheduler.h"
-#import "CCDirector.h"
-#import "ccMacros.h"
+#import "VEAnimation.h"
+#import "VEDataSource.h"
+#import "CGPointExtension.h"
 #import "CCShaderCache.h"
 #import "CCGLProgram.h"
-#import "ccGLStateCache.h"
-#import "VEAnimation.h"
-
-#import "Support/TransformUtils.h"
-#import "Support/CGPointExtension.h"
-
-#import "Platforms/iOS/CCTouchDispatcher.h"
-#import "Platforms/iOS/CCDirectorIOS.h"
+#import "CCScheduler.h"
+#import "CCTouchDispatcher.h"
+#import "CCDirectorIOS.h"
 
 #import "VGColor.h"
 
@@ -52,6 +42,8 @@
 {
 @private
     CCLayer *_presentationLayer;
+    //cached model
+    
 }
 @end
 
@@ -161,7 +153,7 @@ static inline void __CCLayerPopConfiguration(void)
 		_blendFunc = (ccBlendFunc) { GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA };
         
         _anchorPoint = ccp(0.5f, 0.5f);
-        
+                
         [self setBackgroundColor: ccBLACK];
         
         CCDirector *director = [CCDirector sharedDirector];
@@ -178,7 +170,7 @@ static inline void __CCLayerPopConfiguration(void)
 
 #pragma mark Layer - Touch and Accelerometer related
 
--(void) registerWithTouchDispatcher
+- (void)registerWithTouchDispatcher
 {
 	CCDirector *director = [CCDirector sharedDirector];
 	[[director touchDispatcher] addStandardDelegate: self
@@ -262,11 +254,12 @@ static inline void __CCLayerPopConfiguration(void)
 
 - (void)drawInContext: (VEContext *)context
 {
-	CC_NODE_DRAW_SETUP();
+	VEGLEnable( _glServerState );
+	CCGLProgramUse(_shaderProgram);
+	CCGLProgramUniformForMVPMatrix(_shaderProgram);
     
 	VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color );
     
-	//
 	// Attributes
 	//
 	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, squareVertices_);
@@ -338,12 +331,12 @@ static inline void __CCLayerPopConfiguration(void)
 
 - (void)removeAnimationForKey: (NSString *)key
 {
-    [[[CCDirector sharedDirector] scheduler] pauseTarget: self];
+    [_scheduler pauseTarget: self];
     
     [_animationKeys removeObject: key];
     [_animations removeObjectForKey: key];
     
-    [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
+    [_scheduler resumeTarget: self];
     
 }
 
@@ -376,7 +369,7 @@ static inline void __CCLayerPopConfiguration(void)
         
         if (__currentBlockAnimationTransaction)
         {
-            [[[CCDirector sharedDirector] scheduler] pauseTarget: self];
+            [_scheduler pauseTarget: self];
             
             VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
             [animation setDuration: [__currentBlockAnimationTransaction duration]];
@@ -387,7 +380,7 @@ static inline void __CCLayerPopConfiguration(void)
             
             [__currentBlockAnimationTransaction addAnimation: animation];
             
-            [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
+            [_scheduler resumeTarget: self];
         }
         
         [super setPosition: position];
@@ -405,7 +398,7 @@ static inline void __CCLayerPopConfiguration(void)
         
         if (__currentBlockAnimationTransaction)
         {
-            [[[CCDirector sharedDirector] scheduler] pauseTarget: self];
+            [_scheduler pauseTarget: self];
             
             VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
             [animation setDuration: [__currentBlockAnimationTransaction duration]];
@@ -416,7 +409,7 @@ static inline void __CCLayerPopConfiguration(void)
             
             [__currentBlockAnimationTransaction addAnimation: animation];
             
-            [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
+            [_scheduler resumeTarget: self];
         }
         
         [super setAnchorPoint: anchorPoint];
@@ -435,7 +428,7 @@ static inline void __CCLayerPopConfiguration(void)
         {
             //in block animation, pause animation update first
             //
-            [[[CCDirector sharedDirector] scheduler] pauseTarget: self];
+            [_scheduler pauseTarget: self];
             
             VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
             [animation setDuration: [__currentBlockAnimationTransaction duration]];
@@ -453,7 +446,7 @@ static inline void __CCLayerPopConfiguration(void)
             
             [__currentBlockAnimationTransaction addAnimation: animation];
             
-            [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
+            [_scheduler resumeTarget: self];
             
         }else
         {
@@ -599,9 +592,7 @@ static inline void __CCLayerPopConfiguration(void)
     if ((self = [super init]))
     {
         
-        endColor_.r = end.r;
-        endColor_.g = end.g;
-        endColor_.b = end.b;
+        endColor_ = end;
         
         endOpacity_		= end.a;
         startOpacity_	= start.a;
@@ -716,51 +707,3 @@ static inline void __CCLayerPopConfiguration(void)
 }
 @end
 
-#pragma mark -
-#pragma mark MultiplexLayer
-
-@implementation CCMultiplexLayer
-
--(id) initWithLayers: (NSArray*) layers;
-{
-    if( (self=[super init]) ) {
-        
-        layers_ = [[NSMutableArray alloc] initWithArray: layers];
-        
-        enabledLayer_ = 0;
-        [self addChild: [layers_ objectAtIndex: enabledLayer_]];
-    }
-    
-    return self;
-}
-
--(void) dealloc
-{
-    [layers_ release];
-    [super dealloc];
-}
-
--(void) switchTo: (unsigned int) n
-{
-    NSAssert( n < [layers_ count], @"Invalid index in MultiplexLayer switchTo message" );
-    
-    [self removeChild: [layers_ objectAtIndex:enabledLayer_] cleanup:YES];
-    
-    enabledLayer_ = n;
-    
-    [self addChild: [layers_ objectAtIndex:n]];
-}
-
--(void) switchToAndReleaseMe: (unsigned int) n
-{
-    NSAssert( n < [layers_ count], @"Invalid index in MultiplexLayer switchTo message" );
-    
-    [self removeChild: [layers_ objectAtIndex:enabledLayer_] cleanup:YES];
-    
-    [layers_ replaceObjectAtIndex:enabledLayer_ withObject:[NSNull null]];
-    
-    enabledLayer_ = n;
-    
-    [self addChild: [layers_ objectAtIndex:n]];
-}
-@end

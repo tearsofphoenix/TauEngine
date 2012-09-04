@@ -34,7 +34,7 @@ static NSMutableDictionary *_registeredServices = nil;
     [service release];
 }
 
-+ (id<VEService>)serviceByIdentity: (NSString *)identity
++ (id)serviceByIdentity: (NSString *)identity
 {
     return [_registeredServices objectForKey: identity];
 }
