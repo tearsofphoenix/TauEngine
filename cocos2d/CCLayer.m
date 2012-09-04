@@ -270,7 +270,7 @@ static inline void __CCLayerPopConfiguration(void)
 	// Attributes
 	//
 	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, squareVertices_);
-	glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_FLOAT, GL_FALSE, 0, squareColors_);
+	glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_FLOAT, GL_TRUE, 0, squareColors_);
     
 	CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
     

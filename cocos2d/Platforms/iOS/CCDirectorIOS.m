@@ -37,7 +37,7 @@
 #import "CCTouchDelegateProtocol.h"
 #import "CCTouchDispatcher.h"
 #import "CCScheduler.h"
-#import "CCActionManager.h"
+
 
 #import "ccMacros.h"
 #import "CCScene.h"
@@ -165,8 +165,7 @@ CGFloat	__ccContentScaleFactor = 1;
     
 	[notificationNode_ visitWithContext: _renderContext];
     
-	if( displayStats_ )
-		[self showStats];
+    [self showStats];
     
 	VEGLPopMatrix();
     
@@ -174,10 +173,7 @@ CGFloat	__ccContentScaleFactor = 1;
     
 	[openGLview swapBuffers];
     
-	if( displayStats_ )
-    {
-		secondsPerFrame_ = CCDirectorCalculateMPF(lastUpdate_);
-    }
+    secondsPerFrame_ = CCDirectorCalculateMPF(lastUpdate_);
 }
 
 -(void) setProjection:(ccDirectorProjection)projection
@@ -268,8 +264,8 @@ CGFloat	__ccContentScaleFactor = 1;
 
 -(void) setContentScaleFactor:(CGFloat)scaleFactor
 {
-	if( scaleFactor != __ccContentScaleFactor ) {
-        
+	if( scaleFactor != __ccContentScaleFactor )
+    {
 		__ccContentScaleFactor = scaleFactor;
 		winSizeInPixels_ = CGSizeMake( winSizeInPoints_.width * scaleFactor, winSizeInPoints_.height * scaleFactor );
         
@@ -361,12 +357,15 @@ CGFloat	__ccContentScaleFactor = 1;
     {
 		[super setView:view];
         
-		if( view ) {
+		if( view )
+        {
 			// set size
 			winSizeInPixels_ = CGSizeMake(winSizeInPoints_.width * __ccContentScaleFactor, winSizeInPoints_.height *__ccContentScaleFactor);
             
 			if( __ccContentScaleFactor != 1 )
+            {
 				[self updateContentScaleFactor];
+            }
             
 			[view setTouchDelegate: touchDispatcher_];
 			[touchDispatcher_ setDispatchEvents: YES];
@@ -378,13 +377,16 @@ CGFloat	__ccContentScaleFactor = 1;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	BOOL ret =YES;
-	if( [delegate_ respondsToSelector:_cmd] )
-		ret = (BOOL) [delegate_ shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+	if( [delegate_ respondsToSelector: _cmd] )
+    {
+		ret = [delegate_ shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    }
     
 	return ret;
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+-(void)willRotateToInterfaceOrientation: (UIInterfaceOrientation)toInterfaceOrientation
+                               duration: (NSTimeInterval)duration
 {
 	// do something ?
 }
@@ -394,19 +396,6 @@ CGFloat	__ccContentScaleFactor = 1;
 {
 	[super viewWillAppear:animated];
 	[self startAnimation];
-}
-
--(void) viewDidAppear:(BOOL)animated
-{
-	[super viewDidAppear:animated];
-    //	[self startAnimation];
-}
-
--(void) viewWillDisappear:(BOOL)animated
-{
-    //	[self stopAnimation];
-    
-	[super viewWillDisappear:animated];
 }
 
 -(void) viewDidDisappear:(BOOL)animated
@@ -425,22 +414,6 @@ CGFloat	__ccContentScaleFactor = 1;
     [super didReceiveMemoryWarning];
 }
 
--(void) viewDidLoad
-{
-	CCLOG(@"cocos2d: viewDidLoad");
-    
-	[super viewDidLoad];
-}
-
-
-- (void)viewDidUnload
-{
-	CCLOG(@"cocos2d: viewDidUnload");
-    
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
 @end
 
 
@@ -457,12 +430,15 @@ CGFloat	__ccContentScaleFactor = 1;
 
 - (void)setAnimationInterval:(NSTimeInterval)interval
 {
-	animationInterval_ = interval;
-	if(displayLink_)
+    if (animationInterval_ != interval)
     {
-		[self stopAnimation];
-		[self startAnimation];
-	}
+        animationInterval_ = interval;
+        if(displayLink_)
+        {
+            [self stopAnimation];
+            [self startAnimation];
+        }
+    }
 }
 
 - (void) startAnimation
@@ -485,7 +461,6 @@ CGFloat	__ccContentScaleFactor = 1;
 	// setup DisplayLink in main thread
 	[displayLink_ addToRunLoop: [NSRunLoop currentRunLoop]
                        forMode: NSDefaultRunLoopMode];
-    
     isAnimating_ = YES;
 }
 
@@ -518,36 +493,13 @@ CGFloat	__ccContentScaleFactor = 1;
     lastDisplayTime_ = displayLink_.timestamp;
     
 	// needed for SPF
-	if( displayStats_ )
-		gettimeofday( &lastUpdate_, NULL);
+    gettimeofday( &lastUpdate_, NULL);
     
 #ifdef DEBUG
 	// If we are debugging our code, prevent big delta time
 	if( dt > 0.2f )
 		dt = 1/60.0f;
 #endif
-}
-
-
-#pragma mark Director Thread
-
-//
-// Director has its own thread
-//
--(void) threadMainLoop
-{
-    
-    @autoreleasepool
-    {
-        
-        [displayLink_ addToRunLoop: [NSRunLoop currentRunLoop]
-                           forMode: NSDefaultRunLoopMode];
-        
-        // start the run loop
-        [[NSRunLoop currentRunLoop] run];
-        
-    }
-    
 }
 
 -(void) dealloc

@@ -27,7 +27,7 @@
 
 #import "CCNode.h"
 #import "CCDirector.h"
-#import "CCActionManager.h"
+
 #import "CCCamera.h"
 #import "ccConfig.h"
 #import "ccMacros.h"
@@ -124,19 +124,6 @@
     return (NSMutableArray *)_children;
 }
 
-@synthesize actionManager = _actionManager;
-
-
-- (void)setActionManager: (CCActionManager *)actionManager
-{
-	if( actionManager != _actionManager )
-    {
-        [_actionManager removeAllActionsFromTarget: self];
-        
-		_actionManager = actionManager;
-	}
-}
-
 #pragma mark CCNode - Init & cleanup
 + (void)load
 {
@@ -201,7 +188,6 @@
 		// set default scheduler and actionManager
 		CCDirector *director = [CCDirector sharedDirector];
         
-		[self setActionManager: [director actionManager]];
         [self setScheduler: [director scheduler]];
 	}
     
@@ -211,7 +197,6 @@
 - (void)cleanup
 {
 	// actions
-    [_actionManager removeAllActionsFromTarget: self];
 	[_scheduler unscheduleAllSelectorsForTarget:self];
     
 	// timers

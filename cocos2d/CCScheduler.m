@@ -693,14 +693,6 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     return idsWithSelectors;
 }
 
--(void) resumeTargets:(NSSet *)targetsToResume
-{
-    for(id target in targetsToResume)
-    {
-        [self resumeTarget:target];
-    }
-}
-
 #pragma mark CCScheduler - Main Loop
 
 -(void) update: (NSTimeInterval) dt

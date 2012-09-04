@@ -142,7 +142,7 @@ typedef NS_ENUM(NSUInteger, CCSchedulerPriority)
 /** 'update' the scheduler.
  You should NEVER call this method, unless you know what you are doing.
  */
--(void) update:(NSTimeInterval)dt;
+- (void)update: (NSTimeInterval)dt;
 
 /** The scheduled method will be called every 'interval' seconds.
  If paused is YES, then it won't be called until it is resumed.
@@ -236,12 +236,6 @@ typedef NS_ENUM(NSUInteger, CCSchedulerPriority)
   @since v2.0.0
   */
 -(NSSet*) pauseAllTargetsWithMinPriority: (CCSchedulerPriority)minPriority;
-
-/** Resume selectors on a set of targets.
- This can be useful for undoing a call to pauseAllSelectors.
- @since v2.0.0
-  */
--(void) resumeTargets:(NSSet *)targetsToResume;
 
 @end
 

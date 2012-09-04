@@ -64,14 +64,7 @@ typedef NS_ENUM(NSUInteger, ccDirectorProjection)
 
 @class CCScene;
 @class CCScheduler;
-@class CCActionManager;
 @class CCGLView;
-
-#ifdef __CC_PLATFORM_IOS
-#define CC_VIEWCONTROLLER UIViewController
-#elif defined(__CC_PLATFORM_MAC)
-#define CC_VIEWCONTROLLER NSObject
-#endif
 
 /**Class that creates and handle the main Window and manages how
 and when to execute the Scenes.
@@ -91,14 +84,11 @@ and when to execute the Scenes.
   - GL_COLOR_ARRAY is enabled
   - GL_TEXTURE_COORD_ARRAY is enabled
 */
-@interface CCDirector : CC_VIEWCONTROLLER
+@interface CCDirector : UIViewController
 {
 	// internal timer
 	NSTimeInterval animationInterval_;
 	NSTimeInterval oldAnimationInterval_;
-
-	/* stats */
-	BOOL	displayStats_;
 
 	NSUInteger frames_;
 	NSUInteger totalFrames_;
@@ -154,9 +144,6 @@ and when to execute the Scenes.
     
 	/* scheduler associated with this director */
 	CCScheduler *scheduler_;
-
-	/* action manager associated with this director */
-	CCActionManager *_actionManager;
 	
 	/*  OpenGLView. On iOS it is a copy of self.view */
 	CCGLView		*view_;
@@ -208,11 +195,6 @@ and when to execute the Scenes.
  @since v2.0
  */
 @property (nonatomic,retain) CCScheduler *scheduler;
-
-/** CCActionManager associated with this director
- @since v2.0
- */
-@property (nonatomic,retain) CCActionManager *actionManager;
 
 /** returns a shared instance of the director */
 +(CCDirector*)sharedDirector;

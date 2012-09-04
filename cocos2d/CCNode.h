@@ -357,11 +357,11 @@ enum
  
  @since v0.8.2
  */
-- (CGRect) bounds;
+- (CGRect)bounds;
 
 
 /** performs OpenGL view-matrix transformation based on position, scale, rotation and other attributes. */
--(void) transform;
+- (void)transform;
 
 /** performs OpenGL view-matrix transformation of its ancestors.
  Generally the ancestors are already transformed, but in certain cases (eg: attaching a FBO) it is necessary to transform the ancestors again.

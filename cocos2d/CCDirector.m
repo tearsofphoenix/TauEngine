@@ -33,7 +33,7 @@
 #import "CCDirector.h"
 #import "VEContext.h"
 #import "CCScheduler.h"
-#import "CCActionManager.h"
+
 
 #import "ccMacros.h"
 
@@ -83,7 +83,6 @@ NSUInteger	__ccNumberOfDraws = 0;
 @synthesize totalFrames = totalFrames_;
 @synthesize secondsPerFrame = secondsPerFrame_;
 @synthesize scheduler = scheduler_;
-@synthesize actionManager = _actionManager;
 
 @synthesize dispatchQueue = _dispatchQueue;
 @synthesize runningQueue = _runningQueue;
@@ -151,12 +150,6 @@ static CCDirector *_sharedDirector = nil;
 		// scheduler
 		scheduler_ = [[CCScheduler alloc] init];
 
-		// action manager
-		_actionManager = [[CCActionManager alloc] init];
-		[scheduler_ scheduleUpdateForTarget: _actionManager
-                                   priority: kCCPrioritySystem
-                                     paused: NO];
-
 		winSizeInPixels_ = winSizeInPoints_ = CGSizeZero;
         
         _renderContext = [[VEContext alloc] init];
@@ -178,7 +171,6 @@ static CCDirector *_sharedDirector = nil;
 	[notificationNode_ release];
 	[scenesStack_ release];
 	[scheduler_ release];
-	[_actionManager release];
 	[delegate_ release];
 
 	_sharedDirector = nil;
