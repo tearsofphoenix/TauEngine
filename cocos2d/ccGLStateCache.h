@@ -23,9 +23,7 @@
  * THE SOFTWARE.
  */
 
-#import <TargetConditionals.h>
-#import "ccMacros.h"
-#import "Platforms/CCGL.h"
+#import <GLKit/GLKit.h>
 
 @class CCGLProgram;
 

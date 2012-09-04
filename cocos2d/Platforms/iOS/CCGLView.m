@@ -295,7 +295,8 @@
 		}
         
 		// not MSAA
-		else if (depthFormat_ ) {
+		else if (depthFormat_ )
+        {
 			GLenum attachments[] = { GL_DEPTH_ATTACHMENT};
 			glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, attachments);
 		}
@@ -310,16 +311,6 @@
 		glBindFramebuffer(GL_FRAMEBUFFER, [renderer_ msaaFrameBuffer]);
     
 	CHECK_GL_ERROR_DEBUG();
-}
-
--(void) lockOpenGLContext
-{
-	// unused on iOS
-}
-
--(void) unlockOpenGLContext
-{
-	// unused on iOS
 }
 
 - (GLenum) convertPixelFormat:(NSString*) pixelFormat
@@ -359,7 +350,8 @@
 {
 	if(touchDelegate_)
 	{
-		[touchDelegate_ touchesBegan:touches withEvent:event];
+		[touchDelegate_ touchesBegan: touches
+                           withEvent: event];
 	}
 }
 
@@ -367,7 +359,8 @@
 {
 	if(touchDelegate_)
 	{
-		[touchDelegate_ touchesMoved:touches withEvent:event];
+		[touchDelegate_ touchesMoved: touches
+                           withEvent: event];
 	}
 }
 
@@ -375,14 +368,16 @@
 {
 	if(touchDelegate_)
 	{
-		[touchDelegate_ touchesEnded:touches withEvent:event];
+		[touchDelegate_ touchesEnded: touches
+                           withEvent: event];
 	}
 }
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	if(touchDelegate_)
 	{
-		[touchDelegate_ touchesCancelled:touches withEvent:event];
+		[touchDelegate_ touchesCancelled: touches
+                               withEvent: event];
 	}
 }
 

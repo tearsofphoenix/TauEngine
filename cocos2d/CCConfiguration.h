@@ -25,7 +25,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Platforms/CCGL.h"
+
 
 /** OS version definitions. Includes both iOS and Mac OS versions
  */

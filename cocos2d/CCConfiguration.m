@@ -29,7 +29,7 @@
 #import <UIKit/UIKit.h>		// Needed for UIDevice
 #endif
 
-#import "Platforms/CCGL.h"
+
 #import "CCConfiguration.h"
 #import "ccMacros.h"
 #import "ccConfig.h"

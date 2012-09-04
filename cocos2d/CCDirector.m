@@ -44,8 +44,6 @@
 #import "CCShaderCache.h"
 
 // support imports
-#import "Platforms/CCGL.h"
-#import "Platforms/CCNS.h"
 
 #import "Support/OpenGL_Internal.h"
 #import "Support/CGPointExtension.h"
@@ -286,7 +284,7 @@ static CCDirector *_sharedDirector = nil;
 {
 	if (on)
     {
-		glClearDepth(1.0f);
+		glClearDepthf(1.0f);
 
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
@@ -313,7 +311,7 @@ static CCDirector *_sharedDirector = nil;
 		view_ = [view retain];
 
 		// set size
-		winSizeInPixels_ = winSizeInPoints_ = CCNSSizeToCGSize( [view_ bounds].size );
+		winSizeInPixels_ = winSizeInPoints_ = [view_ bounds].size;
 
 		[self createStatsLabel];
 		

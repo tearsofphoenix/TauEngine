@@ -29,7 +29,7 @@
 #import "ccMacros.h"
 
 #import "CCProtocols.h"
-#import "Platforms/CCGL.h"
+
 
 @class VEContext;
 

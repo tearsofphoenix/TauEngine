@@ -27,7 +27,7 @@
 
 #import <stdarg.h>
 
-#import "Platforms/CCGL.h"
+
 
 #import "CCLayer.h"
 #import "CCScheduler.h"

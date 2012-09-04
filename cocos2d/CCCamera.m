@@ -26,6 +26,7 @@
 
 #import "CCCamera.h"
 #import "ccGLStateCache.h"
+#import "ccMacros.h"
 
 @implementation CCCamera
 

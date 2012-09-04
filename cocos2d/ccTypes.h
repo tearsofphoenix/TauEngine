@@ -36,7 +36,7 @@
 #import <CoreGraphics/CGGeometry.h>	// CGPoint
 #endif
 
-#import "Platforms/CCGL.h"
+#import <GLKit/GLKit.h>
 
 static const GLKVector4 ccWHITE = {{1,1,1, 1}};
 

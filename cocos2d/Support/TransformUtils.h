@@ -23,14 +23,8 @@
  *
  */
 
-#import "../ccMacros.h"
-#import "../Platforms/CCGL.h"
-
-#ifdef __CC_PLATFORM_IOS
 #import <UIKit/UIKit.h>
-#elif defined(__CC_PLATFORM_MAC)
-#import <Foundation/Foundation.h>
-#endif
+#import <GLKit/GLKit.h>
 
 void CGAffineToGL(const CGAffineTransform *t, GLfloat *m);
 void GLToCGAffine(const GLfloat *m, CGAffineTransform *t);

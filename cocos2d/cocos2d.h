@@ -74,23 +74,11 @@
 #import "ccTypes.h"
 #import "ccMacros.h"
 
-// Platform common
-#import "Platforms/CCGL.h"
-#import "Platforms/CCNS.h"
-
-#ifdef __CC_PLATFORM_IOS
 #import "Platforms/iOS/CCTouchDispatcher.h"
 #import "Platforms/iOS/CCTouchDelegateProtocol.h"
 #import "Platforms/iOS/CCTouchHandler.h"
 #import "Platforms/iOS/CCGLView.h"
 #import "Platforms/iOS/CCDirectorIOS.h"
-
-#elif defined(__CC_PLATFORM_MAC)
-#import "Platforms/Mac/CCGLView.h"
-#import "Platforms/Mac/CCDirectorMac.h"
-#import "Platforms/Mac/CCWindow.h"
-#import "Platforms/Mac/CCEventDispatcher.h"
-#endif
 
 //
 // cocos2d helper files

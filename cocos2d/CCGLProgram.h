@@ -28,8 +28,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <GLKit/GLKit.h>
 #import "ccMacros.h"
-#import "Platforms/CCGL.h"
+
 
 typedef struct _hashUniformEntry
 {
