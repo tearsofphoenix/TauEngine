@@ -250,7 +250,7 @@ enum
 @interface CCNode (CCNodeHierarchy)
 
 /** A weak reference to the parent */
-@property(nonatomic, assign) CCNode* parent;
+@property(nonatomic, assign) id parent;
 
 @property(nonatomic, readonly) NSMutableArray* children;
 

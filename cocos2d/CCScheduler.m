@@ -535,10 +535,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 }
 
 -(void) unscheduleUpdateForTarget:(id)target
-{
-	if( target == nil )
-		return;
-    
+{    
 	tHashUpdateEntry * element = (void *)CFDictionaryGetValue(hashForUpdates, target);
     
 	if( element )
@@ -584,11 +581,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 }
 
 -(void) unscheduleAllSelectorsForTarget:(id)target
-{
-    // explicit nil handling
-    if( target == nil )
-        return;
-    
+{    
     // Custom Selectors
     tHashSelectorEntry *element = (void *)CFDictionaryGetValue(hashForSelectors, target);
     
@@ -628,7 +621,8 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     // Update selector
     tHashUpdateEntry * elementUpdate = (void *)CFDictionaryGetValue(hashForUpdates, target);
     
-    if( elementUpdate ) {
+    if( elementUpdate )
+    {
         NSAssert( elementUpdate->entry != NULL, @"resumeTarget: unknown error");
         elementUpdate->entry->paused = NO;
     }

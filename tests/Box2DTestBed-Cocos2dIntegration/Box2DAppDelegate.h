@@ -16,3 +16,12 @@
 @interface Box2DAppDelegate : BaseApplicationDelegate<UITableViewDataSource, UITableViewDelegate>
 
 @end
+
+@interface VELayer : CALayer
+
+@end
+
+@interface VEView : UIView
+
+@end
+

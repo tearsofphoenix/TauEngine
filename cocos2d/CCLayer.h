@@ -30,7 +30,7 @@
 
 #import "Platforms/iOS/CCTouchDelegateProtocol.h"		// Touches only supported on iOS
 
-#import "CCProtocols.h"
+
 #import "CCNode.h"
 
 @class VEAnimation;
@@ -44,7 +44,7 @@
  - It can receive Accelerometer input
  */
 
-@interface CCLayer : CCNode <CCStandardTouchDelegate, CCTargetedTouchDelegate, CCBlendProtocol>
+@interface CCLayer : CCNode <NSCoding, CCStandardTouchDelegate, CCTargetedTouchDelegate>
 {
 	GLKVector4	_backgroundColor;
 	GLKVector2	squareVertices_[4];
@@ -63,6 +63,8 @@
 - (id)presentationLayer;
 
 - (id)modelLayer;
+
+@property (nonatomic) ccBlendFunc blendFunc;
 
 /** If isTouchEnabled, this method is called onEnter. Override it to change the
  way CCLayer receives touch events.

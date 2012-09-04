@@ -28,39 +28,6 @@
  cocos2d (cc) configuration file
 */
 
-/** @def CC_ENABLE_GL_STATE_CACHE
- If enabled, cocos2d will maintain an OpenGL state cache internally to avoid unnecessary switches.
- In order to use them, you have to use the following functions, insead of the the GL ones:
-	- CCGLUseProgram() instead of glUseProgram()
-	- CCGLDeleteProgram() instead of glDeleteProgram()
-	- CCGLBlendFunc() instead of glBlendFunc()
-
- If this functionality is disabled, then CCGLUseProgram(), CCGLDeleteProgram(), CCGLBlendFunc() will call the GL ones, without using the cache.
-
- It is recommened to enable it whenever possible to improve speed.
- If you are migrating your code from GL ES 1.1, then keep it disabled. Once all your code works as expected, turn it on.
-
- Default value: Disabled by default
-
- @since v2.0.0
- */
-#ifndef CC_ENABLE_GL_STATE_CACHE
-#define CC_ENABLE_GL_STATE_CACHE 1
-#endif
-
-/** @def CC_ENABLE_DEPRECATED
- If enabled, cocos2d will compile all deprecated methods, classes and free functions. Also, renamed constants will be active as well.
- Enable it only when migrating a v1.0 or earlier v2.0 versions to the most recent cocdos2d version.
- 
- Default value: Enabled by default
- 
- @since v2.0.0
- */
-#ifndef CC_ENABLE_DEPRECATED
-#define CC_ENABLE_DEPRECATED 0
-#endif
-
-
 /** @def CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL
  If enabled, the texture coordinates will be calculated by using this formula:
    - texCoord.left = (rect.origin.x*2+1) / (texture.wide*2);

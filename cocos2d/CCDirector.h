@@ -28,8 +28,18 @@
 #import "ccTypes.h"
 #import "ccMacros.h"
 
-#import "CCProtocols.h"
+#pragma mark -  CCDirectorDelegate
 
+@protocol CCDirectorDelegate <NSObject>
+
+@optional
+/** Called by CCDirector when the porjection is updated, and "custom" projection is used */
+-(void) updateProjection;
+
+/** Returns a Boolean value indicating whether the CCDirector supports the specified orientation. Default value is YES (supports all possible orientations) */
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
+
+@end
 
 @class VEContext;
 

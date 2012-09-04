@@ -56,7 +56,7 @@
 #import "CCScene.h"
 #import "CCScheduler.h"
 #import "CCCamera.h"
-#import "CCProtocols.h"
+
 #import "CCNode.h"
 #import "CCDirector.h"
 
@@ -90,12 +90,3 @@
 #import "Support/TransformUtils.h"
 
 
-
-// free functions
-NSString * cocos2dVersion(void);
-
-#ifdef __CC_PLATFORM_IOS
-#ifndef __IPHONE_4_0
-#error "If you are targeting iPad, you should set BASE SDK = 4.0 (or 4.1, or 4.2), and set the 'iOS deploy target' = 3.2"
-#endif
-#endif

@@ -62,8 +62,6 @@ NSUInteger	__ccNumberOfDraws = 0;
 
 #define kDefaultFPS		60.0	// 60 frames per second
 
-extern NSString * cocos2dVersion(void);
-
 @interface CCDirector (Private)
 -(void) setNextScene;
 // shows the statistics
@@ -122,8 +120,6 @@ static CCDirector *_sharedDirector = nil;
 
 - (id) init
 {
-	CCLOG(@"cocos2d: %@", cocos2dVersion() );
-
 	if( (self=[super init] ) )
     {
 

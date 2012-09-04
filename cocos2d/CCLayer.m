@@ -48,28 +48,6 @@
 
 #pragma mark - Layer
 
-
-//@interface CCLayerAnimationTransaction : NSObject
-//{
-//
-//}
-//@end
-//
-//@implementation CCLayerAnimationTransaction
-//
-//- (void)animationDidStart: (VEAnimation *)anim
-//{
-//
-//}
-//
-//- (void)animationDidStop: (VEAnimation *)anim
-//                finished: (BOOL)flag
-//{
-//
-//}
-//
-//@end
-
 @interface CCLayer ()
 {
 @private
@@ -121,6 +99,21 @@ static inline void __CCLayerPopConfiguration(void)
     }
 }
 
+#pragma mark - NSCoding
+- (id)initWithCoder: (NSCoder *)aDecoder
+{
+    if ((self = [super init]))
+    {
+        
+    }
+    return self;
+}
+
+- (void)encodeWithCoder: (NSCoder *)aCoder
+{
+    
+}
+
 #pragma mark Layer - Init
 
 + (void)load
@@ -137,7 +130,15 @@ static inline void __CCLayerPopConfiguration(void)
 {
     if (!_presentationLayer)
     {
-        //_presentationLayer = [self copy];
+        _presentationLayer = [[[self class] alloc] init];
+        [_presentationLayer setParent: [(CCLayer *)[self parent] presentationLayer]];
+        
+        NSMutableArray *presentationSublayers = [[NSMutableArray alloc] init];
+        for (CCLayer *layer in (NSArray *)_children)
+        {
+            [presentationSublayers addObject: [layer presentationLayer]];
+        }
+        _presentationLayer->_children = (CFMutableArrayRef)presentationSublayers;
     }
     
     return _presentationLayer;
@@ -239,13 +240,9 @@ static inline void __CCLayerPopConfiguration(void)
 	return YES;
 }
 
-// Opacity and RGB color protocol
-@synthesize backgroundColor = _backgroundColor;
-
 @synthesize blendFunc = _blendFunc;
 
-// override contentSize
--(void) setContentSize: (CGSize) size
+- (void)setContentSize: (CGSize) size
 {
 	squareVertices_[1].x = size.width;
 	squareVertices_[2].y = size.height;
@@ -259,10 +256,7 @@ static inline void __CCLayerPopConfiguration(void)
 {
 	for( NSUInteger i = 0; i < 4; i++ )
 	{
-		squareColors_[i].r = _backgroundColor.r ;
-		squareColors_[i].g = _backgroundColor.g ;
-		squareColors_[i].b = _backgroundColor.b ;
-		squareColors_[i].a = _backgroundColor.a ;
+		squareColors_[i] = _backgroundColor ;
 	}
 }
 
@@ -436,7 +430,6 @@ static inline void __CCLayerPopConfiguration(void)
     if (!GLKVector4AllEqualToVector4(_backgroundColor, backgroundColor))
     {
         NSString * keyPath = @"backgroundColor";
-        [self willChangeValueForKey: keyPath];
         
         if (__currentBlockAnimationTransaction)
         {
@@ -462,12 +455,16 @@ static inline void __CCLayerPopConfiguration(void)
             
             [[[CCDirector sharedDirector] scheduler] resumeTarget: self];
             
+        }else
+        {
+            [self willChangeValueForKey: keyPath];
+
+            _backgroundColor = backgroundColor;
+            [self updateColor];
+            
+            [self didChangeValueForKey: keyPath];
         }
         
-        _backgroundColor = backgroundColor;
-        [self updateColor];
-        
-        [self didChangeValueForKey: keyPath];
     }
 }
 

@@ -35,7 +35,6 @@ static BOOL		_vertexAttribPosition = NO;
 static BOOL		_vertexAttribColor = NO;
 static BOOL		_vertexAttribTexCoords = NO;
 
-#if CC_ENABLE_GL_STATE_CACHE
 #define kCCMaxActiveTexture 16
 
 static GLuint	_ccCurrentShaderProgram = -1;
@@ -49,7 +48,6 @@ static GLenum	_ccCurrentActiveTexture = (GL_TEXTURE0 - GL_TEXTURE0);
 static GLenum	_ccBlendingSource = -1;
 static GLenum	_ccBlendingDest = -1;
 static ccGLServerState _ccGLServerState = 0;
-#endif // CC_ENABLE_GL_STATE_CACHE
 
 #pragma mark - GL State Cache functions
 
@@ -62,7 +60,6 @@ void CCGLInvalidateStateCache( void )
 	_vertexAttribColor = NO;
 	_vertexAttribTexCoords = NO;
 
-#if CC_ENABLE_GL_STATE_CACHE
 	_ccCurrentShaderProgram = -1;
 	for( NSInteger i=0; i < kCCMaxActiveTexture; i++ )
 		_ccCurrentBoundTexture[i] = -1;
@@ -70,98 +67,71 @@ void CCGLInvalidateStateCache( void )
 	_ccBlendingSource = -1;
 	_ccBlendingDest = -1;
 	_ccGLServerState = 0;
-#endif
 }
 
 void CCGLDeleteProgram( GLuint program )
 {
-#if CC_ENABLE_GL_STATE_CACHE
 	if( program == _ccCurrentShaderProgram )
+    {
 		_ccCurrentShaderProgram = -1;
-#endif // CC_ENABLE_GL_STATE_CACHE
-
-	glDeleteProgram( program );
+    }
 }
 
 void CCGLUseProgram( GLuint program )
 {
-#if CC_ENABLE_GL_STATE_CACHE
-	if( program != _ccCurrentShaderProgram ) {
+	if( program != _ccCurrentShaderProgram )
+    {
 		_ccCurrentShaderProgram = program;
 		glUseProgram(program);
 	}
-#else
-	glUseProgram(program);
-#endif // CC_ENABLE_GL_STATE_CACHE
 }
 
 
 void CCGLBlendFunc(GLenum sfactor, GLenum dfactor)
 {
-#if CC_ENABLE_GL_STATE_CACHE
 	if( sfactor != _ccBlendingSource || dfactor != _ccBlendingDest )
     {
 		_ccBlendingSource = sfactor;
 		_ccBlendingDest = dfactor;
 		glBlendFunc( sfactor, dfactor );
 	}
-#else
-	glBlendFunc( sfactor, dfactor );
-#endif // CC_ENABLE_GL_STATE_CACHE
 }
 
 GLenum ccGLGetActiveTexture( void )
 {
-#if CC_ENABLE_GL_STATE_CACHE
 	return _ccCurrentActiveTexture + GL_TEXTURE0;
-#else
-	GLenum activeTexture;
-	glGetIntegerv(GL_ACTIVE_TEXTURE, (GLint*)&activeTexture);
-	return activeTexture;
-#endif
 }
 
 void ccGLActiveTexture( GLenum textureEnum )
 {
-#if CC_ENABLE_GL_STATE_CACHE
 	NSCAssert1( (textureEnum - GL_TEXTURE0) < kCCMaxActiveTexture, @"cocos2d ERROR: Increase kCCMaxActiveTexture to %d!", (textureEnum-GL_TEXTURE0) );
 	if( (textureEnum - GL_TEXTURE0) != _ccCurrentActiveTexture ) {
 		_ccCurrentActiveTexture = (textureEnum - GL_TEXTURE0);
 		glActiveTexture( textureEnum );
 	}
-#else
-	glActiveTexture( textureEnum );
-#endif
 }
 	
 
 void ccGLBindTexture2D( GLuint textureId )
 {
-#if CC_ENABLE_GL_STATE_CACHE
 	if( _ccCurrentBoundTexture[ _ccCurrentActiveTexture ] != textureId )
 	{
 		_ccCurrentBoundTexture[ _ccCurrentActiveTexture ] = textureId;
 		glBindTexture(GL_TEXTURE_2D, textureId );
 	}
-#else
-	glBindTexture(GL_TEXTURE_2D, textureId );
-#endif
 }
 
 
 void VEGLDeleteTexture( GLuint textureId )
 {
-#if CC_ENABLE_GL_STATE_CACHE
 	if( textureId == _ccCurrentBoundTexture[ _ccCurrentActiveTexture ] )
+    {
 	   _ccCurrentBoundTexture[ _ccCurrentActiveTexture ] = -1;
-#endif
-	glDeleteTextures(1, &textureId );
+    }
 }
 
 void VEGLEnable( ccGLServerState flags )
 {
-#if CC_ENABLE_GL_STATE_CACHE
-
 	BOOL enabled = NO;
 
 	/* GL_BLEND */
@@ -176,13 +146,6 @@ void VEGLEnable( ccGLServerState flags )
 			_ccGLServerState &=  ~CC_GL_BLEND;
 		}
 	}
-
-#else
-	if( flags & CC_GL_BLEND )
-		glEnable( GL_BLEND );
-	else
-		glDisable( GL_BLEND );
-#endif
 }
 
 #pragma mark - GL Vertex Attrib functions
@@ -245,14 +208,12 @@ GLKMatrixStackRef texture_matrix_stack;
 
 GLKMatrixStackRef current_stack = NULL;
 
-static unsigned char initialized = 0;
+static BOOL initialized = NO;
 
 void lazyInitialize(void)
 {
-    
 	if (!initialized)
-    {
-        
+    {        
 		//Initialize all 3 stacks
         modelview_matrix_stack = GLKMatrixStackCreate(CFAllocatorGetDefault());
         
@@ -263,34 +224,39 @@ void lazyInitialize(void)
         texture_matrix_stack = GLKMatrixStackCreate(CFAllocatorGetDefault());
         
 		current_stack = modelview_matrix_stack;
-		initialized = 1;
+		initialized = YES;
 	}
 }
 
 void VEGLMatrixMode(GLenum mode)
 {
-	
-    
 	switch(mode)
 	{
 		case GL_MODELVIEW_MATRIX:
+        {
 			current_stack = modelview_matrix_stack;
             break;
+        }
 		case GL_PROJECTION_MATRIX:
+        {
 			current_stack = projection_matrix_stack;
             break;
+        }
 		case GL_TEXTURE_MATRIX:
+        {
 			current_stack = texture_matrix_stack;
             break;
+        }
 		default:
+        {
 			assert(0 && "Invalid matrix mode specified"); //TODO: Proper error handling
             break;
+        }
 	}
 }
 
 void VEGLPushMatrix(void)
-{
-    
+{    
     GLKMatrixStackPush(current_stack);
 }
 
@@ -302,8 +268,6 @@ void VEGLPopMatrix(void)
 
 void VEGLLoadIdentity()
 {
-	
-    
     GLKMatrixStackLoadMatrix4(current_stack, GLKMatrix4Identity);
 }
 
@@ -315,7 +279,7 @@ void VEGLFreeAll()
 	CFRelease(texture_matrix_stack);
     
 	//Delete the matrices
-	initialized = 0; //Set to uninitialized
+	initialized = NO; //Set to uninitialized
     
 	current_stack = NULL; //Set the current stack to point nowhere
 }
