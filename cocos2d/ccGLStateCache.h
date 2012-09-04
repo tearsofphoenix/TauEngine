@@ -117,25 +117,6 @@ void VEGLDeleteTexture(GLuint textureId);
  @since v2.0.0
  */
 void VEGLEnable( ccGLServerState flags );
-
-    void lazyInitialize(void);
-    void VEGLFreeAll(void);
-    
-    void VEGLPushMatrix(void);
-    void VEGLPopMatrix(void);
-    
-    void VEGLMatrixMode(GLenum mode);
-    
-    void VEGLLoadIdentity(void);
-    
-    void VECurrentGLMatrixStackLoadMatrix4(GLKMatrix4 pIn);
-    void VECurrentGLMatrixStackMultiplyMatrix4(GLKMatrix4 pIn);
-
-    void VEGLTranslatef(float x, float y, float z);
-    void VEGLRotatef(float angle, float x, float y, float z);
-    void VEGLScalef(float x, float y, float z);
-    
-    GLKMatrix4 VEGLGetMVPMatrix(void);
     
 #ifdef __cplusplus
 }

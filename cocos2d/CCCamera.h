@@ -48,13 +48,9 @@
 */
 
 
-typedef struct _VECamera VECamera;
-
-typedef VECamera *VECameraRef;
+typedef struct _VECamera *VECameraRef;
 
 extern VECameraRef VECameraCreate(void);
-
-extern void VECameraLocate(VECameraRef camera);
 
 extern void VECameraFinalize(VECameraRef camera);
 
@@ -66,6 +62,7 @@ extern GLKVector3 VECameraGetCenter(VECameraRef camera);
 
 extern GLKVector3 VECameraGetUp(VECameraRef camera);
 
+extern GLKMatrix4 VECameraGetLookAtMatrix(VECameraRef camera);
 #pragma mark - setter
 
 extern void VECameraSetEye(VECameraRef camera, GLKVector3 eye);

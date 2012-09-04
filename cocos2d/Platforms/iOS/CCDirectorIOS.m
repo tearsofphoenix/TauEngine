@@ -50,7 +50,7 @@
 #import "CGPointExtension.h"
 #import "TransformUtils.h"
 
-
+#import "VEContext.h"
 
 
 #if CC_ENABLE_PROFILERS
@@ -159,7 +159,7 @@ CGFloat	__ccContentScaleFactor = 1;
 	if( nextScene_ )
 		[self setNextScene];
     
-	VEGLPushMatrix();
+	VEContextSaveState(_renderContext);
     
 	[runningScene_ visitWithContext: _renderContext];
     
@@ -167,7 +167,7 @@ CGFloat	__ccContentScaleFactor = 1;
     
     [self showStats];
     
-	VEGLPopMatrix();
+	VEContextRestoreState(_renderContext);
     
 	totalFrames_++;
     
@@ -183,19 +183,21 @@ CGFloat	__ccContentScaleFactor = 1;
     
 	glViewport(0, 0, size.width, size.height );
     
+    VEContext *currentContext = VEContextGetCurrentContext();
+    
 	switch (projection)
     {
 		case kCCDirectorProjection2D:
         {
-			VEGLMatrixMode(GL_PROJECTION_MATRIX);
-			VEGLLoadIdentity();
+			VEContextMatrixMode(currentContext, GL_PROJECTION_MATRIX);
+			VEContextLoadIdentity(currentContext);
             
 			GLKMatrix4 orthoMatrix = GLKMatrix4MakeOrtho(0, size.width / CC_CONTENT_SCALE_FACTOR(), 0,
                                                          size.height / CC_CONTENT_SCALE_FACTOR(), -1024, 1024 );
-			VECurrentGLMatrixStackMultiplyMatrix4( orthoMatrix );
+			VEContextConcatCTM(currentContext, orthoMatrix );
             
-			VEGLMatrixMode(GL_MODELVIEW_MATRIX);
-			VEGLLoadIdentity();
+			VEContextMatrixMode(currentContext, GL_MODELVIEW_MATRIX);
+			VEContextLoadIdentity(currentContext);
 			break;
         }
 		case kCCDirectorProjection3D:
@@ -204,21 +206,21 @@ CGFloat	__ccContentScaleFactor = 1;
             
 			GLKMatrix4 matrixPerspective, matrixLookup;
             
-			VEGLMatrixMode(GL_PROJECTION_MATRIX);
-			VEGLLoadIdentity();
+			VEContextMatrixMode(currentContext, GL_PROJECTION_MATRIX);
+			VEContextLoadIdentity(currentContext);
             
 			// issue #1334
             matrixPerspective = GLKMatrix4MakePerspective(60, (GLfloat)size.width/size.height, 0.1f, zeye*2);
             
-			VECurrentGLMatrixStackMultiplyMatrix4(matrixPerspective);
+			VEContextConcatCTM(currentContext, matrixPerspective);
             
-			VEGLMatrixMode(GL_MODELVIEW_MATRIX);
-			VEGLLoadIdentity();
+			VEContextMatrixMode(currentContext, GL_MODELVIEW_MATRIX);
+			VEContextLoadIdentity(currentContext);
             
             matrixLookup = GLKMatrix4MakeLookAt(sizePoint.width/2, sizePoint.height/2, zeye,
                                                 sizePoint.width/2, sizePoint.height/2, 0,
                                                 0, 1, 0);
-			VECurrentGLMatrixStackMultiplyMatrix4(matrixLookup);
+			VEContextConcatCTM(currentContext, matrixLookup);
             
 			break;
 		}

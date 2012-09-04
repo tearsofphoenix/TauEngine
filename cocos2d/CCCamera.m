@@ -25,9 +25,6 @@
 
 
 #import "CCCamera.h"
-#import "ccGLStateCache.h"
-#import "ccMacros.h"
-
 
 struct _VECamera
 {
@@ -48,7 +45,7 @@ VECameraRef VECameraCreate(void)
     return camera;
 }
 
-void VECameraLocate(VECameraRef camera)
+GLKMatrix4 VECameraGetLookAtMatrix(VECameraRef camera)
 {
     if (camera->_isDirty)
     {
@@ -58,7 +55,7 @@ void VECameraLocate(VECameraRef camera)
         camera->_isDirty = NO;
     }
     
-	VECurrentGLMatrixStackMultiplyMatrix4( camera->_cachedLookupMatrix );
+    return camera->_cachedLookupMatrix;
 }
 
 void VECameraFinalize(VECameraRef camera)

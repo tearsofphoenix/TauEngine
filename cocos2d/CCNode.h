@@ -36,7 +36,6 @@ enum
 
 @class CCGLProgram;
 @class CCScheduler;
-@class CCActionManager;
 @class CCAction;
 @class VEContext;
 
@@ -125,7 +124,6 @@ enum
 
     // Shader
     CCScheduler *_scheduler;
-    CCActionManager *_actionManager;
     
 	CCGLProgram	*_shaderProgram;
 
@@ -224,8 +222,6 @@ enum
 @property (nonatomic) ccGLServerState glServerState;
 
 @property (nonatomic, assign) CCScheduler *scheduler;
-
-@property (nonatomic,  assign) CCActionManager *actionManager;
 
 + (id)node;
 
@@ -361,13 +357,7 @@ enum
 
 
 /** performs OpenGL view-matrix transformation based on position, scale, rotation and other attributes. */
-- (void)transform;
-
-/** performs OpenGL view-matrix transformation of its ancestors.
- Generally the ancestors are already transformed, but in certain cases (eg: attaching a FBO) it is necessary to transform the ancestors again.
- @since v0.7.2
- */
--(void) transformAncestors;
+- (void)transformInContext: (VEContext *)context;
 
 // transformation methods
 

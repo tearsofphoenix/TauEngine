@@ -12,6 +12,7 @@
 
 #import "Box2DView.h"
 #import "iPhoneTest.h"
+#import "VEContext.h"
 
 #define kAccelerometerFrequency 30
 #define FRAMES_BETWEEN_PRESSES_FOR_DOUBLE_CLICK 10
@@ -222,11 +223,11 @@ Settings settings;
     
 	VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
     
-	VEGLPushMatrix();
+	VEContextSaveState(context);
     
 	test->m_world->DrawDebugData();
     
-	VEGLPopMatrix();
+	VEContextRestoreState(context);
     
 	CHECK_GL_ERROR_DEBUG();
 }

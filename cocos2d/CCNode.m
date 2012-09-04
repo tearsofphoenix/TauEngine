@@ -37,19 +37,9 @@
 #import "Support/TransformUtils.h"
 
 #import "CCGLProgram.h"
-
-
-#ifdef __CC_PLATFORM_IOS
 #import "Platforms/iOS/CCDirectorIOS.h"
-#endif
 
-
-#if CC_NODE_RENDER_SUBPIXEL
-#define RENDER_IN_SUBPIXEL
-#else
-#define RENDER_IN_SUBPIXEL (NSInteger)
-#endif
-
+#import "VEContext.h"
 
 @interface CCNode ()
 {
@@ -125,14 +115,6 @@
 }
 
 #pragma mark CCNode - Init & cleanup
-+ (void)load
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, (^
-                               {
-                                   lazyInitialize();
-                               }));
-}
 
 + (id)node
 {
@@ -365,14 +347,14 @@
     
 }
 
--(void)visitWithContext: (VEContext *)context
+- (void)visitWithContext: (VEContext *)context
 {
 	// quick return if not visible. children won't be drawn.
 	if (_visible)
     {
-        VEGLPushMatrix();
+        VEContextSaveState(context);
         
-        [self transform];
+        [self transformInContext: context];
         
         _drawInContextIMP(self, @selector(drawInContext:), context);
         
@@ -385,7 +367,7 @@
             }            
         }
         
-        VEGLPopMatrix();
+        VEContextRestoreState(context);
     }
 }
 
@@ -415,7 +397,6 @@
 	[(NSArray *)_children makeObjectsPerformSelector:@selector(onEnter)];
     
     [_scheduler resumeTarget: self];
-    [_actionManager resumeTarget: self];
     
 	_isRunning = YES;
 }
@@ -433,7 +414,6 @@
 - (void)onExit
 {
     [_scheduler pauseTarget: self];
-    [_actionManager pauseTarget: self];
     
 	_isRunning = NO;
     
@@ -619,16 +599,7 @@
     return _position;
 }
 
-- (void)transformAncestors
-{
-	if( _parent )
-    {
-		[_parent transformAncestors];
-		[_parent transform];
-	}
-}
-
-- (void)transform
+- (void)transformInContext: (VEContext *)context
 {
 	GLKMatrix4 transfrom4x4;
     
@@ -640,7 +611,7 @@
 	// Update Z vertex manually
 	transfrom4x4.m[14] = _vertexZ;
     
-	VECurrentGLMatrixStackMultiplyMatrix4( transfrom4x4 );
+	VEContextConcatCTM(context, transfrom4x4 );
     
     
 	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
@@ -650,14 +621,15 @@
         
 		if( translate )
         {
-			VEGLTranslatef(RENDER_IN_SUBPIXEL(_anchorPointInPoints.x), RENDER_IN_SUBPIXEL(_anchorPointInPoints.y), 0 );
-        }
+			VEContextTranslateCTM(context, _anchorPointInPoints.x, _anchorPointInPoints.y, 0 );
         
-        VECameraLocate(_camera);
-        
-		if( translate )
+            VEContextConcatCTM(context, VECameraGetLookAtMatrix(_camera));
+            
+			VEContextTranslateCTM(context, -_anchorPointInPoints.x, -_anchorPointInPoints.y, 0 );
+            
+        }else
         {
-			VEGLTranslatef(RENDER_IN_SUBPIXEL(-_anchorPointInPoints.x), RENDER_IN_SUBPIXEL(-_anchorPointInPoints.y), 0 );
+            VEContextConcatCTM(context, VECameraGetLookAtMatrix(_camera));
         }
 	}
 }

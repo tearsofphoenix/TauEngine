@@ -30,7 +30,7 @@
 #import "ccGLStateCache.h"
 #import "ccMacros.h"
 
-
+#import "VEContext.h"
 #import "Support/OpenGL_Internal.h"
 
 
@@ -188,7 +188,7 @@ void CCGLProgramUse(CCGLProgram *program)
 
 void CCGLProgramUniformForModelViewProjectionMatrix(CCGLProgram *program)
 {
-    CCGLProgramUniformMatrix4fv(program, program->_uniforms[kCCUniformMVPMatrix], VEGLGetMVPMatrix().m, 1);
+    CCGLProgramUniformMatrix4fv(program, program->_uniforms[kCCUniformMVPMatrix], VEContextGetMVPMatrix(VEContextGetCurrentContext()).m, 1);
 }
 
 void CCGLProgramUniformf(CCGLProgram *program, GLint location, GLfloat *floats, GLsizei count)
