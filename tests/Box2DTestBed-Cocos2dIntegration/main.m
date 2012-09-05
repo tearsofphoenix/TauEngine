@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
         _sendCompIMP = class_getMethodImplementation(blockDelegateClass, @selector(_sendDeferredCompletion:));
         class_replaceMethod(blockDelegateClass, @selector(_sendDeferredCompletion:), (IMP)_sIMP, "v12@0:4@8");
         
-        objc_dumpClass(objc_getClass("CAWindowServerDisplay"));
+        //objc_dumpClass(objc_getClass("CAWindowServerDisplay"));
         
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([Box2DAppDelegate class]));
     }

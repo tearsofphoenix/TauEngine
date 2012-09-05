@@ -108,7 +108,6 @@ typedef NS_ENUM(NSUInteger, CCSchedulerPriority)
 @interface CCScheduler : VEMetaService
 {
 	NSTimeInterval				timeScale_;
-    dispatch_queue_t            _timerQueue;
 	//
 	// "updates with priority" stuff
 	//
@@ -136,8 +135,6 @@ typedef NS_ENUM(NSUInteger, CCSchedulerPriority)
  @warning It will affect EVERY scheduled selector / action.
  */
 @property (nonatomic) NSTimeInterval	timeScale;
-
-- (dispatch_queue_t)timerQueue;
 
 /** 'update' the scheduler.
  You should NEVER call this method, unless you know what you are doing.

@@ -20,7 +20,6 @@ static VEContext *__currentContext = nil;
     GLKMatrixStackRef _textureMatrixStack;
     
     GLKMatrixStackRef _currentStack;
-    dispatch_queue_t _dispatchQueue;
     NSMutableArray *_renderQueue;
 }
 @end
@@ -41,9 +40,7 @@ static VEContext *__currentContext = nil;
 
         _renderQueue = [[NSMutableArray alloc] init];
         
-        __currentContext = self;
-        
-        _dispatchQueue = dispatch_queue_create(NULL, DISPATCH_QUEUE_CONCURRENT);
+        __currentContext = self;        
     }
     
     return self;

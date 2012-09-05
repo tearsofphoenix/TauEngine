@@ -78,6 +78,11 @@
     return nil;
 }
 
+- (id)identity
+{
+    return [[self class] identity];
+}
+
 + (void)load
 {
     static dispatch_once_t onceToken;

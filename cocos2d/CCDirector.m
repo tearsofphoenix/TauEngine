@@ -76,13 +76,11 @@ NSUInteger	__ccNumberOfDraws = 0;
 @synthesize isPaused = isPaused_;
 @synthesize isAnimating = isAnimating_;
 @synthesize sendCleanupToScene = sendCleanupToScene_;
-@synthesize notificationNode = notificationNode_;
 @synthesize delegate = delegate_;
 @synthesize totalFrames = totalFrames_;
 @synthesize secondsPerFrame = secondsPerFrame_;
 
 @synthesize dispatchQueue = _dispatchQueue;
-@synthesize runningQueue = _runningQueue;
 //
 // singleton stuff
 //
@@ -98,7 +96,7 @@ static CCDirector *_sharedDirector = nil;
 		//
 		if( [CCDirector class] == [self class] )
         {
-			_sharedDirector = [[CCDirectorDisplayLink alloc] init];
+			_sharedDirector = [[VEDisplayDirector alloc] init];
             
         }else
         {
@@ -125,8 +123,6 @@ static CCDirector *_sharedDirector = nil;
 		// scenes
 		runningScene_ = nil;
 		nextScene_ = nil;
-
-		notificationNode_ = nil;
 
 		oldAnimationInterval_ = animationInterval_ = 1.0 / kDefaultFPS;
 		scenesStack_ = [[NSMutableArray alloc] initWithCapacity:10];
@@ -162,7 +158,6 @@ static CCDirector *_sharedDirector = nil;
 	CCLOGINFO(@"cocos2d: deallocing %@", self);
 
 	[runningScene_ release];
-	[notificationNode_ release];
 	[scenesStack_ release];
 
 	[delegate_ release];

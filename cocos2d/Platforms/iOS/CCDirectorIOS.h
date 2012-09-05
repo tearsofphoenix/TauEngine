@@ -62,6 +62,7 @@
 
 /** returns the content scale factor */
 -(CGFloat) contentScaleFactor;
+
 @end
 
 #pragma mark -
@@ -74,27 +75,6 @@
 {	
 	CCTouchDispatcher	*touchDispatcher_;
 }
-@end
-
-/** DisplayLinkDirector is a Director that synchronizes timers with the refresh rate of the display.
- *
- * Features and Limitations:
- * - Only available on 3.1+
- * - Scheduled timers & drawing are synchronizes with the refresh rate of the display
- * - Only supports animation intervals of 1/60 1/30 & 1/15
- *
- * It is the recommended Director if the SDK is 3.1 or newer
- *
- * @since v0.8.2
- */
-@interface CCDirectorDisplayLink : CCDirectorIOS
-{
-	CADisplayLink	*displayLink_;
-	CFTimeInterval	lastDisplayTime_;
-}
-
--(void) mainLoop:(id)sender;
-
 @end
 
 @interface VEDisplayDirector : CCDirectorIOS

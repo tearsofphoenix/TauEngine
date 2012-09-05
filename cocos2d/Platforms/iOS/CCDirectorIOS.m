@@ -78,16 +78,6 @@ CGFloat	__ccContentScaleFactor = 1;
 
 @implementation CCDirector (iOSExtensionClassMethods)
 
-+(Class) defaultDirector
-{
-	return [CCDirectorDisplayLink class];
-}
-
--(void) setInterfaceOrientationDelegate:(id)delegate
-{
-	// override me
-}
-
 -(CCTouchDispatcher*) touchDispatcher
 {
 	return nil;
@@ -122,7 +112,6 @@ CGFloat	__ccContentScaleFactor = 1;
 		touchDispatcher_ = [[CCTouchDispatcher alloc] init];
         
 		_dispatchQueue = dispatch_queue_create(CCDirectorIOSDispatchQueue, DISPATCH_QUEUE_CONCURRENT);
-        _runningQueue = dispatch_get_current_queue();
         _scheduler = [VEDataSource serviceByIdentity: CCScheduleServiceID];
 	}
     
@@ -159,14 +148,14 @@ CGFloat	__ccContentScaleFactor = 1;
 	/* to avoid flickr, nextScene MUST be here: after tick and before draw.
 	 XXX: Which bug is this one. It seems that it can't be reproduced with v0.9 */
 	if( nextScene_ )
+    {
 		[self setNextScene];
+    }
     
 	VEContextSaveState(_renderContext);
     
 	[runningScene_ visitWithContext: _renderContext];
-    
-	[notificationNode_ visitWithContext: _renderContext];
-    
+        
     [self showStats];
     
 	VEContextRestoreState(_renderContext);
@@ -408,100 +397,6 @@ CGFloat	__ccContentScaleFactor = 1;
 
 @end
 
-
-#pragma mark -
-#pragma mark DirectorDisplayLink
-
-@implementation CCDirectorDisplayLink
-
-
--(void) mainLoop:(id)sender
-{
-    [self drawScene];
-}
-
-- (void)setAnimationInterval:(NSTimeInterval)interval
-{
-    if (animationInterval_ != interval)
-    {
-        animationInterval_ = interval;
-        if(displayLink_)
-        {
-            [self stopAnimation];
-            [self startAnimation];
-        }
-    }
-}
-
-- (void) startAnimation
-{
-    if(isAnimating_)
-        return;
-    
-	gettimeofday( &lastUpdate_, NULL);
-    
-	// approximate frame rate
-	// assumes device refreshes at 60 fps
-	int frameInterval = (int) floor(animationInterval_ * 60.0f);
-    
-	CCLOG(@"cocos2d: animation started with frame interval: %.2f", 60.0f/frameInterval);
-    
-	displayLink_ = [CADisplayLink displayLinkWithTarget: self
-                                               selector: @selector(mainLoop:)];
-	[displayLink_ setFrameInterval: frameInterval];
-    
-	// setup DisplayLink in main thread
-	[displayLink_ addToRunLoop: [NSRunLoop currentRunLoop]
-                       forMode: NSDefaultRunLoopMode];
-    isAnimating_ = YES;
-}
-
-- (void) stopAnimation
-{
-    if(!isAnimating_)
-        return;
-    
-	CCLOG(@"cocos2d: animation stopped");
-    
-	[displayLink_ invalidate];
-	displayLink_ = nil;
-    isAnimating_ = NO;
-}
-
-// Overriden in order to use a more stable delta time
--(void) calculateDeltaTime
-{
-    // New delta time. Re-fixed issue #1277
-    if( nextDeltaTimeZero_ || lastDisplayTime_==0 )
-    {
-        dt = 0;
-        nextDeltaTimeZero_ = NO;
-    } else
-    {
-        dt = displayLink_.timestamp - lastDisplayTime_;
-        dt = MAX(0,dt);
-    }
-    // Store this timestamp for next time
-    lastDisplayTime_ = displayLink_.timestamp;
-    
-	// needed for SPF
-    gettimeofday( &lastUpdate_, NULL);
-    
-#ifdef DEBUG
-	// If we are debugging our code, prevent big delta time
-	if( dt > 0.2f )
-		dt = 1/60.0f;
-#endif
-}
-
--(void) dealloc
-{
-	[displayLink_ release];
-	[super dealloc];
-}
-
-@end
-
 @implementation VEDisplayDirector
 
 - (void)setAnimationInterval: (NSTimeInterval)interval
@@ -521,15 +416,11 @@ CGFloat	__ccContentScaleFactor = 1;
     {
         gettimeofday( &lastUpdate_, NULL);
         
-        // approximate frame rate
-        // assumes device refreshes at 60 fps
-        int frameInterval = (int) floor(animationInterval_ * 60.0f);
-        
-        CCLOG(@"cocos2d: animation started with frame interval: %.2f", 60.0f/frameInterval);
         if (!_timer)
         {
             _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _dispatchQueue);
-            dispatch_source_set_timer(_timer, DISPATCH_TIME_NOW, 1.0 / 60.0 * NSEC_PER_SEC, 0);
+            NSTimeInterval interval = animationInterval_ * NSEC_PER_SEC;
+            dispatch_source_set_timer(_timer, dispatch_time(DISPATCH_TIME_NOW, interval), interval, 0);
             __block id fakeSelf = self;
             dispatch_source_set_event_handler(_timer, (^
                                                        {
@@ -554,7 +445,7 @@ CGFloat	__ccContentScaleFactor = 1;
 }
 
 // Overriden in order to use a more stable delta time
--(void) calculateDeltaTime
+- (void)calculateDeltaTime
 {
     // New delta time. Re-fixed issue #1277
     if( nextDeltaTimeZero_ || lastDisplayTime_==0 )
@@ -563,11 +454,11 @@ CGFloat	__ccContentScaleFactor = 1;
         nextDeltaTimeZero_ = NO;
     } else
     {
-        dt = DISPATCH_TIME_NOW - lastDisplayTime_;
+        dt = [NSDate timeIntervalSinceReferenceDate] - lastDisplayTime_;
         dt = MAX(0,dt);
     }
     // Store this timestamp for next time
-    lastDisplayTime_ = DISPATCH_TIME_NOW;
+    lastDisplayTime_ = [NSDate timeIntervalSinceReferenceDate];
     
 	// needed for SPF
     gettimeofday( &lastUpdate_, NULL);
@@ -575,7 +466,9 @@ CGFloat	__ccContentScaleFactor = 1;
 #ifdef DEBUG
 	// If we are debugging our code, prevent big delta time
 	if( dt > 0.2f )
+    {
 		dt = 1/60.0f;
+    }
 #endif
 }
 

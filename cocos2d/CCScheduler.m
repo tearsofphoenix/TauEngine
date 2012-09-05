@@ -271,11 +271,6 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 
 @synthesize timeScale = timeScale_;
 
-- (dispatch_queue_t)timerQueue
-{
-    return _timerQueue;
-}
-
 - (id) init
 {
 	if( (self=[super init]) )
@@ -297,9 +292,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 		// selectors with interval
 		currentTarget = nil;
 		currentTargetSalvaged = NO;
-        updateHashLocked = NO;
-        
-        _timerQueue = dispatch_queue_create(CCScheduleTimerQueue, DISPATCH_QUEUE_CONCURRENT);
+        updateHashLocked = NO;        
 	}
     
 	return self;

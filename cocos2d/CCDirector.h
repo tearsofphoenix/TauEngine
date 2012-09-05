@@ -105,9 +105,6 @@ and when to execute the Scenes.
 	/* The running scene */
 	CCScene *runningScene_;
 
-	/* This object will be visited after the scene. Useful to hook a notification node */
-	id notificationNode_;
-
 	/* will be the next 'runningScene' in the next frame
 	 nextScene is a weak reference. */
 	CCScene *nextScene_;
@@ -139,15 +136,12 @@ and when to execute the Scenes.
 	CGSize	winSizeInPixels_;
     
     dispatch_queue_t _dispatchQueue;
-    dispatch_queue_t _runningQueue;
     
 	/*  OpenGLView. On iOS it is a copy of self.view */
 	CCGLView		*view_;
 }
 
 @property (nonatomic, readonly) dispatch_queue_t dispatchQueue;
-
-@property (nonatomic, readonly) dispatch_queue_t runningQueue;
 
 /** The current running Scene. Director can only run one Scene at the time */
 @property (nonatomic,readonly) CCScene* runningScene;
@@ -174,13 +168,6 @@ and when to execute the Scenes.
  @since v0.99.0
  */
 @property (nonatomic, readonly) BOOL sendCleanupToScene;
-
-/** This object will be visited after the main scene is visited.
- This object MUST implement the "visit" selector.
- Useful to hook a notification object, like CCNotifications (http://github.com/manucorporat/CCNotifications)
- @since v0.99.5
- */
-@property (nonatomic, retain) id	notificationNode;
 
 /** CCDirector delegate. It shall implemente the CCDirectorDelegate protocol
  @since v0.99.5

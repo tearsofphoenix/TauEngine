@@ -27,6 +27,8 @@ typedef void (^VEServiceBlock) (NSString *action, NSArray *arguments, VECallback
 
 - (void)initializeBlocks;
 
+- (id)identity;
+
 @end
 
 @interface VEMetaService : NSObject<VEService>
