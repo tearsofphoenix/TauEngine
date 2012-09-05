@@ -715,12 +715,18 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     // updates with priority < 0
     for (NSInteger iLooper = 0; iLooper < kCCScheduleArrayCount; ++iLooper)
     {
-        NSArray *array = (NSArray *)_updateArrays[iLooper];
+        NSArray *array = [NSArray arrayWithArray: (NSArray *)_updateArrays[iLooper]];
         
         for (tListEntry *entry in array)
         {
-            if( ! entry->paused && !entry->markedForDeletion )
+            if (entry->markedForDeletion)
+            {
+                CCSchedulerRemoveUpdate(self, entry);
+                
+            }else if( ! entry->paused )
+            {
                 entry->impMethod( entry->target, updateSelector, dt );
+            }
         }
     }
     
@@ -762,22 +768,6 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
                                                                                   currentTarget = nil;
                                                                               }
                                                                           })];
-    
-    
-    // delete all updates that are morked for deletion
-    
-    for (NSInteger iLooper = 0; iLooper < kCCScheduleArrayCount; ++iLooper)
-    {
-        NSArray *array = (NSArray *)_updateArrays[iLooper];
-        
-        for (tListEntry *entry in array)
-        {
-            if(entry->markedForDeletion )
-            {
-                CCSchedulerRemoveUpdate(self, entry);
-            }
-        }
-    }
     
     updateHashLocked = NO;
     currentTarget = nil;

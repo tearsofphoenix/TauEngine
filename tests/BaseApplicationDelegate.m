@@ -41,14 +41,7 @@
 	[director_ setAnimationInterval:1.0/60];
 	
 	// GL View
-	CCGLView *__glView = [[CCGLView alloc] initWithFrame: [window_ bounds]
-                                             pixelFormat: kEAGLColorFormatRGB565
-                                             depthFormat: 0 /* GL_DEPTH_COMPONENT24_OES */
-                                      preserveBackbuffer: NO
-                                              sharegroup: nil
-                                           multiSampling: NO
-                                         numberOfSamples: 0
-						  ];
+	CCGLView *__glView = [[CCGLView alloc] initWithFrame: [window_ bounds]];
 	
 	[director_ setView: __glView];
     

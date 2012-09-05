@@ -102,36 +102,8 @@
 @synthesize surfaceSize=size_;
 @synthesize pixelFormat=pixelformat_, depthFormat=depthFormat_;
 @synthesize touchDelegate=touchDelegate_;
-@synthesize context=context_;
+
 @synthesize multiSampling=multiSampling_;
-
-+ (Class) layerClass
-{
-	return [CAEAGLLayer class];
-}
-
-- (id) initWithFrame:(CGRect)frame
-{
-	return [self initWithFrame: frame
-                   pixelFormat: kEAGLColorFormatRGB565
-                   depthFormat: 0
-            preserveBackbuffer: NO
-                    sharegroup: nil
-                 multiSampling: NO
-               numberOfSamples: 0];
-}
-
-- (id)initWithFrame: (CGRect)frame
-        pixelFormat: (NSString*)format
-{
-	return [self initWithFrame: frame
-                   pixelFormat: format
-                   depthFormat: 0
-            preserveBackbuffer: NO
-                    sharegroup: nil
-                 multiSampling: NO
-               numberOfSamples: 0];
-}
 
 - (void)_addDefaultGestureRecognizer
 {
@@ -148,22 +120,10 @@
 }
 
 - (id) initWithFrame: (CGRect)frame
-         pixelFormat: (NSString*)format
-         depthFormat: (GLuint)depth
-  preserveBackbuffer: (BOOL)retained
-          sharegroup: (EAGLSharegroup*)sharegroup
-       multiSampling: (BOOL)sampling
-     numberOfSamples: (NSUInteger)nSamples
 {
 	if((self = [super initWithFrame:frame]))
 	{
-		pixelformat_ = format;
-		depthFormat_ = depth;
-		multiSampling_ = sampling;
-		requestedSamples_ = nSamples;
-		preserveBackbuffer_ = retained;
-        
-		if( ! [self setupSurfaceWithSharegroup: sharegroup] )
+		if( ! [self setupSurfaceWithSharegroup: nil] )
         {
 			[self release];
 			return nil;
@@ -189,7 +149,7 @@
 		requestedSamples_ = 0;
 		size_ = [eaglLayer bounds].size;
         
-		if( ! [self setupSurfaceWithSharegroup:nil] )
+		if( ! [self setupSurfaceWithSharegroup: nil] )
         {
 			[self release];
 			return nil;
@@ -220,14 +180,7 @@
                                          withMultiSampling:multiSampling_
                                        withNumberOfSamples:requestedSamples_];
     
-	NSAssert( renderer_, @"OpenGL ES 2.0 is required");
-    
-	if (!renderer_)
-		return NO;
-    
-	context_ = [renderer_ context];
-    
-	discardFramebufferSupported_ = [[CCConfiguration sharedConfiguration] supportsDiscardFramebuffer];
+    [self setContext: [renderer_ context]];
     
 	CHECK_GL_ERROR_DEBUG();
     
@@ -253,7 +206,7 @@
 	[director reshapeProjection:size_];
     
 	// Avoid flicker. Issue #350
-//    [director drawScene];
+    //    [director drawScene];
 }
 
 - (void) swapBuffers
@@ -272,34 +225,32 @@
 		glResolveMultisampleFramebufferAPPLE();
 	}
     
-	if( discardFramebufferSupported_)
-	{
-		if (multiSampling_)
-		{
-			if (depthFormat_)
-			{
-				GLenum attachments[] = {GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT};
-				glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE, 2, attachments);
-			}
-			else
-			{
-				GLenum attachments[] = {GL_COLOR_ATTACHMENT0};
-				glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE, 1, attachments);
-			}
-            
-			glBindRenderbuffer(GL_RENDERBUFFER, [renderer_ colorRenderBuffer]);
-            
-		}
-        
-		// not MSAA
-		else if (depthFormat_ )
-        {
-			GLenum attachments[] = { GL_DEPTH_ATTACHMENT};
-			glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, attachments);
-		}
-	}
     
-	if(![context_ presentRenderbuffer:GL_RENDERBUFFER])
+    if (multiSampling_)
+    {
+        if (depthFormat_)
+        {
+            GLenum attachments[] = {GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT};
+            glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE, 2, attachments);
+        }
+        else
+        {
+            GLenum attachments[] = {GL_COLOR_ATTACHMENT0};
+            glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE, 1, attachments);
+        }
+        
+        glBindRenderbuffer(GL_RENDERBUFFER, [renderer_ colorRenderBuffer]);
+        
+    }
+    
+    // not MSAA
+    else if (depthFormat_ )
+    {
+        GLenum attachments[] = { GL_DEPTH_ATTACHMENT};
+        glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, attachments);
+    }
+    
+	if(![[self context] presentRenderbuffer:GL_RENDERBUFFER])
 		CCLOG(@"cocos2d: Failed to swap renderbuffer in %s\n", __FUNCTION__);
     
 	// We can safely re-bind the framebuffer here, since this will be the

@@ -66,7 +66,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import "../../ccMacros.h"
 #ifdef __CC_PLATFORM_IOS
 
-#import <UIKit/UIKit.h>
+#import <GLKit/GLKit.h>
 
 //PROTOCOLS:
 @protocol CCESRenderer;
@@ -85,35 +85,21 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * The view content is basically an EAGL surface you render your OpenGL scene into.
  * Note that setting the view non-opaque will only work if the EAGL surface has an alpha channel.
  */
-@interface CCGLView : UIView
+@interface CCGLView : GLKView
 {
     id<CCESRenderer>		renderer_;
-	EAGLContext				*context_; // weak ref
 
 	NSString				*pixelformat_;
 	GLuint					depthFormat_;
 	BOOL					preserveBackbuffer_;
 
 	CGSize					size_;
-	BOOL					discardFramebufferSupported_;
 	id<CCTouchDelegate>		touchDelegate_;
 
 	//fsaa addition
 	BOOL					multisampling_;
 	NSUInteger			requestedSamples_;
 }
-
-/** Initializes an CCGLView with a frame, a color buffer format, and 0-bit depth buffer */
-- (id) initWithFrame: (CGRect)frame
-         pixelFormat: (NSString*)format;
-/** Initializes an CCGLView with a frame, a color buffer format, a depth buffer format, a sharegroup and multisampling support */
-- (id) initWithFrame: (CGRect)frame
-         pixelFormat: (NSString*)format
-         depthFormat: (GLuint)depth
-  preserveBackbuffer: (BOOL)retained
-          sharegroup: (EAGLSharegroup*)sharegroup
-       multiSampling: (BOOL)sampling
-     numberOfSamples: (NSUInteger)nSamples;
 
 /** pixel format: it could be RGBA8 (32-bit) or RGB565 (16-bit) */
 @property(nonatomic,readonly) NSString* pixelFormat;
@@ -122,9 +108,6 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 /** returns surface size in pixels */
 @property(nonatomic,readonly) CGSize surfaceSize;
-
-/** OpenGL context */
-@property(nonatomic,readonly) EAGLContext *context;
 
 @property(nonatomic) BOOL multiSampling;
 
