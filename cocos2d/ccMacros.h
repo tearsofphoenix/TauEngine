@@ -100,11 +100,6 @@ simple macro that swaps 2 variables
  */
 #define CCRANDOM_0_1() ((random() / (float)0x7fffffff ))
 
-/** @def CC_DEGREES_TO_RADIANS
- converts degrees to radians
- */
-#define CC_DEGREES_TO_RADIANS(__ANGLE__) ((__ANGLE__) * 0.01745329252f) // PI / 180
-
 /** @def CC_RADIANS_TO_DEGREES
  converts radians to degrees
  */

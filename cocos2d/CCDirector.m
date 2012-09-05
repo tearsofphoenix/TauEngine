@@ -177,7 +177,8 @@ static CCDirector *_sharedDirector = nil;
 	// This method SHOULD be called only after view_ was initialized
 	NSAssert( view_, @"view_ must be initialized");
 
-	[self setAlphaBlending: YES];
+    CCGLBlendFunc(CC_BLEND_SRC, CC_BLEND_DST);
+
 	[self setDepthTest: view_.depthFormat];
 	[self setProjection: projection_];
 
@@ -243,18 +244,6 @@ static CCDirector *_sharedDirector = nil;
 -(void) setProjection:(ccDirectorProjection)projection
 {
 	CCLOG(@"cocos2d: override me");
-}
-
-- (void) setAlphaBlending: (BOOL) on
-{
-	if (on) {
-		VEGLEnable(CC_GL_BLEND);
-		CCGLBlendFunc(CC_BLEND_SRC, CC_BLEND_DST);
-
-	} else
-		glDisable(GL_BLEND);
-
-	CHECK_GL_ERROR_DEBUG();
 }
 
 - (void) setDepthTest: (BOOL) on

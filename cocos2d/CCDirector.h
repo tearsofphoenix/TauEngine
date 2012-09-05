@@ -300,8 +300,7 @@ and when to execute the Scenes.
 
 /** sets the OpenGL default values */
 -(void) setGLDefaultValues;
-/** enables/disables OpenGL alpha blending */
-- (void) setAlphaBlending: (BOOL) on;
+
 /** enables/disables OpenGL depth test */
 - (void) setDepthTest: (BOOL) on;
 

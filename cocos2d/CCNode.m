@@ -50,9 +50,6 @@
     // scaling factors
 	float _scaleX, _scaleY;
     
-	// openGL real Z vertex
-	float _vertexZ;
-    
     VECameraRef _camera;
     
     CCNode *_parent;
@@ -75,8 +72,6 @@
 @synthesize tag = _tag;
 @synthesize vertexZ = _vertexZ;
 @synthesize isRunning = _isRunning;
-@synthesize userObject = userObject_;
-@synthesize glServerState = _glServerState;
 
 #pragma mark CCNode - Transform related properties
 
@@ -153,13 +148,8 @@
 		// children (lazy allocs)
 		_children = nil;
         
-		// userData is always inited as nil
-		userObject_ = nil;
-        
 		//initialize parent to nil
 		_parent = nil;
-
-		_glServerState = CC_GL_BLEND;
 		
         _renderInContextIMP = [self methodForSelector: @selector(visitWithContext:)];
         _drawInContextIMP = [self methodForSelector: @selector(drawInContext:)];
@@ -191,8 +181,6 @@
 {
 	CCLOGINFO( @"cocos2d: deallocing %@", self);
     VECameraFinalize(_camera);
-
-	[userObject_ release];
     
 	// children
     
@@ -415,22 +403,6 @@
 	[(NSArray *)_children makeObjectsPerformSelector:@selector(onExit)];
 }
 
-
--(CCNode*) getChildByTag: (NSInteger) aTag
-{
-	NSAssert( aTag != kCCNodeTagInvalid, @"Invalid tag");
-    
-	for(CCNode *node in (NSArray *)_children)
-    {
-		if( node.tag == aTag)
-        {
-			return node;
-        }
-	}
-	// not found
-	return nil;
-}
-
 /* "add" logic MUST only be on this method
  * If a class want's to extend the 'addChild' behaviour it only needs
  * to override this method
@@ -534,10 +506,16 @@
 
 @implementation CCNode (CCNodeGeometry)
 
-- (CGRect) bounds
+- (CGRect)bounds
 {
 	CGRect rect = CGRectMake(0, 0, _contentSize.width, _contentSize.height);
 	return CGRectApplyAffineTransform(rect, [self nodeToParentTransform]);
+}
+
+- (void)setBounds: (CGRect)bounds
+{
+    [self setPosition: bounds.origin];
+    [self setContentSize: bounds.size];
 }
 
 -(float) scale
@@ -612,9 +590,9 @@
 	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
 	if ( _camera )
 	{
-		BOOL translate = (_anchorPointInPoints.x != 0.0f || _anchorPointInPoints.y != 0.0f);
+		BOOL needTranslate = !CGPointEqualToPoint(_anchorPoint, CGPointZero);
         
-		if( translate )
+		if( needTranslate )
         {
 			VEContextTranslateCTM(context, _anchorPointInPoints.x, _anchorPointInPoints.y, 0 );
         
@@ -648,9 +626,8 @@
 		float c = 1, s = 0;
 		if( _rotation )
         {
-			float radians = -CC_DEGREES_TO_RADIANS(_rotation);
-			c = cosf(radians);
-			s = sinf(radians);
+			c = cosf(- _rotation);
+			s = sinf(- _rotation);
 		}
         
 		BOOL needsSkewMatrix = ( _skewX || _skewY );
@@ -675,14 +652,16 @@
 		// If skew is needed, apply skew and then anchor point
 		if( needsSkewMatrix )
         {
-			CGAffineTransform skewMatrix = CGAffineTransformMake(1.0f, tanf(CC_DEGREES_TO_RADIANS(_skewY)),
-																 tanf(CC_DEGREES_TO_RADIANS(_skewX)), 1.0f,
+			CGAffineTransform skewMatrix = CGAffineTransformMake(1.0f, tanf(_skewY),
+																 tanf(_skewX), 1.0f,
 																 0.0f, 0.0f );
 			_transform = CGAffineTransformConcat(skewMatrix, _transform);
             
 			// adjust anchor point
 			if( ! CGPointEqualToPoint(_anchorPointInPoints, CGPointZero) )
+            {
 				_transform = CGAffineTransformTranslate(_transform, -_anchorPointInPoints.x, -_anchorPointInPoints.y);
+            }
 		}
         
 		_isTransformDirty = NO;
@@ -706,7 +685,7 @@
 {
 	CGAffineTransform t = [self nodeToParentTransform];
     
-	for (CCNode *p = _parent; p != nil; p = p.parent)
+	for (CCNode *p = _parent; p != nil; p = p->_parent)
     {
 		t = CGAffineTransformConcat(t, [p nodeToParentTransform]);
     }
@@ -748,26 +727,6 @@
     CGPoint worldPoint = [self convertToWorldSpace:nodePoint];
 	return [[CCDirector sharedDirector] convertToUI:worldPoint];
 }
-
-// convenience methods which take a UITouch instead of CGPoint
-
-#ifdef __CC_PLATFORM_IOS
-
-- (CGPoint)convertTouchToNodeSpace: (UITouch *)touch
-{
-	CGPoint point = [touch locationInView: [touch view]];
-	point = [[CCDirector sharedDirector] convertToGL: point];
-	return [self convertToNodeSpace:point];
-}
-
-- (CGPoint)convertTouchToNodeSpaceAR: (UITouch *)touch
-{
-	CGPoint point = [touch locationInView: [touch view]];
-	point = [[CCDirector sharedDirector] convertToGL: point];
-	return [self convertToNodeSpaceAR:point];
-}
-
-#endif // __CC_PLATFORM_IOS
 
 @end
 

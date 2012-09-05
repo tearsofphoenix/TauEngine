@@ -254,7 +254,6 @@ static inline void __CCLayerPopConfiguration(void)
 
 - (void)drawInContext: (VEContext *)context
 {
-	VEGLEnable( _glServerState );
 	CCGLProgramUse(_shaderProgram);
 	CCGLProgramUniformForMVPMatrix(_shaderProgram, VEContextGetMVPMatrix(context));
     

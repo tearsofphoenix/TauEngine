@@ -47,7 +47,6 @@ static GLuint	_ccCurrentBoundTexture[kCCMaxActiveTexture] =  {-1,-1,-1,-1,
 static GLenum	_ccCurrentActiveTexture = (GL_TEXTURE0 - GL_TEXTURE0);
 static GLenum	_ccBlendingSource = -1;
 static GLenum	_ccBlendingDest = -1;
-static ccGLServerState _ccGLServerState = 0;
 
 #pragma mark - GL State Cache functions
 
@@ -64,7 +63,6 @@ void CCGLInvalidateStateCache( void )
 	_ccCurrentActiveTexture = (GL_TEXTURE0 - GL_TEXTURE0);
 	_ccBlendingSource = -1;
 	_ccBlendingDest = -1;
-	_ccGLServerState = 0;
 }
 
 void CCGLDeleteProgram( GLuint program )
@@ -126,24 +124,6 @@ void VEGLDeleteTexture( GLuint textureId )
     {
 	   _ccCurrentBoundTexture[ _ccCurrentActiveTexture ] = -1;
     }
-}
-
-void VEGLEnable( ccGLServerState flags )
-{
-	BOOL enabled = NO;
-
-	/* GL_BLEND */
-	if( (enabled=(flags & CC_GL_BLEND)) != (_ccGLServerState & CC_GL_BLEND) )
-    {
-		if( enabled )
-        {
-			glEnable( GL_BLEND );
-			_ccGLServerState |= CC_GL_BLEND;
-		} else {
-			glDisable( GL_BLEND );
-			_ccGLServerState &=  ~CC_GL_BLEND;
-		}
-	}
 }
 
 #pragma mark - GL Vertex Attrib functions

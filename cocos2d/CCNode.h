@@ -123,9 +123,6 @@ enum
 
     CCScheduler *_scheduler;
 
-	// Server side state
-	ccGLServerState _glServerState;
-
 	// Is running
 	BOOL _isRunning;
 
@@ -151,19 +148,20 @@ enum
  */
 @property (nonatomic) float vertexZ;
 
-/** The X skew angle of the node in degrees.
+/** The X skew angle of the node in radians.
  This angle describes the shear distortion in the X direction.
  Thus, it is the angle between the Y axis and the left edge of the shape
  The default skewX angle is 0. Positive values distort the node in a CW direction.
  */
 @property(nonatomic) float skewX;
 
-/** The Y skew angle of the node in degrees.
+/** The Y skew angle of the node in radians.
  This angle describes the shear distortion in the Y direction.
  Thus, it is the angle between the X axis and the bottom edge of the shape
  The default skewY angle is 0. Positive values distort the node in a CCW direction.
  */
 @property(nonatomic) float skewY;
+
 /** The rotation (angle) of the node in degrees. 0 is the default rotation angle. Positive values rotate node CW. */
 @property(nonatomic) float rotation;
 
@@ -203,14 +201,6 @@ enum
 
 /** A tag used to identify the node easily */
 @property(nonatomic) NSInteger tag;
-
-/** Similar to userData, but instead of holding a void* it holds an id */
-@property(nonatomic, strong) id userObject;
-
-/** GL server side state
- @since v2.0
-*/
-@property (nonatomic) ccGLServerState glServerState;
 
 @property (nonatomic, assign) CCScheduler *scheduler;
 
@@ -296,13 +286,6 @@ enum
  */
 - (void)removeAllChildrenWithCleanup: (BOOL)cleanup;
 
-// composition: GET
-/** Gets a child from the container given its tag
- @return returns a CCNode object
- @since v0.7.1
- */
-- (CCNode*)getChildByTag: (NSInteger)tag;
-
 /** performance improvement, Sort the children array once before drawing, instead of every time when a child is added or reordered
  don't call this manually unless a child added needs to be removed in the same frame */
 - (void) sortAllChildren;
@@ -346,6 +329,7 @@ enum
  */
 - (CGRect)bounds;
 
+- (void)setBounds: (CGRect)bounds;
 
 /** performs OpenGL view-matrix transformation based on position, scale, rotation and other attributes. */
 - (void)transformInContext: (VEContext *)context;
@@ -391,15 +375,4 @@ enum
  */
 - (CGPoint)convertToWorldSpaceAR:(CGPoint)nodePoint;
 
-#ifdef __CC_PLATFORM_IOS
-/** Converts a UITouch to node (local) space coordinates. The result is in Points.
- @since v0.7.1
- */
-- (CGPoint)convertTouchToNodeSpace:(UITouch *)touch;
-/** Converts a UITouch to node (local) space coordinates. The result is in Points.
- This method is AR (Anchor Relative)..
- @since v0.7.1
- */
-- (CGPoint)convertTouchToNodeSpaceAR:(UITouch *)touch;
-#endif // __CC_PLATFORM_IOS
 @end

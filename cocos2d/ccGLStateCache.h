@@ -38,15 +38,6 @@ enum {
 	kCCVertexAttribFlag_PosColorTex = ( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color | kCCVertexAttribFlag_TexCoords ),
 };
 
-/** GL server side states */
-typedef NS_ENUM(NSUInteger, ccGLServerState)
-{
-	CC_GL_BLEND = 1 << 3,
-	CC_GL_ALL = ( CC_GL_BLEND ),
-
-} ;
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -112,11 +103,6 @@ void ccGLBindTexture2D(GLuint textureId );
  @since v2.0.0
  */
 void VEGLDeleteTexture(GLuint textureId);
-
-/** It will enable / disable the server side GL states.
- @since v2.0.0
- */
-void VEGLEnable( ccGLServerState flags );
     
 #ifdef __cplusplus
 }
