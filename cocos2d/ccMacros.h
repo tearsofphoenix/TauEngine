@@ -117,20 +117,6 @@ default gl blend src function. Compatible with premultiplied alpha images.
 #define CC_BLEND_SRC GL_ONE
 #define CC_BLEND_DST GL_ONE_MINUS_SRC_ALPHA
 
-
-/** @def CC_NODE_DRAW_SETUP
- Helpful macro that setups the GL server state, the correct GL program and sets the Model View Projection matrix
- @since v2.0
- */
-#define CC_NODE_DRAW_SETUP()																	\
-do {																							\
-	VEGLEnable( _glServerState );																\
-    NSAssert1(_shaderProgram, @"No shader program set for node: %@", self);						\
-	CCGLProgramUse(_shaderProgram);																		\
-	CCGLProgramUniformForMVPMatrix(_shaderProgram);									\
-} while(0)
-
-
  /** @def CC_DIRECTOR_END
   Stops and removes the director from memory.
   Removes the CCGLView from its parent

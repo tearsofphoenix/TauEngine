@@ -30,7 +30,6 @@
 #import "ccGLStateCache.h"
 #import "ccMacros.h"
 
-#import "VEContext.h"
 #import "Support/OpenGL_Internal.h"
 
 
@@ -145,28 +144,24 @@ static BOOL CCGLProgramUpdateUniform(CFMutableDictionaryRef	_hashForUniforms,
 {
 	BOOL updated = YES;
     
-	tHashUniformEntry *element = (void *)CFDictionaryGetValue(_hashForUniforms, (const void *)location);
+	GLvoid *element = (void *)CFDictionaryGetValue(_hashForUniforms, (const void *)location);
     
 	if( ! element )
-    {
-        
-		element = malloc( sizeof(*element) );
-        
-		// key
-		element->location = location;
-        
-		// value
-		element->value = malloc( bytes );
-		memcpy(element->value, data, bytes );
+    {        
+		element = malloc( bytes );
+		memcpy(element, data, bytes );
 		
         CFDictionarySetValue(_hashForUniforms, (const void *)location, element);
         
 	}else
 	{
-		if( memcmp( element->value, data, bytes) == 0 )
+		if( memcmp( element, data, bytes) == 0 )
+        {
 			updated = NO;
-		else
-			memcpy( element->value, data, bytes );
+		}else
+        {
+			memcpy( element, data, bytes );
+        }
 	}
 	
 	return updated;
@@ -176,8 +171,7 @@ static BOOL CCGLProgramUpdateUniform(CFMutableDictionaryRef	_hashForUniforms,
 
 static void __CFDictionaryApplierFunction(const void *key, const void *value, void *context)
 {
-    tHashUniformEntry *element = (void *)value;
-    free(element->value);
+    void *element = (void *)value;
     free(element);
 }
 
@@ -186,9 +180,9 @@ void CCGLProgramUse(CCGLProgram *program)
     CCGLUseProgram(program->_program);
 }
 
-void CCGLProgramUniformForMVPMatrix(CCGLProgram *program)
+void CCGLProgramUniformForMVPMatrix(CCGLProgram *program, GLKMatrix4 MVPMatrix)
 {
-    CCGLProgramUniformMatrix4fv(program, program->_uniforms[kCCUniformMVPMatrix], VEContextGetMVPMatrix(VEContextGetCurrentContext()).m, 1);
+    CCGLProgramUniformMatrix4fv(program, program->_uniforms[kCCUniformMVPMatrix], MVPMatrix.m, 1);
 }
 
 void CCGLProgramUniformf(CCGLProgram *program, GLint location, GLfloat *floats, GLsizei count)

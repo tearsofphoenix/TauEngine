@@ -76,7 +76,6 @@
 @synthesize vertexZ = _vertexZ;
 @synthesize isRunning = _isRunning;
 @synthesize userObject = userObject_;
-@synthesize	shaderProgram = _shaderProgram;
 @synthesize glServerState = _glServerState;
 
 #pragma mark CCNode - Transform related properties
@@ -159,9 +158,7 @@
         
 		//initialize parent to nil
 		_parent = nil;
-        
-		_shaderProgram = nil;
-        
+
 		_glServerState = CC_GL_BLEND;
 		
         _renderInContextIMP = [self methodForSelector: @selector(visitWithContext:)];
@@ -194,7 +191,7 @@
 {
 	CCLOGINFO( @"cocos2d: deallocing %@", self);
     VECameraFinalize(_camera);
-	[_shaderProgram release];
+
 	[userObject_ release];
     
 	// children

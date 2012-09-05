@@ -31,13 +31,6 @@
 #import <GLKit/GLKit.h>
 #import "ccMacros.h"
 
-
-typedef struct _hashUniformEntry
-{
-	GLvoid			*value;		// value
-	NSUInteger		location;	// Key
-} tHashUniformEntry;
-
 enum
 {
 	kCCVertexAttrib_Position,
@@ -61,7 +54,7 @@ enum
 #define kCCShader_PositionTexture				@"ShaderPositionTexture"
 #define kCCShader_PositionTexture_uColor		@"ShaderPositionTexture_uColor"
 #define kCCShader_PositionTextureA8Color		@"ShaderPositionTextureA8Color"
-#define kCCShader_Position_uColor				@"ShaderPosition_uColor"
+#define kCCShaderPositionUColorProgram				@"ShaderPosition_uColor"
 
 // uniform names
 #define kCCUniformMVPMatrix_s			"u_MVPMatrix"
@@ -73,8 +66,6 @@ enum
 #define	kCCAttributeNamePosition		"a_position"
 #define	kCCAttributeNameTexCoord		"a_texCoord"
 
-
-struct _hashUniformEntry;
 
 /** CCGLProgram
  Class that implements a glProgram
@@ -104,7 +95,7 @@ extern "C" {
 
     CF_EXPORT void CCGLProgramUse(CCGLProgram *program);
 
-    CF_EXPORT void CCGLProgramUniformForMVPMatrix(CCGLProgram *program);
+    CF_EXPORT void CCGLProgramUniformForMVPMatrix(CCGLProgram *program, GLKMatrix4 MVPMatrix);
 
     CF_EXPORT void CCGLProgramUniformf(CCGLProgram *program, GLint location, GLfloat *floats, GLsizei count);
 

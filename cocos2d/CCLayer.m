@@ -33,7 +33,7 @@
 #import "CCScheduler.h"
 #import "CCTouchDispatcher.h"
 #import "CCDirectorIOS.h"
-
+#import "VEContext.h"
 #import "VGColor.h"
 
 #pragma mark - Layer
@@ -43,7 +43,7 @@
 @private
     CCLayer *_presentationLayer;
     //cached model
-    
+    CCGLProgram *_shaderProgram;
 }
 @end
 
@@ -160,7 +160,7 @@ static inline void __CCLayerPopConfiguration(void)
 		CGSize s = [director winSize];
 		[self setContentSize: s];
         
-        [self setShaderProgram: CCShaderCacheGetProgramByName(CCShaderPositionColorProgram)];
+        _shaderProgram = CCShaderCacheGetProgramByName(CCShaderPositionColorProgram);
         
         
 	}
@@ -256,7 +256,7 @@ static inline void __CCLayerPopConfiguration(void)
 {
 	VEGLEnable( _glServerState );
 	CCGLProgramUse(_shaderProgram);
-	CCGLProgramUniformForMVPMatrix(_shaderProgram);
+	CCGLProgramUniformForMVPMatrix(_shaderProgram, VEContextGetMVPMatrix(context));
     
 	VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color );
     
@@ -565,7 +565,7 @@ static inline void __CCLayerPopConfiguration(void)
                     options: (UIViewAnimationOptions)options
                  completion: (void (^)(BOOL finished))completion // toView added to fromView.superview, fromView removed from its superview
 {
-    
+
 }
 
 @end

@@ -146,13 +146,12 @@ static void CCShaderCacheLoadDefaultShaders(NSMutableDictionary *programDictiona
 	p = [[CCGLProgram alloc] initWithVertexShaderSource: ccPosition_uColor_vert
 								   fragmentShaderSource: ccPosition_uColor_frag];
 	
-    CCGLProgramAddAttribute(p, "aVertex", kCCVertexAttrib_Position);
-	
+    CCGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
 	CCGLProgramLink(p);
 	CCGLProgramUpdateUniforms(p);;
     
 	[programDictionary setObject: p
-                          forKey: kCCShader_Position_uColor];
+                          forKey: kCCShaderPositionUColorProgram];
 	[p release];
     
 	CHECK_GL_ERROR_DEBUG();

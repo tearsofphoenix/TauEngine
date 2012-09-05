@@ -34,7 +34,6 @@ enum
 	kCCNodeTagInvalid = -1,
 };
 
-@class CCGLProgram;
 @class CCScheduler;
 @class CCAction;
 @class VEContext;
@@ -123,8 +122,6 @@ enum
     NSInteger _tag;
 
     CCScheduler *_scheduler;
-    
-	CCGLProgram	*_shaderProgram;
 
 	// Server side state
 	ccGLServerState _glServerState;
@@ -209,11 +206,6 @@ enum
 
 /** Similar to userData, but instead of holding a void* it holds an id */
 @property(nonatomic, strong) id userObject;
-
-/** Shader Program
- @since v2.0
- */
-@property(nonatomic, strong) CCGLProgram *shaderProgram;
 
 /** GL server side state
  @since v2.0

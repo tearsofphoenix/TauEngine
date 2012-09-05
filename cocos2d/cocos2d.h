@@ -60,7 +60,8 @@
 #import "CCShaderCache.h"
 #import "ccShaders.h"
 
-//
+#import "VEContext.h"
+
 // cocos2d macros
 //
 #import "ccTypes.h"

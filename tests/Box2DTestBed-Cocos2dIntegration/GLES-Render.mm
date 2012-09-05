@@ -24,6 +24,7 @@
 //
 
 #import "cocos2d.h"
+
 #include "GLES-Render.h"
 
 #include <cstdio>
@@ -45,15 +46,16 @@ GLESDebugDraw::GLESDebugDraw( float32 ratio )
 
 void GLESDebugDraw::initShader( void )
 {
-	mShaderProgram = CCShaderCacheGetProgramByName(kCCShader_Position_uColor);
+	mShaderProgram = CCShaderCacheGetProgramByName(kCCShaderPositionUColorProgram);
 
 	mColorLocation = CCGLProgramGetUniformLocation( mShaderProgram, "u_color");
 }
 
 void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, const b2Color& color)
 {
+    
     CCGLProgramUse(mShaderProgram);
-    CCGLProgramUniformForMVPMatrix(mShaderProgram);
+    CCGLProgramUniformForMVPMatrix(mShaderProgram, VEContextGetMVPMatrix(VEContextGetCurrentContext()));
 
 	GLKVector2 vertices[vertexCount];
 
@@ -77,7 +79,7 @@ void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, c
 void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int32 vertexCount, const b2Color& color)
 {
     CCGLProgramUse(mShaderProgram);
-    CCGLProgramUniformForMVPMatrix(mShaderProgram);
+    CCGLProgramUniformForMVPMatrix(mShaderProgram, VEContextGetMVPMatrix(VEContextGetCurrentContext()));
 
 	GLKVector2 vertices[vertexCount];
 
@@ -111,7 +113,7 @@ void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int32 vertexCou
 void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
     CCGLProgramUse(mShaderProgram);
-    CCGLProgramUniformForMVPMatrix(mShaderProgram);
+    CCGLProgramUniformForMVPMatrix(mShaderProgram, VEContextGetMVPMatrix(VEContextGetCurrentContext()));
 
 	const float32 k_segments = 16.0f;
 	int vertexCount=16;
@@ -142,7 +144,7 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
 void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
     CCGLProgramUse(mShaderProgram);
-    CCGLProgramUniformForMVPMatrix(mShaderProgram);
+    CCGLProgramUniformForMVPMatrix(mShaderProgram, VEContextGetMVPMatrix(VEContextGetCurrentContext()));
 
 	const float32 k_segments = 16.0f;
 	int vertexCount=16;
@@ -181,12 +183,13 @@ void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
 void GLESDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
     CCGLProgramUse(mShaderProgram);
-    CCGLProgramUniformForMVPMatrix(mShaderProgram);
+    CCGLProgramUniformForMVPMatrix(mShaderProgram, VEContextGetMVPMatrix(VEContextGetCurrentContext()));
 
     GLfloat fullColor[4] = {color.r, color.g, color.b, 1.0};
     CCGLProgramUniformf(mShaderProgram, mColorLocation, fullColor, 4);
 
-	GLfloat				glVertices[] = {
+	GLfloat				glVertices[] =
+    {
 		p1.x * mRatio, p1.y * mRatio,
 		p2.x * mRatio, p2.y * mRatio
 	};
@@ -214,12 +217,13 @@ void GLESDebugDraw::DrawTransform(const b2Transform& xf)
 void GLESDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
 {
     CCGLProgramUse(mShaderProgram);
-    CCGLProgramUniformForMVPMatrix(mShaderProgram);
+    CCGLProgramUniformForMVPMatrix(mShaderProgram, VEContextGetMVPMatrix(VEContextGetCurrentContext()));
 
     GLfloat fullColor[4] = {color.r, color.g, color.b, 1.0};
     CCGLProgramUniformf(mShaderProgram, mColorLocation, fullColor, 4);
 
-	GLfloat				glVertices[] = {
+	GLfloat				glVertices[] =
+    {
 		p.x * mRatio, p.y * mRatio
 	};
 
@@ -242,7 +246,7 @@ void GLESDebugDraw::DrawString(int x, int y, const char *string, ...)
 void GLESDebugDraw::DrawAABB(b2AABB* aabb, const b2Color& color)
 {
     CCGLProgramUse(mShaderProgram);
-    CCGLProgramUniformForMVPMatrix(mShaderProgram);
+    CCGLProgramUniformForMVPMatrix(mShaderProgram, VEContextGetMVPMatrix(VEContextGetCurrentContext()));
 
     GLfloat fullColor[4] = {color.r, color.g, color.b, 1.0};
     CCGLProgramUniformf(mShaderProgram, mColorLocation, fullColor, 4);
