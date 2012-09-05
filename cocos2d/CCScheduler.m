@@ -322,9 +322,17 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 
 #pragma mark CCScheduler - Custom Selectors
 
--(void) scheduleSelector:(SEL)selector forTarget:(id)target interval:(NSTimeInterval)interval paused:(BOOL)paused
+-(void) scheduleSelector: (SEL)selector
+               forTarget: (id)target
+                interval: (NSTimeInterval)interval
+                  paused: (BOOL)paused
 {
-	[self scheduleSelector:selector forTarget:target interval:interval paused:paused repeat:kCCRepeatForever delay:0.0f];
+	[self scheduleSelector: selector
+                 forTarget: target
+                  interval: interval
+                    paused: paused
+                    repeat: kCCRepeatForever
+                     delay: 0.0f];
 }
 
 -(void) scheduleSelector: (SEL)selector
@@ -381,7 +389,8 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 	[timer release];
 }
 
--(void) unscheduleSelector:(SEL)selector forTarget:(id)target
+-(void) unscheduleSelector: (SEL)selector
+                 forTarget: (id)target
 {
 	// explicity handle nil arguments when removing an object
 	if( target==nil && selector==NULL)
@@ -512,8 +521,6 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 #if COCOS2D_DEBUG >= 1
         NSAssert( hashElement->entry->markedForDeletion, @"CCScheduler: You can't re-schedule an 'update' selector'. Unschedule it first");
 #endif
-        // TODO : check if priority has changed!
-        
         hashElement->entry->markedForDeletion = NO;
         return;
     }
@@ -616,7 +623,9 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     tHashSelectorEntry *element = (void *)CFDictionaryGetValue(hashForSelectors, target);
     
     if( element )
+    {
         element->paused = NO;
+    }
     
     // Update selector
     tHashUpdateEntry * elementUpdate = (void *)CFDictionaryGetValue(hashForUpdates, target);
@@ -635,7 +644,9 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     // Custom selectors
     tHashSelectorEntry *element = (void *)CFDictionaryGetValue(hashForSelectors, target);
     if( element )
+    {
         element->paused = YES;
+    }
     
     // Update selector
     tHashUpdateEntry * elementUpdate = (void *)CFDictionaryGetValue(hashForUpdates, target);

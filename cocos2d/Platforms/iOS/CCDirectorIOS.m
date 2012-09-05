@@ -110,8 +110,6 @@ CGFloat	__ccContentScaleFactor = 1;
     CCScheduler *_scheduler;
 }
 
--(void) updateContentScaleFactor;
-
 @end
 
 @implementation CCDirectorIOS
@@ -121,8 +119,6 @@ CGFloat	__ccContentScaleFactor = 1;
 	if( (self=[super init]) )
     {
 		__ccContentScaleFactor = 1;
-		isContentScaleSupported_ = NO;
-        
 		touchDispatcher_ = [[CCTouchDispatcher alloc] init];
         
 		_dispatchQueue = dispatch_queue_create(CCDirectorIOSDispatchQueue, DISPATCH_QUEUE_CONCURRENT);
@@ -277,20 +273,11 @@ CGFloat	__ccContentScaleFactor = 1;
 		__ccContentScaleFactor = scaleFactor;
 		winSizeInPixels_ = CGSizeMake( winSizeInPoints_.width * scaleFactor, winSizeInPoints_.height * scaleFactor );
         
-		if( view_ )
-			[self updateContentScaleFactor];
+        [view_ setContentScaleFactor: __ccContentScaleFactor];
         
 		// update projection
-		[self setProjection:projection_];
+		[self setProjection: projection_];
 	}
-}
-
--(void) updateContentScaleFactor
-{
-	NSAssert( [view_ respondsToSelector:@selector(setContentScaleFactor:)], @"cocos2d v2.0+ runs on iOS 4 or later");
-    
-	[view_ setContentScaleFactor: __ccContentScaleFactor];
-	isContentScaleSupported_ = YES;
 }
 
 -(BOOL) enableRetinaDisplay:(BOOL)enabled
@@ -303,15 +290,12 @@ CGFloat	__ccContentScaleFactor = 1;
 	if( ! enabled && __ccContentScaleFactor == 1 )
 		return YES;
     
-	// setContentScaleFactor is not supported
-	if (! [view_ respondsToSelector:@selector(setContentScaleFactor:)])
-		return NO;
-    
 	// SD device
 	if ([[UIScreen mainScreen] scale] == 1.0)
 		return NO;
     
 	float newScale = enabled ? 2 : 1;
+    
 	[self setContentScaleFactor:newScale];
     
 	// Load Hi-Res FPS label
@@ -372,7 +356,7 @@ CGFloat	__ccContentScaleFactor = 1;
             
 			if( __ccContentScaleFactor != 1 )
             {
-				[self updateContentScaleFactor];
+                [view_ setContentScaleFactor: __ccContentScaleFactor];
             }
             
 			[view setTouchDelegate: touchDispatcher_];
@@ -433,7 +417,7 @@ CGFloat	__ccContentScaleFactor = 1;
 
 -(void) mainLoop:(id)sender
 {
-	[self drawScene];
+    [self drawScene];
 }
 
 - (void)setAnimationInterval:(NSTimeInterval)interval
@@ -515,6 +499,96 @@ CGFloat	__ccContentScaleFactor = 1;
 	[displayLink_ release];
 	[super dealloc];
 }
+
+@end
+
+@implementation VEDisplayDirector
+
+- (void)setAnimationInterval: (NSTimeInterval)interval
+{
+    if (animationInterval_ != interval)
+    {
+        animationInterval_ = interval;
+        
+        [self stopAnimation];
+        [self startAnimation];
+    }
+}
+
+- (void) startAnimation
+{
+    if(!isAnimating_)
+    {
+        gettimeofday( &lastUpdate_, NULL);
+        
+        // approximate frame rate
+        // assumes device refreshes at 60 fps
+        int frameInterval = (int) floor(animationInterval_ * 60.0f);
+        
+        CCLOG(@"cocos2d: animation started with frame interval: %.2f", 60.0f/frameInterval);
+        if (!_timer)
+        {
+            _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _dispatchQueue);
+            dispatch_source_set_timer(_timer, DISPATCH_TIME_NOW, 1.0 / 60.0 * NSEC_PER_SEC, 0);
+            __block id fakeSelf = self;
+            dispatch_source_set_event_handler(_timer, (^
+                                                       {
+                                                           [fakeSelf drawScene];
+                                                       }));
+        }
+        
+        dispatch_resume(_timer);
+        isAnimating_ = YES;
+    }
+}
+
+- (void) stopAnimation
+{
+    if(isAnimating_)
+    {
+        CCLOG(@"cocos2d: animation stopped");
+        dispatch_suspend(_timer);
+        
+        isAnimating_ = NO;
+    }
+}
+
+// Overriden in order to use a more stable delta time
+-(void) calculateDeltaTime
+{
+    // New delta time. Re-fixed issue #1277
+    if( nextDeltaTimeZero_ || lastDisplayTime_==0 )
+    {
+        dt = 0;
+        nextDeltaTimeZero_ = NO;
+    } else
+    {
+        dt = DISPATCH_TIME_NOW - lastDisplayTime_;
+        dt = MAX(0,dt);
+    }
+    // Store this timestamp for next time
+    lastDisplayTime_ = DISPATCH_TIME_NOW;
+    
+	// needed for SPF
+    gettimeofday( &lastUpdate_, NULL);
+    
+#ifdef DEBUG
+	// If we are debugging our code, prevent big delta time
+	if( dt > 0.2f )
+		dt = 1/60.0f;
+#endif
+}
+
+-(void) dealloc
+{
+    [self stopAnimation];
+    dispatch_release(_timer);
+    _timer = NULL;
+    
+	[super dealloc];
+}
+
+
 @end
 
 const char * CCDirectorIOSDispatchQueue = "com.veritas.cocos2d.dispatch-queue.director";

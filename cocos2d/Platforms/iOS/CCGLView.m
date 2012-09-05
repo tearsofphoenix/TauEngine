@@ -253,10 +253,7 @@
 	[director reshapeProjection:size_];
     
 	// Avoid flicker. Issue #350
-    dispatch_sync([director dispatchQueue], (^
-                                             {
-                                                 [director drawScene];
-                                             }));
+//    [director drawScene];
 }
 
 - (void) swapBuffers

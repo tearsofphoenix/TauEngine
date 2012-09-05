@@ -54,26 +54,7 @@
     //    [entriesView setAlpha: 0];
     
     printf("\t\t\t%f\n", [NSDate timeIntervalSinceReferenceDate]);
-    
-    VEView *aView = [[VEView alloc] initWithFrame: CGRectMake(0, 0, 100, 100)];
-    [aView setBackgroundColor: [UIColor redColor]];
-    [[director_ view] addSubview: aView];
-    //[aView setAlpha: 0];
-//    [UIView animateWithDuration: 1.0
-//                     animations: (^
-//                                  {
-//                                      [aView setAlpha: 0];
-//                                  })];
-    
-//    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
-//    [animation setFromValue: [NSNumber numberWithFloat: 1]];
-//    [animation setToValue: [NSNumber numberWithFloat: 0]];
-//    [animation setDuration: 2];
-//    [animation setRemovedOnCompletion: YES];
-//    
-//    [[aView layer] addAnimation: animation
-//                         forKey: @"aci"];
-    
+        
     [entriesView release];
     
 	return YES;
@@ -82,39 +63,3 @@
 
 @end
 
-@implementation VELayer
-
-- (id)presentationLayer
-{
-    id value = [super presentationLayer];
-    NSLog(@"in func: %s self: %@ %@ %@", __func__, self, value, [NSThread callStackSymbols]);
-    return value;
-}
-
-- (id)modelLayer
-{
-    id value = [super modelLayer];
-    NSLog(@"in func: %s self: %@ %@ %@", __FUNCTION__, self, value, [NSThread callStackSymbols]);
-    return value;
-}
-
-- (id)initWithLayer: (id)layer
-{
-    if ((self = [super initWithLayer: layer]))
-    {
-        NSLog(@"in func: %s self: %@ %@ %@", __FUNCTION__, self, layer, [NSThread callStackSymbols]);
-    }
-    return self;
-}
-
-
-@end
-
-@implementation VEView
-
-+ (Class)layerClass
-{
-    return [VELayer class];
-}
-
-@end

@@ -71,10 +71,7 @@
  @since v0.99.5
  */
 @interface CCDirectorIOS : CCDirector
-{
-	/* contentScaleFactor could be simulated */
-	BOOL	isContentScaleSupported_;
-	
+{	
 	CCTouchDispatcher	*touchDispatcher_;
 }
 @end
@@ -98,6 +95,13 @@
 
 -(void) mainLoop:(id)sender;
 
+@end
+
+@interface VEDisplayDirector : CCDirectorIOS
+{
+    dispatch_source_t _timer;
+    CFTimeInterval	lastDisplayTime_;
+}
 @end
 
 // optimization. Should only be used to read it. Never to write it.

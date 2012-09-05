@@ -98,7 +98,7 @@ static CCDirector *_sharedDirector = nil;
 		//
 		if( [CCDirector class] == [self class] )
         {
-			_sharedDirector = [[CCDirectorDisplayLink alloc] init];
+			_sharedDirector = [[VEDisplayDirector alloc] init];
             
         }else
         {
