@@ -41,7 +41,7 @@
 	[director_ setAnimationInterval:1.0/60];
 	
 	// GL View
-	CCGLView *__glView = [[CCGLView alloc] initWithFrame: [window_ bounds]];
+	VEGLView *__glView = [[VEGLView alloc] initWithFrame: [window_ bounds]];
 	
 	[director_ setView: __glView];
     

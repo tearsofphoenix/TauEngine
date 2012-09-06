@@ -31,20 +31,20 @@
 #import "Platforms/iOS/CCTouchDelegateProtocol.h"		// Touches only supported on iOS
 
 
-#import "CCNode.h"
+#import "VANode.h"
 
-@class VEAnimation;
+@class VAAnimation;
 
-#pragma mark - CCLayer
+#pragma mark - VALayer
 
-/** CCLayer is a subclass of CCNode that implements the CCTouchEventsDelegate protocol.
+/** VALayer is a subclass of VANode that implements the CCTouchEventsDelegate protocol.
  
- All features from CCNode are valid, plus the following new features:
+ All features from VANode are valid, plus the following new features:
  - It can receive iPhone Touches
  - It can receive Accelerometer input
  */
 
-@interface CCLayer : CCNode <NSCoding, CCStandardTouchDelegate, CCTargetedTouchDelegate>
+@interface VALayer : VANode <NSCoding, CCStandardTouchDelegate, CCTargetedTouchDelegate>
 {
 	GLKVector4	_backgroundColor;
 	GLKVector2	squareVertices_[4];
@@ -67,7 +67,7 @@
 @property (nonatomic) ccBlendFunc blendFunc;
 
 /** If isTouchEnabled, this method is called onEnter. Override it to change the
- way CCLayer receives touch events.
+ way VALayer receives touch events.
  ( Default: [touchDispatcher addStandardDelegate:self priority:0] )
  Example:
  -(void) registerWithTouchDispatcher
@@ -112,7 +112,7 @@
  * subsequent modifications to `anim' will have no affect unless it is
  * added to another layer. */
 
-- (void)addAnimation: (VEAnimation *)anim
+- (void)addAnimation: (VAAnimation *)anim
               forKey: (NSString *)key;
 
 /* Remove all animations attached to the layer. */
@@ -133,7 +133,7 @@
  * if no such animation exists. Attempting to modify any properties of
  * the returned object will result in undefined behavior. */
 
-- (VEAnimation *)animationForKey:(NSString *)key;
+- (VAAnimation *)animationForKey:(NSString *)key;
 
 + (void)animateWithDuration:(NSTimeInterval)duration
                       delay: (NSTimeInterval)delay
@@ -148,14 +148,14 @@
 + (void)animateWithDuration: (NSTimeInterval)duration
                  animations: (void (^)(void))animations ; // delay = 0.0, options = 0, completion = NULL
 
-+ (void)transitionWithLayer: (CCLayer *)layer
++ (void)transitionWithLayer: (VALayer *)layer
                    duration: (NSTimeInterval)duration
                     options: (UIViewAnimationOptions)options
                  animations: (void (^)(void))animations
                  completion: (void (^)(BOOL finished))completion ;
 
-+ (void)transitionFromLayer: (CCLayer *)fromView
-                    toLayer: (CCLayer *)toView
++ (void)transitionFromLayer: (VALayer *)fromView
+                    toLayer: (VALayer *)toView
                    duration: (NSTimeInterval)duration
                     options: (UIViewAnimationOptions)options
                  completion: (void (^)(BOOL finished))completion; // toView added to fromView.superview, fromView removed from its superview
@@ -166,10 +166,10 @@
 #pragma mark -
 #pragma mark CCGradientLayer
 
-/** CCGradientLayer is a subclass of CCLayer that draws gradients across
+/** CCGradientLayer is a subclass of VALayer that draws gradients across
  the background.
  
- All features from CCLayer are valid, plus the following new features:
+ All features from VALayer are valid, plus the following new features:
  - direction
  - final color
  - interpolation mode
@@ -186,7 +186,7 @@
  
  @since v0.99.5
  */
-@interface CCGradientLayer : CCLayer
+@interface CCGradientLayer : VALayer
 {
 	GLKVector4 endColor_;
 	GLfloat startOpacity_;
@@ -195,10 +195,10 @@
 	BOOL	compressedInterpolation_;
 }
 
-/** Initializes the CCLayer with a gradient between start and end. */
+/** Initializes the VALayer with a gradient between start and end. */
 - (id) initWithColor: (GLKVector4) start
             fadingTo: (GLKVector4) end;
-/** Initializes the CCLayer with a gradient between start and end in the direction of v. */
+/** Initializes the VALayer with a gradient between start and end in the direction of v. */
 - (id) initWithColor: (GLKVector4) start
             fadingTo: (GLKVector4) end
          alongVector: (CGPoint) v;

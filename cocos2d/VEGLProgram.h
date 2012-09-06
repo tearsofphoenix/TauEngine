@@ -67,15 +67,15 @@ enum
 #define	kCCAttributeNameTexCoord		"a_texCoord"
 
 
-/** CCGLProgram
+/** VEGLProgram
  Class that implements a glProgram
  
  
  @since v2.0.0
  */
-@interface CCGLProgram : NSObject
+@interface VEGLProgram : NSObject
 
-/** Initializes the CCGLProgram with a vertex and fragment with bytes array */
+/** Initializes the VEGLProgram with a vertex and fragment with bytes array */
 - (id)initWithVertexShaderSource: (const GLchar*)vShaderSource
             fragmentShaderSource: (const GLchar*)fShaderSource;
 
@@ -93,17 +93,17 @@ extern "C" {
         CCGLUniform4fv = 4,
     };
 
-    CF_EXPORT void CCGLProgramUse(CCGLProgram *program);
+    CF_EXPORT void VEGLProgramUse(VEGLProgram *program);
 
-    CF_EXPORT void CCGLProgramUniformForMVPMatrix(CCGLProgram *program, GLKMatrix4 MVPMatrix);
+    CF_EXPORT void VEGLProgramUniformForMVPMatrix(VEGLProgram *program, GLKMatrix4 MVPMatrix);
 
-    CF_EXPORT void CCGLProgramUniformf(CCGLProgram *program, GLint location, GLfloat *floats, GLsizei count);
+    CF_EXPORT void VEGLProgramUniformf(VEGLProgram *program, GLint location, GLfloat *floats, GLsizei count);
 
-    CF_EXPORT void CCGLProgramUniformfv(CCGLProgram *program, GLint location, GLvoid *floats, GLsizei numberOfArrays, CCGLUniformType type);
+    CF_EXPORT void VEGLProgramUniformfv(VEGLProgram *program, GLint location, GLvoid *floats, GLsizei numberOfArrays, CCGLUniformType type);
     
-    CF_EXPORT void CCGLProgramUniformMatrix4fv(CCGLProgram *program, GLint location, GLvoid *matrix, GLsizei numberOfMatrix);
+    CF_EXPORT void VEGLProgramUniformMatrix4fv(VEGLProgram *program, GLint location, GLvoid *matrix, GLsizei numberOfMatrix);
 
-    CF_EXPORT void CCGLProgramAddAttribute(CCGLProgram *program, const char *attributeName, GLuint index);
+    CF_EXPORT void VEGLProgramAddAttribute(VEGLProgram *program, const char *attributeName, GLuint index);
 
     /** It will create 3 uniforms:
      - kCCUniformPMatrix
@@ -112,19 +112,19 @@ extern "C" {
      
      And it will bind "kCCUniformSampler" to 0
      */
-    CF_EXPORT void CCGLProgramUpdateUniforms(CCGLProgram *program);
+    CF_EXPORT void VEGLProgramUpdateUniforms(VEGLProgram *program);
 
     /** links the glProgram */
-    CF_EXPORT BOOL CCGLProgramLink(CCGLProgram *program);
+    CF_EXPORT BOOL VEGLProgramLink(VEGLProgram *program);
 
-    CF_EXPORT GLint CCGLProgramGetUniformLocation(CCGLProgram *program, const GLchar *name);
+    CF_EXPORT GLint VEGLProgramGetUniformLocation(VEGLProgram *program, const GLchar *name);
     
 #pragma mark - debug
     /** returns the Shader error log */
-    CF_EXPORT NSString *CCGLProgramShaderLogInfo(CCGLProgram *program, GLenum shaderType);
+    CF_EXPORT NSString *VEGLProgramShaderLogInfo(VEGLProgram *program, GLenum shaderType);
     
     /** returns the program error log */
-    CF_EXPORT NSString *CCGLProgramLogInfo(CCGLProgram *program);
+    CF_EXPORT NSString *VEGLProgramLogInfo(VEGLProgram *program);
 
 #ifdef __cplusplus
     }

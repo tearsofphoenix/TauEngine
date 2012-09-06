@@ -25,7 +25,7 @@
 
 #import <GLKit/GLKit.h>
 
-@class CCGLProgram;
+@class VEGLProgram;
 
 /** vertex attrib flags */
 enum {

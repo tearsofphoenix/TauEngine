@@ -18,9 +18,9 @@
 #import "iPhoneTest.h"
 
 
-@interface MenuLayer : CCLayer<UITableViewDataSource, UITableViewDelegate>
+@interface MenuLayer : VALayer<UITableViewDataSource, UITableViewDelegate>
 {
-    CCNode *_box2DNode;
+    VANode *_box2DNode;
 	int		entryID;
 }
 
@@ -29,7 +29,7 @@
 
 @end
 
-@interface Box2DView : CCLayer
+@interface Box2DView : VALayer
 {
 
 	TestEntry* entry;

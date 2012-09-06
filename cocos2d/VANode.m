@@ -25,10 +25,10 @@
  * THE SOFTWARE.
  */
 
-#import "CCNode.h"
+#import "VANode.h"
 #import "CCDirector.h"
 #import "VEDataSource.h"
-#import "CCCamera.h"
+#import "VACamera.h"
 #import "ccConfig.h"
 #import "ccMacros.h"
 #import "CCScheduler.h"
@@ -36,12 +36,12 @@
 
 #import "Support/TransformUtils.h"
 
-#import "CCGLProgram.h"
+#import "VEGLProgram.h"
 #import "Platforms/iOS/CCDirectorIOS.h"
 
-#import "VEContext.h"
+#import "VGContext.h"
 
-@interface CCNode ()
+@interface VANode ()
 {
 @private
     IMP _renderInContextIMP;
@@ -50,21 +50,21 @@
     // scaling factors
 	float _scaleX, _scaleY;
     
-    VECameraRef _camera;
+    VACameraRef _camera;
     
-    CCNode *_parent;
+    VANode *_parent;
     
 }
 
 // helper that reorder a child
-- (void)insertChild: (CCNode*)child
+- (void)insertChild: (VANode*)child
                   z: (NSInteger)z;
 // used internally to alter the zOrder variable. DON'T call this method manually
 - (void)_setZOrder: (NSInteger) z;
-- (void)detachChild: (CCNode *)child cleanup: (BOOL)doCleanup;
+- (void)detachChild: (VANode *)child cleanup: (BOOL)doCleanup;
 @end
 
-@implementation CCNode
+@implementation VANode
 
 @synthesize visible = _visible;
 
@@ -73,7 +73,7 @@
 @synthesize vertexZ = _vertexZ;
 @synthesize isRunning = _isRunning;
 
-#pragma mark CCNode - Transform related properties
+#pragma mark VANode - Transform related properties
 
 @synthesize rotation = _rotation;
 
@@ -108,7 +108,7 @@
     return (NSMutableArray *)_children;
 }
 
-#pragma mark CCNode - Init & cleanup
+#pragma mark VANode - Init & cleanup
 
 + (id)node
 {
@@ -180,7 +180,7 @@
 - (void)dealloc
 {
 	CCLOGINFO( @"cocos2d: deallocing %@", self);
-    VECameraFinalize(_camera);
+    VACameraFinalize(_camera);
     
 	// children
     
@@ -254,14 +254,14 @@
 	}
 }
 
-#pragma mark CCNode Composition
+#pragma mark VANode Composition
 
 // camera: lazy alloc
-- (VECameraRef)camera
+- (VACameraRef)camera
 {
 	if( ! _camera )
     {
-		_camera = VECameraCreate();
+		_camera = VACameraCreate();
 	}
     
 	return _camera;
@@ -284,7 +284,7 @@
 }
 
 
-- (void)detachChild: (CCNode *)child
+- (void)detachChild: (VANode *)child
             cleanup: (BOOL)doCleanup
 {
 	// IMPORTANT:
@@ -310,7 +310,7 @@
 }
 
 // helper used by reorderChild & add
-- (void)insertChild: (CCNode*)child
+- (void)insertChild: (VANode*)child
                   z: (NSInteger)z
 {
     CFArrayAppendValue(_children, [child retain]);
@@ -321,21 +321,21 @@
 
 @end
 
-#pragma mark - CCNode Draw
+#pragma mark - VANode Draw
 
-@implementation  CCNode (CCNodeRendering)
+@implementation  VANode (CCNodeRendering)
 
-- (void)drawInContext: (VEContext *)context
+- (void)drawInContext: (VGContext *)context
 {
     
 }
 
-- (void)visitWithContext: (VEContext *)context
+- (void)visitWithContext: (VGContext *)context
 {
 	// quick return if not visible. children won't be drawn.
 	if (_visible)
     {
-        VEContextSaveState(context);
+        VGContextSaveState(context);
         
         [self transformInContext: context];
         
@@ -345,24 +345,24 @@
         {            
             for(CFIndex i = 0 ; i < CFArrayGetCount(_children); i++ )
             {
-                CCNode *child =  CFArrayGetValueAtIndex(_children, i);
+                VANode *child =  CFArrayGetValueAtIndex(_children, i);
                 _renderInContextIMP(child, _cmd, context);
             }            
         }
         
-        VEContextRestoreState(context);
+        VGContextRestoreState(context);
     }
 }
 
 @end
 
-#pragma mark - CCNode - SceneManagement
+#pragma mark - VANode - SceneManagement
 
-@implementation CCNode (CCNodeHierarchy)
+@implementation VANode (CCNodeHierarchy)
 
-#pragma mark CCNode - Transformations
+#pragma mark VANode - Transformations
 
-- (void)setParent: (CCNode *)parent
+- (void)setParent: (VANode *)parent
 {
     if (_parent != parent)
     {
@@ -370,7 +370,7 @@
     }
 }
 
-- (CCNode *)parent
+- (VANode *)parent
 {
     return _parent;
 }
@@ -407,7 +407,7 @@
  * If a class want's to extend the 'addChild' behaviour it only needs
  * to override this method
  */
-- (void)addChild: (CCNode*)child
+- (void)addChild: (VANode*)child
                z: (NSInteger)z
 {
 	NSAssert( child != nil, @"Argument must be non-nil");
@@ -430,7 +430,7 @@
 	}
 }
 
-- (void)addChild: (CCNode*) child
+- (void)addChild: (VANode*) child
 {
 	NSAssert( child != nil, @"Argument must be non-nil");
 	[self addChild:child z:child.zOrder];
@@ -446,7 +446,7 @@
  * If a class want's to extend the 'removeChild' behavior it only needs
  * to override this method
  */
-- (void)removeChild: (CCNode*)child
+- (void)removeChild: (VANode*)child
             cleanup: (BOOL)cleanup
 {
 	if (child && CFArrayContainsValue(_children, CFRangeMake(0, CFArrayGetCount(_children)), child))
@@ -460,7 +460,7 @@
 {
 	// not using detachChild improves speed here
     
-	for(CCNode *c in (NSArray *)_children)
+	for(VANode *c in (NSArray *)_children)
 	{
 		// IMPORTANT:
 		//  -1st do onExit
@@ -484,7 +484,7 @@
 
 - (void) sortAllChildren
 {
-    [(NSMutableArray *)_children sortUsingComparator: (^NSComparisonResult(CCNode *obj1, CCNode *obj2)
+    [(NSMutableArray *)_children sortUsingComparator: (^NSComparisonResult(VANode *obj1, VANode *obj2)
                                                        {
                                                            NSInteger z1 = [obj1 zOrder];
                                                            NSInteger z2 = [obj2 zOrder];
@@ -502,9 +502,9 @@
 
 @end
 
-#pragma mark - CCNode Geometry
+#pragma mark - VANode Geometry
 
-@implementation CCNode (CCNodeGeometry)
+@implementation VANode (CCNodeGeometry)
 
 - (CGRect)bounds
 {
@@ -520,7 +520,7 @@
 
 -(float) scale
 {
-	NSAssert( _scaleX == _scaleY, @"CCNode#scale. ScaleX != ScaleY. Don't know which one to return");
+	NSAssert( _scaleX == _scaleY, @"VANode#scale. ScaleX != ScaleY. Don't know which one to return");
 	return _scaleX;
 }
 
@@ -572,7 +572,7 @@
     return _position;
 }
 
-- (void)transformInContext: (VEContext *)context
+- (void)transformInContext: (VGContext *)context
 {
 	GLKMatrix4 transfrom4x4;
     
@@ -584,7 +584,7 @@
 	// Update Z vertex manually
 	transfrom4x4.m[14] = _vertexZ;
     
-	VEContextConcatCTM(context, transfrom4x4 );
+	VGContextConcatCTM(context, transfrom4x4 );
     
     
 	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
@@ -594,15 +594,15 @@
         
 		if( needTranslate )
         {
-			VEContextTranslateCTM(context, _anchorPointInPoints.x, _anchorPointInPoints.y, 0 );
+			VGContextTranslateCTM(context, _anchorPointInPoints.x, _anchorPointInPoints.y, 0 );
         
-            VEContextConcatCTM(context, VECameraGetLookAtMatrix(_camera));
+            VGContextConcatCTM(context, VACameraGetLookAtMatrix(_camera));
             
-			VEContextTranslateCTM(context, -_anchorPointInPoints.x, -_anchorPointInPoints.y, 0 );
+			VGContextTranslateCTM(context, -_anchorPointInPoints.x, -_anchorPointInPoints.y, 0 );
             
         }else
         {
-            VEContextConcatCTM(context, VECameraGetLookAtMatrix(_camera));
+            VGContextConcatCTM(context, VACameraGetLookAtMatrix(_camera));
         }
 	}
 }
@@ -685,7 +685,7 @@
 {
 	CGAffineTransform t = [self nodeToParentTransform];
     
-	for (CCNode *p = _parent; p != nil; p = p->_parent)
+	for (VANode *p = _parent; p != nil; p = p->_parent)
     {
 		t = CGAffineTransformConcat(t, [p nodeToParentTransform]);
     }

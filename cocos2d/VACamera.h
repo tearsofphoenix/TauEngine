@@ -25,7 +25,7 @@
 
 #import <GLKit/GLKit.h>
 /**
-    A CCCamera is used in every CCNode.
+    A VACamera is used in every VANode.
     Useful to look at the object from different views.
     The OpenGL gluLookAt() function is used to locate the
     camera.
@@ -48,25 +48,25 @@
 */
 
 
-typedef struct _VECamera *VECameraRef;
+typedef struct _VACamera *VACameraRef;
 
-extern VECameraRef VECameraCreate(void);
+extern VACameraRef VACameraCreate(void);
 
-extern void VECameraFinalize(VECameraRef camera);
+extern void VACameraFinalize(VACameraRef camera);
 
 #pragma mark - getter
 
-extern GLKVector3 VECameraGetEye(VECameraRef camera);
+extern GLKVector3 VACameraGetEye(VACameraRef camera);
 
-extern GLKVector3 VECameraGetCenter(VECameraRef camera);
+extern GLKVector3 VACameraGetCenter(VACameraRef camera);
 
-extern GLKVector3 VECameraGetUp(VECameraRef camera);
+extern GLKVector3 VACameraGetUp(VACameraRef camera);
 
-extern GLKMatrix4 VECameraGetLookAtMatrix(VECameraRef camera);
+extern GLKMatrix4 VACameraGetLookAtMatrix(VACameraRef camera);
 #pragma mark - setter
 
-extern void VECameraSetEye(VECameraRef camera, GLKVector3 eye);
+extern void VACameraSetEye(VACameraRef camera, GLKVector3 eye);
 
-extern void VECameraSetCenter(VECameraRef camera, GLKVector3 center);
+extern void VACameraSetCenter(VACameraRef camera, GLKVector3 center);
 
-extern void VECameraSetUp(VECameraRef camera, GLKVector3 up);
+extern void VACameraSetUp(VACameraRef camera, GLKVector3 up);

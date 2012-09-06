@@ -1,5 +1,5 @@
 //
-//  VEMediaTiming.h
+//  VAMediaTiming.h
 //  VUEngine
 //
 //  Created by LeixSnake on 8/29/12.
@@ -10,7 +10,7 @@
 
 
 
-/* The VEMediaTiming protocol is implemented by layers and animations, it
+/* The VAMediaTiming protocol is implemented by layers and animations, it
  * models a hierarchical timing system, with each object describing the
  * mapping from time values in the object's parent to local time.
  *
@@ -30,7 +30,7 @@
 
 @class NSString;
 
-@protocol VEMediaTiming
+@protocol VAMediaTiming
 
 /* The begin time of the object, in relation to its parent object, if
  * applicable. Defaults to 0. */

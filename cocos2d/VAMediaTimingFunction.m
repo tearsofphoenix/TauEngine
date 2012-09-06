@@ -1,21 +1,21 @@
 //
-//  VEMediaTimingFunction.m
+//  VAMediaTimingFunction.m
 //  VUEngine
 //
 //  Created by LeixSnake on 8/29/12.
 //
 //
 
-#import "VEMediaTimingFunction.h"
+#import "VAMediaTimingFunction.h"
 
-@interface VEMediaTimingFunction ()
+@interface VAMediaTimingFunction ()
 {
 @private
     float _controlPoints[8];
 }
 @end
 
-@implementation VEMediaTimingFunction
+@implementation VAMediaTimingFunction
 
 static NSMutableDictionary *__VEMediaTimingFunctions = nil;
 
@@ -53,7 +53,7 @@ static float __VEEaseInOutControlPoints[4] = {0.42, 0, 0.58, 1};
 + (id)functionWithName: (NSString *)name
 {
     float *address = [[__VEMediaTimingFunctions objectForKey: name] pointerValue];
-    VEMediaTimingFunction *newFunction = nil;
+    VAMediaTimingFunction *newFunction = nil;
     if (address)
     {
         newFunction = [[self alloc] initWithControlPoints: address[0]

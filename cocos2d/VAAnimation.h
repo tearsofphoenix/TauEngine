@@ -1,5 +1,5 @@
 //
-//  VEAnimation.h
+//  VAAnimation.h
 //  VUEngine
 //
 //  Created by LeixSnake on 8/29/12.
@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
-#import "VEMediaTiming.h"
+#import "VAMediaTiming.h"
 
-@class VEMediaTimingFunction;
-@class VEValueFunction;
+@class VAMediaTimingFunction;
+@class VAValueFunction;
 
-@interface VEAnimation : NSObject<NSCoding, NSCopying, VEMediaTiming>
+@interface VAAnimation : NSObject<NSCoding, NSCopying, VAMediaTiming>
 
 
 /* Creates a new animation object. */
@@ -29,7 +29,7 @@
 /* A timing function defining the pacing of the animation. Defaults to
  * nil indicating linear pacing. */
 
-@property (atomic, retain) VEMediaTimingFunction *timingFunction;
+@property (atomic, retain) VAMediaTimingFunction *timingFunction;
 
 @property (atomic) NSTimeInterval elapsed;
 
@@ -67,26 +67,26 @@
 
 @end
 
-/* Delegate methods for VEAnimation. */
+/* Delegate methods for VAAnimation. */
 
-@interface NSObject (VEAnimationDelegate)
+@interface NSObject (VAAnimationDelegate)
 
 /* Called when the animation begins its active duration. */
 
-- (void)animationDidStart:(VEAnimation *)anim;
+- (void)animationDidStart:(VAAnimation *)anim;
 
 /* Called when the animation either completes its active duration or
  * is removed from the object it is attached to (i.e. the layer). 'flag'
  * is true if the animation reached the end of its active duration
  * without being removed. */
 
-- (void)animationDidStop:(VEAnimation *)anim finished:(BOOL)flag;
+- (void)animationDidStop:(VAAnimation *)anim finished:(BOOL)flag;
 
 @end
 
 /** Subclass for property-based animations. **/
 
-@interface VEPropertyAnimation : VEAnimation
+@interface VEPropertyAnimation : VAAnimation
 
 /* Creates a new animation object with its `keyPath' property set to
  * 'path'. */
@@ -117,7 +117,7 @@
  * before they are set as the new presentation value of the animation's
  * target property. Defaults to nil. */
 
-@property(atomic, retain) VEValueFunction *valueFunction;
+@property(atomic, retain) VAValueFunction *valueFunction;
 
 @end
 
@@ -187,7 +187,7 @@
 
 @property (atomic, copy) NSArray *keyTimes;
 
-/* An optional array of VEMediaTimingFunction objects. If the `values' array
+/* An optional array of VAMediaTimingFunction objects. If the `values' array
  * defines n keyframes, there should be n-1 objects in the
  * `timingFunctions' array. Each function describes the pacing of one
  * keyframe to keyframe segment. */
@@ -251,7 +251,7 @@ CF_EXPORT NSString * const kVEAnimationRotateAutoReverse;
 
 /** Transition animation subclass. **/
 
-@interface VETransition : VEAnimation
+@interface VETransition : VAAnimation
 
 /* The name of the transition. Current legal transition types include
  * `fade', `moveIn', `push' and `reveal'. Defaults to `fade'. */
@@ -308,9 +308,9 @@ CF_EXPORT NSString * const kVETransitionFromBottom
 
 /** Animation subclass for grouped animations. **/
 
-@interface VEAnimationGroup : VEAnimation
+@interface VAAnimationGroup : VAAnimation
 
-/* An array of VEAnimation objects. Each member of the array will run
+/* An array of VAAnimation objects. Each member of the array will run
  * concurrently in the time space of the parent animation using the
  * normal rules. */
 
@@ -319,7 +319,7 @@ CF_EXPORT NSString * const kVETransitionFromBottom
 @end
 
 
-@interface VEAnimationTransaction : NSObject
+@interface VAAnimationTransaction : NSObject
 
 @property (nonatomic) NSTimeInterval duration;
 
@@ -337,7 +337,7 @@ CF_EXPORT NSString * const kVETransitionFromBottom
 
 @interface VEViewAnimationBlockDelegate : NSObject
 
-- (void)addTransaction: (VEAnimationTransaction *)transaction;
+- (void)addTransaction: (VAAnimationTransaction *)transaction;
 
 - (void)flushTransactions;
 

@@ -23,26 +23,26 @@
  * THE SOFTWARE.
  */
 
-#include "CCShaderCache.h"
+#include "VEShaderCache.h"
 #include "ccShaders.h"
-#include "CCGLProgram.h"
+#include "VEGLProgram.h"
 #include "ccMacros.h"
-#include "Support/OpenGL_Internal.h"
+#include "Support/OpenGLInternal.h"
 
 static NSMutableDictionary	*_programs = nil;
 
-static void CCShaderCacheLoadDefaultShaders(NSMutableDictionary *programDictionary)
+static void VEShaderCacheLoadDefaultShaders(NSMutableDictionary *programDictionary)
 {
 	// Position Texture Color shader
-	CCGLProgram *p = [[CCGLProgram alloc] initWithVertexShaderSource: ccPositionTextureColor_vert
+	VEGLProgram *p = [[VEGLProgram alloc] initWithVertexShaderSource: ccPositionTextureColor_vert
 												fragmentShaderSource: ccPositionTextureColor_frag];
     
-    CCGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
-	CCGLProgramAddAttribute(p, kCCAttributeNameColor, kCCVertexAttrib_Color);
-	CCGLProgramAddAttribute(p, kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
+    VEGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
+	VEGLProgramAddAttribute(p, kCCAttributeNameColor, kCCVertexAttrib_Color);
+	VEGLProgramAddAttribute(p, kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
     
-	CCGLProgramLink(p);
-	CCGLProgramUpdateUniforms(p);;
+	VEGLProgramLink(p);
+	VEGLProgramUpdateUniforms(p);;
     
 	[programDictionary setObject: p
                           forKey: kCCShader_PositionTextureColor];
@@ -51,15 +51,15 @@ static void CCShaderCacheLoadDefaultShaders(NSMutableDictionary *programDictiona
 	CHECK_GL_ERROR_DEBUG();
     
 	// Position Texture Color alpha test
-	p = [[CCGLProgram alloc] initWithVertexShaderSource: ccPositionTextureColor_vert
+	p = [[VEGLProgram alloc] initWithVertexShaderSource: ccPositionTextureColor_vert
 								   fragmentShaderSource: ccPositionTextureColorAlphaTest_frag];
     
-    CCGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
-	CCGLProgramAddAttribute(p, kCCAttributeNameColor, kCCVertexAttrib_Color);
-	CCGLProgramAddAttribute(p, kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
+    VEGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
+	VEGLProgramAddAttribute(p, kCCAttributeNameColor, kCCVertexAttrib_Color);
+	VEGLProgramAddAttribute(p, kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
     
-	CCGLProgramLink(p);
-	CCGLProgramUpdateUniforms(p);;
+	VEGLProgramLink(p);
+	VEGLProgramUpdateUniforms(p);;
     
 	[programDictionary setObject: p
                           forKey: kCCShader_PositionTextureColorAlphaTest];
@@ -70,14 +70,14 @@ static void CCShaderCacheLoadDefaultShaders(NSMutableDictionary *programDictiona
 	//
 	// Position, Color shader
 	//
-	p = [[CCGLProgram alloc] initWithVertexShaderSource: ccPositionColor_vert
+	p = [[VEGLProgram alloc] initWithVertexShaderSource: ccPositionColor_vert
 								   fragmentShaderSource: ccPositionColor_frag];
     
-    CCGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
-	CCGLProgramAddAttribute(p, kCCAttributeNameColor, kCCVertexAttrib_Color);
+    VEGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
+	VEGLProgramAddAttribute(p, kCCAttributeNameColor, kCCVertexAttrib_Color);
     
-	CCGLProgramLink(p);
-	CCGLProgramUpdateUniforms(p);;
+	VEGLProgramLink(p);
+	VEGLProgramUpdateUniforms(p);;
     
 	[programDictionary setObject: p
                           forKey: CCShaderPositionColorProgram];
@@ -88,14 +88,14 @@ static void CCShaderCacheLoadDefaultShaders(NSMutableDictionary *programDictiona
 	//
 	// Position Texture shader
 	//
-	p = [[CCGLProgram alloc] initWithVertexShaderSource: ccPositionTexture_vert
+	p = [[VEGLProgram alloc] initWithVertexShaderSource: ccPositionTexture_vert
 								   fragmentShaderSource: ccPositionTexture_frag];
     
-    CCGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
-	CCGLProgramAddAttribute(p, kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
+    VEGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
+	VEGLProgramAddAttribute(p, kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
     
-	CCGLProgramLink(p);
-	CCGLProgramUpdateUniforms(p);;
+	VEGLProgramLink(p);
+	VEGLProgramUpdateUniforms(p);;
     
 	[programDictionary setObject: p
                           forKey: kCCShader_PositionTexture];
@@ -106,14 +106,14 @@ static void CCShaderCacheLoadDefaultShaders(NSMutableDictionary *programDictiona
 	//
 	// Position, Texture attribs, 1 Color as uniform shader
 	//
-	p = [[CCGLProgram alloc] initWithVertexShaderSource: ccPositionTexture_uColor_vert
+	p = [[VEGLProgram alloc] initWithVertexShaderSource: ccPositionTexture_uColor_vert
 								   fragmentShaderSource: ccPositionTexture_uColor_frag];
     
-    CCGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
-	CCGLProgramAddAttribute(p, kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
+    VEGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
+	VEGLProgramAddAttribute(p, kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
     
-	CCGLProgramLink(p);
-	CCGLProgramUpdateUniforms(p);;
+	VEGLProgramLink(p);
+	VEGLProgramUpdateUniforms(p);;
     
 	[programDictionary setObject: p
                           forKey: kCCShader_PositionTexture_uColor];
@@ -124,15 +124,15 @@ static void CCShaderCacheLoadDefaultShaders(NSMutableDictionary *programDictiona
 	//
 	// Position Texture A8 Color shader
 	//
-	p = [[CCGLProgram alloc] initWithVertexShaderSource: ccPositionTextureA8Color_vert
+	p = [[VEGLProgram alloc] initWithVertexShaderSource: ccPositionTextureA8Color_vert
 								   fragmentShaderSource: ccPositionTextureA8Color_frag];
     
-    CCGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
-	CCGLProgramAddAttribute(p, kCCAttributeNameColor, kCCVertexAttrib_Color);
-	CCGLProgramAddAttribute(p, kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
+    VEGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
+	VEGLProgramAddAttribute(p, kCCAttributeNameColor, kCCVertexAttrib_Color);
+	VEGLProgramAddAttribute(p, kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
     
-	CCGLProgramLink(p);
-	CCGLProgramUpdateUniforms(p);;
+	VEGLProgramLink(p);
+	VEGLProgramUpdateUniforms(p);;
     
 	[programDictionary setObject: p
                           forKey: kCCShader_PositionTextureA8Color];
@@ -143,12 +143,12 @@ static void CCShaderCacheLoadDefaultShaders(NSMutableDictionary *programDictiona
 	//
 	// Position and 1 color passed as a uniform (to similate glColor4ub )
 	//
-	p = [[CCGLProgram alloc] initWithVertexShaderSource: ccPosition_uColor_vert
+	p = [[VEGLProgram alloc] initWithVertexShaderSource: ccPosition_uColor_vert
 								   fragmentShaderSource: ccPosition_uColor_frag];
 	
-    CCGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
-	CCGLProgramLink(p);
-	CCGLProgramUpdateUniforms(p);;
+    VEGLProgramAddAttribute(p, kCCAttributeNamePosition, kCCVertexAttrib_Position);
+	VEGLProgramLink(p);
+	VEGLProgramUpdateUniforms(p);;
     
 	[programDictionary setObject: p
                           forKey: kCCShaderPositionUColorProgram];
@@ -158,29 +158,29 @@ static void CCShaderCacheLoadDefaultShaders(NSMutableDictionary *programDictiona
 }
 
 
-void CCShaderCacheInitialize(void)
+void VEShaderCacheInitialize(void)
 {
     if (!_programs)
     {
         _programs = [[NSMutableDictionary alloc] initWithCapacity: 10];
         
-        CCShaderCacheLoadDefaultShaders(_programs);
+        VEShaderCacheLoadDefaultShaders(_programs);
     };
 }
 
-void CCShaderCacheFinalize(void)
+void VEShaderCacheFinalize(void)
 {
     [_programs release];
     _programs = nil;
 }
 
-void CCShaderCacheAddProgram(CCGLProgram *program, NSString *key)
+void VEShaderCacheAddProgram(VEGLProgram *program, NSString *key)
 {
     [_programs setObject: program
                   forKey: key];
 }
 
-CCGLProgram *CCShaderCacheGetProgramByName(NSString *key)
+VEGLProgram *VEShaderCacheGetProgramByName(NSString *key)
 {
     return [_programs objectForKey:key];
 }

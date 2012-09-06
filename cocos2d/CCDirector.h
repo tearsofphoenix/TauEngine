@@ -41,7 +41,7 @@
 
 @end
 
-@class VEContext;
+@class VGContext;
 
 /** @typedef ccDirectorProjection
  Possible OpenGL projections used by director
@@ -62,8 +62,8 @@ typedef NS_ENUM(NSUInteger, ccDirectorProjection)
 
 } ;
 
-@class CCScene;
-@class CCGLView;
+@class VAScene;
+@class VEGLView;
 
 /**Class that creates and handle the main Window and manages how
 and when to execute the Scenes.
@@ -103,12 +103,12 @@ and when to execute the Scenes.
     BOOL isAnimating_;
 
 	/* The running scene */
-	CCScene *runningScene_;
+	VAScene *runningScene_;
 
 	/* will be the next 'runningScene' in the next frame
 	 nextScene is a weak reference. */
-	CCScene *nextScene_;
-    VEContext *_renderContext;
+	VAScene *nextScene_;
+    VGContext *_renderContext;
     
 	/* If YES, then "old" scene will receive the cleanup message */
 	BOOL	sendCleanupToScene_;
@@ -138,13 +138,13 @@ and when to execute the Scenes.
     dispatch_queue_t _dispatchQueue;
     
 	/*  OpenGLView. On iOS it is a copy of self.view */
-	CCGLView		*view_;
+	VEGLView		*view_;
 }
 
 @property (nonatomic, readonly) dispatch_queue_t dispatchQueue;
 
 /** The current running Scene. Director can only run one Scene at the time */
-@property (nonatomic,readonly) CCScene* runningScene;
+@property (nonatomic,readonly) VAScene* runningScene;
 /** The FPS value */
 @property (nonatomic) NSTimeInterval animationInterval;
 /** Whether or not to display director statistics */
@@ -212,14 +212,14 @@ and when to execute the Scenes.
  *
  * It will call pushScene: and then it will call startAnimation
  */
-- (void) runWithScene:(CCScene*) scene;
+- (void) runWithScene:(VAScene*) scene;
 
 /**Suspends the execution of the running scene, pushing it on the stack of suspended scenes.
  * The new scene will be executed.
  * Try to avoid big stacks of pushed scenes to reduce memory allocation.
  * ONLY call it if there is a running scene.
  */
-- (void) pushScene:(CCScene*) scene;
+- (void) pushScene:(VAScene*) scene;
 
 /**Pops out a scene from the queue.
  * This scene will replace the running one.
@@ -238,7 +238,7 @@ and when to execute the Scenes.
 /** Replaces the running scene with a new one. The running scene is terminated.
  * ONLY call it if there is a running scene.
  */
--(void) replaceScene: (CCScene*) scene;
+-(void) replaceScene: (VAScene*) scene;
 
 /** Ends the execution, releases the running scene.
  It doesn't remove the OpenGL view from its parent. You have to do it manually.

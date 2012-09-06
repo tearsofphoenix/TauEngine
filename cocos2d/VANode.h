@@ -27,7 +27,7 @@
 
 #import "ccTypes.h"
 #import "ccGLStateCache.h"
-#import "CCCamera.h"
+#import "VACamera.h"
 
 enum
 {
@@ -36,28 +36,28 @@ enum
 
 @class CCScheduler;
 @class CCAction;
-@class VEContext;
+@class VGContext;
 
-/** CCNode is the main element. Anything thats gets drawn or contains things that get drawn is a CCNode.
- The most popular CCNodes are: CCScene, CCLayer, CCSprite, CCMenu.
+/** VANode is the main element. Anything thats gets drawn or contains things that get drawn is a VANode.
+ The most popular CCNodes are: VAScene, VALayer, CCSprite, CCMenu.
 
- The main features of a CCNode are:
- - They can contain other CCNode nodes (addChild, getChildByTag, removeChild, etc)
+ The main features of a VANode are:
+ - They can contain other VANode nodes (addChild, getChildByTag, removeChild, etc)
  - They can schedule periodic callback (schedule, unschedule, etc)
  - They can execute actions (runAction, stopAction, etc)
 
- Some CCNode nodes provide extra functionality for them or their children.
+ Some VANode nodes provide extra functionality for them or their children.
 
- Subclassing a CCNode usually means (one/all) of:
+ Subclassing a VANode usually means (one/all) of:
  - overriding init to initialize resources and schedule callbacks
  - create callbacks to handle the advancement of time
  - overriding draw to render the node
 
- Features of CCNode:
+ Features of VANode:
  - position
  - scale (x, y)
  - rotation (in degrees, clockwise)
- - CCCamera (an interface to gluLookAt )
+ - VACamera (an interface to gluLookAt )
  - CCGridBase (to do mesh transformations)
  - anchor point
  - size
@@ -73,7 +73,7 @@ enum
   - anchorPoint: (x=0,y=0)
 
  Limitations:
- - A CCNode is a "void" object. It doesn't have a texture
+ - A VANode is a "void" object. It doesn't have a texture
 
  Order in transformations with grid disabled
  -# The node will be translated (position)
@@ -92,9 +92,9 @@ enum
  -# The grid will render the captured screen
 
  Camera:
- - Each node has a camera. By default it points to the center of the CCNode.
+ - Each node has a camera. By default it points to the center of the VANode.
  */
-@interface CCNode : NSObject
+@interface VANode : NSObject
 {
 	// rotation angle
 	float _rotation;
@@ -131,8 +131,8 @@ enum
 
 	// is visible
 	BOOL _visible;
-	// If YES, the Anchor Point will be (0,0) when you position the CCNode.
-	// Used by CCLayer and CCScene
+	// If YES, the Anchor Point will be (0,0) when you position the VANode.
+	// Used by VALayer and VAScene
 	BOOL _ignoreAnchorPointForPosition;
 }
 
@@ -165,8 +165,8 @@ enum
 /** The rotation (angle) of the node in degrees. 0 is the default rotation angle. Positive values rotate node CW. */
 @property(nonatomic) float rotation;
 
-/** A CCCamera object that lets you move the node using a gluLookAt */
-@property(nonatomic,readonly) VECameraRef camera;
+/** A VACamera object that lets you move the node using a gluLookAt */
+@property(nonatomic,readonly) VACameraRef camera;
 
 /** Whether of not the node is visible. Default is YES */
 @property(nonatomic, getter = isVisible) BOOL visible;
@@ -194,8 +194,8 @@ enum
 /** whether or not the node is running */
 @property(nonatomic, readonly) BOOL isRunning;
 
-/**  If YES, the Anchor Point will be (0,0) when you position the CCNode.
- Used by CCLayer and CCScene.
+/**  If YES, the Anchor Point will be (0,0) when you position the VANode.
+ Used by VALayer and VAScene.
  */
 @property(nonatomic) BOOL ignoreAnchorPointForPosition;
 
@@ -206,7 +206,7 @@ enum
 
 + (id)node;
 
-/** Event that is called when the running node is no longer running (eg: its CCScene is being removed from the "stage" ).
+/** Event that is called when the running node is no longer running (eg: its VAScene is being removed from the "stage" ).
  On cleanup you should break any possible circular references.
  CCNode's cleanup removes any possible scheduled timer and/or any possible action.
  If you override cleanup, you shall call [super cleanup]
@@ -216,7 +216,7 @@ enum
 
 @end
 
-@interface CCNode (CCNodeHierarchy)
+@interface VANode (CCNodeHierarchy)
 
 /** A weak reference to the parent */
 @property(nonatomic, assign) id parent;
@@ -225,30 +225,30 @@ enum
 
 // scene managment
 
-/** Event that is called every time the CCNode enters the 'stage'.
- If the CCNode enters the 'stage' with a transition, this event is called when the transition starts.
+/** Event that is called every time the VANode enters the 'stage'.
+ If the VANode enters the 'stage' with a transition, this event is called when the transition starts.
  During onEnter you can't access a sibling node.
  If you override onEnter, you shall call [super onEnter].
  */
 -(void) onEnter;
 
 
-/** Event that is called when the CCNode enters in the 'stage'.
- If the CCNode enters the 'stage' with a transition, this event is called when the transition finishes.
+/** Event that is called when the VANode enters in the 'stage'.
+ If the VANode enters the 'stage' with a transition, this event is called when the transition finishes.
  If you override onEnterTransitionDidFinish, you shall call [super onEnterTransitionDidFinish].
  @since v0.8
  */
 -(void) onEnterTransitionDidFinish;
 
-/** Event that is called every time the CCNode leaves the 'stage'.
- If the CCNode leaves the 'stage' with a transition, this event is called when the transition finishes.
+/** Event that is called every time the VANode leaves the 'stage'.
+ If the VANode leaves the 'stage' with a transition, this event is called when the transition finishes.
  During onExit you can't access a sibling node.
  If you override onExit, you shall call [super onExit].
  */
 -(void) onExit;
 
-/** callback that is called every time the CCNode leaves the 'stage'.
- If the CCNode leaves the 'stage' with a transition, this callback is called when the transition starts.
+/** callback that is called every time the VANode leaves the 'stage'.
+ If the VANode leaves the 'stage' with a transition, this callback is called when the transition starts.
  */
 -(void) onExitTransitionDidStart;
 
@@ -258,13 +258,13 @@ enum
  If the child is added to a 'running' node, then 'onEnter' and 'onEnterTransitionDidFinish' will be called immediately.
  @since v0.7.1
  */
--(void) addChild: (CCNode*)node;
+-(void) addChild: (VANode*)node;
 
 /** Adds a child to the container with a z-order.
  If the child is added to a 'running' node, then 'onEnter' and 'onEnterTransitionDidFinish' will be called immediately.
  @since v0.7.1
  */
--(void) addChild: (CCNode*)node
+-(void) addChild: (VANode*)node
                z: (NSInteger)z;
 
 // composition: REMOVE
@@ -278,7 +278,7 @@ enum
 /** Removes a child from the container. It will also cleanup all running actions depending on the cleanup parameter.
  @since v0.7.1
  */
--(void) removeChild: (CCNode*)node
+-(void) removeChild: (VANode*)node
             cleanup: (BOOL)cleanup;
 
 /** Removes all children from the container and do a cleanup all running actions depending on the cleanup parameter.
@@ -292,7 +292,7 @@ enum
 
 @end
 
-@interface CCNode (CCNodeRendering)
+@interface VANode (CCNodeRendering)
 
 // draw
 
@@ -301,15 +301,15 @@ enum
  For further info, please see ccGLstate.h.
  You shall NOT call [super draw];
  */
-- (void)drawInContext: (VEContext *)context;
+- (void)drawInContext: (VGContext *)context;
 
 /** recursive method that visit its children and draw them */
--(void)visitWithContext: (VEContext *)context;
+-(void)visitWithContext: (VGContext *)context;
 
 
 @end
 
-@interface CCNode (CCNodeGeometry)
+@interface VANode (CCNodeGeometry)
 
 /** The scale factor of the node. 1.0 is the default scale factor. It modifies the X and Y scale at the same time. */
 @property(nonatomic) float scale;
@@ -332,7 +332,7 @@ enum
 - (void)setBounds: (CGRect)bounds;
 
 /** performs OpenGL view-matrix transformation based on position, scale, rotation and other attributes. */
-- (void)transformInContext: (VEContext *)context;
+- (void)transformInContext: (VGContext *)context;
 
 // transformation methods
 

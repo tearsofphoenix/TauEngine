@@ -1,18 +1,18 @@
 //
-//  VEContext.m
+//  VGContext.m
 //  VUEngine
 //
 //  Created by tearsofphoenix on 8/30/12.
 //
 //
 
-#import "VEContext.h"
+#import "VGContext.h"
 #import "ccGLStateCache.h"
-#import "CCGLProgram.h"
+#import "VEGLProgram.h"
 
-static VEContext *__currentContext = nil;
+static VGContext *__currentContext = nil;
 
-@interface VEContext ()
+@interface VGContext ()
 {
 @private
     GLKMatrixStackRef _modelViewMatrixStack;
@@ -24,7 +24,7 @@ static VEContext *__currentContext = nil;
 }
 @end
 
-@implementation VEContext
+@implementation VGContext
 
 - (id)init
 {
@@ -58,27 +58,27 @@ static VEContext *__currentContext = nil;
     [super dealloc];
 }
 
-void VEContextAddLayer(VEContext *context, CCLayer *layer)
+void VGContextAddLayer(VGContext *context, VALayer *layer)
 {
     [context->_renderQueue addObject: layer];
 }
 
-void VEContextRender(VEContext *context)
+void VGContextRender(VGContext *context)
 {
 
 }
 
-void VEContextSaveState(VEContext *context)
+void VGContextSaveState(VGContext *context)
 {
     GLKMatrixStackPush(context->_currentStack);
 }
 
-void VEContextRestoreState(VEContext *context)
+void VGContextRestoreState(VGContext *context)
 {
     GLKMatrixStackPop(context->_currentStack);
 }
 
-void VEContextMatrixMode(VEContext *context, GLenum mode)
+void VGContextMatrixMode(VGContext *context, GLenum mode)
 {
     switch(mode)
 	{
@@ -105,43 +105,43 @@ void VEContextMatrixMode(VEContext *context, GLenum mode)
 	}
 }
 
-void VEContextLoadIdentity(VEContext *context)
+void VGContextLoadIdentity(VGContext *context)
 {
     GLKMatrixStackLoadMatrix4(context->_currentStack, GLKMatrix4Identity);
 }
 
-void VEContextLoadCTM(VEContext *context, GLKMatrix4 pIn)
+void VGContextLoadCTM(VGContext *context, GLKMatrix4 pIn)
 {
     GLKMatrixStackLoadMatrix4(context->_currentStack, pIn);
 }
 
-void VEContextConcatCTM(VEContext *context, GLKMatrix4 pIn)
+void VGContextConcatCTM(VGContext *context, GLKMatrix4 pIn)
 {
     GLKMatrixStackMultiplyMatrix4(context->_currentStack, pIn);
 }
 
-void VEContextTranslateCTM(VEContext *context, float tx, float ty, float tz)
+void VGContextTranslateCTM(VGContext *context, float tx, float ty, float tz)
 {
     GLKMatrixStackTranslate(context->_currentStack, tx, ty, tz);
 }
 
-void VEContextRotateCTM(VEContext *context, float angle, float x, float y, float z)
+void VGContextRotateCTM(VGContext *context, float angle, float x, float y, float z)
 {
     GLKMatrixStackRotate(context->_currentStack, angle, x, y, z);
 }
 
-void VEContextScaleCTM(VEContext *context, float sx, float sy, float sz)
+void VGContextScaleCTM(VGContext *context, float sx, float sy, float sz)
 {
     GLKMatrixStackScale(context->_currentStack, sx, sy, sz);
 }
 
-GLKMatrix4 VEContextGetMVPMatrix(VEContext *context)
+GLKMatrix4 VGContextGetMVPMatrix(VGContext *context)
 {
     return GLKMatrix4Multiply(GLKMatrixStackGetMatrix4(context->_projectionMatrixStack),
                               GLKMatrixStackGetMatrix4(context->_modelViewMatrixStack));
 }
 
-VEContext *VEContextGetCurrentContext(void)
+VGContext *VGContextGetCurrentContext(void)
 {
     return __currentContext;
 }

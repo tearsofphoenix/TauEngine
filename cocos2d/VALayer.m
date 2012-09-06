@@ -24,43 +24,43 @@
  *
  */
 
-#import "CCLayer.h"
-#import "VEAnimation.h"
+#import "VALayer.h"
+#import "VAAnimation.h"
 #import "VEDataSource.h"
 #import "CGPointExtension.h"
-#import "CCShaderCache.h"
-#import "CCGLProgram.h"
+#import "VEShaderCache.h"
+#import "VEGLProgram.h"
 #import "CCScheduler.h"
 #import "CCTouchDispatcher.h"
 #import "CCDirectorIOS.h"
-#import "VEContext.h"
+#import "VGContext.h"
 #import "VGColor.h"
 
 #pragma mark - Layer
 
-@interface CCLayer ()
+@interface VALayer ()
 {
 @private
-    CCLayer *_presentationLayer;
+    VALayer *_presentationLayer;
     //cached model
-    CCGLProgram *_shaderProgram;
+    VEGLProgram *_shaderProgram;
 }
 @end
 
-@interface CCLayer (Private)
+@interface VALayer (Private)
 
 - (void)updateColor;
 
 @end
 
 
-@implementation CCLayer
+@implementation VALayer
 
 static NSMutableArray *__CCLayerAnimationStack = nil;
-static VEAnimationTransaction *__currentBlockAnimationTransaction = nil;
+static VAAnimationTransaction *__currentBlockAnimationTransaction = nil;
 static VEViewAnimationBlockDelegate *__animationBlockDelegate = nil;
 
-static inline void __CCLayerPushConfiguration(VEAnimationTransaction *config)
+static inline void __CCLayerPushConfiguration(VAAnimationTransaction *config)
 {
     if (__currentBlockAnimationTransaction)
     {
@@ -123,10 +123,10 @@ static inline void __CCLayerPopConfiguration(void)
     if (!_presentationLayer)
     {
         _presentationLayer = [[[self class] alloc] init];
-        [_presentationLayer setParent: [(CCLayer *)[self parent] presentationLayer]];
+        [_presentationLayer setParent: [(VALayer *)[self parent] presentationLayer]];
         
         NSMutableArray *presentationSublayers = [[NSMutableArray alloc] init];
-        for (CCLayer *layer in (NSArray *)_children)
+        for (VALayer *layer in (NSArray *)_children)
         {
             [presentationSublayers addObject: [layer presentationLayer]];
         }
@@ -160,7 +160,7 @@ static inline void __CCLayerPopConfiguration(void)
 		CGSize s = [director winSize];
 		[self setContentSize: s];
         
-        _shaderProgram = CCShaderCacheGetProgramByName(CCShaderPositionColorProgram);
+        _shaderProgram = VEShaderCacheGetProgramByName(CCShaderPositionColorProgram);
         
         
 	}
@@ -252,10 +252,10 @@ static inline void __CCLayerPopConfiguration(void)
 	}
 }
 
-- (void)drawInContext: (VEContext *)context
+- (void)drawInContext: (VGContext *)context
 {
-	CCGLProgramUse(_shaderProgram);
-	CCGLProgramUniformForMVPMatrix(_shaderProgram, VEContextGetMVPMatrix(context));
+	VEGLProgramUse(_shaderProgram);
+	VEGLProgramUniformForMVPMatrix(_shaderProgram, VGContextGetMVPMatrix(context));
     
 	VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color );
     
@@ -278,7 +278,7 @@ static inline void __CCLayerPopConfiguration(void)
 /** Animation methods. **/
 
 /* Attach an animation object to the layer. Typically this is implicitly
- * invoked through an action that is an VEAnimation object.
+ * invoked through an action that is an VAAnimation object.
  *
  * 'key' may be any string such that only one animation per unique key
  * is added per layer. The special key 'transition' is automatically
@@ -295,7 +295,7 @@ static inline void __CCLayerPopConfiguration(void)
 //for animation
 //
 
-- (void)addAnimation: (VEAnimation *)anim
+- (void)addAnimation: (VAAnimation *)anim
               forKey: (NSString *)key
 {
     if (!_animationKeys)
@@ -308,7 +308,7 @@ static inline void __CCLayerPopConfiguration(void)
         _animations = [[NSMutableDictionary alloc] init];
     }
     
-    VEAnimation *copy = [anim copy];
+    VAAnimation *copy = [anim copy];
     
     [_animationKeys addObject: key];
     [_animations setObject: copy
@@ -352,7 +352,7 @@ static inline void __CCLayerPopConfiguration(void)
  * if no such animation exists. Attempting to modify any properties of
  * the returned object will result in undefined behavior. */
 
-- (VEAnimation *)animationForKey:(NSString *)key
+- (VAAnimation *)animationForKey:(NSString *)key
 {
     return [_animations objectForKey: key];
 }
@@ -483,7 +483,7 @@ static inline void __CCLayerPopConfiguration(void)
 
 + (void)_setupAnimationWithDuration: (NSTimeInterval)duration
                               delay: (NSTimeInterval)delay
-                               view: (CCLayer *)layer
+                               view: (VALayer *)layer
                             options: (UIViewAnimationOptions)options
                          animations: (dispatch_block_t)animations
                               start: (dispatch_block_t)start
@@ -496,7 +496,7 @@ static inline void __CCLayerPopConfiguration(void)
     
     if (animations)
     {
-        VEAnimationTransaction *configuration = [[VEAnimationTransaction alloc] init];
+        VAAnimationTransaction *configuration = [[VAAnimationTransaction alloc] init];
         [configuration setDuration: duration];
         [configuration setDelay: delay];
         //[configuration setOptions: options];
@@ -549,7 +549,7 @@ static inline void __CCLayerPopConfiguration(void)
                    completion: nil];
 }
 
-+ (void)transitionWithLayer: (CCLayer *)layer
++ (void)transitionWithLayer: (VALayer *)layer
                    duration: (NSTimeInterval)duration
                     options: (UIViewAnimationOptions)options
                  animations: (void (^)(void))animations
@@ -558,8 +558,8 @@ static inline void __CCLayerPopConfiguration(void)
     
 }
 
-+ (void)transitionFromLayer: (CCLayer *)fromView
-                    toLayer: (CCLayer *)toView
++ (void)transitionFromLayer: (VALayer *)fromView
+                    toLayer: (VALayer *)toView
                    duration: (NSTimeInterval)duration
                     options: (UIViewAnimationOptions)options
                  completion: (void (^)(BOOL finished))completion // toView added to fromView.superview, fromView removed from its superview

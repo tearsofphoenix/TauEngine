@@ -1,5 +1,5 @@
 //
-//  VEMediaTimingFunction.h
+//  VAMediaTimingFunction.h
 //  VUEngine
 //
 //  Created by LeixSnake on 8/29/12.
@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VEMediaTiming.h"
+#import "VAMediaTiming.h"
 
-@interface VEMediaTimingFunction : NSObject <NSCoding>
+@interface VAMediaTimingFunction : NSObject <NSCoding>
 {
 @private
-    struct VEMediaTimingFunctionPrivate *_priv;
+    struct VAMediaTimingFunctionPrivate *_priv;
 }
 
 /* A convenience method for creating common timing functions. The

@@ -15,7 +15,7 @@ seeds.
 
 =====================
 
-File: CCGLView.h
+File: VEGLView.h
 Abstract: Convenience class that wraps the CAEAGLLayer from CoreAnimation into a
 UIView subclass.
 
@@ -69,7 +69,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import <GLKit/GLKit.h>
 
 //PROTOCOLS:
-@protocol CCESRenderer;
+@protocol VAGLRenderer;
 
 @protocol CCTouchDelegate <NSObject>
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
@@ -80,41 +80,26 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 //CLASS INTERFACE:
 
-/** CCGLView Class.
+/** VEGLView Class.
  * This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
  * The view content is basically an EAGL surface you render your OpenGL scene into.
  * Note that setting the view non-opaque will only work if the EAGL surface has an alpha channel.
  */
-@interface CCGLView : GLKView
+@interface VEGLView : GLKView
 {
-    id<CCESRenderer>		renderer_;
-
-	NSString				*pixelformat_;
-	GLuint					depthFormat_;
-	BOOL					preserveBackbuffer_;
+    id<VAGLRenderer>		renderer_;
 
 	CGSize					size_;
 	id<CCTouchDelegate>		touchDelegate_;
-
-	//fsaa addition
-	BOOL					multisampling_;
-	NSUInteger			requestedSamples_;
 }
-
-/** pixel format: it could be RGBA8 (32-bit) or RGB565 (16-bit) */
-@property(nonatomic,readonly) NSString* pixelFormat;
-/** depth format of the render buffer: 0, 16 or 24 bits*/
-@property(nonatomic,readonly) GLuint depthFormat;
 
 /** returns surface size in pixels */
 @property(nonatomic,readonly) CGSize surfaceSize;
 
-@property(nonatomic) BOOL multiSampling;
-
 /** touch delegate */
 @property(nonatomic, assign) id<CCTouchDelegate> touchDelegate;
 
-/** CCGLView uses double-buffer. This method swaps the buffers */
+/** VEGLView uses double-buffer. This method swaps the buffers */
 -(void) swapBuffers;
 
 - (CGPoint) convertPointFromViewToSurface:(CGPoint)point;

@@ -7,7 +7,7 @@
 //
 //
 
-#import "VEMediaTiming.h"
+#import "VAMediaTiming.h"
 
  NSString * const kVEFillModeForwards = @"kVEFillModeForwards";
 

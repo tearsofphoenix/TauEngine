@@ -1,20 +1,20 @@
 //
-//  VEAnimation.m
+//  VAAnimation.m
 //  VUEngine
 //
 //  Created by LeixSnake on 8/29/12.
 //
 //
 #import <UIKit/UIKit.h>
-#import "VEAnimation.h"
-#import "VEMediaTimingFunction.h"
+#import "VAAnimation.h"
+#import "VAMediaTimingFunction.h"
 #import "ccTypes.h"
 #import "VGColor.h"
-#import "CCLayer.h"
+#import "VALayer.h"
 #import "CCScheduler.h"
 #import "VEDataSource.h"
 
-@implementation VEAnimation
+@implementation VAAnimation
 
 static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
 
@@ -113,7 +113,7 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
     return YES;
 }
 
-#pragma mark - VEMediaTiming
+#pragma mark - VAMediaTiming
 
 /* The begin time of the object, in relation to its parent object, if
  * applicable. Defaults to 0. */
@@ -222,9 +222,9 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
     return copy;
 }
 
-typedef void (* VEBasicAnimationProcessor)(VEBasicAnimation *animation, CCLayer *layer, id value1, id value2, VEMediaTimingFunction *f, NSTimeInterval elapsed);
+typedef void (* VEBasicAnimationProcessor)(VEBasicAnimation *animation, VALayer *layer, id value1, id value2, VAMediaTimingFunction *f, NSTimeInterval elapsed);
 
-static void _VEAnimationColorProcessor(VEBasicAnimation *animation, CCLayer *layer, VGColor *value1, VGColor *value2, VEMediaTimingFunction *function, NSTimeInterval elapsed)
+static void _VEAnimationColorProcessor(VEBasicAnimation *animation, VALayer *layer, VGColor *value1, VGColor *value2, VAMediaTimingFunction *function, NSTimeInterval elapsed)
 {
     GLKVector4 colo1 = [value1 CCColor];
     GLKVector4 color2 = [value2 CCColor];
@@ -245,7 +245,7 @@ static void _VEAnimationColorProcessor(VEBasicAnimation *animation, CCLayer *lay
     [layer setBackgroundColor: color];
 }
 
-static void _VEAnimationAnchorPointProcessor(VEBasicAnimation *animation, CCLayer *layer, NSValue *value1, NSValue *value2, VEMediaTimingFunction *function, NSTimeInterval elapsed)
+static void _VEAnimationAnchorPointProcessor(VEBasicAnimation *animation, VALayer *layer, NSValue *value1, NSValue *value2, VAMediaTimingFunction *function, NSTimeInterval elapsed)
 {
     CGPoint point1 = [value1 CGPointValue];
     CGPoint point2 = [value2 CGPointValue];
@@ -258,7 +258,7 @@ static void _VEAnimationAnchorPointProcessor(VEBasicAnimation *animation, CCLaye
     [layer setAnchorPoint: p];
 }
 
-static void _VEAnimationPositionProcessor(VEBasicAnimation *animation, CCLayer *layer, NSValue *value1, NSValue *value2, VEMediaTimingFunction *function, NSTimeInterval elapsed)
+static void _VEAnimationPositionProcessor(VEBasicAnimation *animation, VALayer *layer, NSValue *value1, NSValue *value2, VAMediaTimingFunction *function, NSTimeInterval elapsed)
 {
     CGPoint point1 = [value1 CGPointValue];
     CGPoint point2 = [value2 CGPointValue];
@@ -279,13 +279,13 @@ static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
     {
         __VEBasicAnimationProcessors = [[NSMutableDictionary alloc] initWithCapacity: 16];
         
-#define VEAnimationProcessStore(ptr, name) [__VEBasicAnimationProcessors setObject: [NSValue valueWithPointer: ptr] forKey: name]
+#define VAAnimationProcessStore(ptr, name) [__VEBasicAnimationProcessors setObject: [NSValue valueWithPointer: ptr] forKey: name]
         
-        VEAnimationProcessStore(_VEAnimationColorProcessor, @"backgroundColor");
-        VEAnimationProcessStore(_VEAnimationAnchorPointProcessor, @"anchorPoint");
-        VEAnimationProcessStore(_VEAnimationPositionProcessor, @"position");
+        VAAnimationProcessStore(_VEAnimationColorProcessor, @"backgroundColor");
+        VAAnimationProcessStore(_VEAnimationAnchorPointProcessor, @"anchorPoint");
+        VAAnimationProcessStore(_VEAnimationPositionProcessor, @"position");
         
-#undef VEAnimationProcessStore
+#undef VAAnimationProcessStore
     }
 }
 
@@ -409,7 +409,7 @@ static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
 
 @synthesize keyTimes;
 
-/* An optional array of VEMediaTimingFunction objects. If the `values' array
+/* An optional array of VAMediaTimingFunction objects. If the `values' array
  * defines n keyframes, there should be n-1 objects in the
  * `timingFunctions' array. Each function describes the pacing of one
  * keyframe to keyframe segment. */
@@ -530,9 +530,9 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 
 /** Animation subclass for grouped animations. **/
 
-@implementation VEAnimationGroup
+@implementation VAAnimationGroup
 
-/* An array of VEAnimation objects. Each member of the array will run
+/* An array of VAAnimation objects. Each member of the array will run
  * concurrently in the time space of the parent animation using the
  * normal rules. */
 
@@ -543,7 +543,7 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 
 #pragma mark - transaction
 
-@interface VEAnimationTransaction ()
+@interface VAAnimationTransaction ()
 {
 @private
     NSMutableArray *_animations;
@@ -552,7 +552,7 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 @end
 
 
-@implementation VEAnimationTransaction
+@implementation VAAnimationTransaction
 
 - (id)init
 {
@@ -592,12 +592,12 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
     
 }
 
-- (void)animationDidStart:(VEAnimation *)anim
+- (void)animationDidStart:(VAAnimation *)anim
 {
     
 }
 
-- (void)animationDidStop: (VEAnimation *)anim
+- (void)animationDidStop: (VAAnimation *)anim
                 finished: (BOOL)flag
 {
     [_animations removeObject: anim];
@@ -610,7 +610,7 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 
 @end
 
-@protocol VEAnimationTransactionDelegate <NSObject>
+@protocol VAAnimationTransactionDelegate <NSObject>
 
 //- (void)animationTransaction: ()
 
@@ -635,7 +635,7 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
     return self;
 }
 
-- (void)addTransaction: (VEAnimationTransaction *)transaction
+- (void)addTransaction: (VAAnimationTransaction *)transaction
 {
     [_transactions addObject: transaction];
 }
@@ -648,12 +648,12 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
     
 }
 
-- (void)animationDidStart: (VEAnimation *)anim
+- (void)animationDidStart: (VAAnimation *)anim
 {
     
 }
 
-- (void)animationDidStop: (VEAnimation *)anim
+- (void)animationDidStop: (VAAnimation *)anim
                 finished: (BOOL)flag
 {
     

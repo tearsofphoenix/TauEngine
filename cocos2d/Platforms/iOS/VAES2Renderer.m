@@ -31,12 +31,12 @@
 #import "../../ccMacros.h"
 #ifdef __CC_PLATFORM_IOS
 
-#import "CCES2Renderer.h"
+#import "VAES2Renderer.h"
 
-#import "../../Support/OpenGL_Internal.h"
+#import "../../Support/OpenGLInternal.h"
 #import "../../ccMacros.h"
 
-@implementation CCES2Renderer
+@implementation VAES2Renderer
 
 @synthesize context=context_;
 @synthesize defaultFramebuffer=defaultFramebuffer_;
@@ -44,29 +44,29 @@
 @synthesize msaaColorbuffer=msaaColorbuffer_;
 @synthesize msaaFramebuffer=msaaFramebuffer_;
 
-// Create an OpenGL ES 2.0 context
-- (id) initWithDepthFormat: (unsigned int)depthFormat
-           withPixelFormat: (unsigned int)pixelFormat
-            withSharegroup: (EAGLSharegroup*)sharegroup
-         withMultiSampling: (BOOL) multiSampling
-       withNumberOfSamples: (unsigned int) requestedSamples
+- (id) initWithSharegroup: (EAGLSharegroup *)sharegroup
+        withMultiSampling: (BOOL)multiSampling
+      withNumberOfSamples: (unsigned int)requestedSamples
 {
     self = [super init];
     if (self)
     {
 		if( ! sharegroup )
+        {
 			context_ = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-		else
+		}else
+        {
 			context_ = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:sharegroup];
-
+        }
+        
         if (!context_ || ![EAGLContext setCurrentContext:context_] )
         {
             [self release];
             return nil;
         }
 		
-		depthFormat_ = depthFormat;
-		pixelFormat_ = pixelFormat;
+		depthFormat_ = 0;
+		pixelFormat_ = GL_RGBA8_OES;
 		multiSampling_ = multiSampling;
 
         // Create default framebuffer object. The backing will be allocated for the current layer in -resizeFromLayer

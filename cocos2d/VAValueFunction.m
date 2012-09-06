@@ -1,5 +1,5 @@
 //
-//  VEValueFunction.m
+//  VAValueFunction.m
 //  VUEngine
 //
 //  Created by LeixSnake on 8/29/12.
@@ -7,7 +7,7 @@
 //
 
 #import <GLKit/GLKit.h>
-#import "VEValueFunction.h"
+#import "VAValueFunction.h"
 
 typedef GLKMatrix4 (* _VEValueFunctionIMP)(GLfloat f1);
 
@@ -42,14 +42,14 @@ static value_function_info_t __VEValueFunctions[] =
 };
 
 
-@interface VEValueFunction ()
+@interface VAValueFunction ()
 {
 @private
     int _argumentCount;
 }
 @end
 
-@implementation VEValueFunction
+@implementation VAValueFunction
 
 static NSMutableDictionary *__VEValueFunctionPointers = nil;
 
@@ -57,28 +57,28 @@ static NSMutableDictionary *__VEValueFunctionPointers = nil;
 {
     __VEValueFunctionPointers = [[NSMutableDictionary alloc] init];
     
-#define VEValueFunctionCreate(func, key) [__VEValueFunctionPointers setObject: [NSValue valueWithPointer: func] forKey: key]
+#define VAValueFunctionCreate(func, key) [__VEValueFunctionPointers setObject: [NSValue valueWithPointer: func] forKey: key]
 
-    VEValueFunctionCreate(&__VEValueFunctions[0], kVEValueFunctionRotateX);
-    VEValueFunctionCreate(&__VEValueFunctions[1], kVEValueFunctionRotateY);
-    VEValueFunctionCreate(&__VEValueFunctions[2], kVEValueFunctionRotateZ);
+    VAValueFunctionCreate(&__VEValueFunctions[0], kVEValueFunctionRotateX);
+    VAValueFunctionCreate(&__VEValueFunctions[1], kVEValueFunctionRotateY);
+    VAValueFunctionCreate(&__VEValueFunctions[2], kVEValueFunctionRotateZ);
 
-    VEValueFunctionCreate(&__VEValueFunctions[3], kVEValueFunctionScale);
-    VEValueFunctionCreate(&__VEValueFunctions[4], kVEValueFunctionScaleX);
-    VEValueFunctionCreate(&__VEValueFunctions[5], kVEValueFunctionScaleY);
-    VEValueFunctionCreate(&__VEValueFunctions[6], kVEValueFunctionScaleZ);
+    VAValueFunctionCreate(&__VEValueFunctions[3], kVEValueFunctionScale);
+    VAValueFunctionCreate(&__VEValueFunctions[4], kVEValueFunctionScaleX);
+    VAValueFunctionCreate(&__VEValueFunctions[5], kVEValueFunctionScaleY);
+    VAValueFunctionCreate(&__VEValueFunctions[6], kVEValueFunctionScaleZ);
 
-    VEValueFunctionCreate(&__VEValueFunctions[7], kVEValueFunctionTranslate);
-    VEValueFunctionCreate(&__VEValueFunctions[8], kVEValueFunctionTranslateX);
-    VEValueFunctionCreate(&__VEValueFunctions[9], kVEValueFunctionTranslateY);
-    VEValueFunctionCreate(&__VEValueFunctions[10], kVEValueFunctionTranslateZ);
+    VAValueFunctionCreate(&__VEValueFunctions[7], kVEValueFunctionTranslate);
+    VAValueFunctionCreate(&__VEValueFunctions[8], kVEValueFunctionTranslateX);
+    VAValueFunctionCreate(&__VEValueFunctions[9], kVEValueFunctionTranslateY);
+    VAValueFunctionCreate(&__VEValueFunctions[10], kVEValueFunctionTranslateZ);
 
-#undef VEValueFunctionCreate
+#undef VAValueFunctionCreate
 }
 
 + (id)functionWithName: (NSString *)name
 {
-    VEValueFunction *newValueFunction = [[self alloc] init];
+    VAValueFunction *newValueFunction = [[self alloc] init];
     newValueFunction->_string = [name copy];
     newValueFunction->_impl = [[__VEValueFunctionPointers objectForKey: name] pointerValue];
     

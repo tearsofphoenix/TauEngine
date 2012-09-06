@@ -34,13 +34,13 @@
 
 @implementation CCTouchDispatcher
 
-@synthesize dispatchEvents;
+@synthesize canDispatchEvents;
 
 -(id) init
 {
 	if((self = [super init])) {
         
-		dispatchEvents = YES;
+		canDispatchEvents = YES;
 		targetedHandlers = [[NSMutableArray alloc] initWithCapacity:8];
 		standardHandlers = [[NSMutableArray alloc] initWithCapacity:4];
         
@@ -361,24 +361,24 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	if( dispatchEvents )
+	if( canDispatchEvents )
 		[self touches:touches withEvent:event withTouchType:kCCTouchBegan];
 }
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	if( dispatchEvents )
+	if( canDispatchEvents )
 		[self touches:touches withEvent:event withTouchType:kCCTouchMoved];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	if( dispatchEvents )
+	if( canDispatchEvents )
 		[self touches:touches withEvent:event withTouchType:kCCTouchEnded];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	if( dispatchEvents )
+	if( canDispatchEvents )
 		[self touches:touches withEvent:event withTouchType:kCCTouchCancelled];
 }
 @end

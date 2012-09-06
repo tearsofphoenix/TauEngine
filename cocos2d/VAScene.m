@@ -21,25 +21,28 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ *
  */
 
-#import <Foundation/Foundation.h>
 
-@class CCGLProgram;
-@class NSString;
+#import "VAScene.h"
+#import "Support/CGPointExtension.h"
+#import "CCDirector.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
-void CCShaderCacheInitialize(void);
+@implementation VAScene
 
-void CCShaderCacheFinalize(void);
+- (id)init
+{
+	if( (self=[super init]) )
+    {
+		CGSize s = [[CCDirector sharedDirector] winSize];
+		self.ignoreAnchorPointForPosition = YES;
+		_anchorPoint = ccp(0.5f, 0.5f);
+        
+		[self setContentSize: s];
+	}
 
-CCGLProgram *CCShaderCacheGetProgramByName(NSString *key);
-
-void CCShaderCacheAddProgram(CCGLProgram *program, NSString *key);
-
-#ifdef __cplusplus
+	return self;
 }
-#endif
+@end

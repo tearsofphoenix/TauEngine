@@ -43,24 +43,24 @@
 //
 #import "ccConfig.h"	// should be included first
 
-#import "CCLayer.h"
+#import "VALayer.h"
 
-#import "CCScene.h"
+#import "VAScene.h"
 #import "CCScheduler.h"
-#import "CCCamera.h"
+#import "VACamera.h"
 
-#import "CCNode.h"
+#import "VANode.h"
 #import "CCDirector.h"
 
 #import "CCConfiguration.h"
 
 // Shaders
-#import "CCGLProgram.h"
+#import "VEGLProgram.h"
 #import "ccGLStateCache.h"
-#import "CCShaderCache.h"
+#import "VEShaderCache.h"
 #import "ccShaders.h"
 
-#import "VEContext.h"
+#import "VGContext.h"
 
 // cocos2d macros
 //
@@ -70,13 +70,13 @@
 #import "Platforms/iOS/CCTouchDispatcher.h"
 #import "Platforms/iOS/CCTouchDelegateProtocol.h"
 #import "Platforms/iOS/CCTouchHandler.h"
-#import "Platforms/iOS/CCGLView.h"
+#import "Platforms/iOS/VEGLView.h"
 #import "Platforms/iOS/CCDirectorIOS.h"
 
 //
 // cocos2d helper files
 //
-#import "Support/OpenGL_Internal.h"
+#import "Support/OpenGLInternal.h"
 
 #import "Support/CGPointExtension.h"
 

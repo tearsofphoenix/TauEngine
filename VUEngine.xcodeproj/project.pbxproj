@@ -7,17 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		228C95B615EDE39F00CE9EB1 /* VEAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 228C95B415EDE39F00CE9EB1 /* VEAnimation.h */; };
-		228C95B715EDE39F00CE9EB1 /* VEAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95B515EDE39F00CE9EB1 /* VEAnimation.m */; };
-		228C95BC15EDE65900CE9EB1 /* VEMediaTimingFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 228C95BA15EDE65800CE9EB1 /* VEMediaTimingFunction.h */; };
-		228C95BD15EDE65900CE9EB1 /* VEMediaTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95BB15EDE65800CE9EB1 /* VEMediaTimingFunction.m */; };
-		228C95BF15EE223400CE9EB1 /* VEMediaTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95BE15EE1C9400CE9EB1 /* VEMediaTiming.m */; };
-		228C95C215EE22E800CE9EB1 /* VEValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 228C95C015EE22E700CE9EB1 /* VEValueFunction.h */; };
-		228C95C315EE22E800CE9EB1 /* VEValueFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95C115EE22E800CE9EB1 /* VEValueFunction.m */; };
+		228C95B615EDE39F00CE9EB1 /* VAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 228C95B415EDE39F00CE9EB1 /* VAAnimation.h */; };
+		228C95B715EDE39F00CE9EB1 /* VAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95B515EDE39F00CE9EB1 /* VAAnimation.m */; };
+		228C95BC15EDE65900CE9EB1 /* VAMediaTimingFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 228C95BA15EDE65800CE9EB1 /* VAMediaTimingFunction.h */; };
+		228C95BD15EDE65900CE9EB1 /* VAMediaTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95BB15EDE65800CE9EB1 /* VAMediaTimingFunction.m */; };
+		228C95BF15EE223400CE9EB1 /* VAMediaTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95BE15EE1C9400CE9EB1 /* VAMediaTiming.m */; };
+		228C95C215EE22E800CE9EB1 /* VAValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 228C95C015EE22E700CE9EB1 /* VAValueFunction.h */; };
+		228C95C315EE22E800CE9EB1 /* VAValueFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 228C95C115EE22E800CE9EB1 /* VAValueFunction.m */; };
 		22923B9B15F0AD19007F5275 /* VGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 22923B9915F0AD19007F5275 /* VGColor.h */; };
 		22923B9C15F0AD19007F5275 /* VGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 22923B9A15F0AD19007F5275 /* VGColor.m */; };
-		22923BA415F0B802007F5275 /* VEBlockAnimationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22923BA215F0B802007F5275 /* VEBlockAnimationDelegate.h */; };
-		22923BA515F0B802007F5275 /* VEBlockAnimationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22923BA315F0B802007F5275 /* VEBlockAnimationDelegate.m */; };
+		22923BA415F0B802007F5275 /* VABlockAnimationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22923BA215F0B802007F5275 /* VABlockAnimationDelegate.h */; };
+		22923BA515F0B802007F5275 /* VABlockAnimationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22923BA315F0B802007F5275 /* VABlockAnimationDelegate.m */; };
 		22DB6A7515F5936900856C9E /* ccShader_Position_uColor_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A09CEE8B150EB30D001E49B8 /* ccShader_Position_uColor_shaders.c */; };
 		22DB6A7615F5936900856C9E /* ccShader_PositionColor_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A09CEE8D150EB30D001E49B8 /* ccShader_PositionColor_shaders.c */; };
 		22DB6A7715F5936900856C9E /* ccShader_PositionTexture_uColor_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A09CEE90150EB30D001E49B8 /* ccShader_PositionTexture_uColor_shaders.c */; };
@@ -45,20 +45,20 @@
 		50011200103B878B0059EC2E /* iPhoneTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500111F6103B878B0059EC2E /* iPhoneTest.mm */; };
 		50011201103B878B0059EC2E /* iPhoneTestEntries.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500111F7103B878B0059EC2E /* iPhoneTestEntries.mm */; };
 		50011202103B878B0059EC2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 500111F8103B878B0059EC2E /* main.m */; };
-		5018F26B0DFDEAFF00C013A5 /* CCNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 5018F2540DFDEAFF00C013A5 /* CCNode.h */; };
-		5018F26C0DFDEAFF00C013A5 /* CCNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018F2550DFDEAFF00C013A5 /* CCNode.m */; };
+		5018F26B0DFDEAFF00C013A5 /* VANode.h in Headers */ = {isa = PBXBuildFile; fileRef = 5018F2540DFDEAFF00C013A5 /* VANode.h */; };
+		5018F26C0DFDEAFF00C013A5 /* VANode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018F2550DFDEAFF00C013A5 /* VANode.m */; };
 		5018F26D0DFDEAFF00C013A5 /* CCDirector.h in Headers */ = {isa = PBXBuildFile; fileRef = 5018F2560DFDEAFF00C013A5 /* CCDirector.h */; };
 		5018F26E0DFDEAFF00C013A5 /* CCDirector.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018F2570DFDEAFF00C013A5 /* CCDirector.m */; };
-		5018F2750DFDEAFF00C013A5 /* CCLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5018F25E0DFDEAFF00C013A5 /* CCLayer.h */; };
-		5018F2760DFDEAFF00C013A5 /* CCLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018F25F0DFDEAFF00C013A5 /* CCLayer.m */; };
-		5018F2770DFDEAFF00C013A5 /* CCScene.h in Headers */ = {isa = PBXBuildFile; fileRef = 5018F2600DFDEAFF00C013A5 /* CCScene.h */; };
-		5018F2780DFDEAFF00C013A5 /* CCScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018F2610DFDEAFF00C013A5 /* CCScene.m */; };
+		5018F2750DFDEAFF00C013A5 /* VALayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5018F25E0DFDEAFF00C013A5 /* VALayer.h */; };
+		5018F2760DFDEAFF00C013A5 /* VALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018F25F0DFDEAFF00C013A5 /* VALayer.m */; };
+		5018F2770DFDEAFF00C013A5 /* VAScene.h in Headers */ = {isa = PBXBuildFile; fileRef = 5018F2600DFDEAFF00C013A5 /* VAScene.h */; };
+		5018F2780DFDEAFF00C013A5 /* VAScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018F2610DFDEAFF00C013A5 /* VAScene.m */; };
 		5018F2E20DFDEBBA00C013A5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		5018F2E30DFDEBBA00C013A5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		5018F2E40DFDEBBA00C013A5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
 		5018F2E50DFDEBBA00C013A5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D500B920D5A79C200DBA0E3 /* OpenGLES.framework */; };
 		5018F2E60DFDEBBA00C013A5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D500B990D5A79CF00DBA0E3 /* QuartzCore.framework */; };
-		501CCFB10E99657C00B86F68 /* OpenGL_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 501CCFA80E99657C00B86F68 /* OpenGL_Internal.h */; };
+		501CCFB10E99657C00B86F68 /* OpenGLInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 501CCFA80E99657C00B86F68 /* OpenGLInternal.h */; };
 		50305AF40E40E33200F63373 /* cocos2d.h in Headers */ = {isa = PBXBuildFile; fileRef = 50305AF30E40E33200F63373 /* cocos2d.h */; };
 		503092B310447296005F7AFC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 503092B210447296005F7AFC /* libz.dylib */; };
 		503092D3104474FC005F7AFC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 503092B210447296005F7AFC /* libz.dylib */; };
@@ -68,8 +68,8 @@
 		505462FC1062768000AB7C52 /* ccConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 505462FB1062768000AB7C52 /* ccConfig.h */; };
 		506602110E38A70D000B500E /* CCScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 5066020F0E38A70D000B500E /* CCScheduler.h */; };
 		506602120E38A70D000B500E /* CCScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 506602100E38A70D000B500E /* CCScheduler.m */; };
-		509E665E0E06CD940050992C /* CCCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 509E665C0E06CD940050992C /* CCCamera.h */; };
-		509E665F0E06CD940050992C /* CCCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 509E665D0E06CD940050992C /* CCCamera.m */; };
+		509E665E0E06CD940050992C /* VACamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 509E665C0E06CD940050992C /* VACamera.h */; };
+		509E665F0E06CD940050992C /* VACamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 509E665D0E06CD940050992C /* VACamera.m */; };
 		50BAF3990F33CCD8003F654C /* ccMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 50BAF3970F33CCD8003F654C /* ccMacros.h */; };
 		50F9E8170E1AA34E000E7616 /* ccTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F9E8160E1AA34E000E7616 /* ccTypes.h */; };
 		6F305B5F0FB9D2790052E700 /* TransformUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F305B5D0FB9D2790052E700 /* TransformUtils.h */; };
@@ -193,12 +193,12 @@
 		E04C63E712382F6100A4B3E6 /* r2-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E04C632312382F6100A4B3E6 /* r2-hd.png */; };
 		E04C646612382F9400A4B3E6 /* b1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E04C640412382F9300A4B3E6 /* b1-hd.png */; };
 		E04C646712382F9400A4B3E6 /* b2-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E04C640512382F9300A4B3E6 /* b2-hd.png */; };
-		E0BC7D9D1342CE7B001B4DCC /* CCShaderCache.h in Headers */ = {isa = PBXBuildFile; fileRef = E0BC7D991342CE7B001B4DCC /* CCShaderCache.h */; };
-		E0BC7D9E1342CE7B001B4DCC /* CCShaderCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC7D9A1342CE7B001B4DCC /* CCShaderCache.m */; };
-		E0BC7D9F1342CE7B001B4DCC /* CCGLProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = E0BC7D9B1342CE7B001B4DCC /* CCGLProgram.h */; };
-		E0BC7DA01342CE7B001B4DCC /* CCGLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC7D9C1342CE7B001B4DCC /* CCGLProgram.m */; };
-		E0BC7DA81342CF27001B4DCC /* CCES2Renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = E0BC7DA61342CF27001B4DCC /* CCES2Renderer.h */; };
-		E0BC7DA91342CF27001B4DCC /* CCES2Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC7DA71342CF27001B4DCC /* CCES2Renderer.m */; };
+		E0BC7D9D1342CE7B001B4DCC /* VEShaderCache.h in Headers */ = {isa = PBXBuildFile; fileRef = E0BC7D991342CE7B001B4DCC /* VEShaderCache.h */; };
+		E0BC7D9E1342CE7B001B4DCC /* VEShaderCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC7D9A1342CE7B001B4DCC /* VEShaderCache.m */; };
+		E0BC7D9F1342CE7B001B4DCC /* VEGLProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = E0BC7D9B1342CE7B001B4DCC /* VEGLProgram.h */; };
+		E0BC7DA01342CE7B001B4DCC /* VEGLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC7D9C1342CE7B001B4DCC /* VEGLProgram.m */; };
+		E0BC7DA81342CF27001B4DCC /* VAES2Renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = E0BC7DA61342CF27001B4DCC /* VAES2Renderer.h */; };
+		E0BC7DA91342CF27001B4DCC /* VAES2Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC7DA71342CF27001B4DCC /* VAES2Renderer.m */; };
 		E0EAD0FF121F4B4600B0C81C /* CCDirectorIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = E0EAD0EA121F4B4600B0C81C /* CCDirectorIOS.h */; };
 		E0EAD100121F4B4600B0C81C /* CCDirectorIOS.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EAD0EB121F4B4600B0C81C /* CCDirectorIOS.m */; };
 		E0EAD103121F4B4600B0C81C /* CCTouchDelegateProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = E0EAD0EE121F4B4600B0C81C /* CCTouchDelegateProtocol.h */; };
@@ -206,9 +206,9 @@
 		E0EAD105121F4B4600B0C81C /* CCTouchDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EAD0F0121F4B4600B0C81C /* CCTouchDispatcher.m */; };
 		E0EAD106121F4B4600B0C81C /* CCTouchHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = E0EAD0F1121F4B4600B0C81C /* CCTouchHandler.h */; };
 		E0EAD107121F4B4600B0C81C /* CCTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EAD0F2121F4B4600B0C81C /* CCTouchHandler.m */; };
-		E0EAD108121F4B4600B0C81C /* CCGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = E0EAD0F3121F4B4600B0C81C /* CCGLView.h */; };
-		E0EAD109121F4B4600B0C81C /* CCGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EAD0F4121F4B4600B0C81C /* CCGLView.m */; };
-		E0EAD10C121F4B4600B0C81C /* CCESRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = E0EAD0F7121F4B4600B0C81C /* CCESRenderer.h */; };
+		E0EAD108121F4B4600B0C81C /* VEGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = E0EAD0F3121F4B4600B0C81C /* VEGLView.h */; };
+		E0EAD109121F4B4600B0C81C /* VEGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EAD0F4121F4B4600B0C81C /* VEGLView.m */; };
+		E0EAD10C121F4B4600B0C81C /* VAGLRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = E0EAD0F7121F4B4600B0C81C /* VAGLRenderer.h */; };
 		E0EAD1F1121F522A00B0C81C /* CCConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = E0EAD1F0121F522A00B0C81C /* CCConfiguration.h */; };
 		E121127B15E4758000A3E43A /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E121127A15E4758000A3E43A /* GLKit.framework */; };
 		E1CDA48815E7D58500F93FE9 /* VEMetaService.h in Headers */ = {isa = PBXBuildFile; fileRef = E1CDA48615E7D58300F93FE9 /* VEMetaService.h */; };
@@ -217,8 +217,8 @@
 		E1CDA49215E7D8A800F93FE9 /* VEDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CDA49015E7D8A700F93FE9 /* VEDataSource.m */; };
 		E1CDA49E15E8A02100F93FE9 /* NVTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = E1CDA49C15E8A02100F93FE9 /* NVTimer.h */; };
 		E1CDA49F15E8A02100F93FE9 /* NVTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CDA49D15E8A02100F93FE9 /* NVTimer.m */; };
-		E1E5BCAE15EE7F6900077D98 /* VEContext.h in Headers */ = {isa = PBXBuildFile; fileRef = E1E5BCAC15EE7F6900077D98 /* VEContext.h */; };
-		E1E5BCAF15EE7F6900077D98 /* VEContext.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E5BCAD15EE7F6900077D98 /* VEContext.m */; };
+		E1E5BCAE15EE7F6900077D98 /* VGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = E1E5BCAC15EE7F6900077D98 /* VGContext.h */; };
+		E1E5BCAF15EE7F6900077D98 /* VGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E5BCAD15EE7F6900077D98 /* VGContext.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -242,18 +242,18 @@
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		228C95B415EDE39F00CE9EB1 /* VEAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEAnimation.h; sourceTree = "<group>"; };
-		228C95B515EDE39F00CE9EB1 /* VEAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEAnimation.m; sourceTree = "<group>"; };
-		228C95B915EDE5B800CE9EB1 /* VEMediaTiming.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VEMediaTiming.h; sourceTree = "<group>"; };
-		228C95BA15EDE65800CE9EB1 /* VEMediaTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEMediaTimingFunction.h; sourceTree = "<group>"; };
-		228C95BB15EDE65800CE9EB1 /* VEMediaTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEMediaTimingFunction.m; sourceTree = "<group>"; };
-		228C95BE15EE1C9400CE9EB1 /* VEMediaTiming.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VEMediaTiming.m; sourceTree = "<group>"; };
-		228C95C015EE22E700CE9EB1 /* VEValueFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEValueFunction.h; sourceTree = "<group>"; };
-		228C95C115EE22E800CE9EB1 /* VEValueFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEValueFunction.m; sourceTree = "<group>"; };
+		228C95B415EDE39F00CE9EB1 /* VAAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAAnimation.h; sourceTree = "<group>"; };
+		228C95B515EDE39F00CE9EB1 /* VAAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAAnimation.m; sourceTree = "<group>"; };
+		228C95B915EDE5B800CE9EB1 /* VAMediaTiming.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAMediaTiming.h; sourceTree = "<group>"; };
+		228C95BA15EDE65800CE9EB1 /* VAMediaTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAMediaTimingFunction.h; sourceTree = "<group>"; };
+		228C95BB15EDE65800CE9EB1 /* VAMediaTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAMediaTimingFunction.m; sourceTree = "<group>"; };
+		228C95BE15EE1C9400CE9EB1 /* VAMediaTiming.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VAMediaTiming.m; sourceTree = "<group>"; };
+		228C95C015EE22E700CE9EB1 /* VAValueFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAValueFunction.h; sourceTree = "<group>"; };
+		228C95C115EE22E800CE9EB1 /* VAValueFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAValueFunction.m; sourceTree = "<group>"; };
 		22923B9915F0AD19007F5275 /* VGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGColor.h; sourceTree = "<group>"; };
 		22923B9A15F0AD19007F5275 /* VGColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGColor.m; sourceTree = "<group>"; };
-		22923BA215F0B802007F5275 /* VEBlockAnimationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEBlockAnimationDelegate.h; sourceTree = "<group>"; };
-		22923BA315F0B802007F5275 /* VEBlockAnimationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEBlockAnimationDelegate.m; sourceTree = "<group>"; };
+		22923BA215F0B802007F5275 /* VABlockAnimationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VABlockAnimationDelegate.h; sourceTree = "<group>"; };
+		22923BA315F0B802007F5275 /* VABlockAnimationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VABlockAnimationDelegate.m; sourceTree = "<group>"; };
 		2D500B920D5A79C200DBA0E3 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		2D500B990D5A79CF00DBA0E3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		50010ED2103B3DB80059EC2E /* Box2dTestBed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Box2dTestBed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -275,15 +275,15 @@
 		5001659F0E72DB470085673F /* f1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = f1.png; sourceTree = "<group>"; };
 		500165A00E72DB470085673F /* f2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = f2.png; sourceTree = "<group>"; };
 		5018F24D0DFDEAC400C013A5 /* libcocos2d.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcocos2d.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5018F2540DFDEAFF00C013A5 /* CCNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCNode.h; sourceTree = "<group>"; };
-		5018F2550DFDEAFF00C013A5 /* CCNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCNode.m; sourceTree = "<group>"; };
+		5018F2540DFDEAFF00C013A5 /* VANode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VANode.h; sourceTree = "<group>"; };
+		5018F2550DFDEAFF00C013A5 /* VANode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VANode.m; sourceTree = "<group>"; };
 		5018F2560DFDEAFF00C013A5 /* CCDirector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDirector.h; sourceTree = "<group>"; };
 		5018F2570DFDEAFF00C013A5 /* CCDirector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDirector.m; sourceTree = "<group>"; };
-		5018F25E0DFDEAFF00C013A5 /* CCLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CCLayer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5018F25F0DFDEAFF00C013A5 /* CCLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CCLayer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		5018F2600DFDEAFF00C013A5 /* CCScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScene.h; sourceTree = "<group>"; };
-		5018F2610DFDEAFF00C013A5 /* CCScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScene.m; sourceTree = "<group>"; };
-		501CCFA80E99657C00B86F68 /* OpenGL_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL_Internal.h; sourceTree = "<group>"; };
+		5018F25E0DFDEAFF00C013A5 /* VALayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = VALayer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		5018F25F0DFDEAFF00C013A5 /* VALayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = VALayer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		5018F2600DFDEAFF00C013A5 /* VAScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAScene.h; sourceTree = "<group>"; };
+		5018F2610DFDEAFF00C013A5 /* VAScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAScene.m; sourceTree = "<group>"; };
+		501CCFA80E99657C00B86F68 /* OpenGLInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLInternal.h; sourceTree = "<group>"; };
 		50305AF30E40E33200F63373 /* cocos2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cocos2d.h; sourceTree = "<group>"; };
 		503092B210447296005F7AFC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		503798C40F912C2000986724 /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
@@ -294,8 +294,8 @@
 		505462FB1062768000AB7C52 /* ccConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccConfig.h; sourceTree = "<group>"; };
 		5066020F0E38A70D000B500E /* CCScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScheduler.h; sourceTree = "<group>"; };
 		506602100E38A70D000B500E /* CCScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScheduler.m; sourceTree = "<group>"; };
-		509E665C0E06CD940050992C /* CCCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCamera.h; sourceTree = "<group>"; };
-		509E665D0E06CD940050992C /* CCCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCCamera.m; sourceTree = "<group>"; };
+		509E665C0E06CD940050992C /* VACamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VACamera.h; sourceTree = "<group>"; };
+		509E665D0E06CD940050992C /* VACamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VACamera.m; sourceTree = "<group>"; };
 		50B2CB240E10EE4A00AE9530 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		50B2CB250E10EE4A00AE9530 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		50B2CB2B0E10EE4A00AE9530 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
@@ -474,12 +474,12 @@
 		E0BC7D6F1342CC58001B4DCC /* LICENSE_Box2D.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE_Box2D.txt; sourceTree = "<group>"; };
 		E0BC7D711342CC58001B4DCC /* LICENSE_cocos2d.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE_cocos2d.txt; sourceTree = "<group>"; };
 		E0BC7D721342CC58001B4DCC /* LICENSE_CocosDenshion.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE_CocosDenshion.txt; sourceTree = "<group>"; };
-		E0BC7D991342CE7B001B4DCC /* CCShaderCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCShaderCache.h; sourceTree = "<group>"; };
-		E0BC7D9A1342CE7B001B4DCC /* CCShaderCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCShaderCache.m; sourceTree = "<group>"; };
-		E0BC7D9B1342CE7B001B4DCC /* CCGLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCGLProgram.h; sourceTree = "<group>"; };
-		E0BC7D9C1342CE7B001B4DCC /* CCGLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCGLProgram.m; sourceTree = "<group>"; };
-		E0BC7DA61342CF27001B4DCC /* CCES2Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCES2Renderer.h; sourceTree = "<group>"; };
-		E0BC7DA71342CF27001B4DCC /* CCES2Renderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCES2Renderer.m; sourceTree = "<group>"; };
+		E0BC7D991342CE7B001B4DCC /* VEShaderCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEShaderCache.h; sourceTree = "<group>"; };
+		E0BC7D9A1342CE7B001B4DCC /* VEShaderCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEShaderCache.m; sourceTree = "<group>"; };
+		E0BC7D9B1342CE7B001B4DCC /* VEGLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEGLProgram.h; sourceTree = "<group>"; };
+		E0BC7D9C1342CE7B001B4DCC /* VEGLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEGLProgram.m; sourceTree = "<group>"; };
+		E0BC7DA61342CF27001B4DCC /* VAES2Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAES2Renderer.h; sourceTree = "<group>"; };
+		E0BC7DA71342CF27001B4DCC /* VAES2Renderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAES2Renderer.m; sourceTree = "<group>"; };
 		E0EAD0EA121F4B4600B0C81C /* CCDirectorIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDirectorIOS.h; sourceTree = "<group>"; };
 		E0EAD0EB121F4B4600B0C81C /* CCDirectorIOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDirectorIOS.m; sourceTree = "<group>"; };
 		E0EAD0EE121F4B4600B0C81C /* CCTouchDelegateProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTouchDelegateProtocol.h; sourceTree = "<group>"; };
@@ -487,9 +487,9 @@
 		E0EAD0F0121F4B4600B0C81C /* CCTouchDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCTouchDispatcher.m; sourceTree = "<group>"; };
 		E0EAD0F1121F4B4600B0C81C /* CCTouchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTouchHandler.h; sourceTree = "<group>"; };
 		E0EAD0F2121F4B4600B0C81C /* CCTouchHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCTouchHandler.m; sourceTree = "<group>"; };
-		E0EAD0F3121F4B4600B0C81C /* CCGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCGLView.h; sourceTree = "<group>"; };
-		E0EAD0F4121F4B4600B0C81C /* CCGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCGLView.m; sourceTree = "<group>"; };
-		E0EAD0F7121F4B4600B0C81C /* CCESRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCESRenderer.h; sourceTree = "<group>"; };
+		E0EAD0F3121F4B4600B0C81C /* VEGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEGLView.h; sourceTree = "<group>"; };
+		E0EAD0F4121F4B4600B0C81C /* VEGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEGLView.m; sourceTree = "<group>"; };
+		E0EAD0F7121F4B4600B0C81C /* VAGLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAGLRenderer.h; sourceTree = "<group>"; };
 		E0EAD1F0121F522A00B0C81C /* CCConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCConfiguration.h; sourceTree = "<group>"; };
 		E121127A15E4758000A3E43A /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		E1CDA48615E7D58300F93FE9 /* VEMetaService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEMetaService.h; sourceTree = "<group>"; };
@@ -498,8 +498,8 @@
 		E1CDA49015E7D8A700F93FE9 /* VEDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEDataSource.m; sourceTree = "<group>"; };
 		E1CDA49C15E8A02100F93FE9 /* NVTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVTimer.h; sourceTree = "<group>"; };
 		E1CDA49D15E8A02100F93FE9 /* NVTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVTimer.m; sourceTree = "<group>"; };
-		E1E5BCAC15EE7F6900077D98 /* VEContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEContext.h; sourceTree = "<group>"; };
-		E1E5BCAD15EE7F6900077D98 /* VEContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEContext.m; sourceTree = "<group>"; };
+		E1E5BCAC15EE7F6900077D98 /* VGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGContext.h; sourceTree = "<group>"; };
+		E1E5BCAD15EE7F6900077D98 /* VGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGContext.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -648,8 +648,8 @@
 				5018F2570DFDEAFF00C013A5 /* CCDirector.m */,
 				50BAF3970F33CCD8003F654C /* ccMacros.h */,
 				50F9E8160E1AA34E000E7616 /* ccTypes.h */,
-				509E665C0E06CD940050992C /* CCCamera.h */,
-				509E665D0E06CD940050992C /* CCCamera.m */,
+				509E665C0E06CD940050992C /* VACamera.h */,
+				509E665D0E06CD940050992C /* VACamera.m */,
 				E0EAD1F0121F522A00B0C81C /* CCConfiguration.h */,
 				503862D911007181005D2C92 /* CCConfiguration.m */,
 				5066020F0E38A70D000B500E /* CCScheduler.h */,
@@ -669,7 +669,7 @@
 				503798C50F912C2000986724 /* CGPointExtension.m */,
 				6F305B5D0FB9D2790052E700 /* TransformUtils.h */,
 				6F305B5E0FB9D2790052E700 /* TransformUtils.m */,
-				501CCFA80E99657C00B86F68 /* OpenGL_Internal.h */,
+				501CCFA80E99657C00B86F68 /* OpenGLInternal.h */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -677,16 +677,16 @@
 		506414C30F9C6769007A7B24 /* Layers, Scenes, Transitions Nodes */ = {
 			isa = PBXGroup;
 			children = (
-				5018F25E0DFDEAFF00C013A5 /* CCLayer.h */,
-				5018F25F0DFDEAFF00C013A5 /* CCLayer.m */,
-				5018F2600DFDEAFF00C013A5 /* CCScene.h */,
-				5018F2610DFDEAFF00C013A5 /* CCScene.m */,
-				E1E5BCAC15EE7F6900077D98 /* VEContext.h */,
-				E1E5BCAD15EE7F6900077D98 /* VEContext.m */,
+				5018F25E0DFDEAFF00C013A5 /* VALayer.h */,
+				5018F25F0DFDEAFF00C013A5 /* VALayer.m */,
+				5018F2600DFDEAFF00C013A5 /* VAScene.h */,
+				5018F2610DFDEAFF00C013A5 /* VAScene.m */,
+				E1E5BCAC15EE7F6900077D98 /* VGContext.h */,
+				E1E5BCAD15EE7F6900077D98 /* VGContext.m */,
 				22923B9915F0AD19007F5275 /* VGColor.h */,
 				22923B9A15F0AD19007F5275 /* VGColor.m */,
-				22923BA215F0B802007F5275 /* VEBlockAnimationDelegate.h */,
-				22923BA315F0B802007F5275 /* VEBlockAnimationDelegate.m */,
+				22923BA215F0B802007F5275 /* VABlockAnimationDelegate.h */,
+				22923BA315F0B802007F5275 /* VABlockAnimationDelegate.m */,
 			);
 			name = "Layers, Scenes, Transitions Nodes";
 			sourceTree = "<group>";
@@ -694,14 +694,14 @@
 		506414C40F9C6792007A7B24 /* Sprite & Animation Nodes */ = {
 			isa = PBXGroup;
 			children = (
-				228C95B415EDE39F00CE9EB1 /* VEAnimation.h */,
-				228C95B515EDE39F00CE9EB1 /* VEAnimation.m */,
-				228C95B915EDE5B800CE9EB1 /* VEMediaTiming.h */,
-				228C95BE15EE1C9400CE9EB1 /* VEMediaTiming.m */,
-				228C95BA15EDE65800CE9EB1 /* VEMediaTimingFunction.h */,
-				228C95BB15EDE65800CE9EB1 /* VEMediaTimingFunction.m */,
-				228C95C015EE22E700CE9EB1 /* VEValueFunction.h */,
-				228C95C115EE22E800CE9EB1 /* VEValueFunction.m */,
+				228C95B415EDE39F00CE9EB1 /* VAAnimation.h */,
+				228C95B515EDE39F00CE9EB1 /* VAAnimation.m */,
+				228C95B915EDE5B800CE9EB1 /* VAMediaTiming.h */,
+				228C95BE15EE1C9400CE9EB1 /* VAMediaTiming.m */,
+				228C95BA15EDE65800CE9EB1 /* VAMediaTimingFunction.h */,
+				228C95BB15EDE65800CE9EB1 /* VAMediaTimingFunction.m */,
+				228C95C015EE22E700CE9EB1 /* VAValueFunction.h */,
+				228C95C115EE22E800CE9EB1 /* VAValueFunction.m */,
 			);
 			name = "Sprite & Animation Nodes";
 			sourceTree = "<group>";
@@ -744,8 +744,8 @@
 		50A24F010F3788C6007CAEB0 /* Base Nodes */ = {
 			isa = PBXGroup;
 			children = (
-				5018F2540DFDEAFF00C013A5 /* CCNode.h */,
-				5018F2550DFDEAFF00C013A5 /* CCNode.m */,
+				5018F2540DFDEAFF00C013A5 /* VANode.h */,
+				5018F2550DFDEAFF00C013A5 /* VANode.m */,
 			);
 			name = "Base Nodes";
 			sourceTree = "<group>";
@@ -994,10 +994,10 @@
 				A093FF07150E9BE00039327A /* ccShaders.h */,
 				A0A10B5514F3011F00FA38C1 /* ccGLStateCache.h */,
 				A0A10B5614F3011F00FA38C1 /* ccGLStateCache.m */,
-				E0BC7D991342CE7B001B4DCC /* CCShaderCache.h */,
-				E0BC7D9A1342CE7B001B4DCC /* CCShaderCache.m */,
-				E0BC7D9B1342CE7B001B4DCC /* CCGLProgram.h */,
-				E0BC7D9C1342CE7B001B4DCC /* CCGLProgram.m */,
+				E0BC7D991342CE7B001B4DCC /* VEShaderCache.h */,
+				E0BC7D9A1342CE7B001B4DCC /* VEShaderCache.m */,
+				E0BC7D9B1342CE7B001B4DCC /* VEGLProgram.h */,
+				E0BC7D9C1342CE7B001B4DCC /* VEGLProgram.m */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -1020,11 +1020,11 @@
 				E0EAD0F0121F4B4600B0C81C /* CCTouchDispatcher.m */,
 				E0EAD0F1121F4B4600B0C81C /* CCTouchHandler.h */,
 				E0EAD0F2121F4B4600B0C81C /* CCTouchHandler.m */,
-				E0EAD0F3121F4B4600B0C81C /* CCGLView.h */,
-				E0EAD0F4121F4B4600B0C81C /* CCGLView.m */,
-				E0BC7DA61342CF27001B4DCC /* CCES2Renderer.h */,
-				E0BC7DA71342CF27001B4DCC /* CCES2Renderer.m */,
-				E0EAD0F7121F4B4600B0C81C /* CCESRenderer.h */,
+				E0EAD0F3121F4B4600B0C81C /* VEGLView.h */,
+				E0EAD0F4121F4B4600B0C81C /* VEGLView.m */,
+				E0BC7DA61342CF27001B4DCC /* VAES2Renderer.h */,
+				E0BC7DA71342CF27001B4DCC /* VAES2Renderer.m */,
+				E0EAD0F7121F4B4600B0C81C /* VAGLRenderer.h */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -1036,15 +1036,15 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5018F26B0DFDEAFF00C013A5 /* CCNode.h in Headers */,
+				5018F26B0DFDEAFF00C013A5 /* VANode.h in Headers */,
 				5018F26D0DFDEAFF00C013A5 /* CCDirector.h in Headers */,
-				5018F2750DFDEAFF00C013A5 /* CCLayer.h in Headers */,
-				5018F2770DFDEAFF00C013A5 /* CCScene.h in Headers */,
-				509E665E0E06CD940050992C /* CCCamera.h in Headers */,
+				5018F2750DFDEAFF00C013A5 /* VALayer.h in Headers */,
+				5018F2770DFDEAFF00C013A5 /* VAScene.h in Headers */,
+				509E665E0E06CD940050992C /* VACamera.h in Headers */,
 				50F9E8170E1AA34E000E7616 /* ccTypes.h in Headers */,
 				506602110E38A70D000B500E /* CCScheduler.h in Headers */,
 				50305AF40E40E33200F63373 /* cocos2d.h in Headers */,
-				501CCFB10E99657C00B86F68 /* OpenGL_Internal.h in Headers */,
+				501CCFB10E99657C00B86F68 /* OpenGLInternal.h in Headers */,
 				50BAF3990F33CCD8003F654C /* ccMacros.h in Headers */,
 				503798C60F912C2000986724 /* CGPointExtension.h in Headers */,
 				6F305B5F0FB9D2790052E700 /* TransformUtils.h in Headers */,
@@ -1053,12 +1053,12 @@
 				E0EAD103121F4B4600B0C81C /* CCTouchDelegateProtocol.h in Headers */,
 				E0EAD104121F4B4600B0C81C /* CCTouchDispatcher.h in Headers */,
 				E0EAD106121F4B4600B0C81C /* CCTouchHandler.h in Headers */,
-				E0EAD108121F4B4600B0C81C /* CCGLView.h in Headers */,
-				E0EAD10C121F4B4600B0C81C /* CCESRenderer.h in Headers */,
+				E0EAD108121F4B4600B0C81C /* VEGLView.h in Headers */,
+				E0EAD10C121F4B4600B0C81C /* VAGLRenderer.h in Headers */,
 				E0EAD1F1121F522A00B0C81C /* CCConfiguration.h in Headers */,
-				E0BC7D9D1342CE7B001B4DCC /* CCShaderCache.h in Headers */,
-				E0BC7D9F1342CE7B001B4DCC /* CCGLProgram.h in Headers */,
-				E0BC7DA81342CF27001B4DCC /* CCES2Renderer.h in Headers */,
+				E0BC7D9D1342CE7B001B4DCC /* VEShaderCache.h in Headers */,
+				E0BC7D9F1342CE7B001B4DCC /* VEGLProgram.h in Headers */,
+				E0BC7DA81342CF27001B4DCC /* VAES2Renderer.h in Headers */,
 				A0A10B5714F3011F00FA38C1 /* ccGLStateCache.h in Headers */,
 				A093FF09150E9BE00039327A /* ccShaders.h in Headers */,
 				A09CEE98150EB30D001E49B8 /* ccShader_Position_uColor_shaders.c in Headers */,
@@ -1071,12 +1071,12 @@
 				E1CDA48815E7D58500F93FE9 /* VEMetaService.h in Headers */,
 				E1CDA49115E7D8A800F93FE9 /* VEDataSource.h in Headers */,
 				E1CDA49E15E8A02100F93FE9 /* NVTimer.h in Headers */,
-				228C95B615EDE39F00CE9EB1 /* VEAnimation.h in Headers */,
-				228C95BC15EDE65900CE9EB1 /* VEMediaTimingFunction.h in Headers */,
-				228C95C215EE22E800CE9EB1 /* VEValueFunction.h in Headers */,
-				E1E5BCAE15EE7F6900077D98 /* VEContext.h in Headers */,
+				228C95B615EDE39F00CE9EB1 /* VAAnimation.h in Headers */,
+				228C95BC15EDE65900CE9EB1 /* VAMediaTimingFunction.h in Headers */,
+				228C95C215EE22E800CE9EB1 /* VAValueFunction.h in Headers */,
+				E1E5BCAE15EE7F6900077D98 /* VGContext.h in Headers */,
 				22923B9B15F0AD19007F5275 /* VGColor.h in Headers */,
-				22923BA415F0B802007F5275 /* VEBlockAnimationDelegate.h in Headers */,
+				22923BA415F0B802007F5275 /* VABlockAnimationDelegate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1278,12 +1278,12 @@
 				22DB6A7915F5936900856C9E /* ccShader_PositionTextureA8Color_shaders.c in Sources */,
 				22DB6A7A15F5936900856C9E /* ccShader_PositionTextureColor_shaders.c in Sources */,
 				22DB6A7B15F5936900856C9E /* ccShader_PositionTextureColorAlphaTest_frag.c in Sources */,
-				228C95BF15EE223400CE9EB1 /* VEMediaTiming.m in Sources */,
-				5018F26C0DFDEAFF00C013A5 /* CCNode.m in Sources */,
+				228C95BF15EE223400CE9EB1 /* VAMediaTiming.m in Sources */,
+				5018F26C0DFDEAFF00C013A5 /* VANode.m in Sources */,
 				5018F26E0DFDEAFF00C013A5 /* CCDirector.m in Sources */,
-				5018F2760DFDEAFF00C013A5 /* CCLayer.m in Sources */,
-				5018F2780DFDEAFF00C013A5 /* CCScene.m in Sources */,
-				509E665F0E06CD940050992C /* CCCamera.m in Sources */,
+				5018F2760DFDEAFF00C013A5 /* VALayer.m in Sources */,
+				5018F2780DFDEAFF00C013A5 /* VAScene.m in Sources */,
+				509E665F0E06CD940050992C /* VACamera.m in Sources */,
 				506602120E38A70D000B500E /* CCScheduler.m in Sources */,
 				503798C70F912C2000986724 /* CGPointExtension.m in Sources */,
 				6F305B600FB9D2790052E700 /* TransformUtils.m in Sources */,
@@ -1291,20 +1291,20 @@
 				E0EAD100121F4B4600B0C81C /* CCDirectorIOS.m in Sources */,
 				E0EAD105121F4B4600B0C81C /* CCTouchDispatcher.m in Sources */,
 				E0EAD107121F4B4600B0C81C /* CCTouchHandler.m in Sources */,
-				E0EAD109121F4B4600B0C81C /* CCGLView.m in Sources */,
-				E0BC7D9E1342CE7B001B4DCC /* CCShaderCache.m in Sources */,
-				E0BC7DA01342CE7B001B4DCC /* CCGLProgram.m in Sources */,
-				E0BC7DA91342CF27001B4DCC /* CCES2Renderer.m in Sources */,
+				E0EAD109121F4B4600B0C81C /* VEGLView.m in Sources */,
+				E0BC7D9E1342CE7B001B4DCC /* VEShaderCache.m in Sources */,
+				E0BC7DA01342CE7B001B4DCC /* VEGLProgram.m in Sources */,
+				E0BC7DA91342CF27001B4DCC /* VAES2Renderer.m in Sources */,
 				A0A10B5814F3011F00FA38C1 /* ccGLStateCache.m in Sources */,
 				E1CDA48915E7D58500F93FE9 /* VEMetaService.m in Sources */,
 				E1CDA49215E7D8A800F93FE9 /* VEDataSource.m in Sources */,
 				E1CDA49F15E8A02100F93FE9 /* NVTimer.m in Sources */,
-				228C95B715EDE39F00CE9EB1 /* VEAnimation.m in Sources */,
-				228C95BD15EDE65900CE9EB1 /* VEMediaTimingFunction.m in Sources */,
-				228C95C315EE22E800CE9EB1 /* VEValueFunction.m in Sources */,
-				E1E5BCAF15EE7F6900077D98 /* VEContext.m in Sources */,
+				228C95B715EDE39F00CE9EB1 /* VAAnimation.m in Sources */,
+				228C95BD15EDE65900CE9EB1 /* VAMediaTimingFunction.m in Sources */,
+				228C95C315EE22E800CE9EB1 /* VAValueFunction.m in Sources */,
+				E1E5BCAF15EE7F6900077D98 /* VGContext.m in Sources */,
 				22923B9C15F0AD19007F5275 /* VGColor.m in Sources */,
-				22923BA515F0B802007F5275 /* VEBlockAnimationDelegate.m in Sources */,
+				22923BA515F0B802007F5275 /* VABlockAnimationDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

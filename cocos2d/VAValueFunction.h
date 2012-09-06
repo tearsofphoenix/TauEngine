@@ -1,5 +1,5 @@
 //
-//  VEValueFunction.h
+//  VAValueFunction.h
 //  VUEngine
 //
 //  Created by LeixSnake on 8/29/12.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VEValueFunction : NSObject<NSCoding>
+@interface VAValueFunction : NSObject<NSCoding>
 {
 @protected
     NSString *_string;

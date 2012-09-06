@@ -114,7 +114,7 @@ default gl blend src function. Compatible with premultiplied alpha images.
 
  /** @def CC_DIRECTOR_END
   Stops and removes the director from memory.
-  Removes the CCGLView from its parent
+  Removes the VEGLView from its parent
 
   @since v0.99.4
   */

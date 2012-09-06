@@ -12,7 +12,7 @@
 
 #import "Box2DView.h"
 #import "iPhoneTest.h"
-#import "VEContext.h"
+#import "VGContext.h"
 
 #define kAccelerometerFrequency 30
 #define FRAMES_BETWEEN_PRESSES_FOR_DOUBLE_CLICK 10
@@ -55,7 +55,7 @@ Settings settings;
         
         CGPoint origin = [view position];
         
-        [CCLayer animateWithDuration: 2.0
+        [VALayer animateWithDuration: 2.0
                           animations: (^
                                        {
                                            [view setOpacity: 1];
@@ -65,7 +65,7 @@ Settings settings;
                                        {
                                            [view setBackgroundColor: ccBLACK];
                                            [view setPosition: origin];
-                                           [CCLayer animateWithDuration: 3.0
+                                           [VALayer animateWithDuration: 3.0
                                                              animations: (^
                                                                           {
                                                                               [view setBackgroundColor: ccRED];
@@ -77,7 +77,7 @@ Settings settings;
 
 -(void) restartCallback: (id) sender
 {
-	CCScene *s = [CCScene node];
+	VAScene *s = [VAScene node];
 	id box = [MenuLayer menuWithEntryID:entryID];
 	[s addChild:box];
 	[[CCDirector sharedDirector] replaceScene: s];
@@ -85,7 +85,7 @@ Settings settings;
 
 -(void) nextCallback: (id) sender
 {
-	CCScene *s = [CCScene node];
+	VAScene *s = [VAScene node];
 	int next = entryID + 1;
 	if( next >= g_totalEntries)
 		next = 0;
@@ -96,7 +96,7 @@ Settings settings;
 
 -(void) backCallback: (id) sender
 {
-	CCScene *s = [CCScene node];
+	VAScene *s = [VAScene node];
 	int next = entryID - 1;
 	if( next < 0 ) {
 		next = g_totalEntries - 1;
@@ -164,7 +164,7 @@ Settings settings;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CCScene *s = [CCScene node];
+    VAScene *s = [VAScene node];
 	int next = [indexPath row];
 	if( next >= g_totalEntries)
     {
@@ -217,17 +217,17 @@ Settings settings;
     test->Step(&settings);
 }
 
-- (void)drawInContext: (VEContext *)context
+- (void)drawInContext: (VGContext *)context
 {
 	[super drawInContext: context];
     
 	VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
     
-	VEContextSaveState(context);
+	VGContextSaveState(context);
     
 	test->m_world->DrawDebugData();
     
-	VEContextRestoreState(context);
+	VGContextRestoreState(context);
     
 	CHECK_GL_ERROR_DEBUG();
 }

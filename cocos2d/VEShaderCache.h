@@ -21,22 +21,25 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
  */
 
+#import <Foundation/Foundation.h>
 
-#import "CCNode.h"
+@class VEGLProgram;
+@class NSString;
 
-/** CCScene is a subclass of CCNode that is used only as an abstract concept.
+#ifdef __cplusplus
+extern "C" {
+#endif
 
- CCScene an CCNode are almost identical with the difference that CCScene has its
- anchor point (by default) at the center of the screen.
+void VEShaderCacheInitialize(void);
 
- For the moment CCScene has no other logic than that, but in future releases it might have
- additional logic.
+void VEShaderCacheFinalize(void);
 
- It is a good practice to use and CCScene as the parent of all your nodes.
-*/
-@interface CCScene : CCNode
+VEGLProgram *VEShaderCacheGetProgramByName(NSString *key);
 
-@end
+void VEShaderCacheAddProgram(VEGLProgram *program, NSString *key);
+
+#ifdef __cplusplus
+}
+#endif

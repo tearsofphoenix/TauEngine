@@ -26,11 +26,11 @@
 //	ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-#import "CCGLProgram.h"
+#import "VEGLProgram.h"
 #import "ccGLStateCache.h"
 #import "ccMacros.h"
 
-#import "Support/OpenGL_Internal.h"
+#import "Support/OpenGLInternal.h"
 
 
 #pragma mark - Function Pointer Definitions
@@ -41,7 +41,7 @@ typedef void (*GLLogFunction) (GLuint program, GLsizei bufsize, GLsizei* length,
 
 #pragma mark -
 
-@interface CCGLProgram ()
+@interface VEGLProgram ()
 {
     CFMutableDictionaryRef	_hashForUniforms;
     
@@ -55,7 +55,7 @@ typedef void (*GLLogFunction) (GLuint program, GLsizei bufsize, GLsizei* length,
 
 @end
 
-@implementation CCGLProgram
+@implementation VEGLProgram
 
 - (id)initWithVertexShaderSource: (const GLchar*)vShaderSource
             fragmentShaderSource: (const GLchar*)fShaderSource
@@ -66,13 +66,13 @@ typedef void (*GLLogFunction) (GLuint program, GLsizei bufsize, GLsizei* length,
 		
 		_vertexShader = _fragmentShader = 0;
 		
-        if(!CCGLProgramCompileShader(self, &_vertexShader, GL_VERTEX_SHADER, vShaderSource))
+        if(!VEGLProgramCompileShader(self, &_vertexShader, GL_VERTEX_SHADER, vShaderSource))
         {
             CCLOG(@"cocos2d: ERROR: Failed to compile vertex shader");
 		}
 		
         // Create and compile fragment shader
-        if(!CCGLProgramCompileShader(self, &_fragmentShader, GL_FRAGMENT_SHADER, fShaderSource))
+        if(!VEGLProgramCompileShader(self, &_fragmentShader, GL_FRAGMENT_SHADER, fShaderSource))
         {
             CCLOG(@"cocos2d: ERROR: Failed to compile fragment shader");
 		}
@@ -94,7 +94,7 @@ typedef void (*GLLogFunction) (GLuint program, GLsizei bufsize, GLsizei* length,
 	return [NSString stringWithFormat:@"<%@ = %p | Program = %i, VertexShader = %i, FragmentShader = %i>", [self class], self, _program, _vertexShader, _fragmentShader];
 }
 
-static BOOL CCGLProgramCompileShader(CCGLProgram *self, GLuint *shader, GLenum type, const GLchar *source)
+static BOOL VEGLProgramCompileShader(VEGLProgram *self, GLuint *shader, GLenum type, const GLchar *source)
 {
     GLint status;
     
@@ -109,13 +109,13 @@ static BOOL CCGLProgramCompileShader(CCGLProgram *self, GLuint *shader, GLenum t
 	
 	if( ! status )
     {
-        CCLOG(@"cocos2d: %@", CCGLProgramShaderLogInfo(self, type));
+        CCLOG(@"cocos2d: %@", VEGLProgramShaderLogInfo(self, type));
 	}
     
     return ( status == GL_TRUE );
 }
 
-static NSString *CCGLProgramLogForOpenGLObject(GLuint object, GLInfoFunction infoFunc, GLLogFunction logFunc)
+static NSString *VEGLProgramLogForOpenGLObject(GLuint object, GLInfoFunction infoFunc, GLLogFunction logFunc)
 {
     GLint logLength = 0, charsWritten = 0;
     
@@ -137,7 +137,7 @@ static NSString *CCGLProgramLogForOpenGLObject(GLuint object, GLInfoFunction inf
 
 #pragma mark - Uniform cache
 
-static BOOL CCGLProgramUpdateUniform(CFMutableDictionaryRef	_hashForUniforms,
+static BOOL VEGLProgramUpdateUniform(CFMutableDictionaryRef	_hashForUniforms,
                                      NSUInteger location,
                                      GLvoid* data,
                                      NSUInteger bytes)
@@ -175,19 +175,19 @@ static void __CFDictionaryApplierFunction(const void *key, const void *value, vo
     free(element);
 }
 
-void CCGLProgramUse(CCGLProgram *program)
+void VEGLProgramUse(VEGLProgram *program)
 {
     CCGLUseProgram(program->_program);
 }
 
-void CCGLProgramUniformForMVPMatrix(CCGLProgram *program, GLKMatrix4 MVPMatrix)
+void VEGLProgramUniformForMVPMatrix(VEGLProgram *program, GLKMatrix4 MVPMatrix)
 {
-    CCGLProgramUniformMatrix4fv(program, program->_uniforms[kCCUniformMVPMatrix], MVPMatrix.m, 1);
+    VEGLProgramUniformMatrix4fv(program, program->_uniforms[kCCUniformMVPMatrix], MVPMatrix.m, 1);
 }
 
-void CCGLProgramUniformf(CCGLProgram *program, GLint location, GLfloat *floats, GLsizei count)
+void VEGLProgramUniformf(VEGLProgram *program, GLint location, GLfloat *floats, GLsizei count)
 {
-    BOOL updated = CCGLProgramUpdateUniform(program->_hashForUniforms, location, floats, sizeof(GLfloat) * count);
+    BOOL updated = VEGLProgramUpdateUniform(program->_hashForUniforms, location, floats, sizeof(GLfloat) * count);
     if (updated)
     {
         switch (count)
@@ -222,9 +222,9 @@ void CCGLProgramUniformf(CCGLProgram *program, GLint location, GLfloat *floats, 
 }
 
 
-void CCGLProgramUniformfv(CCGLProgram *program, GLint location, GLvoid *floats, GLsizei numberOfArrays, CCGLUniformType type)
+void VEGLProgramUniformfv(VEGLProgram *program, GLint location, GLvoid *floats, GLsizei numberOfArrays, CCGLUniformType type)
 {
-    BOOL updated = CCGLProgramUpdateUniform(program->_hashForUniforms, location, floats, sizeof(float) * type * numberOfArrays);
+    BOOL updated = VEGLProgramUpdateUniform(program->_hashForUniforms, location, floats, sizeof(float) * type * numberOfArrays);
     if (updated)
     {
         switch (type)
@@ -258,9 +258,9 @@ void CCGLProgramUniformfv(CCGLProgram *program, GLint location, GLvoid *floats, 
     
 }
 
-void CCGLProgramUniformMatrix4fv(CCGLProgram *program, GLint location, GLvoid *matrix, GLsizei numberOfMatrices)
+void VEGLProgramUniformMatrix4fv(VEGLProgram *program, GLint location, GLvoid *matrix, GLsizei numberOfMatrices)
 {
-    BOOL updated = CCGLProgramUpdateUniform(program->_hashForUniforms, location, matrix, sizeof(float) * 16 * numberOfMatrices);
+    BOOL updated = VEGLProgramUpdateUniform(program->_hashForUniforms, location, matrix, sizeof(float) * 16 * numberOfMatrices);
     
 	if( updated )
     {
@@ -268,12 +268,12 @@ void CCGLProgramUniformMatrix4fv(CCGLProgram *program, GLint location, GLvoid *m
     }
 }
 
-void CCGLProgramAddAttribute(CCGLProgram *program, const char *attributeName, GLuint index)
+void VEGLProgramAddAttribute(VEGLProgram *program, const char *attributeName, GLuint index)
 {
 	glBindAttribLocation(program->_program, index, attributeName);
 }
 
-void CCGLProgramUpdateUniforms(CCGLProgram *program)
+void VEGLProgramUpdateUniforms(VEGLProgram *program)
 {
     // Since sample most probably won't change, set it to 0 now.
     
@@ -281,11 +281,11 @@ void CCGLProgramUpdateUniforms(CCGLProgram *program)
     
 	program->_uniforms[kCCUniformSampler] = glGetUniformLocation(program->_program, kCCUniformSampler_s);
     
-    CCGLProgramUse(program);
+    VEGLProgramUse(program);
 	
     GLint i1 = 0;
     GLint location = program->_uniforms[kCCUniformSampler];
-    BOOL updated = CCGLProgramUpdateUniform(program->_hashForUniforms, location, &i1, sizeof(i1));
+    BOOL updated = VEGLProgramUpdateUniform(program->_hashForUniforms, location, &i1, sizeof(i1));
 	
 	if( updated )
     {
@@ -295,7 +295,7 @@ void CCGLProgramUpdateUniforms(CCGLProgram *program)
 
 #pragma mark -
 
-BOOL CCGLProgramLink(CCGLProgram *program)
+BOOL VEGLProgramLink(VEGLProgram *program)
 {
     GLuint _program = program->_program;
     GLuint vertexShader = program->_vertexShader;
@@ -336,17 +336,17 @@ BOOL CCGLProgramLink(CCGLProgram *program)
 }
 
 
-NSString *CCGLProgramShaderLogInfo(CCGLProgram *program, GLenum shaderType)
+NSString *VEGLProgramShaderLogInfo(VEGLProgram *program, GLenum shaderType)
 {
     switch (shaderType)
     {
         case GL_VERTEX_SHADER:
         {
-            return CCGLProgramLogForOpenGLObject(program->_vertexShader, glGetShaderiv, glGetShaderInfoLog);
+            return VEGLProgramLogForOpenGLObject(program->_vertexShader, glGetShaderiv, glGetShaderInfoLog);
         }
         case GL_FRAGMENT_SHADER:
         {
-            return CCGLProgramLogForOpenGLObject(program->_fragmentShader, glGetShaderiv, glGetShaderInfoLog);
+            return VEGLProgramLogForOpenGLObject(program->_fragmentShader, glGetShaderiv, glGetShaderInfoLog);
         }
         default:
         {
@@ -355,12 +355,12 @@ NSString *CCGLProgramShaderLogInfo(CCGLProgram *program, GLenum shaderType)
     }
 }
 
-NSString *CCGLProgramLogInfo(CCGLProgram *program)
+NSString *VEGLProgramLogInfo(VEGLProgram *program)
 {
-    return CCGLProgramLogForOpenGLObject(program->_program, glGetProgramiv, glGetProgramInfoLog);
+    return VEGLProgramLogForOpenGLObject(program->_program, glGetProgramiv, glGetProgramInfoLog);
 }
 
-GLint CCGLProgramGetUniformLocation(CCGLProgram *program, const GLchar *name)
+GLint VEGLProgramGetUniformLocation(VEGLProgram *program, const GLchar *name)
 {
     return glGetUniformLocation(program->_program, name);
 }

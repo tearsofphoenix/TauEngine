@@ -31,23 +31,23 @@
 #import <sys/time.h>
 
 #import "CCDirector.h"
-#import "VEContext.h"
+#import "VGContext.h"
 
 #import "ccMacros.h"
 
-#import "CCScene.h"
+#import "VAScene.h"
 
-#import "CCLayer.h"
+#import "VALayer.h"
 #import "ccGLStateCache.h"
-#import "CCShaderCache.h"
+#import "VEShaderCache.h"
 
 // support imports
 
-#import "Support/OpenGL_Internal.h"
+#import "Support/OpenGLInternal.h"
 #import "Support/CGPointExtension.h"
 
 #import "Platforms/iOS/CCDirectorIOS.h"
-#import "CCGLView.h"
+#import "VEGLView.h"
 
 
 #pragma mark -
@@ -142,7 +142,7 @@ static CCDirector *_sharedDirector = nil;
 
 		winSizeInPixels_ = winSizeInPoints_ = CGSizeZero;
         
-        _renderContext = [[VEContext alloc] init];
+        _renderContext = [[VGContext alloc] init];
 	}
 
 	return self;
@@ -174,7 +174,7 @@ static CCDirector *_sharedDirector = nil;
 
     CCGLBlendFunc(CC_BLEND_SRC, CC_BLEND_DST);
 
-	[self setDepthTest: view_.depthFormat];
+	//[self setDepthTest: view_.depthFormat];
 	[self setProjection: projection_];
 
 	// set other opengl default values
@@ -258,7 +258,7 @@ static CCDirector *_sharedDirector = nil;
 
 #pragma mark Director Integration with a UIKit view
 
--(void) setView: (CCGLView*)view
+-(void) setView: (VEGLView*)view
 {
 	if( view != view_ )
     {
@@ -266,7 +266,7 @@ static CCDirector *_sharedDirector = nil;
 #ifdef __CC_PLATFORM_IOS
 		[super setView:view];
 #endif
-        CCShaderCacheInitialize();
+        VEShaderCacheInitialize();
 
 		[view_ release];
 		view_ = [view retain];
@@ -286,7 +286,7 @@ static CCDirector *_sharedDirector = nil;
 	}
 }
 
--(CCGLView*) view
+-(VEGLView*) view
 {
 	return  view_;
 }
@@ -316,6 +316,12 @@ static CCDirector *_sharedDirector = nil;
 	return winSizeInPixels_;
 }
 
+- (void)viewDidLayoutSubviews
+{
+    CGSize size = [[self view] bounds].size;
+    [self reshapeProjection: size];
+}
+
 -(void) reshapeProjection:(CGSize)newWindowSize
 {
 	winSizeInPixels_ = winSizeInPoints_ = newWindowSize;
@@ -324,7 +330,7 @@ static CCDirector *_sharedDirector = nil;
 
 #pragma mark Director Scene Management
 
-- (void)runWithScene:(CCScene*) scene
+- (void)runWithScene:(VAScene*) scene
 {
 	NSAssert( scene != nil, @"Argument must be non-nil");
 
@@ -332,7 +338,7 @@ static CCDirector *_sharedDirector = nil;
 	[self startAnimation];
 }
 
--(void) replaceScene: (CCScene*) scene
+-(void) replaceScene: (VAScene*) scene
 {
 	NSAssert( scene != nil, @"Argument must be non-nil");
 
@@ -343,7 +349,7 @@ static CCDirector *_sharedDirector = nil;
 	nextScene_ = scene;	// nextScene_ is a weak ref
 }
 
-- (void) pushScene: (CCScene*) scene
+- (void) pushScene: (VAScene*) scene
 {
 	NSAssert( scene != nil, @"Argument must be non-nil");
 
@@ -378,7 +384,7 @@ static CCDirector *_sharedDirector = nil;
         [self end];
     } else {
         while (c > 1) {
-			CCScene *current = [scenesStack_ lastObject];
+			VAScene *current = [scenesStack_ lastObject];
 			if( [current isRunning] )
 				[current onExit];
 			[current cleanup];
@@ -412,7 +418,7 @@ static CCDirector *_sharedDirector = nil;
 	[self setView:nil];
 	
     
-    CCShaderCacheFinalize();
+    VEShaderCacheFinalize();
 
 	CCGLInvalidateStateCache();
 

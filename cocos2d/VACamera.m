@@ -24,9 +24,9 @@
  */
 
 
-#import "CCCamera.h"
+#import "VACamera.h"
 
-struct _VECamera
+struct _VACamera
 {
     GLKVector3 _eye;
     GLKVector3 _center;
@@ -35,9 +35,9 @@ struct _VECamera
     BOOL _isDirty;
 };
 
-VECameraRef VECameraCreate(void)
+VACameraRef VACameraCreate(void)
 {
-    VECameraRef camera = malloc(sizeof(struct _VECamera));
+    VACameraRef camera = malloc(sizeof(struct _VACamera));
     camera->_eye = GLKVector3Make(0, 0, FLT_EPSILON);
     camera->_center = GLKVector3Make(0, 0, 0);
     camera->_up = GLKVector3Make(0, 1, 0);
@@ -45,7 +45,7 @@ VECameraRef VECameraCreate(void)
     return camera;
 }
 
-GLKMatrix4 VECameraGetLookAtMatrix(VECameraRef camera)
+GLKMatrix4 VACameraGetLookAtMatrix(VACameraRef camera)
 {
     if (camera->_isDirty)
     {
@@ -58,30 +58,30 @@ GLKMatrix4 VECameraGetLookAtMatrix(VECameraRef camera)
     return camera->_cachedLookupMatrix;
 }
 
-void VECameraFinalize(VECameraRef camera)
+void VACameraFinalize(VACameraRef camera)
 {
     free(camera);
 }
 #pragma mark - getter
 
- GLKVector3 VECameraGetEye(VECameraRef camera)
+ GLKVector3 VACameraGetEye(VACameraRef camera)
 {
     return camera->_eye;
 }
 
- GLKVector3 VECameraGetCenter(VECameraRef camera)
+ GLKVector3 VACameraGetCenter(VACameraRef camera)
 {
     return camera->_center;
 }
 
- GLKVector3 VECameraGetUp(VECameraRef camera)
+ GLKVector3 VACameraGetUp(VACameraRef camera)
 {
     return camera->_up;
 }
 
 #pragma mark - setter
 
- void VECameraSetEye(VECameraRef camera, GLKVector3 eye)
+ void VACameraSetEye(VACameraRef camera, GLKVector3 eye)
 {
     if (!GLKVector3AllEqualToVector3(camera->_eye, eye))
     {
@@ -90,7 +90,7 @@ void VECameraFinalize(VECameraRef camera)
     }
 }
 
- void VECameraSetCenter(VECameraRef camera, GLKVector3 center)
+ void VACameraSetCenter(VACameraRef camera, GLKVector3 center)
 {
     if (!GLKVector3AllEqualToVector3(camera->_center, center))
     {
@@ -99,7 +99,7 @@ void VECameraFinalize(VECameraRef camera)
     }
 }
 
- void VECameraSetUp(VECameraRef camera, GLKVector3 up)
+ void VACameraSetUp(VACameraRef camera, GLKVector3 up)
 {
     if (!GLKVector3AllEqualToVector3(camera->_up, up))
     {

@@ -40,17 +40,17 @@
 
 
 #import "ccMacros.h"
-#import "CCScene.h"
-#import "CCGLProgram.h"
+#import "VAScene.h"
+#import "VEGLProgram.h"
 #import "ccGLStateCache.h"
-#import "CCLayer.h"
+#import "VALayer.h"
 
 // support imports
-#import "OpenGL_Internal.h"
+#import "OpenGLInternal.h"
 #import "CGPointExtension.h"
 #import "TransformUtils.h"
 
-#import "VEContext.h"
+#import "VGContext.h"
 
 #import "VEDataSource.h"
 
@@ -133,7 +133,7 @@ CGFloat	__ccContentScaleFactor = 1;
 	/* calculate "global" dt */
 	[self calculateDeltaTime];
     
-	CCGLView *openGLview = (CCGLView*)[self view];
+	VEGLView *openGLview = (VEGLView*)[self view];
     
 	[EAGLContext setCurrentContext: [openGLview context]];
     
@@ -152,13 +152,13 @@ CGFloat	__ccContentScaleFactor = 1;
 		[self setNextScene];
     }
     
-	VEContextSaveState(_renderContext);
+	VGContextSaveState(_renderContext);
     
 	[runningScene_ visitWithContext: _renderContext];
         
     [self showStats];
     
-	VEContextRestoreState(_renderContext);
+	VGContextRestoreState(_renderContext);
     
 	totalFrames_++;
     
@@ -174,21 +174,21 @@ CGFloat	__ccContentScaleFactor = 1;
     
 	glViewport(0, 0, size.width, size.height );
     
-    VEContext *currentContext = VEContextGetCurrentContext();
+    VGContext *currentContext = VGContextGetCurrentContext();
     
 	switch (projection)
     {
 		case kCCDirectorProjection2D:
         {
-			VEContextMatrixMode(currentContext, GL_PROJECTION_MATRIX);
-			VEContextLoadIdentity(currentContext);
+			VGContextMatrixMode(currentContext, GL_PROJECTION_MATRIX);
+			VGContextLoadIdentity(currentContext);
             
 			GLKMatrix4 orthoMatrix = GLKMatrix4MakeOrtho(0, size.width / CC_CONTENT_SCALE_FACTOR(), 0,
                                                          size.height / CC_CONTENT_SCALE_FACTOR(), -1024, 1024 );
-			VEContextConcatCTM(currentContext, orthoMatrix );
+			VGContextConcatCTM(currentContext, orthoMatrix );
             
-			VEContextMatrixMode(currentContext, GL_MODELVIEW_MATRIX);
-			VEContextLoadIdentity(currentContext);
+			VGContextMatrixMode(currentContext, GL_MODELVIEW_MATRIX);
+			VGContextLoadIdentity(currentContext);
 			break;
         }
 		case kCCDirectorProjection3D:
@@ -197,21 +197,21 @@ CGFloat	__ccContentScaleFactor = 1;
             
 			GLKMatrix4 matrixPerspective, matrixLookup;
             
-			VEContextMatrixMode(currentContext, GL_PROJECTION_MATRIX);
-			VEContextLoadIdentity(currentContext);
+			VGContextMatrixMode(currentContext, GL_PROJECTION_MATRIX);
+			VGContextLoadIdentity(currentContext);
             
 			// issue #1334
             matrixPerspective = GLKMatrix4MakePerspective(60, (GLfloat)size.width/size.height, 0.1f, zeye*2);
             
-			VEContextConcatCTM(currentContext, matrixPerspective);
+			VGContextConcatCTM(currentContext, matrixPerspective);
             
-			VEContextMatrixMode(currentContext, GL_MODELVIEW_MATRIX);
-			VEContextLoadIdentity(currentContext);
+			VGContextMatrixMode(currentContext, GL_MODELVIEW_MATRIX);
+			VGContextLoadIdentity(currentContext);
             
             matrixLookup = GLKMatrix4MakeLookAt(sizePoint.width/2, sizePoint.height/2, zeye,
                                                 sizePoint.width/2, sizePoint.height/2, 0,
                                                 0, 1, 0);
-			VEContextConcatCTM(currentContext, matrixLookup);
+			VGContextConcatCTM(currentContext, matrixLookup);
             
 			break;
 		}
@@ -332,7 +332,7 @@ CGFloat	__ccContentScaleFactor = 1;
 #pragma mark Director - UIViewController delegate
 
 
--(void) setView:(CCGLView *)view
+-(void) setView:(VEGLView *)view
 {
 	if( view != view_)
     {
@@ -349,7 +349,7 @@ CGFloat	__ccContentScaleFactor = 1;
             }
             
 			[view setTouchDelegate: touchDispatcher_];
-			[touchDispatcher_ setDispatchEvents: YES];
+			[touchDispatcher_ setCanDispatchEvents: YES];
 		}
 	}
 }

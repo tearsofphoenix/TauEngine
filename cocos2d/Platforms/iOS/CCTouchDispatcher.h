@@ -29,7 +29,7 @@
 #ifdef __CC_PLATFORM_IOS
 
 #import "CCTouchDelegateProtocol.h"
-#import "CCGLView.h"
+#import "VEGLView.h"
 
 
 typedef NS_ENUM(NSUInteger, ccTouchSelectorFlag)
@@ -51,7 +51,8 @@ enum {
 	kCCTouchMax,
 };
 
-struct ccTouchHandlerHelperData {
+struct ccTouchHandlerHelperData
+{
 	SEL				touchesSel;
 	SEL				touchSel;
 	ccTouchSelectorFlag  type;
@@ -85,14 +86,14 @@ struct ccTouchHandlerHelperData {
 	NSMutableArray	*handlersToRemove;
 	BOOL			toQuit;
 
-	BOOL	dispatchEvents;
+	BOOL	canDispatchEvents;
 
 	// 4, 1 for each type of event
 	struct ccTouchHandlerHelperData handlerHelperData[kCCTouchMax];
 }
 
 /** Whether or not the events are going to be dispatched. Default: YES */
-@property (nonatomic, assign) BOOL dispatchEvents;
+@property (nonatomic, assign) BOOL canDispatchEvents;
 
 /** Adds a standard touch delegate to the dispatcher's list.
  See StandardTouchDelegate description.

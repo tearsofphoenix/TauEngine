@@ -15,7 +15,7 @@
  
  =====================
  
- File: CCGLView.m
+ File: VEGLView.m
  Abstract: Convenience class that wraps the CAEAGLLayer from CoreAnimation into a
  UIView subclass.
  
@@ -67,57 +67,23 @@
 
 // Only compile this code on iOS. These files should NOT be included on your Mac project.
 // But in case they are included, it won't be compiled.
-#import "../../ccMacros.h"
-#ifdef __CC_PLATFORM_IOS
 
-#import <QuartzCore/QuartzCore.h>
+#import "VEGLView.h"
+#import "VAES2Renderer.h"
 
-#import <OpenGLES/EAGL.h>
-#import <OpenGLES/EAGLDrawable.h>
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
+#import "OpenGLInternal.h"
 
-#import "CCGLView.h"
-#import "CCES2Renderer.h"
-#import "../../CCDirector.h"
-#import "../../ccMacros.h"
-#import "../../CCConfiguration.h"
-#import "../../Support/OpenGL_Internal.h"
-
-
-//CLASS IMPLEMENTATIONS:
-
-@interface CCGLView (Private)
+@interface VEGLView (Private)
 
 - (BOOL) setupSurfaceWithSharegroup:(EAGLSharegroup*)sharegroup;
 
-- (GLenum) convertPixelFormat:(NSString*) pixelFormat;
-
-- (void)_addDefaultGestureRecognizer;
-
 @end
 
-@implementation CCGLView
+@implementation VEGLView
 
-@synthesize surfaceSize=size_;
-@synthesize pixelFormat=pixelformat_, depthFormat=depthFormat_;
-@synthesize touchDelegate=touchDelegate_;
+@synthesize surfaceSize = size_;
 
-@synthesize multiSampling=multiSampling_;
-
-- (void)_addDefaultGestureRecognizer
-{
-    UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget: self
-                                                                                                 action: @selector(_handlePinchEvent:)];
-    [self addGestureRecognizer: pinchGestureRecognizer];
-    [pinchGestureRecognizer release];
-    
-    UIRotationGestureRecognizer *rotationGestureRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget: self
-                                                                                                          action: @selector(_handleRotationEvent:)];
-    [self addGestureRecognizer: rotationGestureRecognizer];
-    [rotationGestureRecognizer release];
-    
-}
+@synthesize touchDelegate = touchDelegate_;
 
 - (id) initWithFrame: (CGRect)frame
 {
@@ -131,7 +97,6 @@
         
 		CHECK_GL_ERROR_DEBUG();
         
-        [self _addDefaultGestureRecognizer];
 	}
     
 	return self;
@@ -141,13 +106,7 @@
 {
 	if( (self = [super initWithCoder:aDecoder]) )
     {
-		CAEAGLLayer* eaglLayer = (CAEAGLLayer*)[self layer];
-        
-		pixelformat_ = kEAGLColorFormatRGB565;
-		depthFormat_ = 0; // GL_DEPTH_COMPONENT24;
-		multiSampling_= NO;
-		requestedSamples_ = 0;
-		size_ = [eaglLayer bounds].size;
+		size_ = [self bounds].size;
         
 		if( ! [self setupSurfaceWithSharegroup: nil] )
         {
@@ -157,28 +116,16 @@
         
 		CHECK_GL_ERROR_DEBUG();
         
-        [self _addDefaultGestureRecognizer];
-        
     }
     
     return self;
 }
 
--(BOOL) setupSurfaceWithSharegroup:(EAGLSharegroup*)sharegroup
+- (BOOL)setupSurfaceWithSharegroup: (EAGLSharegroup*)sharegroup
 {
-	CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
-    
-	eaglLayer.opaque = YES;
-	eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-									[NSNumber numberWithBool:preserveBackbuffer_], kEAGLDrawablePropertyRetainedBacking,
-									pixelformat_, kEAGLDrawablePropertyColorFormat, nil];
-    
-	// ES2 renderer only
-	renderer_ = [[CCES2Renderer alloc] initWithDepthFormat:depthFormat_
-                                           withPixelFormat:[self convertPixelFormat:pixelformat_]
-                                            withSharegroup:sharegroup
-                                         withMultiSampling:multiSampling_
-                                       withNumberOfSamples:requestedSamples_];
+	renderer_ = [[VAES2Renderer alloc] initWithSharegroup: sharegroup
+                                         withMultiSampling: NO
+                                       withNumberOfSamples: 0];
     
     [self setContext: [renderer_ context]];
     
@@ -197,16 +144,9 @@
 
 - (void) layoutSubviews
 {
-	[renderer_ resizeFromLayer:(CAEAGLLayer*)self.layer];
+	[renderer_ resizeFromLayer: (CAEAGLLayer*)self.layer];
     
 	size_ = [renderer_ backingSize];
-    
-	// Issue #914 #924
-	CCDirector *director = [CCDirector sharedDirector];
-	[director reshapeProjection:size_];
-    
-	// Avoid flicker. Issue #350
-    //    [director drawScene];
 }
 
 - (void) swapBuffers
@@ -215,6 +155,7 @@
 	// - preconditions
 	//	-> context_ MUST be the OpenGL context
 	//	-> renderbuffer_ must be the the RENDER BUFFER
+    BOOL multiSampling_ = NO;
     
 	if (multiSampling_)
 	{
@@ -225,6 +166,7 @@
 		glResolveMultisampleFramebufferAPPLE();
 	}
     
+    BOOL depthFormat_ = NO;
     
     if (multiSampling_)
     {
@@ -241,10 +183,7 @@
         
         glBindRenderbuffer(GL_RENDERBUFFER, [renderer_ colorRenderBuffer]);
         
-    }
-    
-    // not MSAA
-    else if (depthFormat_ )
+    }else if (depthFormat_ )
     {
         GLenum attachments[] = { GL_DEPTH_ATTACHMENT};
         glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, attachments);
@@ -256,43 +195,35 @@
 	// We can safely re-bind the framebuffer here, since this will be the
 	// 1st instruction of the new main loop
 	if( multiSampling_ )
+    {
 		glBindFramebuffer(GL_FRAMEBUFFER, [renderer_ msaaFrameBuffer]);
+    }
     
 	CHECK_GL_ERROR_DEBUG();
 }
 
-- (GLenum) convertPixelFormat:(NSString*) pixelFormat
-{
-	// define the pixel format
-	GLenum pFormat;
-    
-    
-	if([pixelFormat isEqualToString:@"EAGLColorFormat565"])
-		pFormat = GL_RGB565;
-	else
-		pFormat = GL_RGBA8_OES;
-    
-	return pFormat;
-}
-
-#pragma mark CCGLView - Point conversion
+#pragma mark VEGLView - Point conversion
 
 - (CGPoint) convertPointFromViewToSurface:(CGPoint)point
 {
 	CGRect bounds = [self bounds];
     
-	return CGPointMake((point.x - bounds.origin.x) / bounds.size.width * size_.width, (point.y - bounds.origin.y) / bounds.size.height * size_.height);
+	return CGPointMake((point.x - bounds.origin.x) / bounds.size.width * size_.width,
+                       (point.y - bounds.origin.y) / bounds.size.height * size_.height);
 }
 
 - (CGRect) convertRectFromViewToSurface:(CGRect)rect
 {
 	CGRect bounds = [self bounds];
     
-	return CGRectMake((rect.origin.x - bounds.origin.x) / bounds.size.width * size_.width, (rect.origin.y - bounds.origin.y) / bounds.size.height * size_.height, rect.size.width / bounds.size.width * size_.width, rect.size.height / bounds.size.height * size_.height);
+	return CGRectMake((rect.origin.x - bounds.origin.x) / bounds.size.width * size_.width,
+                      (rect.origin.y - bounds.origin.y) / bounds.size.height * size_.height,
+                      rect.size.width / bounds.size.width * size_.width,
+                      rect.size.height / bounds.size.height * size_.height);
 }
 
 // Pass the touches to the superview
-#pragma mark CCGLView - Touch Delegate
+#pragma mark VEGLView - Touch Delegate
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -329,18 +260,4 @@
 	}
 }
 
-#pragma mark - pinch & rotation
-- (void)_handlePinchEvent: (id)sender
-{
-    
-}
-
-- (void)_handleRotationEvent: (id)sender
-{
-    
-}
-
 @end
-
-
-#endif // __CC_PLATFORM_IOS

@@ -31,12 +31,12 @@
 #import "../../ccMacros.h"
 #ifdef __CC_PLATFORM_IOS
 
-#import "CCESRenderer.h"
+#import "VAGLRenderer.h"
 
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 
-@interface CCES2Renderer : NSObject <CCESRenderer>
+@interface VAES2Renderer : NSObject <VAGLRenderer>
 {
     // The pixel dimensions of the CAEAGLLayer
     GLint backingWidth_;

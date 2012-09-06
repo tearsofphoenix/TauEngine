@@ -24,7 +24,7 @@
  */
 
 #import "ccGLStateCache.h"
-#import "CCGLProgram.h"
+#import "VEGLProgram.h"
 #import "CCDirector.h"
 #import "ccConfig.h"
 #import "ccGLStateCache.h"

@@ -15,7 +15,7 @@ seeds.
 
 =====================
 
-File: OpenGL_Internal.h
+File: OpenGLInternal.h
 Abstract: This file is included for support purposes and isn't necessary for
 understanding this sample.
 
