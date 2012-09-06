@@ -449,7 +449,6 @@ static CCDirector *_sharedDirector = nil;
 	if( ! runningIsTransition )
     {
 		[runningScene_ onEnter];
-		[runningScene_ onEnterTransitionDidFinish];
 	}
 }
 

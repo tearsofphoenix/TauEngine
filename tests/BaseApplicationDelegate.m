@@ -40,6 +40,10 @@
 	[director_ setDisplayStats:NO];
 	[director_ setAnimationInterval:1.0/60];
 	
+    UIView *aView = [[UIView alloc] init];
+    
+    UIView *subView = [[UIView alloc] init];
+    [aView addSubview: subView];
 	// GL View
 	VEGLView *__glView = [[VEGLView alloc] initWithFrame: [window_ bounds]];
 	
@@ -96,7 +100,7 @@
 // application will be killed
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-	CC_DIRECTOR_END();
+	[[CCDirector sharedDirector] end];
 }
 
 // purge memory

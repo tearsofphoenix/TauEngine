@@ -43,8 +43,8 @@ Settings settings;
         
         _box2DNode = view;
         
-		[self addChild: view
-                     z: 0];
+		[self addChild: view];
+        
 		[view setScale:15];
 		[view setAnchorPoint:ccp(0,0)];
 		[view setPosition:ccp(s.width/2, s.height/3)];

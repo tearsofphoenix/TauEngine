@@ -227,14 +227,6 @@
  */
 -(void) onEnter;
 
-
-/** Event that is called when the VANode enters in the 'stage'.
- If the VANode enters the 'stage' with a transition, this event is called when the transition finishes.
- If you override onEnterTransitionDidFinish, you shall call [super onEnterTransitionDidFinish].
- @since v0.8
- */
--(void) onEnterTransitionDidFinish;
-
 /** Event that is called every time the VANode leaves the 'stage'.
  If the VANode leaves the 'stage' with a transition, this event is called when the transition finishes.
  During onExit you can't access a sibling node.
@@ -249,18 +241,11 @@
 
 // composition: ADD
 
-/** Adds a child to the container with z-order as 0.
- If the child is added to a 'running' node, then 'onEnter' and 'onEnterTransitionDidFinish' will be called immediately.
+/** Adds a child to the container.
+ If the child is added to a 'running' node, then 'onEnter' will be called immediately.
  @since v0.7.1
  */
--(void) addChild: (VANode*)node;
-
-/** Adds a child to the container with a z-order.
- If the child is added to a 'running' node, then 'onEnter' and 'onEnterTransitionDidFinish' will be called immediately.
- @since v0.7.1
- */
--(void) addChild: (VANode*)node
-               z: (NSInteger)z;
+- (void)addChild: (VANode*)node;
 
 // composition: REMOVE
 

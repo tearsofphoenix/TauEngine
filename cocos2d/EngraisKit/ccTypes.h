@@ -32,9 +32,7 @@
 #import <Foundation/Foundation.h>
 #import "ccMacros.h"
 
-#ifdef __CC_PLATFORM_IOS
 #import <CoreGraphics/CGGeometry.h>	// CGPoint
-#endif
 
 #import <GLKit/GLKit.h>
 

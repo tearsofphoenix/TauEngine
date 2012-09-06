@@ -25,9 +25,7 @@
 
 #import "ccMacros.h"
 
-#ifdef __CC_PLATFORM_IOS
 #import <UIKit/UIKit.h>		// Needed for UIDevice
-#endif
 
 
 #import "CCConfiguration.h"
@@ -165,14 +163,7 @@ static CCConfiguration *_sharedConfiguration = nil;
 			  );
 #endif // Mac
 
-		CCLOG(@"cocos2d: compiled with Profiling Support: %s",
-#if CC_ENABLE_PROFILERS
-
-			  "YES - *** Disable it when you finish profiling ***"
-#else
-			  "NO"
-#endif
-			  );
+		CCLOG(@"cocos2d: compiled with Profiling Support: %s", "NO");
 
 	}
 

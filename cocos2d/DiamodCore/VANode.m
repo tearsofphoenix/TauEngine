@@ -316,6 +316,11 @@
 - (void)insertChild: (VANode*)child
                   z: (NSInteger)z
 {
+    if( ! _children )
+    {
+        _children = CFArrayCreateMutable(CFAllocatorGetDefault(), 4, NULL);
+    }
+
     CFArrayAppendValue(_children, [child retain]);
     
 	[child _setZOrder:z];
@@ -389,11 +394,6 @@
 	_isRunning = YES;
 }
 
-- (void)onEnterTransitionDidFinish
-{
-	[(NSArray *)_children makeObjectsPerformSelector:@selector(onEnterTransitionDidFinish)];
-}
-
 - (void)onExitTransitionDidStart
 {
 	[(NSArray *)_children makeObjectsPerformSelector: @selector(onExitTransitionDidStart)];
@@ -412,32 +412,19 @@
  * If a class want's to extend the 'addChild' behaviour it only needs
  * to override this method
  */
+
 - (void)addChild: (VANode*)child
-               z: (NSInteger)z
 {
-	NSAssert( child != nil, @"Argument must be non-nil");
-	NSAssert( child.parent == nil, @"child already added. It can't be added again");
-    
-	if( ! _children )
-    {
-        _children = CFArrayCreateMutable(CFAllocatorGetDefault(), 4, NULL);
-    }
+    NSAssert( child != nil, @"Argument must be non-nil");
+	NSAssert( [child parent] == nil, @"child already added. It can't be added again");
     
 	[self insertChild: child
-                    z: z];
+                    z: [child zOrder]];
     
 	if( _isRunning )
     {
 		[child onEnter];
-		[child onEnterTransitionDidFinish];
 	}
-}
-
-- (void)addChild: (VANode*) child
-{
-	NSAssert( child != nil, @"Argument must be non-nil");
-	[self addChild: child
-                 z: [child zOrder]];
 }
 
 - (void)removeFromParentAndCleanup: (BOOL)cleanup

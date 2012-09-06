@@ -26,7 +26,6 @@
 // Only compile this code on iOS. These files should NOT be included on your Mac project.
 // But in case they are included, it won't be compiled.
 #import "ccMacros.h"
-#ifdef __CC_PLATFORM_IOS
 
 
 #import "CCTouchDispatcher.h"
@@ -336,11 +335,13 @@
 	locked = NO;
     
 	//issue 1084, 1139 first add then remove
-	if( toAdd ) {
+	if( toAdd )
+    {
 		toAdd = NO;
 		Class targetedClass = [CCTargetedTouchHandler class];
         
-		for( CCTouchHandler *handler in handlersToAdd ) {
+		for( CCTouchHandler *handler in handlersToAdd )
+        {
 			if( [handler isKindOfClass:targetedClass] )
 				[self forceAddHandler:handler array:targetedHandlers];
 			else
@@ -349,14 +350,16 @@
 		[handlersToAdd removeAllObjects];
 	}
     
-	if( toRemove ) {
+	if( toRemove )
+    {
 		toRemove = NO;
 		for( id delegate in handlersToRemove )
 			[self forceRemoveDelegate:delegate];
 		[handlersToRemove removeAllObjects];
 	}
     
-	if( toQuit ) {
+	if( toQuit )
+    {
 		toQuit = NO;
 		[self forceRemoveAllDelegates];
 	}
@@ -385,5 +388,3 @@
 		[self touches:touches withEvent:event withTouchType:kCCTouchCancelled];
 }
 @end
-
-#endif // __CC_PLATFORM_IOS

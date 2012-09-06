@@ -125,7 +125,7 @@
 	return [self initWithTarget: t
                        selector: s
                        interval: 0
-                         repeat: kCCRepeatForever
+                         repeat: UINT_MAX
                           delay: 0];
 }
 
@@ -152,7 +152,7 @@
 		delay = d;
 		useDelay = (delay > 0) ? YES : NO;
 		repeat = r;
-		runForever = (repeat == kCCRepeatForever) ? YES : NO;
+		runForever = (repeat == UINT_MAX) ? YES : NO;
 	}
     
 	return self;
@@ -324,7 +324,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
                  forTarget: target
                   interval: interval
                     paused: paused
-                    repeat: kCCRepeatForever
+                    repeat: UINT_MAX
                      delay: 0.0f];
 }
 

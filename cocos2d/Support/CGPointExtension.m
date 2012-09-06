@@ -64,13 +64,12 @@ CGPoint ccpLerp(CGPoint a, CGPoint b, float alpha)
 	return ccpAdd(ccpMult(a, 1.f - alpha), ccpMult(b, alpha));
 }
 
-float clampf(float value, float min_inclusive, float max_inclusive)
+float clampf(float v, float min, float max)
 {
-	if (min_inclusive > max_inclusive)
-    {
-		CC_SWAP(min_inclusive,max_inclusive);
-	}
-	return value < min_inclusive ? min_inclusive : value < max_inclusive? value : max_inclusive;
+    if( v < min ) v = min;
+    if( v > max ) v = max;
+    
+    return v;
 }
 
 CGPoint ccpClamp(CGPoint p, CGPoint min_inclusive, CGPoint max_inclusive)

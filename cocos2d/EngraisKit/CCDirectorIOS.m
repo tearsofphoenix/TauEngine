@@ -54,10 +54,6 @@
 
 #import "VEDataSource.h"
 
-#if CC_ENABLE_PROFILERS
-#import "CCProfiling.h"
-#endif
-
 #import <QuartzCore/QuartzCore.h>
 
 #pragma mark -

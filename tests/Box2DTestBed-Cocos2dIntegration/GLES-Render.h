@@ -28,11 +28,7 @@
 
 #import "cocos2d.h"
 
-#ifdef __CC_PLATFORM_IOS
 #import <OpenGLES/EAGL.h>
-#elif defined(__CC_PLATFORM_MAC)
-#import <OpenGL/OpenGL.h>
-#endif
 
 #include "Box2D.h"
 
