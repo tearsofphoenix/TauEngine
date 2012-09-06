@@ -25,14 +25,9 @@
  * THE SOFTWARE.
  */
 
-#import "ccTypes.h"
-#import "ccGLStateCache.h"
+#import <Foundation/Foundation.h>
 #import "VACamera.h"
 
-enum
-{
-	kCCNodeTagInvalid = -1,
-};
 
 @class CCScheduler;
 @class CCAction;
@@ -304,7 +299,7 @@ enum
 - (void)drawInContext: (VGContext *)context;
 
 /** recursive method that visit its children and draw them */
--(void)visitWithContext: (VGContext *)context;
+- (void)visitWithContext: (VGContext *)context;
 
 
 @end

@@ -209,9 +209,12 @@
         }
 	}
     
-    if (toAdd) {
-		for( CCTouchHandler *handler in handlersToAdd ) {
-            if (handler.delegate == delegate) {
+    if (toAdd)
+    {
+		for( CCTouchHandler *handler in handlersToAdd )
+        {
+            if (handler.delegate == delegate)
+            {
                 return handler;
             }
         }

@@ -55,7 +55,10 @@ static NSMutableDictionary *__VEValueFunctionPointers = nil;
 
 + (void)load
 {
-    __VEValueFunctionPointers = [[NSMutableDictionary alloc] init];
+    @autoreleasepool
+    {
+
+        __VEValueFunctionPointers = [[NSMutableDictionary alloc] init];
     
 #define VAValueFunctionCreate(func, key) [__VEValueFunctionPointers setObject: [NSValue valueWithPointer: func] forKey: key]
 
@@ -74,6 +77,7 @@ static NSMutableDictionary *__VEValueFunctionPointers = nil;
     VAValueFunctionCreate(&__VEValueFunctions[10], kVEValueFunctionTranslateZ);
 
 #undef VAValueFunctionCreate
+    }
 }
 
 + (id)functionWithName: (NSString *)name

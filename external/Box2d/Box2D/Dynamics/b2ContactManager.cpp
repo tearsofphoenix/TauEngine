@@ -245,8 +245,8 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	// Contact creation may swap fixtures.
 	fixtureA = c->GetFixtureA();
 	fixtureB = c->GetFixtureB();
-	indexA = 0;//c->GetChildIndexA();
-	indexB = 0;//c->GetChildIndexB();
+	//indexA = 0;//c->GetChildIndexA();
+	//indexB = 0;//c->GetChildIndexB();
 	bodyA = fixtureA->GetBody();
 	bodyB = fixtureB->GetBody();
 

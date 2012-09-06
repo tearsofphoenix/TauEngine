@@ -104,9 +104,12 @@
 	// Allocate color buffer backing based on the current layer size
 	glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer_);
 
-	if( ! [context_ renderbufferStorage:GL_RENDERBUFFER fromDrawable:layer] )
+	if( ! [context_ renderbufferStorage: GL_RENDERBUFFER
+                           fromDrawable: layer] )
+    {
 		CCLOG(@"failed to call context");
-
+    }
+    
 	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &backingWidth_);
 	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &backingHeight_);
 
@@ -114,7 +117,8 @@
 
 	if (multiSampling_)
 	{
-		if ( msaaColorbuffer_) {
+		if ( msaaColorbuffer_)
+        {
 			glDeleteRenderbuffers(1, &msaaColorbuffer_);
 			msaaColorbuffer_ = 0;
 		}
@@ -145,7 +149,8 @@
 
 	if (depthFormat_)
 	{
-		if( ! depthBuffer_ ) {
+		if( ! depthBuffer_ )
+        {
 			glGenRenderbuffers(1, &depthBuffer_);
 			NSAssert(depthBuffer_, @"Can't create depth buffer");
 		}
@@ -153,10 +158,13 @@
 		glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer_);
 		
 		if( multiSampling_ )
+        {
 			glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER, samplesToUse_, depthFormat_,backingWidth_, backingHeight_);
-		else
+		}else
+        {
 			glRenderbufferStorage(GL_RENDERBUFFER, depthFormat_, backingWidth_, backingHeight_);
-
+        }
+        
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer_);
 
 		// bind color buffer
@@ -165,8 +173,8 @@
 
 	CHECK_GL_ERROR();
 
-	GLenum error;
-	if( (error=glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE)
+	GLenum error = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if( error != GL_FRAMEBUFFER_COMPLETE)
 	{
 		CCLOG(@"Failed to make complete framebuffer object 0x%X", error);
 		return NO;

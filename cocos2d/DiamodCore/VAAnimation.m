@@ -20,11 +20,14 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
 
 + (void)load
 {
-    __VEAnimationDefaultKeyValues = [[NSMutableDictionary alloc] init];
-    [__VEAnimationDefaultKeyValues setObject: kVEFillModeRemoved
+    @autoreleasepool
+    {
+        __VEAnimationDefaultKeyValues = [[NSMutableDictionary alloc] init];
+        [__VEAnimationDefaultKeyValues setObject: kVEFillModeRemoved
                                       forKey: @"fillMode"];
-    [__VEAnimationDefaultKeyValues setObject: [NSNumber numberWithFloat: 1]
-                                      forKey: @"speed"];
+        [__VEAnimationDefaultKeyValues setObject: [NSNumber numberWithFloat: 1]
+                                          forKey: @"speed"];
+    }
 }
 
 + (id)animation

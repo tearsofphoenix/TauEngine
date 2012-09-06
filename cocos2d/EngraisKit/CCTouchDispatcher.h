@@ -93,27 +93,33 @@ struct ccTouchHandlerHelperData
 }
 
 /** Whether or not the events are going to be dispatched. Default: YES */
-@property (nonatomic, assign) BOOL canDispatchEvents;
+@property (nonatomic) BOOL canDispatchEvents;
 
 /** Adds a standard touch delegate to the dispatcher's list.
  See StandardTouchDelegate description.
  IMPORTANT: The delegate will be retained.
  */
--(void) addStandardDelegate:(id<CCStandardTouchDelegate>) delegate priority:(int)priority;
+- (void)addStandardDelegate: (id<CCStandardTouchDelegate>)delegate
+                   priority: (int)priority;
+
 /** Adds a targeted touch delegate to the dispatcher's list.
  See TargetedTouchDelegate description.
  IMPORTANT: The delegate will be retained.
  */
--(void) addTargetedDelegate:(id<CCTargetedTouchDelegate>) delegate priority:(int)priority swallowsTouches:(BOOL)swallowsTouches;
+-(void) addTargetedDelegate: (id<CCTargetedTouchDelegate>)delegate
+                   priority: (int)priority
+            swallowsTouches: (BOOL)swallowsTouches;
+
 /** Removes a touch delegate.
  The delegate will be released
  */
--(void) removeDelegate:(id) delegate;
+- (void)removeDelegate: (id)delegate;
 /** Removes all touch delegates, releasing all the delegates */
--(void) removeAllDelegates;
+-(void)removeAllDelegates;
 /** Changes the priority of a previously added delegate. The lower the number,
  the higher the priority */
--(void) setPriority:(int) priority forDelegate:(id) delegate;
+-(void)setPriority: (int)priority
+       forDelegate: (id)delegate;
 
 @end
 

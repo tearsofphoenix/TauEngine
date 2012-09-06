@@ -64,7 +64,6 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 // Only compile this code on iOS. These files should NOT be included on your Mac project.
 // But in case they are included, it won't be compiled.
 #import "ccMacros.h"
-#ifdef __CC_PLATFORM_IOS
 
 #import <GLKit/GLKit.h>
 
@@ -88,13 +87,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 @interface VEGLView : GLKView
 {
     id<VAGLRenderer>		renderer_;
-
-	CGSize					size_;
 	id<CCTouchDelegate>		touchDelegate_;
 }
-
-/** returns surface size in pixels */
-@property(nonatomic,readonly) CGSize surfaceSize;
 
 /** touch delegate */
 @property(nonatomic, assign) id<CCTouchDelegate> touchDelegate;
@@ -102,9 +96,4 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 /** VEGLView uses double-buffer. This method swaps the buffers */
 -(void) swapBuffers;
 
-- (CGPoint) convertPointFromViewToSurface:(CGPoint)point;
-- (CGRect) convertRectFromViewToSurface:(CGRect)rect;
-
 @end
-
-#endif // __CC_PLATFORM_IOS

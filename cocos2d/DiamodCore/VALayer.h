@@ -25,12 +25,9 @@
  */
 
 
-
-#import "ccMacros.h"
-
 #import "CCTouchDelegateProtocol.h"		// Touches only supported on iOS
 
-
+#import "ccTypes.h"
 #import "VANode.h"
 
 @class VAAnimation;

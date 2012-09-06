@@ -11,8 +11,7 @@
 
 @interface VAMediaTimingFunction : NSObject <NSCoding>
 {
-@private
-    struct VAMediaTimingFunctionPrivate *_priv;
+
 }
 
 /* A convenience method for creating common timing functions. The

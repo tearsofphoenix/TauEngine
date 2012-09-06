@@ -81,8 +81,6 @@
 
 @implementation VEGLView
 
-@synthesize surfaceSize = size_;
-
 @synthesize touchDelegate = touchDelegate_;
 
 - (id) initWithFrame: (CGRect)frame
@@ -106,7 +104,6 @@
 {
 	if( (self = [super initWithCoder:aDecoder]) )
     {
-		size_ = [self bounds].size;
         
 		if( ! [self setupSurfaceWithSharegroup: nil] )
         {
@@ -145,8 +142,6 @@
 - (void) layoutSubviews
 {
 	[renderer_ resizeFromLayer: (CAEAGLLayer*)self.layer];
-    
-	size_ = [renderer_ backingSize];
 }
 
 - (void) swapBuffers
@@ -202,25 +197,6 @@
 	CHECK_GL_ERROR_DEBUG();
 }
 
-#pragma mark VEGLView - Point conversion
-
-- (CGPoint) convertPointFromViewToSurface:(CGPoint)point
-{
-	CGRect bounds = [self bounds];
-    
-	return CGPointMake((point.x - bounds.origin.x) / bounds.size.width * size_.width,
-                       (point.y - bounds.origin.y) / bounds.size.height * size_.height);
-}
-
-- (CGRect) convertRectFromViewToSurface:(CGRect)rect
-{
-	CGRect bounds = [self bounds];
-    
-	return CGRectMake((rect.origin.x - bounds.origin.x) / bounds.size.width * size_.width,
-                      (rect.origin.y - bounds.origin.y) / bounds.size.height * size_.height,
-                      rect.size.width / bounds.size.width * size_.width,
-                      rect.size.height / bounds.size.height * size_.height);
-}
 
 // Pass the touches to the superview
 #pragma mark VEGLView - Touch Delegate

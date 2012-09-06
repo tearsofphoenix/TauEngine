@@ -61,7 +61,10 @@
                   z: (NSInteger)z;
 // used internally to alter the zOrder variable. DON'T call this method manually
 - (void)_setZOrder: (NSInteger) z;
-- (void)detachChild: (VANode *)child cleanup: (BOOL)doCleanup;
+
+- (void)detachChild: (VANode *)child
+            cleanup: (BOOL)doCleanup;
+
 @end
 
 @implementation VANode
@@ -138,7 +141,7 @@
         
 		_visible = YES;
         
-		_tag = kCCNodeTagInvalid;
+		_tag = 0;
         
 		_zOrder = 0;
         
@@ -316,7 +319,9 @@
     CFArrayAppendValue(_children, [child retain]);
     
 	[child _setZOrder:z];
-    [self sortAllChildren];
+    [child setParent: self];
+    
+    //[self sortAllChildren];
 }
 
 @end
@@ -421,8 +426,6 @@
 	[self insertChild: child
                     z: z];
     
-	[child setParent: self];
-    
 	if( _isRunning )
     {
 		[child onEnter];
@@ -433,7 +436,8 @@
 - (void)addChild: (VANode*) child
 {
 	NSAssert( child != nil, @"Argument must be non-nil");
-	[self addChild:child z:child.zOrder];
+	[self addChild: child
+                 z: [child zOrder]];
 }
 
 - (void)removeFromParentAndCleanup: (BOOL)cleanup

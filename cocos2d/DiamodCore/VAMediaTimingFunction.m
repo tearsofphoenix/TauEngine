@@ -32,7 +32,9 @@ static float __VEEaseInOutControlPoints[4] = {0.42, 0, 0.58, 1};
 
 + (void)load
 {
-    __VEMediaTimingFunctions = [[NSMutableDictionary alloc] initWithCapacity: 5];
+    @autoreleasepool
+    {
+        __VEMediaTimingFunctions = [[NSMutableDictionary alloc] initWithCapacity: 5];
     
 #define _VEMediaTimineFunctionStore(address, name) [__VEMediaTimingFunctions setObject: [NSValue valueWithPointer: address] forKey: name]
     
@@ -43,7 +45,8 @@ static float __VEEaseInOutControlPoints[4] = {0.42, 0, 0.58, 1};
     _VEMediaTimineFunctionStore(__VELinearControlPoints, kVEMediaTimingFunctionDefault);
     
 #undef _VEMediaTimineFunctionStore
-    
+        
+    }
 }
 /* A convenience method for creating common timing functions. The
  * currently supported names are `linear', `easeIn', `easeOut' and

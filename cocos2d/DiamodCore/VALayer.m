@@ -35,8 +35,7 @@
 #import "CCDirectorIOS.h"
 #import "VGContext.h"
 #import "VGColor.h"
-
-#pragma mark - Layer
+#import "ccGLStateCache.h"
 
 @interface VALayer ()
 {

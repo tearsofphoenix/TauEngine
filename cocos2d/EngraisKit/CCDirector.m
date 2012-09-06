@@ -475,7 +475,8 @@ static CCDirector *_sharedDirector = nil;
 
 	[self setAnimationInterval: oldAnimationInterval_];
 
-	if( gettimeofday( &lastUpdate_, NULL) != 0 ) {
+	if( gettimeofday( &lastUpdate_, NULL) != 0 )
+    {
 		CCLOG(@"cocos2d: Director: Error in gettimeofday");
 	}
 
