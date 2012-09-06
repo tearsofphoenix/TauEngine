@@ -43,10 +43,10 @@
 
 // support imports
 
-#import "Support/OpenGLInternal.h"
-#import "Support/CGPointExtension.h"
+#import "OpenGLInternal.h"
+#import "CGPointExtension.h"
 
-#import "Platforms/iOS/CCDirectorIOS.h"
+#import "CCDirectorIOS.h"
 #import "VEGLView.h"
 
 

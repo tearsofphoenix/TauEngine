@@ -30,7 +30,7 @@
 #import "ccGLStateCache.h"
 #import "ccMacros.h"
 
-#import "Support/OpenGLInternal.h"
+#import "OpenGLInternal.h"
 
 
 #pragma mark - Function Pointer Definitions

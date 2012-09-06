@@ -28,7 +28,7 @@
 
 #import "ccMacros.h"
 
-#import "Platforms/iOS/CCTouchDelegateProtocol.h"		// Touches only supported on iOS
+#import "CCTouchDelegateProtocol.h"		// Touches only supported on iOS
 
 
 #import "VANode.h"

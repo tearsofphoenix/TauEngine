@@ -32,12 +32,12 @@
 #import "ccConfig.h"
 #import "ccMacros.h"
 #import "CCScheduler.h"
-#import "Support/CGPointExtension.h"
+#import "CGPointExtension.h"
 
-#import "Support/TransformUtils.h"
+#import "TransformUtils.h"
 
 #import "VEGLProgram.h"
-#import "Platforms/iOS/CCDirectorIOS.h"
+#import "CCDirectorIOS.h"
 
 #import "VGContext.h"
 

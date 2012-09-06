@@ -27,7 +27,7 @@
 #include "ccShaders.h"
 #include "VEGLProgram.h"
 #include "ccMacros.h"
-#include "Support/OpenGLInternal.h"
+#include "OpenGLInternal.h"
 
 static NSMutableDictionary	*_programs = nil;
 

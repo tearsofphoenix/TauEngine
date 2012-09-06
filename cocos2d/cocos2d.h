@@ -67,19 +67,19 @@
 #import "ccTypes.h"
 #import "ccMacros.h"
 
-#import "Platforms/iOS/CCTouchDispatcher.h"
-#import "Platforms/iOS/CCTouchDelegateProtocol.h"
-#import "Platforms/iOS/CCTouchHandler.h"
-#import "Platforms/iOS/VEGLView.h"
-#import "Platforms/iOS/CCDirectorIOS.h"
+#import "CCTouchDispatcher.h"
+#import "CCTouchDelegateProtocol.h"
+#import "CCTouchHandler.h"
+#import "VEGLView.h"
+#import "CCDirectorIOS.h"
 
 //
 // cocos2d helper files
 //
-#import "Support/OpenGLInternal.h"
+#import "OpenGLInternal.h"
 
-#import "Support/CGPointExtension.h"
+#import "CGPointExtension.h"
 
-#import "Support/TransformUtils.h"
+#import "TransformUtils.h"
 
 

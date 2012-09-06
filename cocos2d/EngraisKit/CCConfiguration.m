@@ -33,7 +33,7 @@
 #import "CCConfiguration.h"
 #import "ccMacros.h"
 #import "ccConfig.h"
-#import "Support/OpenGLInternal.h"
+#import "OpenGLInternal.h"
 
 static NSArray *_glExtensions = nil;
 
