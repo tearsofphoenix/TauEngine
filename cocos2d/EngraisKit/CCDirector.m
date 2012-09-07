@@ -514,15 +514,13 @@ static CCDirector *_sharedDirector = nil;
 
 		if( accumDt_ > CC_DIRECTOR_STATS_INTERVAL)
 		{
-            printf("spf: %.3f\n", secondsPerFrame_);
-            
-			frameRate_ = frames_/accumDt_;
+            frameRate_ = frames_/accumDt_;
 			frames_ = 0;
 			accumDt_ = 0;
 
-            printf("fps: %.1f\n", frameRate_);
-			
-            printf("draws: %4d\n", (NSInteger)__ccNumberOfDraws);
+//            printf("spf: %.3f\n", secondsPerFrame_);
+//            printf("fps: %.1f\n", frameRate_);
+//            printf("draws: %4d\n", (NSInteger)__ccNumberOfDraws);
 
 		}
 	}

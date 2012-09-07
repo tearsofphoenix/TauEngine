@@ -10,6 +10,10 @@
 
 #import "cocos2d.h"
 
+@interface VAWindow : UIWindow
+
+@end
+
 @class UIWindow, UINavigationController;
 
 @interface BaseApplicationDelegate : NSObject <UIApplicationDelegate, CCDirectorDelegate>

@@ -120,6 +120,8 @@
 
 - (BOOL)setupSurfaceWithSharegroup: (EAGLSharegroup*)sharegroup
 {
+    //[self setUserInteractionEnabled: NO];
+    
 	renderer_ = [[VAES2Renderer alloc] initWithSharegroup: sharegroup
                                          withMultiSampling: NO
                                        withNumberOfSamples: 0];
@@ -200,6 +202,7 @@
 
 // Pass the touches to the superview
 #pragma mark VEGLView - Touch Delegate
+
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

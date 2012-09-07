@@ -8,13 +8,20 @@
 
 #import "BaseApplicationDelegate.h"
 
-// CLASS IMPLEMENTATIONS
-#ifdef __CC_PLATFORM_IOS
-
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGLDrawable.h>
 
 #import "cocos2d.h"
+
+@implementation VAWindow
+
+- (void)sendEvent: (UIEvent *)event
+{
+    NSLog(@"%@", event);
+    [super sendEvent: event];
+}
+
+@end
 
 @implementation BaseApplicationDelegate
 
@@ -33,7 +40,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	// Main Window
-	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	window_ = [[VAWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
 	// Director
 	director_ = (CCDirectorIOS*)[CCDirector sharedDirector];
@@ -122,48 +129,6 @@
     
 	[super dealloc];
 }
-@end
-
-#elif defined(__CC_PLATFORM_MAC)
-
-@implementation BaseApplicationDelegate
-
-@synthesize window=window_, glView=glView_, director = director_;
-
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-	director_ = (CCDirectorMac*) [CCDirector sharedDirector];
-    
-	[director_ setDisplayStats:YES];
-    
-	[director_ setView:glView_];
-    
-	// Center window
-	[self.window center];																		\
-	
-    //	[director setProjection:kCCDirectorProjection2D];
-    
-	// Enable "moving" mouse event. Default no.
-	[window_ setAcceptsMouseMovedEvents:NO];
-    
-	// EXPERIMENTAL stuff.
-	// 'Effects' don't work correctly when autoscale is turned on.
-	[director_ setResizeMode:kCCDirectorResize_NoScale]; // kCCDirectorResize_AutoScale
-}
-
-- (BOOL) applicationShouldTerminateAfterLastWindowClosed: (NSApplication *) theApplication
-{
-	return YES;
-}
-
-- (IBAction)toggleFullScreen: (id)sender
-{
-	CCDirectorMac *director = (CCDirectorMac*) [CCDirector sharedDirector];
-	[director setFullScreen: ! [director isFullScreen] ];
-}
 
 @end
-
-#endif // __CC_PLATFORM_MAC
-
 

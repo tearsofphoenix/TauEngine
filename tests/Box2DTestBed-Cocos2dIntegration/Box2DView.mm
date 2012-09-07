@@ -251,7 +251,6 @@ Settings settings;
 	CGPoint touchLocation=[touch locationInView:[touch view]];
 	touchLocation=[[CCDirector sharedDirector] convertToGL:touchLocation];
 	CGPoint nodePosition = [self convertToNodeSpace: touchLocation];
-    //	NSLog(@"pos: %f,%f -> %f,%f", touchLocation.x, touchLocation.y, nodePosition.x, nodePosition.y);
     
 	return test->MouseDown(b2Vec2(nodePosition.x,nodePosition.y));
 }

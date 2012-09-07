@@ -314,9 +314,7 @@ void Test::Step(Settings* settings)
 	m_pointCount = 0;
     
 	m_world->Step(timeStep, settings->velocityIterations, settings->positionIterations);
-    
-    //	m_world->DrawDebugData();
-    
+        
 	if (timeStep > 0.0f)
 	{
 		++m_stepCount;
