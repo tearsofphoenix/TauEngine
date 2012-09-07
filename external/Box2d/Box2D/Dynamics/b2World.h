@@ -123,12 +123,6 @@ public:
 	/// @param point2 the ray ending point
 	void RayCast(b2RayCastCallback* callback, const b2Vec2& point1, const b2Vec2& point2) const;
 
-	/// Get the world joint list. With the returned joint, use b2Joint::GetNext to get
-	/// the next joint in the world list. A NULL joint indicates the end of the list.
-	/// @return the head of the world joint list.
-	b2Joint* GetJointList();
-	const b2Joint* GetJointList() const;
-
 	/// Get the world contact list. With the returned contact, use b2Contact::GetNext to get
 	/// the next contact in the world list. A NULL contact indicates the end of the list.
 	/// @return the head of the world contact list.
@@ -236,9 +230,7 @@ private:
 	b2ContactManager m_contactManager;
     
     std::vector<b2Body *>  m_bodyList;
-	b2Joint* m_jointList;
-
-	int32 m_jointCount;
+    std::vector<b2Joint *> m_jointList;
 
 	b2Vec2 m_gravity;
 	bool m_allowSleep;
@@ -261,16 +253,6 @@ private:
     pthread_mutex_t m_lock;
 };
 
-inline b2Joint* b2World::GetJointList()
-{
-	return m_jointList;
-}
-
-inline const b2Joint* b2World::GetJointList() const
-{
-	return m_jointList;
-}
-
 inline b2Contact* b2World::GetContactList()
 {
 	return m_contactManager.m_contactList;
@@ -283,7 +265,7 @@ inline const b2Contact* b2World::GetContactList() const
 
 inline int32 b2World::GetJointCount() const
 {
-	return m_jointCount;
+	return m_jointList.size();
 }
 
 inline int32 b2World::GetContactCount() const

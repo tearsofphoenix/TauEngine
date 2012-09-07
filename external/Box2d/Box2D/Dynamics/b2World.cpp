@@ -39,10 +39,6 @@ b2World::b2World(const b2Vec2& gravity)
 	m_destructionListener = NULL;
 	m_debugDraw = NULL;
 
-	m_jointList = NULL;
-
-	m_jointCount = 0;
-
 	m_warmStarting = true;
 	m_continuousPhysics = true;
 	m_subStepping = false;
@@ -184,13 +180,7 @@ b2Joint* b2World::CreateJoint(const b2JointDef* def)
 
 	// Connect to the world list.
 	j->m_prev = NULL;
-	j->m_next = m_jointList;
-	if (m_jointList)
-	{
-		m_jointList->m_prev = j;
-	}
-	m_jointList = j;
-	++m_jointCount;
+    m_jointList.push_back(j);
 
 	// Connect to the bodies' doubly linked lists.
 	j->m_edgeA.joint = j;
@@ -242,22 +232,8 @@ void b2World::DestroyJoint(b2Joint* j)
 
 	bool collideConnected = j->m_collideConnected;
 
-	// Remove from the doubly linked list.
-	if (j->m_prev)
-	{
-		j->m_prev->m_next = j->m_next;
-	}
-
-	if (j->m_next)
-	{
-		j->m_next->m_prev = j->m_prev;
-	}
-
-	if (j == m_jointList)
-	{
-		m_jointList = j->m_next;
-	}
-
+    std::remove(m_jointList.begin(), m_jointList.end(), j);
+    
 	// Disconnect from island graph.
 	b2Body* bodyA = j->m_bodyA;
 	b2Body* bodyB = j->m_bodyB;
@@ -306,9 +282,6 @@ void b2World::DestroyJoint(b2Joint* j)
 
 	b2Joint::Destroy(j, &m_blockAllocator);
 
-	b2Assert(m_jointCount > 0);
-	--m_jointCount;
-
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (collideConnected == false)
 	{
@@ -356,7 +329,7 @@ void b2World::Solve(const b2TimeStep& step)
 	// Size the island for the worst case.
 	b2Island island(m_bodyList.size(),
 					m_contactManager.m_contactCount,
-					m_jointCount,
+					m_jointList.size(),
 					&m_stackAllocator,
 					m_contactManager.m_contactListener);
 
@@ -370,8 +343,10 @@ void b2World::Solve(const b2TimeStep& step)
 	{
 		c->m_flags &= ~b2Contact::e_islandFlag;
 	}
-	for (b2Joint* j = m_jointList; j; j = j->m_next)
-	{
+    
+    for (auto itr = m_jointList.begin(); itr != m_jointList.end(); ++itr)
+    {
+        b2Joint* j = *itr;
 		j->m_islandFlag = false;
 	}
 
@@ -1145,8 +1120,9 @@ void b2World::DrawDebugData()
 
 	if (flags & b2Draw::e_jointBit)
 	{
-		for (b2Joint* j = m_jointList; j; j = j->GetNext())
-		{
+        for (auto itr = m_jointList.begin(); itr != m_jointList.end(); ++itr)
+        {
+            b2Joint* j = *itr;
 			DrawJoint(j);
 		}
 	}
@@ -1241,7 +1217,7 @@ void b2World::Dump()
 	b2Log("m_world->SetGravity(g);\n");
 
 	b2Log("b2Body** bodies = (b2Body**)b2Alloc(%d * sizeof(b2Body*));\n", m_bodyList.size());
-	b2Log("b2Joint** joints = (b2Joint**)b2Alloc(%d * sizeof(b2Joint*));\n", m_jointCount);
+	b2Log("b2Joint** joints = (b2Joint**)b2Alloc(%d * sizeof(b2Joint*));\n", m_jointList.size());
 	int32 i = 0;
     for (auto bodyLooper = m_bodyList.begin(); bodyLooper != m_bodyList.end(); ++bodyLooper)
     {
@@ -1252,15 +1228,17 @@ void b2World::Dump()
 	}
 
 	i = 0;
-	for (b2Joint* j = m_jointList; j; j = j->m_next)
-	{
+    for (auto itr = m_jointList.begin(); itr != m_jointList.end(); ++itr)
+    {
+        b2Joint* j = *itr;
 		j->m_index = i;
 		++i;
 	}
 
 	// First pass on joints, skip gear joints.
-	for (b2Joint* j = m_jointList; j; j = j->m_next)
-	{
+    for (auto itr = m_jointList.begin(); itr != m_jointList.end(); ++itr)
+    {
+        b2Joint* j = *itr;
 		if (j->m_type == e_gearJoint)
 		{
 			continue;
@@ -1272,8 +1250,9 @@ void b2World::Dump()
 	}
 
 	// Second pass on joints, only gear joints.
-	for (b2Joint* j = m_jointList; j; j = j->m_next)
-	{
+    for (auto itr = m_jointList.begin(); itr != m_jointList.end(); ++itr)
+    {
+        b2Joint* j = *itr;
 		if (j->m_type != e_gearJoint)
 		{
 			continue;
