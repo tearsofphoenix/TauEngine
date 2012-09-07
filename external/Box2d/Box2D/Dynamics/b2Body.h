@@ -22,6 +22,7 @@
 #include <Box2D/Common/b2Math.h>
 #include <Box2D/Collision/Shapes/b2Shape.h>
 #include <memory>
+#include <vector>
 
 class b2Fixture;
 class b2Joint;
@@ -347,10 +348,6 @@ public:
 	/// Does this body have fixed rotation?
 	bool IsFixedRotation() const;
 
-	/// Get the list of all fixtures attached to this body.
-	b2Fixture* GetFixtureList();
-	const b2Fixture* GetFixtureList() const;
-
 	/// Get the list of all joints attached to this body.
 	b2JointEdge* GetJointList();
 	const b2JointEdge* GetJointList() const;
@@ -440,8 +437,7 @@ private:
 	b2Body* m_prev;
 	b2Body* m_next;
 
-	b2Fixture* m_fixtureList;
-	int32 m_fixtureCount;
+    std::vector<b2Fixture *> *m_fixtureList;
 
 	b2JointEdge* m_jointList;
 	b2ContactEdge* m_contactList;
@@ -690,16 +686,6 @@ inline void b2Body::SetSleepingAllowed(bool flag)
 inline bool b2Body::IsSleepingAllowed() const
 {
 	return (m_flags & e_autoSleepFlag) == e_autoSleepFlag;
-}
-
-inline b2Fixture* b2Body::GetFixtureList()
-{
-	return m_fixtureList;
-}
-
-inline const b2Fixture* b2Body::GetFixtureList() const
-{
-	return m_fixtureList;
 }
 
 inline b2JointEdge* b2Body::GetJointList()

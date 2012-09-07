@@ -31,6 +31,7 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world)
 	b2Assert(b2IsValid(bd->angularDamping) && bd->angularDamping >= 0.0f);
 	b2Assert(b2IsValid(bd->linearDamping) && bd->linearDamping >= 0.0f);
 
+    m_fixtureList = new std::vector<b2Fixture *>;
 	m_flags = 0;
 
 	if (bd->bullet)
@@ -100,9 +101,6 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world)
 	m_invI = 0.0f;
 
 	m_userData = bd->userData;
-
-	m_fixtureList = NULL;
-	m_fixtureCount = 0;
 }
 
 b2Body::~b2Body()
@@ -142,10 +140,10 @@ void b2Body::SetType(b2BodyType type)
 	m_torque = 0.0f;
 
 	// Since the body type changed, we need to flag contacts for filtering.
-	for (b2Fixture* f = m_fixtureList; f; f = f->m_next)
-	{
-		f->Refilter();
-	}
+    for (auto itr = m_fixtureList->begin(); itr != m_fixtureList->end(); ++itr)
+    {
+        (*itr)->Refilter();
+    }
 }
 
 b2Fixture* b2Body::CreateFixture(const b2FixtureDef* def)
@@ -167,10 +165,8 @@ b2Fixture* b2Body::CreateFixture(const b2FixtureDef* def)
 		b2BroadPhase* broadPhase = &m_world->m_contactManager.m_broadPhase;
 		fixture->CreateProxies(broadPhase, m_xf);
 	}
-
-	fixture->m_next = m_fixtureList;
-	m_fixtureList = fixture;
-	++m_fixtureCount;
+    
+    m_fixtureList->push_back(fixture);
 
 	fixture->m_body = this;
 
@@ -207,21 +203,24 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 	b2Assert(fixture->m_body == this);
 
 	// Remove the fixture from this body's singly linked list.
-	b2Assert(m_fixtureCount > 0);
-	b2Fixture** node = &m_fixtureList;
-	bool found = false;
-	while (*node != NULL)
-	{
-		if (*node == fixture)
-		{
-			*node = fixture->m_next;
-			found = true;
-			break;
-		}
 
-		node = &(*node)->m_next;
-	}
+    auto itr = m_fixtureList->begin();
+    bool found = false;
 
+    for (; itr != m_fixtureList->begin(); ++itr)
+    {
+        if (*itr == fixture)
+        {
+            found = true;
+            break;
+        }
+    }
+    
+    if (found)
+    {
+        m_fixtureList->erase(itr);
+    }
+    
 	// You tried to remove a shape that is not attached to this body.
 	b2Assert(found);
 
@@ -257,8 +256,6 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 	fixture->~b2Fixture();
 	allocator->Free(fixture, sizeof(b2Fixture));
 
-	--m_fixtureCount;
-
 	// Reset the mass data.
 	ResetMassData();
 }
@@ -285,8 +282,10 @@ void b2Body::ResetMassData()
 
 	// Accumulate mass over all fixtures.
 	b2Vec2 localCenter = b2Vec2_zero;
-	for (b2Fixture* f = m_fixtureList; f; f = f->m_next)
-	{
+    
+    for (auto itr = m_fixtureList->begin(); itr != m_fixtureList->end(); ++itr)
+    {
+        b2Fixture *f = *itr;
 		if (f->m_density == 0.0f)
 		{
 			continue;
@@ -417,8 +416,9 @@ void b2Body::SetTransform(const b2Vec2& position, float32 angle)
 	m_sweep.a0 = angle;
 
 	b2BroadPhase* broadPhase = &m_world->m_contactManager.m_broadPhase;
-	for (b2Fixture* f = m_fixtureList; f; f = f->m_next)
-	{
+    for (auto itr = m_fixtureList->begin(); itr != m_fixtureList->end(); ++itr)
+    {
+        b2Fixture *f = *itr;
 		f->Synchronize(broadPhase, m_xf, m_xf);
 	}
 
@@ -432,8 +432,9 @@ void b2Body::SynchronizeFixtures()
 	xf1.p = m_sweep.c0 - b2Mul(xf1.q, m_sweep.localCenter);
 
 	b2BroadPhase* broadPhase = &m_world->m_contactManager.m_broadPhase;
-	for (b2Fixture* f = m_fixtureList; f; f = f->m_next)
-	{
+    for (auto itr = m_fixtureList->begin(); itr != m_fixtureList->end(); ++itr)
+    {
+        b2Fixture *f = *itr;
 		f->Synchronize(broadPhase, xf1, m_xf);
 	}
 }
@@ -453,8 +454,9 @@ void b2Body::SetActive(bool flag)
 
 		// Create all proxies.
 		b2BroadPhase* broadPhase = &m_world->m_contactManager.m_broadPhase;
-		for (b2Fixture* f = m_fixtureList; f; f = f->m_next)
-		{
+        for (auto itr = m_fixtureList->begin(); itr != m_fixtureList->end(); ++itr)
+        {
+            b2Fixture *f = *itr;
 			f->CreateProxies(broadPhase, m_xf);
 		}
 
@@ -466,8 +468,9 @@ void b2Body::SetActive(bool flag)
 
 		// Destroy all proxies.
 		b2BroadPhase* broadPhase = &m_world->m_contactManager.m_broadPhase;
-		for (b2Fixture* f = m_fixtureList; f; f = f->m_next)
-		{
+        for (auto itr = m_fixtureList->begin(); itr != m_fixtureList->end(); ++itr)
+        {
+            b2Fixture *f = *itr;
 			f->DestroyProxies(broadPhase);
 		}
 
@@ -504,8 +507,9 @@ void b2Body::Dump()
 	b2Log("  bd.gravityScale = %.15lef;\n", m_gravityScale);
 	b2Log("  bodies[%d] = m_world->CreateBody(&bd);\n", m_islandIndex);
 	b2Log("\n");
-	for (b2Fixture* f = m_fixtureList; f; f = f->m_next)
-	{
+    for (auto itr = m_fixtureList->begin(); itr != m_fixtureList->end(); ++itr)
+    {
+        b2Fixture *f = *itr;
 		b2Log("  {\n");
 		f->Dump(bodyIndex);
 		b2Log("  }\n");

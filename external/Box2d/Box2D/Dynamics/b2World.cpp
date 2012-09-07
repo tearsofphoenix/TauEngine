@@ -73,14 +73,12 @@ b2World::~b2World()
 	{
 		b2Body* bNext = b->m_next;
 
-		b2Fixture* f = b->m_fixtureList;
-		while (f)
-		{
-			b2Fixture* fNext = f->m_next;
+        for (auto itr = b->m_fixtureList->begin(); itr != b->m_fixtureList->end(); ++itr)
+        {
+            b2Fixture* f = *itr;
 			f->m_proxyCount = 0;
 			f->Destroy(&m_blockAllocator);
-			f = fNext;
-		}
+        }
 
 		b = bNext;
 	}
@@ -168,11 +166,9 @@ void b2World::DestroyBody(b2Body* b)
 	b->m_contactList = NULL;
 
 	// Delete the attached fixtures. This destroys broad-phase proxies.
-	b2Fixture* f = b->m_fixtureList;
-	while (f)
-	{
-		b2Fixture* f0 = f;
-		f = f->m_next;
+    for (auto itr = b->m_fixtureList->begin(); itr != b->m_fixtureList->end(); ++itr)
+    {
+        b2Fixture *f0 = *itr;
 
 		if (m_destructionListener)
 		{
@@ -183,12 +179,7 @@ void b2World::DestroyBody(b2Body* b)
 		f0->Destroy(&m_blockAllocator);
 		f0->~b2Fixture();
 		m_blockAllocator.Free(f0, sizeof(b2Fixture));
-
-		b->m_fixtureList = f;
-		b->m_fixtureCount -= 1;
 	}
-	b->m_fixtureList = NULL;
-	b->m_fixtureCount = 0;
 
 	// Remove world body list.
 	if (b->m_prev)
@@ -1148,8 +1139,9 @@ void b2World::DrawDebugData()
 		for (b2Body* b = m_bodyList; b; b = b->GetNext())
 		{
 			const b2Transform& xf = b->GetTransform();
-			for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
-			{
+            for (auto itr = b->m_fixtureList->begin(); itr != b->m_fixtureList->end(); ++itr)
+            {
+                b2Fixture *f = *itr;
 				if (b->IsActive() == false)
 				{
 					DrawShape(f, xf, b2Color(0.5f, 0.5f, 0.3f));
@@ -1209,8 +1201,9 @@ void b2World::DrawDebugData()
 				continue;
 			}
 
-			for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
-			{
+            for (auto itr = b->m_fixtureList->begin(); itr != b->m_fixtureList->end(); ++itr)
+            {
+                b2Fixture *f = *itr;
 				for (int32 i = 0; i < f->m_proxyCount; ++i)
 				{
 					b2FixtureProxy* proxy = f->m_proxies + i;
