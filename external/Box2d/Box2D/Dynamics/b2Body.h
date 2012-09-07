@@ -434,8 +434,6 @@ private:
 	float32 m_torque;
 
 	b2World* m_world;
-	b2Body* m_prev;
-	b2Body* m_next;
 
     std::vector<b2Fixture *> *m_fixtureList;
 
@@ -706,16 +704,6 @@ inline b2ContactEdge* b2Body::GetContactList()
 inline const b2ContactEdge* b2Body::GetContactList() const
 {
 	return m_contactList;
-}
-
-inline b2Body* b2Body::GetNext()
-{
-	return m_next;
-}
-
-inline const b2Body* b2Body::GetNext() const
-{
-	return m_next;
 }
 
 inline void b2Body::SetUserData(void* data)
