@@ -204,25 +204,7 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 
 	// Remove the fixture from this body's singly linked list.
 
-    auto itr = m_fixtureList->begin();
-    bool found = false;
-
-    for (; itr != m_fixtureList->begin(); ++itr)
-    {
-        if (*itr == fixture)
-        {
-            found = true;
-            break;
-        }
-    }
-    
-    if (found)
-    {
-        m_fixtureList->erase(itr);
-    }
-    
-	// You tried to remove a shape that is not attached to this body.
-	b2Assert(found);
+    std::remove(m_fixtureList->begin(), m_fixtureList->end(), fixture);
 
 	// Destroy any contacts associated with the fixture.
 	b2ContactEdge* edge = m_contactList;
@@ -252,7 +234,7 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 
 	fixture->Destroy(allocator);
 	fixture->m_body = NULL;
-	fixture->m_next = NULL;
+	//fixture->m_next = NULL;
 	fixture->~b2Fixture();
 	allocator->Free(fixture, sizeof(b2Fixture));
 

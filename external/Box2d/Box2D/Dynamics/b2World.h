@@ -26,6 +26,7 @@
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/b2TimeStep.h>
 #include <pthread.h>
+#include <vector>
 
 struct b2AABB;
 struct b2BodyDef;
@@ -121,12 +122,6 @@ public:
 	/// @param point1 the ray starting point
 	/// @param point2 the ray ending point
 	void RayCast(b2RayCastCallback* callback, const b2Vec2& point1, const b2Vec2& point2) const;
-
-	/// Get the world body list. With the returned body, use b2Body::GetNext to get
-	/// the next body in the world list. A NULL body indicates the end of the list.
-	/// @return the head of the world body list.
-	b2Body* GetBodyList();
-	const b2Body* GetBodyList() const;
 
 	/// Get the world joint list. With the returned joint, use b2Joint::GetNext to get
 	/// the next joint in the world list. A NULL joint indicates the end of the list.
@@ -239,11 +234,10 @@ private:
 	int32 m_flags;
 
 	b2ContactManager m_contactManager;
-
-	b2Body* m_bodyList;
+    
+    std::vector<b2Body *>  m_bodyList;
 	b2Joint* m_jointList;
 
-	int32 m_bodyCount;
 	int32 m_jointCount;
 
 	b2Vec2 m_gravity;
@@ -267,16 +261,6 @@ private:
     pthread_mutex_t m_lock;
 };
 
-inline b2Body* b2World::GetBodyList()
-{
-	return m_bodyList;
-}
-
-inline const b2Body* b2World::GetBodyList() const
-{
-	return m_bodyList;
-}
-
 inline b2Joint* b2World::GetJointList()
 {
 	return m_jointList;
@@ -295,11 +279,6 @@ inline b2Contact* b2World::GetContactList()
 inline const b2Contact* b2World::GetContactList() const
 {
 	return m_contactManager.m_contactList;
-}
-
-inline int32 b2World::GetBodyCount() const
-{
-	return m_bodyCount;
 }
 
 inline int32 b2World::GetJointCount() const
@@ -366,5 +345,11 @@ inline const b2Profile& b2World::GetProfile() const
 {
 	return m_profile;
 }
+
+inline int32 b2World::GetBodyCount() const
+{
+    return m_bodyList.size();
+}
+
 
 #endif

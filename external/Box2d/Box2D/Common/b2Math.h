@@ -25,7 +25,7 @@
 #include <cfloat>
 #include <cstddef>
 #include <limits>
-
+#include <vector>
 /// This function is used to ensure that a floating point number is
 /// not a NaN or infinity.
 inline bool b2IsValid(float32 x)

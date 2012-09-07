@@ -114,6 +114,7 @@ public:
 
 	void Step(Settings* settings)
 	{
+        /*
 		bool sleeping = true;
 		for (b2Body* b = m_world->GetBodyList(); b; b = b->GetNext())
 		{
@@ -156,6 +157,7 @@ public:
 
 		m_debugDraw.DrawString(5, m_textLine, "Press 'c' to create a circle.");
 		m_textLine += 15;
+         */
 	}
 
 	static Test* Create()

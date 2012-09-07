@@ -140,11 +140,6 @@ public:
 	b2Body* GetBody();
 	const b2Body* GetBody() const;
 
-	/// Get the next fixture in the parent body's fixture list.
-	/// @return the next shape.
-	b2Fixture* GetNext();
-	const b2Fixture* GetNext() const;
-
 	/// Get the user data that was assigned in the fixture definition. Use this to
 	/// store your application specific data.
 	void* GetUserData() const;
@@ -217,7 +212,6 @@ protected:
 
 	float32 m_density;
 
-	b2Fixture* m_next;
 	b2Body* m_body;
 
 	b2Shape* m_shape;
@@ -278,16 +272,6 @@ inline b2Body* b2Fixture::GetBody()
 inline const b2Body* b2Fixture::GetBody() const
 {
 	return m_body;
-}
-
-inline b2Fixture* b2Fixture::GetNext()
-{
-	return m_next;
-}
-
-inline const b2Fixture* b2Fixture::GetNext() const
-{
-	return m_next;
 }
 
 inline void b2Fixture::SetDensity(float32 density)

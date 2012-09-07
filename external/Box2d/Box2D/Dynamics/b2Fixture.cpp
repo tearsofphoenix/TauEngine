@@ -31,7 +31,6 @@ b2Fixture::b2Fixture()
 {
 	m_userData = NULL;
 	m_body = NULL;
-	m_next = NULL;
 	m_proxies = NULL;
 	m_proxyCount = 0;
 	m_shape = NULL;
@@ -45,7 +44,6 @@ void b2Fixture::Create(b2BlockAllocator* allocator, b2Body* body, const b2Fixtur
 	m_restitution = def->restitution;
 
 	m_body = body;
-	m_next = NULL;
 
 	m_filter = def->filter;
 

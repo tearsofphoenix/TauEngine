@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 {
     @autoreleasepool
     {
-        objc_dumpClass(objc_getClass("CALayer"));
+        //objc_dumpClass(objc_getClass("CALayer"));
         
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([Box2DAppDelegate class]));
     }
