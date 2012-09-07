@@ -61,6 +61,8 @@ b2World::b2World(const b2Vec2& gravity)
 	m_contactManager.m_allocator = &m_blockAllocator;
 
 	memset(&m_profile, 0, sizeof(b2Profile));
+    
+    pthread_mutex_init(&m_lock, NULL);
 }
 
 b2World::~b2World()
@@ -905,8 +907,8 @@ void b2World::Step(float32 dt, int32 velocityIterations, int32 positionIteration
 		m_flags &= ~e_newFixture;
 	}
 
-	m_flags |= e_locked;
-
+    b2World::Lock();
+    
 	b2TimeStep step;
 	step.dt = dt;
 	step.velocityIterations	= velocityIterations;
@@ -957,8 +959,8 @@ void b2World::Step(float32 dt, int32 velocityIterations, int32 positionIteration
 		ClearForces();
 	}
 
-	m_flags &= ~e_locked;
-
+    b2World::Unlock();
+    
 	m_profile.step = stepTimer.GetMilliseconds();
 }
 
@@ -1258,7 +1260,7 @@ float32 b2World::GetTreeQuality() const
 
 void b2World::Dump()
 {
-	if ((m_flags & e_locked) == e_locked)
+	if (IsLocked())
 	{
 		return;
 	}

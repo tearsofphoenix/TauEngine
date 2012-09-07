@@ -15,12 +15,6 @@
 
 @implementation VAWindow
 
-- (void)sendEvent: (UIEvent *)event
-{
-    NSLog(@"%@", event);
-    [super sendEvent: event];
-}
-
 @end
 
 @implementation BaseApplicationDelegate

@@ -25,6 +25,7 @@
 #include <Box2D/Dynamics/b2ContactManager.h>
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/b2TimeStep.h>
+#include <pthread.h>
 
 struct b2AABB;
 struct b2BodyDef;
@@ -204,6 +205,13 @@ public:
 	/// @warning this should be called outside of a time step.
 	void Dump();
 
+protected:
+    /// Lock the world when create or destroy objects(etc, b2Body, Joints ...)
+    void Lock(void);
+    
+    /// unlock the world when finished create or destroy objects.
+    void Unlock(void);
+    
 private:
 
 	// m_flags
@@ -256,6 +264,7 @@ private:
 	bool m_stepComplete;
 
 	b2Profile m_profile;
+    pthread_mutex_t m_lock;
 };
 
 inline b2Body* b2World::GetBodyList()
@@ -311,6 +320,18 @@ inline void b2World::SetGravity(const b2Vec2& gravity)
 inline b2Vec2 b2World::GetGravity() const
 {
 	return m_gravity;
+}
+
+inline void b2World::Lock()
+{
+    //pthread_mutex_lock(&m_lock);
+    m_flags |= e_locked;
+}
+
+inline void b2World::Unlock()
+{
+    //pthread_mutex_unlock(&m_lock);
+    m_flags &= ~e_locked;
 }
 
 inline bool b2World::IsLocked() const
