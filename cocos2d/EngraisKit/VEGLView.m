@@ -203,7 +203,6 @@
 // Pass the touches to the superview
 #pragma mark VEGLView - Touch Delegate
 
-
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	if(touchDelegate_)
@@ -237,6 +236,11 @@
 		[touchDelegate_ touchesCancelled: touches
                                withEvent: event];
 	}
+}
+
+- (void)setTouchDelegate:(id<CCTouchDelegate>)touchDelegate
+{
+    touchDelegate_ = touchDelegate;
 }
 
 @end

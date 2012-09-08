@@ -107,26 +107,20 @@ Settings settings;
 	[[CCDirector sharedDirector] replaceScene: s];
 }
 
--(void) registerWithTouchDispatcher
+-(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	CCDirector *director = [CCDirector sharedDirector];
-	[[director touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+
 }
 
--(BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
-{
-	return YES;
-}
-
--(void) ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
+-(void) touchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
 }
 
--(void) ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
+-(void) touchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
 }
 
--(void) ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
+-(void) touchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	CGPoint touchLocation = [touch locationInView: [touch view]];
 	CGPoint prevLocation = [touch previousLocationInView: [touch view]];
@@ -238,24 +232,18 @@ Settings settings;
     [super dealloc];
 }
 
--(void) registerWithTouchDispatcher
-{
-	// higher priority than dragging
-	CCDirector *director = [CCDirector sharedDirector];
-	[[director touchDispatcher] addTargetedDelegate:self priority:-10 swallowsTouches:YES];
-}
-
-- (BOOL) ccTouchBegan:(UITouch*)touch withEvent:(UIEvent*)event
+- (void) touchBegan: (UITouch*)touch
+          withEvent: (UIEvent*)event
 {
     
 	CGPoint touchLocation=[touch locationInView:[touch view]];
 	touchLocation=[[CCDirector sharedDirector] convertToGL:touchLocation];
 	CGPoint nodePosition = [self convertToNodeSpace: touchLocation];
     
-	return test->MouseDown(b2Vec2(nodePosition.x,nodePosition.y));
+	test->MouseDown(b2Vec2(nodePosition.x,nodePosition.y));
 }
 
-- (void) ccTouchMoved:(UITouch*)touch withEvent:(UIEvent*)event
+- (void) touchMoved:(UITouch*)touch withEvent:(UIEvent*)event
 {
 	CGPoint touchLocation=[touch locationInView:[touch view]];
 	touchLocation=[[CCDirector sharedDirector] convertToGL:touchLocation];
@@ -264,7 +252,7 @@ Settings settings;
 	test->MouseMove(b2Vec2(nodePosition.x,nodePosition.y));
 }
 
-- (void) ccTouchEnded:(UITouch*)touch withEvent:(UIEvent*)event
+- (void) touchEnded:(UITouch*)touch withEvent:(UIEvent*)event
 {
 	CGPoint touchLocation=[touch locationInView:[touch view]];
 	touchLocation=[[CCDirector sharedDirector] convertToGL:touchLocation];

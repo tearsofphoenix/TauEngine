@@ -35,11 +35,6 @@
 		22BAA08B15F8864F00AEBED9 /* ccMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04515F8864F00AEBED9 /* ccMacros.h */; };
 		22BAA08C15F8864F00AEBED9 /* CCScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04615F8864F00AEBED9 /* CCScheduler.h */; };
 		22BAA08D15F8864F00AEBED9 /* CCScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04715F8864F00AEBED9 /* CCScheduler.m */; };
-		22BAA08E15F8864F00AEBED9 /* CCTouchDelegateProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04815F8864F00AEBED9 /* CCTouchDelegateProtocol.h */; };
-		22BAA08F15F8864F00AEBED9 /* CCTouchDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04915F8864F00AEBED9 /* CCTouchDispatcher.h */; };
-		22BAA09015F8864F00AEBED9 /* CCTouchDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04A15F8864F00AEBED9 /* CCTouchDispatcher.m */; };
-		22BAA09115F8864F00AEBED9 /* CCTouchHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04B15F8864F00AEBED9 /* CCTouchHandler.h */; };
-		22BAA09215F8864F00AEBED9 /* CCTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04C15F8864F00AEBED9 /* CCTouchHandler.m */; };
 		22BAA09315F8864F00AEBED9 /* ccTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04D15F8864F00AEBED9 /* ccTypes.h */; };
 		22BAA09415F8864F00AEBED9 /* NVTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04E15F8864F00AEBED9 /* NVTimer.h */; };
 		22BAA09515F8864F00AEBED9 /* NVTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04F15F8864F00AEBED9 /* NVTimer.m */; };
@@ -264,11 +259,6 @@
 		22BAA04515F8864F00AEBED9 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
 		22BAA04615F8864F00AEBED9 /* CCScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScheduler.h; sourceTree = "<group>"; };
 		22BAA04715F8864F00AEBED9 /* CCScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScheduler.m; sourceTree = "<group>"; };
-		22BAA04815F8864F00AEBED9 /* CCTouchDelegateProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTouchDelegateProtocol.h; sourceTree = "<group>"; };
-		22BAA04915F8864F00AEBED9 /* CCTouchDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTouchDispatcher.h; sourceTree = "<group>"; };
-		22BAA04A15F8864F00AEBED9 /* CCTouchDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCTouchDispatcher.m; sourceTree = "<group>"; };
-		22BAA04B15F8864F00AEBED9 /* CCTouchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTouchHandler.h; sourceTree = "<group>"; };
-		22BAA04C15F8864F00AEBED9 /* CCTouchHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCTouchHandler.m; sourceTree = "<group>"; };
 		22BAA04D15F8864F00AEBED9 /* ccTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccTypes.h; sourceTree = "<group>"; };
 		22BAA04E15F8864F00AEBED9 /* NVTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVTimer.h; sourceTree = "<group>"; };
 		22BAA04F15F8864F00AEBED9 /* NVTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVTimer.m; sourceTree = "<group>"; };
@@ -583,11 +573,6 @@
 				22BAA04515F8864F00AEBED9 /* ccMacros.h */,
 				22BAA04615F8864F00AEBED9 /* CCScheduler.h */,
 				22BAA04715F8864F00AEBED9 /* CCScheduler.m */,
-				22BAA04815F8864F00AEBED9 /* CCTouchDelegateProtocol.h */,
-				22BAA04915F8864F00AEBED9 /* CCTouchDispatcher.h */,
-				22BAA04A15F8864F00AEBED9 /* CCTouchDispatcher.m */,
-				22BAA04B15F8864F00AEBED9 /* CCTouchHandler.h */,
-				22BAA04C15F8864F00AEBED9 /* CCTouchHandler.m */,
 				22BAA04D15F8864F00AEBED9 /* ccTypes.h */,
 				22BAA04E15F8864F00AEBED9 /* NVTimer.h */,
 				22BAA04F15F8864F00AEBED9 /* NVTimer.m */,
@@ -1020,9 +1005,6 @@
 				22BAA08915F8864F00AEBED9 /* CCDirectorIOS.h in Headers */,
 				22BAA08B15F8864F00AEBED9 /* ccMacros.h in Headers */,
 				22BAA08C15F8864F00AEBED9 /* CCScheduler.h in Headers */,
-				22BAA08E15F8864F00AEBED9 /* CCTouchDelegateProtocol.h in Headers */,
-				22BAA08F15F8864F00AEBED9 /* CCTouchDispatcher.h in Headers */,
-				22BAA09115F8864F00AEBED9 /* CCTouchHandler.h in Headers */,
 				22BAA09315F8864F00AEBED9 /* ccTypes.h in Headers */,
 				22BAA09415F8864F00AEBED9 /* NVTimer.h in Headers */,
 				22BAA09615F8864F00AEBED9 /* VAES2Renderer.h in Headers */,
@@ -1246,8 +1228,6 @@
 				22BAA08815F8864F00AEBED9 /* CCDirector.m in Sources */,
 				22BAA08A15F8864F00AEBED9 /* CCDirectorIOS.m in Sources */,
 				22BAA08D15F8864F00AEBED9 /* CCScheduler.m in Sources */,
-				22BAA09015F8864F00AEBED9 /* CCTouchDispatcher.m in Sources */,
-				22BAA09215F8864F00AEBED9 /* CCTouchHandler.m in Sources */,
 				22BAA09515F8864F00AEBED9 /* NVTimer.m in Sources */,
 				22BAA09715F8864F00AEBED9 /* VAES2Renderer.m in Sources */,
 				22BAA09A15F8864F00AEBED9 /* VEDataSource.m in Sources */,

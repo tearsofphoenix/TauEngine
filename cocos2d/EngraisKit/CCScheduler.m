@@ -451,7 +451,8 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     
     NSArray *tmpList = [NSArray arrayWithArray: (NSArray *)list];
     
-    [tmpList enumerateObjectsUsingBlock: (^(tListEntry *obj, NSUInteger idx, BOOL *stop)
+    [tmpList enumerateObjectsWithOptions: NSEnumerationConcurrent
+                              usingBlock: (^(tListEntry *obj, NSUInteger idx, BOOL *stop)
                                           {
                                               if( priority < obj->priority )
                                               {
@@ -562,7 +563,8 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 {
 	// Custom Selectors
     
-    [(NSDictionary *)hashForSelectors enumerateKeysAndObjectsUsingBlock: (^(id key, tHashSelectorEntry *element, BOOL *stop)
+    [(NSDictionary *)hashForSelectors enumerateKeysAndObjectsWithOptions: NSEnumerationConcurrent
+                                                              usingBlock:(^(id key, tHashSelectorEntry *element, BOOL *stop)
                                                                           {
                                                                               [self unscheduleAllSelectorsForTarget: element->target];
                                                                           })];
@@ -571,7 +573,8 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     // Updates selectors
     
     
-    [(NSArray *)_updateArrays[minPriority] enumerateObjectsUsingBlock: (^(tListEntry *entry, NSUInteger idx, BOOL *stop)
+    [(NSArray *)_updateArrays[minPriority] enumerateObjectsWithOptions: NSEnumerationConcurrent
+                                                            usingBlock: (^(tListEntry *entry, NSUInteger idx, BOOL *stop)
                                                                         {
                                                                             if(entry->priority >= minPriority)
                                                                             {
@@ -676,7 +679,8 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     NSMutableSet* idsWithSelectors = [NSMutableSet setWithCapacity:50];
     
     // Custom Selectors
-    [(NSDictionary *)hashForSelectors enumerateKeysAndObjectsUsingBlock: (^(id key, tHashSelectorEntry *element, BOOL *stop)
+    [(NSDictionary *)hashForSelectors enumerateKeysAndObjectsWithOptions: NSEnumerationConcurrent
+                                                              usingBlock: (^(id key, tHashSelectorEntry *element, BOOL *stop)
                                                                           {
                                                                               element->paused = YES;
                                                                               [idsWithSelectors addObject:element->target];
@@ -685,7 +689,8 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     // Updates selectors
     
     
-    [(NSArray *)_updateArrays[minPriority] enumerateObjectsUsingBlock: (^(tListEntry *entry, NSUInteger idx, BOOL *stop)
+    [(NSArray *)_updateArrays[minPriority] enumerateObjectsWithOptions: NSEnumerationConcurrent
+                                                            usingBlock: (^(tListEntry *entry, NSUInteger idx, BOOL *stop)
                                                                         {
                                                                             if(entry->priority >= minPriority)
                                                                             {
@@ -724,7 +729,8 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     }
     
     // Iterate all over the  custome selectors
-    [(NSDictionary *)hashForSelectors enumerateKeysAndObjectsUsingBlock: (^(id key, tHashSelectorEntry *elt, BOOL *stop)
+    [(NSDictionary *)hashForSelectors enumerateKeysAndObjectsWithOptions: NSEnumerationConcurrent
+                                                              usingBlock: (^(id key, tHashSelectorEntry *elt, BOOL *stop)
                                                                           {
                                                                               
                                                                               currentTarget = elt;
