@@ -191,7 +191,6 @@ static CCDirector *_sharedDirector = nil;
     
     CCGLBlendFunc(CC_BLEND_SRC, CC_BLEND_DST);
     
-	//[self setDepthTest: view_.depthFormat];
 	[self setProjection: projection_];
     
 	// set other opengl default values

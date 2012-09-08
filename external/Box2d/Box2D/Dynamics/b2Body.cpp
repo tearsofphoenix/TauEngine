@@ -202,8 +202,8 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 
 	// Remove the fixture from this body's singly linked list.
 
-    std::remove(m_fixtureList->begin(), m_fixtureList->end(), fixture);
-
+    auto invalidItr = std::remove(m_fixtureList->begin(), m_fixtureList->end(), fixture);
+    m_fixtureList->erase(invalidItr);
 	// Destroy any contacts associated with the fixture.
 	b2ContactEdge* edge = m_contactList;
 	while (edge)

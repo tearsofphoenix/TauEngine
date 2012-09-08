@@ -166,8 +166,9 @@ void b2World::DestroyBody(b2Body* b)
 		m_blockAllocator.Free(f0, sizeof(b2Fixture));
 	}
 
-    std::remove(m_bodyList.begin(), m_bodyList.end(), b);
-
+    auto invalidItr = std::remove(m_bodyList.begin(), m_bodyList.end(), b);
+    m_bodyList.erase(invalidItr);
+    
 	b->~b2Body();
 	m_blockAllocator.Free(b, sizeof(b2Body));
 }

@@ -213,23 +213,6 @@ typedef struct _ccBlendFunc
 	GLenum dst;
 } ccBlendFunc;
 
-//! ccResolutionType
-typedef NS_ENUM(NSUInteger, ccResolutionType)
-{
-	//! Unknonw resolution type
-	kCCResolutionUnknown,
-
-	//! iPhone resolution type
-	kCCResolutioniPhone,
-	//! RetinaDisplay resolution type
-	kCCResolutioniPhoneRetinaDisplay,
-	//! iPad resolution type
-	kCCResolutioniPad,
-	//! iPad Retina Display resolution type
-	kCCResolutioniPadRetinaDisplay,
-
-} ;
-
 // XXX: If any of these enums are edited and/or reordered, udpate GLKEffectPropertyTexture.m
 //! Vertical text alignment type
 typedef NS_ENUM(NSUInteger, CCVerticalTextAlignment)

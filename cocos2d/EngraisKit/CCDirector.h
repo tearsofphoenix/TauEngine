@@ -285,11 +285,6 @@ and when to execute the Scenes.
  */
 -(void) purgeCachedData;
 
-// OpenGL Helper
-
-/** sets the OpenGL default values */
--(void) setGLDefaultValues;
-
 /** enables/disables OpenGL depth test */
 - (void) setDepthTest: (BOOL) on;
 

@@ -89,7 +89,7 @@
 		500111FE103B878B0059EC2E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 500111F3103B878B0059EC2E /* Icon.png */; };
 		50011200103B878B0059EC2E /* iPhoneTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500111F6103B878B0059EC2E /* iPhoneTest.mm */; };
 		50011201103B878B0059EC2E /* iPhoneTestEntries.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500111F7103B878B0059EC2E /* iPhoneTestEntries.mm */; };
-		50011202103B878B0059EC2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 500111F8103B878B0059EC2E /* main.m */; };
+		50011202103B878B0059EC2E /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500111F8103B878B0059EC2E /* main.mm */; };
 		5018F2E20DFDEBBA00C013A5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		5018F2E30DFDEBBA00C013A5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		5018F2E40DFDEBBA00C013A5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
@@ -208,6 +208,8 @@
 		E04C646612382F9400A4B3E6 /* b1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E04C640412382F9300A4B3E6 /* b1-hd.png */; };
 		E04C646712382F9400A4B3E6 /* b2-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E04C640512382F9300A4B3E6 /* b2-hd.png */; };
 		E121127B15E4758000A3E43A /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E121127A15E4758000A3E43A /* GLKit.framework */; };
+		E1D0EA1915FB08C1004ADE8F /* VEGLViewPrivateHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = E1D0EA1715FB08C0004ADE8F /* VEGLViewPrivateHandler.h */; };
+		E1D0EA1A15FB08C1004ADE8F /* VEGLViewPrivateHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0EA1815FB08C1004ADE8F /* VEGLViewPrivateHandler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -307,7 +309,7 @@
 		500111F5103B878B0059EC2E /* iPhoneTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iPhoneTest.h; sourceTree = "<group>"; };
 		500111F6103B878B0059EC2E /* iPhoneTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iPhoneTest.mm; sourceTree = "<group>"; };
 		500111F7103B878B0059EC2E /* iPhoneTestEntries.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iPhoneTestEntries.mm; sourceTree = "<group>"; };
-		500111F8103B878B0059EC2E /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		500111F8103B878B0059EC2E /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		500165990E72DB0E0085673F /* r1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = r1.png; sourceTree = "<group>"; };
 		5001659A0E72DB0E0085673F /* r2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = r2.png; sourceTree = "<group>"; };
 		5001659D0E72DB470085673F /* b1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b1.png; sourceTree = "<group>"; };
@@ -483,6 +485,8 @@
 		E0BC7D6F1342CC58001B4DCC /* LICENSE_Box2D.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE_Box2D.txt; sourceTree = "<group>"; };
 		E0BC7D711342CC58001B4DCC /* LICENSE_cocos2d.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE_cocos2d.txt; sourceTree = "<group>"; };
 		E121127A15E4758000A3E43A /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		E1D0EA1715FB08C0004ADE8F /* VEGLViewPrivateHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEGLViewPrivateHandler.h; sourceTree = "<group>"; };
+		E1D0EA1815FB08C1004ADE8F /* VEGLViewPrivateHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEGLViewPrivateHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -583,6 +587,8 @@
 				22BAA05415F8864F00AEBED9 /* VEDataSource.m */,
 				22BAA05515F8864F00AEBED9 /* VEGLView.h */,
 				22BAA05615F8864F00AEBED9 /* VEGLView.m */,
+				E1D0EA1715FB08C0004ADE8F /* VEGLViewPrivateHandler.h */,
+				E1D0EA1815FB08C1004ADE8F /* VEGLViewPrivateHandler.m */,
 				22BAA05715F8864F00AEBED9 /* VEMetaService.h */,
 				22BAA05815F8864F00AEBED9 /* VEMetaService.m */,
 				22BAA05915F8864F00AEBED9 /* VEShaderCache.h */,
@@ -690,7 +696,7 @@
 				500111F5103B878B0059EC2E /* iPhoneTest.h */,
 				500111F6103B878B0059EC2E /* iPhoneTest.mm */,
 				500111F7103B878B0059EC2E /* iPhoneTestEntries.mm */,
-				500111F8103B878B0059EC2E /* main.m */,
+				500111F8103B878B0059EC2E /* main.mm */,
 			);
 			name = "Box2DTestBed-Cocos2dIntegration";
 			path = "tests/Box2DTestBed-Cocos2dIntegration";
@@ -1021,6 +1027,7 @@
 				22BAA0B115F8864F00AEBED9 /* CGPointExtension.h in Headers */,
 				22BAA0B315F8864F00AEBED9 /* OpenGLInternal.h in Headers */,
 				22BAA0B415F8864F00AEBED9 /* TransformUtils.h in Headers */,
+				E1D0EA1915FB08C1004ADE8F /* VEGLViewPrivateHandler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1206,7 +1213,7 @@
 				500111FD103B878B0059EC2E /* GLES-Render.mm in Sources */,
 				50011200103B878B0059EC2E /* iPhoneTest.mm in Sources */,
 				50011201103B878B0059EC2E /* iPhoneTestEntries.mm in Sources */,
-				50011202103B878B0059EC2E /* main.m in Sources */,
+				50011202103B878B0059EC2E /* main.mm in Sources */,
 				A0D3A903149D2FAE0077CD93 /* BaseApplicationDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1247,6 +1254,7 @@
 				22BAA0B015F8864F00AEBED9 /* VGContext.m in Sources */,
 				22BAA0B215F8864F00AEBED9 /* CGPointExtension.m in Sources */,
 				22BAA0B515F8864F00AEBED9 /* TransformUtils.m in Sources */,
+				E1D0EA1A15FB08C1004ADE8F /* VEGLViewPrivateHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

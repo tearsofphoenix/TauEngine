@@ -57,12 +57,50 @@ static void objc_dumpClass(Class theClass)
     }
 }
 
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+void test(void)
+{
+	using namespace std;
+    
+	//Populate myvec with the data set 10, 5, -8, 5, 1, 4
+	vector<int> myvec;
+	myvec.push_back(10);
+	myvec.push_back(5);
+	myvec.push_back(-8);
+	myvec.push_back(5);
+	myvec.push_back(1);
+	myvec.push_back(4);
+    
+	cout << "\n\n Initial data set:	  ";
+	for(size_t i(0); i!=myvec.size(); ++i)
+		cout << myvec.at(i) << ' ';
+    
+	//Remove the data elements matching '5'
+	vector<int>::iterator invalid;
+	invalid = remove( myvec.begin(), myvec.end(), 5 );
+    
+	cout << "\n\n Data set after remove: ";
+	for(size_t i(0); i!=myvec.size(); ++i)
+		cout << myvec.at(i) << ' ';
+    
+	//Destroy the remaining invalid elements
+	myvec.erase( invalid, myvec.end() );
+    
+	cout << "\n\n Data set after erase:  ";
+	for(size_t i(0); i!=myvec.size(); ++i)
+		cout << myvec.at(i) << ' ';
+}
+
 int main(int argc, char *argv[])
 {
     @autoreleasepool
     {
         //objc_dumpClass(objc_getClass("CALayer"));
         
+        test();
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([Box2DAppDelegate class]));
     }
 }

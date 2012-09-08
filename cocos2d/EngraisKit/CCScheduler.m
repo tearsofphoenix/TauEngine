@@ -556,7 +556,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 
 -(void) unscheduleAllSelectors
 {
-    [self unscheduleAllSelectorsWithMinPriority:kCCPrioritySystem];
+    [self unscheduleAllSelectorsWithMinPriority: -1];
 }
 
 -(void) unscheduleAllSelectorsWithMinPriority: (CCSchedulerPriority)minPriority
@@ -671,7 +671,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 
 -(NSSet*) pauseAllTargets
 {
-    return [self pauseAllTargetsWithMinPriority:kCCPrioritySystem];
+    return [self pauseAllTargetsWithMinPriority: -1];
 }
 
 -(NSSet*) pauseAllTargetsWithMinPriority: (CCSchedulerPriority)minPriority

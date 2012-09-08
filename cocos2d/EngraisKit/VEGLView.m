@@ -238,9 +238,4 @@
 	}
 }
 
-- (void)setTouchDelegate:(id<CCTouchDelegate>)touchDelegate
-{
-    touchDelegate_ = touchDelegate;
-}
-
 @end

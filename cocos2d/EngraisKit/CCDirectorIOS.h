@@ -23,22 +23,11 @@
  * THE SOFTWARE.
  */
 
-
-// Only compile this code on iOS. These files should NOT be included on your Mac project.
-// But in case they are included, it won't be compiled.
-#import "ccMacros.h"
-
 #import "CCDirector.h"
 
 @interface VEDisplayDirector : CCDirector
-{
-    dispatch_source_t _timer;
-    CFTimeInterval	lastDisplayTime_;
-}
-@end
 
-// optimization. Should only be used to read it. Never to write it.
-extern CGFloat	__ccContentScaleFactor;
+@end
 
 extern const char * CCDirectorIOSDispatchQueue;
 

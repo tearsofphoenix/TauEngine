@@ -54,6 +54,13 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+@interface VEDisplayDirector ()
+{
+    dispatch_source_t _timer;
+    CFTimeInterval	lastDisplayTime_;
+    
+}
+@end
 
 @implementation VEDisplayDirector
 

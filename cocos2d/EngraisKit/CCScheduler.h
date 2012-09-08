@@ -28,12 +28,6 @@
 #import "ccTypes.h"
 #import "VEMetaService.h"
 
-// Priority level reserved for system services.
-#define kCCPrioritySystem INT_MIN
-
-// Minimum priority level for user scheduling.
-#define kCCPriorityNonSystemMin (kCCPrioritySystem+1)
-
 typedef void (*TICK_IMP)(id, SEL, NSTimeInterval);
 
 //
@@ -100,6 +94,7 @@ typedef void (*TICK_IMP)(id, SEL, NSTimeInterval);
 
 typedef NS_ENUM(NSUInteger, CCSchedulerPriority)
 {
+    CCSchedulerPriorityLow = -1,
     CCSchedulerPriorityNegative = 0,
     CCSchedulerPriorityZero = 1,
     CCSchedulerPriorityPositive = 2,
@@ -198,7 +193,6 @@ typedef NS_ENUM(NSUInteger, CCSchedulerPriority)
 -(void) unscheduleAllSelectors;
 
 /** Unschedules all selectors from all targets with a minimum priority.
-  You should only call this with kCCPriorityNonSystemMin or higher.
   @since v2.0.0
   */
 -(void) unscheduleAllSelectorsWithMinPriority: (CCSchedulerPriority)minPriority;
@@ -229,7 +223,6 @@ typedef NS_ENUM(NSUInteger, CCSchedulerPriority)
 -(NSSet*) pauseAllTargets;
 
 /** Pause all selectors from all targets with a minimum priority.
-  You should only call this with kCCPriorityNonSystemMin or higher.
   @since v2.0.0
   */
 -(NSSet*) pauseAllTargetsWithMinPriority: (CCSchedulerPriority)minPriority;
