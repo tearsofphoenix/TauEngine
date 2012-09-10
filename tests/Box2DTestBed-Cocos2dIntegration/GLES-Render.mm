@@ -78,6 +78,7 @@ void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, c
 
 void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int32 vertexCount, const b2Color& color)
 {
+    
     VEGLProgramUse(mShaderProgram);
     VEGLProgramUniformForMVPMatrix(mShaderProgram, VGContextGetMVPMatrix(VGContextGetCurrentContext()));
 

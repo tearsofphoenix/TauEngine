@@ -69,10 +69,9 @@ NSUInteger	__ccNumberOfDraws = 0;
 
 - (void) setNextScene;
 - (void) showStats;
-- (void) calculateDeltaTime;
+
 - (void) setNextScene;
-// shows the statistics
--(void) showStats;
+
 // calculates delta time since last time it was called
 -(void) calculateDeltaTime;
 
@@ -157,7 +156,8 @@ static CCDirector *_sharedDirector = nil;
         
         __ccContentScaleFactor = 1;
         
-		_dispatchQueue = dispatch_queue_create(CCDirectorIOSDispatchQueue, DISPATCH_QUEUE_CONCURRENT);
+		_dispatchQueue = dispatch_get_main_queue();
+        //dispatch_queue_create(CCDirectorIOSDispatchQueue, DISPATCH_QUEUE_SERIAL);
         _scheduler = [VEDataSource serviceByIdentity: CCScheduleServiceID];
         
 	}
@@ -611,12 +611,12 @@ CGFloat	__ccContentScaleFactor = 1;
 
 #pragma mark Director - Retina Display
 
--(CGFloat) contentScaleFactor
++ (CGFloat) contentScaleFactor
 {
 	return __ccContentScaleFactor;
 }
 
--(void) setContentScaleFactor:(CGFloat)scaleFactor
+- (void)setContentScaleFactor: (CGFloat)scaleFactor
 {
 	if( scaleFactor != __ccContentScaleFactor )
     {

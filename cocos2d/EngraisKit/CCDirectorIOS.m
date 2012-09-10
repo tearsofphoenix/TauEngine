@@ -58,7 +58,7 @@
 {
     dispatch_source_t _timer;
     CFTimeInterval	lastDisplayTime_;
-    
+    CADisplayLink *_displayLink;
 }
 @end
 
@@ -94,6 +94,7 @@
         }
         
         dispatch_resume(_timer);
+        
         isAnimating_ = YES;
     }
 }
@@ -107,34 +108,6 @@
         
         isAnimating_ = NO;
     }
-}
-
-// Overriden in order to use a more stable delta time
-- (void)calculateDeltaTime
-{
-    // New delta time. Re-fixed issue #1277
-    if( nextDeltaTimeZero_ || lastDisplayTime_==0 )
-    {
-        dt = 0;
-        nextDeltaTimeZero_ = NO;
-    } else
-    {
-        dt = [NSDate timeIntervalSinceReferenceDate] - lastDisplayTime_;
-        dt = MAX(0,dt);
-    }
-    // Store this timestamp for next time
-    lastDisplayTime_ = [NSDate timeIntervalSinceReferenceDate];
-    
-	// needed for SPF
-    gettimeofday( &lastUpdate_, NULL);
-    
-#ifdef DEBUG
-	// If we are debugging our code, prevent big delta time
-	if( dt > 0.2f )
-    {
-		dt = 1/60.0f;
-    }
-#endif
 }
 
 -(void) dealloc

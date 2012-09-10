@@ -1123,8 +1123,8 @@ void b2World::DrawDebugData()
 	{
         for (auto itr = m_jointList.begin(); itr != m_jointList.end(); ++itr)
         {
-            b2Joint* j = *itr;
-			DrawJoint(j);
+            //b2Joint* j = *itr;
+			//DrawJoint(j);
 		}
 	}
 
