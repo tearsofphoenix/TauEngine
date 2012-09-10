@@ -67,9 +67,6 @@
 #import "ccTypes.h"
 #import "ccMacros.h"
 
-#import "CCTouchDispatcher.h"
-#import "CCTouchDelegateProtocol.h"
-#import "CCTouchHandler.h"
 #import "VEGLView.h"
 #import "CCDirectorIOS.h"
 

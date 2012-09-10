@@ -37,7 +37,7 @@
 		CCLOG(@"Retina Display Not supported");
     }
     
-	VAScene *scene = [VAScene node];
+	VAScene *scene = [VAScene layer];
     MenuLayer *menuLayer = [MenuLayer menuWithEntryID: 0];
 	[scene addChild: menuLayer];
     

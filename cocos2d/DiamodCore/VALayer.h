@@ -25,8 +25,6 @@
  */
 
 
-#import "CCTouchDelegateProtocol.h"		// Touches only supported on iOS
-
 #import "ccTypes.h"
 #import "VANode.h"
 
@@ -41,7 +39,7 @@
  - It can receive Accelerometer input
  */
 
-@interface VALayer : VANode <NSCoding, CCStandardTouchDelegate, CCTargetedTouchDelegate>
+@interface VALayer : VANode <NSCoding>
 {
 	GLKVector4	_backgroundColor;
 	GLKVector2	squareVertices_[4];
@@ -63,20 +61,12 @@
 
 @property (nonatomic) ccBlendFunc blendFunc;
 
-/** If isTouchEnabled, this method is called onEnter. Override it to change the
- way VALayer receives touch events.
- ( Default: [touchDispatcher addStandardDelegate:self priority:0] )
- Example:
- -(void) registerWithTouchDispatcher
- {
- [touchDispatcher addTargetedDelegate:self priority:INT_MIN+1 swallowsTouches:YES];
- }
- 
- Valid only on iOS. Not valid on Mac.
- 
- @since v0.8.0
- */
--(void) registerWithTouchDispatcher;
+
+- (BOOL)pointInside: (CGPoint)point
+          withEvent: (UIEvent *)event;
+
+- (VALayer *)hitTest: (CGPoint)point
+          withEvent: (UIEvent *)event;
 
 /** whether or not it will receive Touch events.
  You can enable / disable touch events with this property.
@@ -157,6 +147,20 @@
                     options: (UIViewAnimationOptions)options
                  completion: (void (^)(BOOL finished))completion; // toView added to fromView.superview, fromView removed from its superview
 
+
+#pragma mark - User Interaction
+
+-(void) touchBegan:(UITouch *)touch
+         withEvent:(UIEvent *)event;
+
+-(void) touchEnded:(UITouch *)touch
+         withEvent:(UIEvent *)event;
+
+-(void) touchCancelled:(UITouch *)touch
+             withEvent:(UIEvent *)event;
+
+-(void) touchMoved: (UITouch *)touch
+         withEvent: (UIEvent *)event;
 
 @end
 

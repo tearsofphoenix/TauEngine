@@ -27,7 +27,7 @@
 #import "ccConfig.h"
 #import "ccTypes.h"
 #import "ccMacros.h"
-
+#import "VEGLView.h"
 #pragma mark -  CCDirectorDelegate
 
 @protocol CCDirectorDelegate <NSObject>
@@ -83,7 +83,7 @@ and when to execute the Scenes.
   - GL_COLOR_ARRAY is enabled
   - GL_TEXTURE_COORD_ARRAY is enabled
 */
-@interface CCDirector : UIViewController
+@interface CCDirector : UIViewController<CCTouchDelegate>
 {
 	// internal timer
 	NSTimeInterval animationInterval_;
@@ -173,6 +173,8 @@ and when to execute the Scenes.
  @since v0.99.5
  */
 @property (nonatomic, retain) id<CCDirectorDelegate> delegate;
+
+-(BOOL) enableRetinaDisplay:(BOOL)enabled;
 
 /** returns a shared instance of the director */
 +(CCDirector*)sharedDirector;
@@ -282,11 +284,6 @@ and when to execute the Scenes.
  @since v0.99.3
  */
 -(void) purgeCachedData;
-
-// OpenGL Helper
-
-/** sets the OpenGL default values */
--(void) setGLDefaultValues;
 
 /** enables/disables OpenGL depth test */
 - (void) setDepthTest: (BOOL) on;

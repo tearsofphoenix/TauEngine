@@ -25,7 +25,7 @@
  */
 
 
-#import "VANode.h"
+#import "VALayer.h"
 
 /** VAScene is a subclass of VANode that is used only as an abstract concept.
 
@@ -37,6 +37,6 @@
 
  It is a good practice to use and VAScene as the parent of all your nodes.
 */
-@interface VAScene : VANode
+@interface VAScene : VALayer
 
 @end

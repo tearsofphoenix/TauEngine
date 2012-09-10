@@ -31,7 +31,6 @@
 #import "VEShaderCache.h"
 #import "VEGLProgram.h"
 #import "CCScheduler.h"
-#import "CCTouchDispatcher.h"
 #import "CCDirectorIOS.h"
 #import "VGContext.h"
 #import "VGColor.h"
@@ -169,66 +168,64 @@ static inline void __CCLayerPopConfiguration(void)
 
 #pragma mark Layer - Touch and Accelerometer related
 
-- (void)registerWithTouchDispatcher
-{
-	CCDirector *director = [CCDirector sharedDirector];
-	[[director touchDispatcher] addStandardDelegate: self
-                                           priority: 0];
-}
-
 
 @synthesize userInteractionEnabled = _isUserInteractionEnabled;
 
-- (void)setUserInteractionEnabled: (BOOL)userInteractionEnabled
+- (BOOL)pointInside: (CGPoint)point
+          withEvent: (UIEvent *)event
 {
-	if( _isUserInteractionEnabled != userInteractionEnabled )
-    {
-		_isUserInteractionEnabled = userInteractionEnabled;
-		if( _isRunning )
-        {
-			if( _isUserInteractionEnabled )
-            {
-				[self registerWithTouchDispatcher];
-			}else
-            {
-				CCDirector *director = [CCDirector sharedDirector];
-				[[director touchDispatcher] removeDelegate:self];
-			}
-		}
-	}
+    return CGRectContainsPoint([self bounds], point);
 }
 
+static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
+{
+    if (!layer->_isUserInteractionEnabled
+        || !layer->_visible)
+    {
+        return YES;
+    }
+    return NO;
+}
+
+- (VALayer *)hitTest: (CGPoint)point
+          withEvent: (UIEvent *)event
+{
+    if(_VALayerIgnoresTouchEvents(self))
+    {
+        return nil;
+    }
+    
+    for (VALayer *nodeLooper in (NSArray *)_children)
+    {
+        if ([nodeLooper pointInside: point
+                          withEvent: event])
+        {
+            return [nodeLooper hitTest: point
+                             withEvent: event];
+        }
+    }
+    
+    return self;
+}
 
 #pragma mark Layer - Callbacks
 
--(void) onEnter
+-(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	// register 'parent' nodes first
-	// since events are propagated in reverse order
-	if (_isUserInteractionEnabled)
-    {
-		[self registerWithTouchDispatcher];
-    }
-	// then iterate over all the children
-	[super onEnter];
+    
 }
 
--(void) onExit
+-(void) touchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	CCDirector *director = [CCDirector sharedDirector];
-    
-	if( _isUserInteractionEnabled )
-    {
-		[[director touchDispatcher] removeDelegate:self];
-    }
-    
-	[super onExit];
 }
 
--(BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
+-(void) touchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	NSAssert(NO, @"Layer#ccTouchBegan override me");
-	return YES;
+}
+
+-(void) touchMoved:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    
 }
 
 @synthesize blendFunc = _blendFunc;

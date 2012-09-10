@@ -22,12 +22,12 @@
 	UINavigationController *navController_;
 
 	BOOL			useRetinaDisplay_;
-	CCDirectorIOS	*director_;							// weak ref
+	CCDirector	*director_;							// weak ref
 }
 
 @property (nonatomic, retain) UIWindow *window;
 @property (readonly) UINavigationController *navController;
-@property (readonly) CCDirectorIOS *director;
+@property (readonly) CCDirector *director;
 
 @end
 

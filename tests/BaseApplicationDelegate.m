@@ -37,7 +37,7 @@
 	window_ = [[VAWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
 	// Director
-	director_ = (CCDirectorIOS*)[CCDirector sharedDirector];
+	director_ = [CCDirector sharedDirector];
 	[director_ setDisplayStats:NO];
 	[director_ setAnimationInterval:1.0/60];
 	

@@ -65,20 +65,6 @@ static CCConfiguration *_sharedConfiguration = nil;
 	return [super alloc];
 }
 
-
-#ifdef __CC_PLATFORM_IOS
-#elif defined(__CC_PLATFORM_MAC)
-- (NSString*)getMacVersion
-{
-    SInt32 versionMajor, versionMinor, versionBugFix;
-	Gestalt(gestaltSystemVersionMajor, &versionMajor);
-	Gestalt(gestaltSystemVersionMinor, &versionMinor);
-	Gestalt(gestaltSystemVersionBugFix, &versionBugFix);
-
-	return [NSString stringWithFormat:@"%d.%d.%d", versionMajor, versionMinor, versionBugFix];
-}
-#endif // __CC_PLATFORM_MAC
-
 -(id) init
 {
 	if( (self=[super init]))
@@ -86,11 +72,9 @@ static CCConfiguration *_sharedConfiguration = nil;
 
 		// Obtain iOS version
 		OSVersion_ = 0;
-#ifdef __CC_PLATFORM_IOS
+
 		NSString *OSVer = [[UIDevice currentDevice] systemVersion];
-#elif defined(__CC_PLATFORM_MAC)
-		NSString *OSVer = [self getMacVersion];
-#endif
+
 		NSArray *arr = [OSVer componentsSeparatedByString:@"."];
 		int idx = 0x01000000;
 		for( NSString *str in arr )
@@ -111,32 +95,19 @@ static CCConfiguration *_sharedConfiguration = nil;
 		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize_);
 		glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxTextureUnits_ );
 
-#ifdef __CC_PLATFORM_IOS
-		if( OSVersion_ >= kCCiOSVersion_4_0 )
-			glGetIntegerv(GL_MAX_SAMPLES_APPLE, &maxSamplesAllowed_);
-		else
-			maxSamplesAllowed_ = 0;
-#elif defined(__CC_PLATFORM_MAC)
-		glGetIntegerv(GL_MAX_SAMPLES, &maxSamplesAllowed_);
-#endif
+        glGetIntegerv(GL_MAX_SAMPLES_APPLE, &maxSamplesAllowed_);
 
 		supportsPVRTC_ = CCConfigurationSupportExtension(@"GL_IMG_texture_compression_pvrtc");
-#ifdef __CC_PLATFORM_IOS
+
 		supportsNPOT_ = YES;
-#elif defined(__CC_PLATFORM_MAC)
-		supportsNPOT_ = CCConfigurationSupportExtension(@"GL_ARB_texture_non_power_of_two");
-#endif
+
 		// It seems that somewhere between firmware iOS 3.0 and 4.2 Apple renamed
 		// GL_IMG_... to GL_APPLE.... So we should check both names
 
-#ifdef __CC_PLATFORM_IOS
 		BOOL bgra8a = CCConfigurationSupportExtension(@"GL_IMG_texture_format_BGRA8888");
 		BOOL bgra8b = CCConfigurationSupportExtension(@"GL_APPLE_texture_format_BGRA8888");
 		supportsBGRA8888_ = bgra8a | bgra8b;
-#elif defined(__CC_PLATFORM_MAC)
-		supportsBGRA8888_ = CCConfigurationSupportExtension(@"GL_EXT_bgra");
-#endif
-
+        
 		supportsShareableVAO_ = CCConfigurationSupportExtension(@"GL_APPLE_vertex_array_object");
 
 		
@@ -150,19 +121,6 @@ static CCConfiguration *_sharedConfiguration = nil;
 		CCLOG(@"cocos2d: GL supports NPOT textures: %s", (supportsNPOT_ ? "YES" : "NO") );
 		CCLOG(@"cocos2d: GL supports discard_framebuffer: %s", (supportsDiscardFramebuffer_ ? "YES" : "NO") );
 		CCLOG(@"cocos2d: GL supports shareable VAO: %s", (supportsShareableVAO_ ? "YES" : "NO") );
-
-#ifdef __CC_PLATFORM_MAC
-		CCLOG(@"cocos2d: Director's thread: %@",
-#if (CC_DIRECTOR_MAC_THREAD == CC_MAC_USE_MAIN_THREAD)
-			  @"Main thread"
-#elif (CC_DIRECTOR_MAC_THREAD == CC_MAC_USE_OWN_THREAD)
-			  @"Own thread"	
-#elif (CC_DIRECTOR_MAC_THREAD == CC_MAC_USE_DISPLAY_LINK_THREAD)
-			  @"DisplayLink thread"
-#endif //
-			  );
-#endif // Mac
-
 		CCLOG(@"cocos2d: compiled with Profiling Support: %s", "NO");
 
 	}
