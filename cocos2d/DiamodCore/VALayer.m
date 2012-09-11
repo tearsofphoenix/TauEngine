@@ -148,8 +148,6 @@ static inline void __CCLayerPopConfiguration(void)
         
 		_isUserInteractionEnabled = YES;
         
-		_blendFunc = (ccBlendFunc) { GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA };
-        
         _anchorPoint = ccp(0.5f, 0.5f);
                 
         [self setBackgroundColor: ccBLACK];
@@ -228,8 +226,6 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     
 }
 
-@synthesize blendFunc = _blendFunc;
-
 - (void)setContentSize: (CGSize) size
 {
 	squareVertices_[1].x = size.width;
@@ -260,7 +256,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, squareVertices_);
 	glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_FLOAT, GL_TRUE, 0, squareColors_);
     
-	CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
+	//CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
     
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
@@ -461,18 +457,32 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     return _backgroundColor;
 }
 
--(void) setOpacity: (GLfloat)opacity
+- (void)setOpacity: (GLfloat)opacity
 {
-    if (_backgroundColor.a != opacity)
+    if (_opacity != opacity)
     {
-        [self setBackgroundColor: GLKVector4Make(_backgroundColor.r, _backgroundColor.g, _backgroundColor.b, opacity)];
+        _opacity = opacity;
+        
+        [self setBackgroundColor: GLKVector4Make(_backgroundColor.r, _backgroundColor.g, _backgroundColor.b, _opacity)];
+        for (VALayer *layerLooper in (NSArray *)_children)
+        {
+            [layerLooper setOpacity: opacity];
+        }
     }
 }
 
 - (GLfloat)opacity
 {
-    return _backgroundColor.a;
+    return _opacity;
 }
+
+- (void)addChild: (VANode *)node
+{
+    [super addChild: node];
+    
+    [(VALayer *)node setOpacity: _opacity];
+}
+
 
 #pragma mark - animation
 

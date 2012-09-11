@@ -195,7 +195,7 @@ Settings settings;
         
 		entry = g_testEntries + entryId;
 		test = entry->createFcn();
-        
+        [self setOpacity: 0];
     }
     
     return self;
@@ -203,10 +203,10 @@ Settings settings;
 
 -(NSString*) title
 {
-	return [NSString stringWithCString:entry->name encoding:NSUTF8StringEncoding];
+	return [NSString stringWithUTF8String: entry->name];
 }
 
-- (void)tick:(NSTimeInterval) dt
+- (void)tick: (NSTimeInterval) dt
 {
     test->Step(&settings);
 }

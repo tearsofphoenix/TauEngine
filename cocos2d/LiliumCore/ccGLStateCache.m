@@ -45,8 +45,6 @@ static GLuint	_ccCurrentBoundTexture[kCCMaxActiveTexture] =  {-1,-1,-1,-1,
                                                                 -1,-1,-1,-1,};
 
 static GLenum	_ccCurrentActiveTexture = (GL_TEXTURE0 - GL_TEXTURE0);
-static GLenum	_ccBlendingSource = -1;
-static GLenum	_ccBlendingDest = -1;
 
 #pragma mark - GL State Cache functions
 
@@ -61,8 +59,6 @@ void CCGLInvalidateStateCache( void )
 	for( NSInteger i=0; i < kCCMaxActiveTexture; i++ )
 		_ccCurrentBoundTexture[i] = -1;
 	_ccCurrentActiveTexture = (GL_TEXTURE0 - GL_TEXTURE0);
-	_ccBlendingSource = -1;
-	_ccBlendingDest = -1;
 }
 
 void CCGLDeleteProgram( GLuint program )
@@ -79,17 +75,6 @@ void CCGLUseProgram( GLuint program )
     {
 		_ccCurrentShaderProgram = program;
 		glUseProgram(program);
-	}
-}
-
-
-void CCGLBlendFunc(GLenum sfactor, GLenum dfactor)
-{
-	if( sfactor != _ccBlendingSource || dfactor != _ccBlendingDest )
-    {
-		_ccBlendingSource = sfactor;
-		_ccBlendingDest = dfactor;
-		glBlendFunc( sfactor, dfactor );
 	}
 }
 

@@ -56,7 +56,6 @@
 
 @interface VEDisplayDirector ()
 {
-    dispatch_source_t _timer;
     CFTimeInterval	lastDisplayTime_;
     CADisplayLink *_displayLink;
 }
@@ -80,20 +79,15 @@
     if(!isAnimating_)
     {
         gettimeofday( &lastUpdate_, NULL);
-        
-        if (!_timer)
+                
+        if (!_displayLink)
         {
-            _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _dispatchQueue);
-            NSTimeInterval interval = animationInterval_ * NSEC_PER_SEC;
-            dispatch_source_set_timer(_timer, dispatch_time(DISPATCH_TIME_NOW, interval), interval, 0);
-            __block id fakeSelf = self;
-            dispatch_source_set_event_handler(_timer, (^
-                                                       {
-                                                           [fakeSelf drawScene];
-                                                       }));
+            _displayLink = [CADisplayLink displayLinkWithTarget: self
+                                                       selector: @selector(drawScene)];
+            [_displayLink setFrameInterval: 1];
+            [_displayLink addToRunLoop: [NSRunLoop currentRunLoop]
+                               forMode: NSDefaultRunLoopMode];
         }
-        
-        dispatch_resume(_timer);
         
         isAnimating_ = YES;
     }
@@ -104,8 +98,8 @@
     if(isAnimating_)
     {
         CCLOG(@"cocos2d: animation stopped");
-        dispatch_suspend(_timer);
-        
+        //dispatch_suspend(_timer);
+        [_displayLink setPaused: YES];
         isAnimating_ = NO;
     }
 }
@@ -113,8 +107,6 @@
 -(void) dealloc
 {
     [self stopAnimation];
-    dispatch_release(_timer);
-    _timer = NULL;
     
 	[super dealloc];
 }

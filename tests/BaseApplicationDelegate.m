@@ -104,12 +104,6 @@
 	[[CCDirector sharedDirector] end];
 }
 
-// purge memory
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
-{
-	[director_ purgeCachedData];
-}
-
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {

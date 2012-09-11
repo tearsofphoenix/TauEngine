@@ -24,8 +24,6 @@
  *
  */
 
-
-#import "ccTypes.h"
 #import "VANode.h"
 
 @class VAAnimation;
@@ -42,11 +40,11 @@
 @interface VALayer : VANode <NSCoding>
 {
 	GLKVector4	_backgroundColor;
+    GLfloat _opacity;
+    
 	GLKVector2	squareVertices_[4];
 	GLKVector4	squareColors_[4];
-    
-	ccBlendFunc	_blendFunc;
-    
+        
     NSMutableArray *_animationKeys;
     NSMutableDictionary *_animations;
 	
@@ -59,14 +57,11 @@
 
 - (id)modelLayer;
 
-@property (nonatomic) ccBlendFunc blendFunc;
-
-
 - (BOOL)pointInside: (CGPoint)point
           withEvent: (UIEvent *)event;
 
 - (VALayer *)hitTest: (CGPoint)point
-          withEvent: (UIEvent *)event;
+           withEvent: (UIEvent *)event;
 
 /** whether or not it will receive Touch events.
  You can enable / disable touch events with this property.

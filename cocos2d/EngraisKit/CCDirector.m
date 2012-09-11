@@ -188,9 +188,9 @@ static CCDirector *_sharedDirector = nil;
 {
 	// This method SHOULD be called only after view_ was initialized
 	NSAssert( view_, @"view_ must be initialized");
-    
-    CCGLBlendFunc(CC_BLEND_SRC, CC_BLEND_DST);
-    
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	[self setProjection: projection_];
     
 	// set other opengl default values
@@ -201,17 +201,20 @@ static CCDirector *_sharedDirector = nil;
 {
 	struct timeval now;
     
-	if( gettimeofday( &now, NULL) != 0 ) {
+	if( gettimeofday( &now, NULL) != 0 )
+    {
 		CCLOG(@"cocos2d: error in gettimeofday");
 		dt = 0;
 		return;
 	}
     
 	// new delta time
-	if( nextDeltaTimeZero_ ) {
+	if( nextDeltaTimeZero_ )
+    {
 		dt = 0;
 		nextDeltaTimeZero_ = NO;
-	} else {
+	} else
+    {
 		dt = (now.tv_sec - lastUpdate_.tv_sec) + (now.tv_usec - lastUpdate_.tv_usec) / 1000000.0f;
 		dt = MAX(0,dt);
 	}
@@ -223,13 +226,6 @@ static CCDirector *_sharedDirector = nil;
 #endif
     
 	lastUpdate_ = now;
-}
-
-#pragma mark Director - Memory Helper
-
--(void) purgeCachedData
-{
-    
 }
 
 #pragma mark Director - Scene OpenGL Helper
@@ -746,15 +742,6 @@ CGFloat	__ccContentScaleFactor = 1;
 	[self stopAnimation];
     
 	[super viewDidDisappear:animated];
-}
-
-- (void)didReceiveMemoryWarning
-{
-	// Release any cached data, images, etc that aren't in use.
-	[self purgeCachedData];
-    
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

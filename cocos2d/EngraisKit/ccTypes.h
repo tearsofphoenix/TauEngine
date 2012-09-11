@@ -204,15 +204,6 @@ typedef struct _ccV2F_C4F_T2F_Quad
 	ccV2F_C4F_T2F	tr;
 } ccV2F_C4F_T2F_Quad;
 
-//! Blend Function used for textures
-typedef struct _ccBlendFunc
-{
-	//! source blend function
-	GLenum src;
-	//! destination blend function
-	GLenum dst;
-} ccBlendFunc;
-
 // XXX: If any of these enums are edited and/or reordered, udpate GLKEffectPropertyTexture.m
 //! Vertical text alignment type
 typedef NS_ENUM(NSUInteger, CCVerticalTextAlignment)

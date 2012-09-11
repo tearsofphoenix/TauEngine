@@ -41,6 +41,8 @@
 		_anchorPoint = ccp(0.5f, 0.5f);
         
 		[self setContentSize: s];
+        
+        [self setOpacity: 0];
 	}
 
 	return self;

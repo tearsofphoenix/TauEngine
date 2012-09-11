@@ -60,11 +60,6 @@ void CCGLUseProgram( GLuint program );
  */
 void CCGLDeleteProgram( GLuint program );
 
-/** Uses a blending function in case it not already used.
- @since v2.0.0
- */
-void CCGLBlendFunc(GLenum sfactor, GLenum dfactor);
-
 /** sets the projection matrix as dirty
  @since v2.0.0
  */
