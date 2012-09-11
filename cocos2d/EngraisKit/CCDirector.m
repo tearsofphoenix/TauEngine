@@ -157,7 +157,7 @@ static CCDirector *_sharedDirector = nil;
         
         __ccContentScaleFactor = 1;
         
-		_dispatchQueue = dispatch_queue_create(CCDirectorIOSDispatchQueue, DISPATCH_QUEUE_CONCURRENT);
+		_dispatchQueue = dispatch_queue_create(CCDirectorIOSDispatchQueue, DISPATCH_QUEUE_SERIAL);
         _scheduler = [VEDataSource serviceByIdentity: CCScheduleServiceID];
         
 	}
@@ -201,7 +201,8 @@ static CCDirector *_sharedDirector = nil;
 {
 	struct timeval now;
     
-	if( gettimeofday( &now, NULL) != 0 ) {
+	if( gettimeofday( &now, NULL) != 0 )
+    {
 		CCLOG(@"cocos2d: error in gettimeofday");
 		dt = 0;
 		return;
@@ -282,15 +283,7 @@ static CCDirector *_sharedDirector = nil;
     [self reshapeProjection: size];
 }
 
-#pragma mark Director Scene Management
-
-- (void)runWithScene:(VAScene*) scene
-{
-	NSAssert( scene != nil, @"Argument must be non-nil");
-    
-	[self pushScene:scene];
-	[self startAnimation];
-}
+#pragma mark - Director Scene Management
 
 -(void) replaceScene: (VAScene*) scene
 {
@@ -321,37 +314,16 @@ static CCDirector *_sharedDirector = nil;
 	NSUInteger c = [scenesStack_ count];
     
 	if( c == 0 )
+    {
 		[self end];
-	else {
+	}else
+    {
 		sendCleanupToScene_ = YES;
 		nextScene_ = [scenesStack_ objectAtIndex:c-1];
 	}
 }
 
--(void) popToRootScene
-{
-	NSAssert(runningScene_ != nil, @"A running Scene is needed");
-	NSUInteger c = [scenesStack_ count];
-	
-    if (c == 1) {
-        [scenesStack_ removeLastObject];
-        [self end];
-    } else {
-        while (c > 1) {
-			VAScene *current = [scenesStack_ lastObject];
-			if( [current isRunning] )
-				[current onExit];
-			[current cleanup];
-			
-			[scenesStack_ removeLastObject];
-			c--;
-        }
-		nextScene_ = [scenesStack_ lastObject];
-		sendCleanupToScene_ = NO;
-    }
-}
-
--(void) end
+- (void)end
 {
 	[runningScene_ onExit];
 	[runningScene_ cleanup];

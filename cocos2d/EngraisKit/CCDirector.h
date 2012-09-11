@@ -208,14 +208,6 @@ and when to execute the Scenes.
 
 #pragma mark Director - Scene Management
 
-/**Enters the Director's main loop with the given Scene.
- * Call it to run only your FIRST scene.
- * Don't call it if there is already a running scene.
- *
- * It will call pushScene: and then it will call startAnimation
- */
-- (void) runWithScene:(VAScene*) scene;
-
 /**Suspends the execution of the running scene, pushing it on the stack of suspended scenes.
  * The new scene will be executed.
  * Try to avoid big stacks of pushed scenes to reduce memory allocation.
@@ -229,13 +221,6 @@ and when to execute the Scenes.
  * ONLY call it if there is a running scene.
  */
 - (void) popScene;
-
-/**Pops out all scenes from the queue until the root scene in the queue.
- * This scene will replace the running one.
- * The running scene will be deleted. If there are no more scenes in the stack the execution is terminated.
- * ONLY call it if there is a running scene.
- */
-- (void) popToRootScene;
 
 /** Replaces the running scene with a new one. The running scene is terminated.
  * ONLY call it if there is a running scene.
@@ -262,18 +247,18 @@ and when to execute the Scenes.
 /** Stops the animation. Nothing will be drawn. The main loop won't be triggered anymore.
  If you wan't to pause your animation call [pause] instead.
  */
--(void) stopAnimation;
+- (void)stopAnimation;
 
 /** The main loop is triggered again.
  Call this function only if [stopAnimation] was called earlier
  @warning Dont' call this function to start the main loop. To run the main loop call runWithScene
  */
--(void) startAnimation;
+- (void)startAnimation;
 
 /** Draw the scene.
  This method is called every frame. Don't call it manually.
  */
--(void) drawScene;
+- (void)drawScene;
 
 
 #pragma mark Director - Memory Helper
@@ -283,14 +268,15 @@ and when to execute the Scenes.
  IMPORTANT: The CCSpriteFrameCache won't be purged. If you want to purge it, you have to purge it manually.
  @since v0.99.3
  */
--(void) purgeCachedData;
+- (void)purgeCachedData;
 
 /** enables/disables OpenGL depth test */
-- (void) setDepthTest: (BOOL) on;
+- (void)setDepthTest: (BOOL) on;
 
 // helper
 /** creates the Stats labels */
--(void) createStatsLabel;
+- (void)createStatsLabel;
+
 @end
 
 // optimization. Should only be used to read it. Never to write it.
