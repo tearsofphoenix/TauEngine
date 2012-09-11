@@ -49,7 +49,6 @@
 #import "CCScheduler.h"
 #import "VACamera.h"
 
-#import "VANode.h"
 #import "CCDirector.h"
 
 #import "CCConfiguration.h"

@@ -77,7 +77,7 @@ Settings settings;
 
 -(void) restartCallback: (id) sender
 {
-	VAScene *s = [VAScene node];
+	VAScene *s = [VAScene layer];
 	id box = [MenuLayer menuWithEntryID:entryID];
 	[s addChild:box];
 	[[CCDirector sharedDirector] replaceScene: s];
@@ -85,7 +85,7 @@ Settings settings;
 
 -(void) nextCallback: (id) sender
 {
-	VAScene *s = [VAScene node];
+	VAScene *s = [VAScene layer];
 	int next = entryID + 1;
 	if( next >= g_totalEntries)
 		next = 0;
@@ -96,7 +96,7 @@ Settings settings;
 
 -(void) backCallback: (id) sender
 {
-	VAScene *s = [VAScene node];
+	VAScene *s = [VAScene layer];
 	int next = entryID - 1;
 	if( next < 0 ) {
 		next = g_totalEntries - 1;
@@ -158,7 +158,7 @@ Settings settings;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VAScene *s = [VAScene node];
+    VAScene *s = [VAScene layer];
 	int next = [indexPath row];
 	if( next >= g_totalEntries)
     {

@@ -24,20 +24,23 @@
  *
  */
 
-#import "VANode.h"
+#import <GLKit/GLKit.h>
+#import "VACamera.h"
 
+@class CCScheduler;
+@class VGContext;
 @class VAAnimation;
 
 #pragma mark - VALayer
 
-/** VALayer is a subclass of VANode that implements the CCTouchEventsDelegate protocol.
+/** VALayer is a subclass of VALayer that implements the CCTouchEventsDelegate protocol.
  
- All features from VANode are valid, plus the following new features:
+ All features from VALayer are valid, plus the following new features:
  - It can receive iPhone Touches
  - It can receive Accelerometer input
  */
 
-@interface VALayer : VANode <NSCoding>
+@interface VALayer : NSObject <NSCoding>
 {
 	GLKVector4	_backgroundColor;
     GLfloat _opacity;
@@ -47,7 +50,44 @@
         
     NSMutableArray *_animationKeys;
     NSMutableDictionary *_animations;
-	
+    // rotation angle
+	float _rotation;
+    
+	// skew angles
+	float _skewX, _skewY;
+    
+	// anchor point in points
+	CGPoint _anchorPointInPoints;
+	// anchor point normalized (NOT in points)
+	CGPoint _anchorPoint;
+    
+    CGPoint _position;
+	// untransformed size of the node
+	CGSize	_contentSize;
+    
+	CGAffineTransform _transform;
+    CGAffineTransform _inverse;
+    
+	// z-order value
+	NSInteger _zOrder;
+    
+	CFMutableArrayRef _children;
+    
+    NSInteger _tag;
+    
+    CCScheduler *_scheduler;
+    
+	// Is running
+	BOOL _isRunning;
+    
+	BOOL _isTransformDirty;
+	BOOL _isInverseDirty;
+    
+	// is visible
+	BOOL _visible;
+	// If YES, the Anchor Point will be (0,0) when you position the VANode.
+	// Used by VALayer and VAScene
+	BOOL _ignoreAnchorPointForPosition;
     BOOL _isUserInteractionEnabled;
 }
 
@@ -62,6 +102,83 @@
 
 - (VALayer *)hitTest: (CGPoint)point
            withEvent: (UIEvent *)event;
+
+
+/** The z order of the node relative to its "siblings": children of the same parent */
+@property(nonatomic) NSInteger zOrder;
+/** The real openGL Z vertex.
+ Differences between openGL Z vertex and cocos2d Z order:
+ - OpenGL Z modifies the Z vertex, and not the Z order in the relation between parent-children
+ - OpenGL Z might require to set 2D projection
+ - cocos2d Z order works OK if all the nodes uses the same openGL Z vertex. eg: vertexZ = 0
+ @warning: Use it at your own risk since it might break the cocos2d parent-children z order
+ @since v0.8
+ */
+@property (nonatomic) float vertexZ;
+
+/** The X skew angle of the node in radians.
+ This angle describes the shear distortion in the X direction.
+ Thus, it is the angle between the Y axis and the left edge of the shape
+ The default skewX angle is 0. Positive values distort the node in a CW direction.
+ */
+@property(nonatomic) float skewX;
+
+/** The Y skew angle of the node in radians.
+ This angle describes the shear distortion in the Y direction.
+ Thus, it is the angle between the X axis and the bottom edge of the shape
+ The default skewY angle is 0. Positive values distort the node in a CCW direction.
+ */
+@property(nonatomic) float skewY;
+
+/** The rotation (angle) of the node in degrees. 0 is the default rotation angle. Positive values rotate node CW. */
+@property(nonatomic) float rotation;
+
+/** A VACamera object that lets you move the node using a gluLookAt */
+@property(nonatomic,readonly) VACameraRef camera;
+
+/** Whether of not the node is visible. Default is YES */
+@property(nonatomic, getter = isVisible) BOOL visible;
+
+/** anchorPoint is the point around which all transformations and positioning manipulations take place.
+ It's like a pin in the node where it is "attached" to its parent.
+ The anchorPoint is normalized, like a percentage. (0,0) means the bottom-left corner and (1,1) means the top-right corner.
+ But you can use values higher than (1,1) and lower than (0,0) too.
+ The default anchorPoint is (0,0). It starts in the bottom-left corner. CCSprite and other subclasses have a different default anchorPoint.
+ @since v0.8
+ */
+@property(nonatomic) CGPoint anchorPoint;
+/** The anchorPoint in absolute pixels.
+ Since v0.8 you can only read it. If you wish to modify it, use anchorPoint instead
+ */
+@property(nonatomic, readonly) CGPoint anchorPointInPoints;
+
+/** The untransformed size of the node in Points
+ The contentSize remains the same no matter the node is scaled or rotated.
+ All nodes has a size. Layer and Scene has the same size of the screen.
+ @since v0.8
+ */
+@property (nonatomic) CGSize contentSize;
+
+/** whether or not the node is running */
+@property(nonatomic, readonly) BOOL isRunning;
+
+/**  If YES, the Anchor Point will be (0,0) when you position the VANode.
+ Used by VALayer and VAScene.
+ */
+@property(nonatomic) BOOL ignoreAnchorPointForPosition;
+
+/** A tag used to identify the node easily */
+@property(nonatomic) NSInteger tag;
+
+@property (nonatomic, assign) CCScheduler *scheduler;
+
+/** Event that is called when the running node is no longer running (eg: its VAScene is being removed from the "stage" ).
+ On cleanup you should break any possible circular references.
+ CCNode's cleanup removes any possible scheduled timer and/or any possible action.
+ If you override cleanup, you shall call [super cleanup]
+ @since v0.8
+ */
+- (void)cleanup;
 
 /** whether or not it will receive Touch events.
  You can enable / disable touch events with this property.
@@ -215,4 +332,152 @@
 @property (nonatomic) BOOL compressedInterpolation;
 
 @end
+
+
+@interface VALayer (CCNodeHierarchy)
+
+/** A weak reference to the parent */
+@property(nonatomic, assign) id parent;
+
+@property(nonatomic, readonly) NSMutableArray* children;
+
+// scene managment
+
+/** Event that is called every time the VALayer enters the 'stage'.
+ If the VALayer enters the 'stage' with a transition, this event is called when the transition starts.
+ During onEnter you can't access a sibling node.
+ If you override onEnter, you shall call [super onEnter].
+ */
+-(void) onEnter;
+
+/** Event that is called every time the VALayer leaves the 'stage'.
+ If the VALayer leaves the 'stage' with a transition, this event is called when the transition finishes.
+ During onExit you can't access a sibling node.
+ If you override onExit, you shall call [super onExit].
+ */
+-(void) onExit;
+
+/** callback that is called every time the VALayer leaves the 'stage'.
+ If the VALayer leaves the 'stage' with a transition, this callback is called when the transition starts.
+ */
+-(void) onExitTransitionDidStart;
+
+// composition: ADD
+
+/** Adds a child to the container.
+ If the child is added to a 'running' node, then 'onEnter' will be called immediately.
+ @since v0.7.1
+ */
+- (void)addChild: (VALayer*)node;
+
+// composition: REMOVE
+
+/** Remove itself from its parent node. If cleanup is YES, then also remove all actions and callbacks.
+ If the node orphan, then nothing happens.
+ @since v0.99.3
+ */
+-(void) removeFromParentAndCleanup: (BOOL)cleanup;
+
+/** Removes a child from the container. It will also cleanup all running actions depending on the cleanup parameter.
+ @since v0.7.1
+ */
+-(void) removeChild: (VALayer*)node
+            cleanup: (BOOL)cleanup;
+
+/** Removes all children from the container and do a cleanup all running actions depending on the cleanup parameter.
+ @since v0.7.1
+ */
+- (void)removeAllChildrenWithCleanup: (BOOL)cleanup;
+
+/** performance improvement, Sort the children array once before drawing, instead of every time when a child is added or reordered
+ don't call this manually unless a child added needs to be removed in the same frame */
+- (void) sortAllChildren;
+
+@end
+
+@interface VALayer (CCNodeRendering)
+
+// draw
+
+/** Override this method to draw your own node.
+ You should use cocos2d's GL API to enable/disable the GL state / shaders.
+ For further info, please see ccGLstate.h.
+ You shall NOT call [super draw];
+ */
+- (void)drawInContext: (VGContext *)context;
+
+/** recursive method that visit its children and draw them */
+- (void)visitWithContext: (VGContext *)context;
+
+
+@end
+
+@interface VALayer (CCNodeGeometry)
+
+/** The scale factor of the node. 1.0 is the default scale factor. It modifies the X and Y scale at the same time. */
+@property(nonatomic) float scale;
+/** The scale factor of the node. 1.0 is the default scale factor. It only modifies the X scale factor. */
+@property(nonatomic) float scaleX;
+/** The scale factor of the node. 1.0 is the default scale factor. It only modifies the Y scale factor. */
+@property(nonatomic) float scaleY;
+
+/** Position (x,y) of the node in points. (0,0) is the left-bottom corner. */
+@property(nonatomic) CGPoint position;
+
+/** returns a "local" axis aligned bounding box of the node in points.
+ The returned box is relative only to its parent.
+ The returned box is in Points.
+ 
+ @since v0.8.2
+ */
+- (CGRect)bounds;
+
+- (void)setBounds: (CGRect)bounds;
+
+/** performs OpenGL view-matrix transformation based on position, scale, rotation and other attributes. */
+- (void)transformInContext: (VGContext *)context;
+
+// transformation methods
+
+/** Returns the matrix that transform the node's (local) space coordinates into the parent's space coordinates.
+ The matrix is in Pixels.
+ @since v0.7.1
+ */
+- (CGAffineTransform)nodeToParentTransform;
+
+
+/** Returns the matrix that transform parent's space coordinates to the node's (local) space coordinates.
+ The matrix is in Pixels.
+ @since v0.7.1
+ */
+- (CGAffineTransform)parentToNodeTransform;
+/** Retrusn the world affine transform matrix. The matrix is in Pixels.
+ @since v0.7.1
+ */
+- (CGAffineTransform)nodeToWorldTransform;
+/** Returns the inverse world affine transform matrix. The matrix is in Pixels.
+ @since v0.7.1
+ */
+- (CGAffineTransform)worldToNodeTransform;
+/** Converts a Point to node (local) space coordinates. The result is in Points.
+ @since v0.7.1
+ */
+- (CGPoint)convertToNodeSpace:(CGPoint)worldPoint;
+/** Converts a Point to world space coordinates. The result is in Points.
+ @since v0.7.1
+ */
+- (CGPoint)convertToWorldSpace:(CGPoint)nodePoint;
+/** Converts a Point to node (local) space coordinates. The result is in Points.
+ treating the returned/received node point as anchor relative.
+ @since v0.7.1
+ */
+- (CGPoint)convertToNodeSpaceAR:(CGPoint)worldPoint;
+/** Converts a local Point to world space coordinates.The result is in Points.
+ treating the returned/received node point as anchor relative.
+ @since v0.7.1
+ */
+- (CGPoint)convertToWorldSpaceAR:(CGPoint)nodePoint;
+
+@end
+
 

@@ -19,8 +19,6 @@
 		22BAA07B15F8864F00AEBED9 /* VAMediaTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA03415F8864F00AEBED9 /* VAMediaTiming.m */; };
 		22BAA07C15F8864F00AEBED9 /* VAMediaTimingFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA03515F8864F00AEBED9 /* VAMediaTimingFunction.h */; };
 		22BAA07D15F8864F00AEBED9 /* VAMediaTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA03615F8864F00AEBED9 /* VAMediaTimingFunction.m */; };
-		22BAA07E15F8864F00AEBED9 /* VANode.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA03715F8864F00AEBED9 /* VANode.h */; };
-		22BAA07F15F8864F00AEBED9 /* VANode.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA03815F8864F00AEBED9 /* VANode.m */; };
 		22BAA08015F8864F00AEBED9 /* VAScene.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA03915F8864F00AEBED9 /* VAScene.h */; };
 		22BAA08115F8864F00AEBED9 /* VAScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA03A15F8864F00AEBED9 /* VAScene.m */; };
 		22BAA08215F8864F00AEBED9 /* VAValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA03B15F8864F00AEBED9 /* VAValueFunction.h */; };
@@ -245,8 +243,6 @@
 		22BAA03415F8864F00AEBED9 /* VAMediaTiming.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAMediaTiming.m; sourceTree = "<group>"; };
 		22BAA03515F8864F00AEBED9 /* VAMediaTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAMediaTimingFunction.h; sourceTree = "<group>"; };
 		22BAA03615F8864F00AEBED9 /* VAMediaTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAMediaTimingFunction.m; sourceTree = "<group>"; };
-		22BAA03715F8864F00AEBED9 /* VANode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VANode.h; sourceTree = "<group>"; };
-		22BAA03815F8864F00AEBED9 /* VANode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VANode.m; sourceTree = "<group>"; };
 		22BAA03915F8864F00AEBED9 /* VAScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAScene.h; sourceTree = "<group>"; };
 		22BAA03A15F8864F00AEBED9 /* VAScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAScene.m; sourceTree = "<group>"; };
 		22BAA03B15F8864F00AEBED9 /* VAValueFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAValueFunction.h; sourceTree = "<group>"; };
@@ -554,8 +550,6 @@
 				22BAA03415F8864F00AEBED9 /* VAMediaTiming.m */,
 				22BAA03515F8864F00AEBED9 /* VAMediaTimingFunction.h */,
 				22BAA03615F8864F00AEBED9 /* VAMediaTimingFunction.m */,
-				22BAA03715F8864F00AEBED9 /* VANode.h */,
-				22BAA03815F8864F00AEBED9 /* VANode.m */,
 				22BAA03915F8864F00AEBED9 /* VAScene.h */,
 				22BAA03A15F8864F00AEBED9 /* VAScene.m */,
 				22BAA03B15F8864F00AEBED9 /* VAValueFunction.h */,
@@ -1002,7 +996,6 @@
 				22BAA07815F8864F00AEBED9 /* VALayer.h in Headers */,
 				22BAA07A15F8864F00AEBED9 /* VAMediaTiming.h in Headers */,
 				22BAA07C15F8864F00AEBED9 /* VAMediaTimingFunction.h in Headers */,
-				22BAA07E15F8864F00AEBED9 /* VANode.h in Headers */,
 				22BAA08015F8864F00AEBED9 /* VAScene.h in Headers */,
 				22BAA08215F8864F00AEBED9 /* VAValueFunction.h in Headers */,
 				22BAA08415F8864F00AEBED9 /* ccConfig.h in Headers */,
@@ -1228,7 +1221,6 @@
 				22BAA07915F8864F00AEBED9 /* VALayer.m in Sources */,
 				22BAA07B15F8864F00AEBED9 /* VAMediaTiming.m in Sources */,
 				22BAA07D15F8864F00AEBED9 /* VAMediaTimingFunction.m in Sources */,
-				22BAA07F15F8864F00AEBED9 /* VANode.m in Sources */,
 				22BAA08115F8864F00AEBED9 /* VAScene.m in Sources */,
 				22BAA08315F8864F00AEBED9 /* VAValueFunction.m in Sources */,
 				22BAA08615F8864F00AEBED9 /* CCConfiguration.m in Sources */,

@@ -20,7 +20,7 @@
 
 @interface MenuLayer : VALayer<UITableViewDataSource, UITableViewDelegate>
 {
-    VANode *_box2DNode;
+    VALayer *_box2DNode;
 	int		entryID;
 }
 
