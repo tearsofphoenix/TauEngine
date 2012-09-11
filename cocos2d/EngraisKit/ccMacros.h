@@ -74,13 +74,6 @@ NSLog(@"%@",[NSString stringWithFormat:(s), ##__VA_ARGS__])
 #endif // COCOS2D_DEBUG
 
 
-/** @def CC_BLEND_SRC
-default gl blend src function. Compatible with premultiplied alpha images.
-*/
-#define CC_BLEND_SRC GL_ONE
-#define CC_BLEND_DST GL_ONE_MINUS_SRC_ALPHA
-
-
 /****************************/
 /** RETINA DISPLAY ENABLED **/
 /****************************/

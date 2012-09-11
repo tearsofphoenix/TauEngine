@@ -18,43 +18,66 @@
 #import "Box2DAppDelegate.h"
 
 #import <objc/runtime.h>
+#import <dlfcn.h>
 
-static void objc_dumpClass(Class theClass)
+static void objc_dumpClass(const char *className)
 {
-    if (theClass)
-    {
-        printf("class:%s\n", class_getName(theClass));
-        
-        unsigned int classIvarCount = 0;
-        Ivar *classIvarList = class_copyIvarList(theClass, &classIvarCount);
-        printf("\tIvars:\n");
-        for (int i=0; i<classIvarCount; ++i)
-        {
-            printf("\t\tname:%s encoding:%s\n", ivar_getName(classIvarList[i]), ivar_getTypeEncoding(classIvarList[i]));
-        }
-        
-        free(classIvarList);
-        
-        unsigned int classMethodCount = 0;
-        Method *methodList = class_copyMethodList(theClass, &classMethodCount);
-        printf("\tMethods:\n");
-        for (int i=0; i<classMethodCount; ++i)
-        {
-            printf("\t\tname:%s encoding:%s\n", (const char*)method_getName(methodList[i]), method_getTypeEncoding(methodList[i]));
-        }
-        
-        free(methodList);
-        
-        unsigned int classPropertyCount = 0;
-        objc_property_t *properties = class_copyPropertyList(theClass, &classPropertyCount);
-        printf("\tProperties:\n");
-        for (int i=0; i<classPropertyCount; ++i)
-        {
-            printf("\t\tname:%s attributes:%s\n", property_getName(properties[i]), property_getAttributes(properties[i]));
-        }
-        
-        free(properties);
-    }
+    typedef void (^classDumper) (Class theClass);
+    classDumper dumper = (^(Class theClass)
+                          {
+                              if (theClass)
+                              {
+                                  printf("class:%s\n", class_getName(theClass));
+                                  
+                                  unsigned int classIvarCount = 0;
+                                  Ivar *classIvarList = class_copyIvarList(theClass, &classIvarCount);
+                                  printf("\tIvars:\n");
+                                  for (int i=0; i<classIvarCount; ++i)
+                                  {
+                                      printf("\t\tname:%s encoding:%s\n", ivar_getName(classIvarList[i]), ivar_getTypeEncoding(classIvarList[i]));
+                                  }
+                                  
+                                  free(classIvarList);
+                                  
+                                  unsigned int classMethodCount = 0;
+                                  Method *methodList = class_copyMethodList(theClass, &classMethodCount);
+                                  printf("\tMethods:\n");
+                                  for (int i=0; i<classMethodCount; ++i)
+                                  {
+                                      printf("\t\tname:%s encoding:%s\n", (const char*)method_getName(methodList[i]), method_getTypeEncoding(methodList[i]));
+                                  }
+                                  
+                                  free(methodList);
+                                  
+                                  unsigned int classPropertyCount = 0;
+                                  objc_property_t *properties = class_copyPropertyList(theClass, &classPropertyCount);
+                                  printf("\tProperties:\n");
+                                  for (int i=0; i<classPropertyCount; ++i)
+                                  {
+                                      printf("\t\tname:%s attributes:%s\n", property_getName(properties[i]), property_getAttributes(properties[i]));
+                                  }
+                                  
+                                  free(properties);
+                                  
+                                  unsigned int classProtocolCount = 0;
+                                  Protocol **protocolList = class_copyProtocolList(theClass, &classProtocolCount);
+                                  printf("\tProtocols:\n");
+                                  for (int i=0; i < classProtocolCount; ++i)
+                                  {
+                                      printf("\t\tname: %s\n", protocol_getName(protocolList[i]));
+                                  }
+                                  
+                                  free(protocolList);
+                              }
+                          });
+    
+    Class metaClass = objc_getMetaClass(className);
+    printf("Meta Class Dump:\n");
+    dumper(metaClass);
+    
+    Class theClass = objc_getClass(className);
+    printf("Class Dump:\n");
+    dumper(theClass);
 }
 
 #include <iostream>
@@ -98,9 +121,12 @@ int main(int argc, char *argv[])
 {
     @autoreleasepool
     {
-        //objc_dumpClass(objc_getClass("CALayer"));
+        //objc_dumpClass("CARenderer");
+        //objc_dumpClass("UIView");
+        //test();
+//        void *func = dlsym(RTLD_DEFAULT, "_CASGetDisplayInfo");
+//        printf("in func: %s %p", __FUNCTION__, func);
         
-        test();
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([Box2DAppDelegate class]));
     }
 }

@@ -32,6 +32,7 @@ Settings settings;
 {
 	if ((self = [super init]))
     {
+        [self setBackgroundColor: ccGREEN];
         
 		CGSize s = [[CCDirector sharedDirector] winSize];
         
@@ -50,7 +51,6 @@ Settings settings;
 		[view setPosition:ccp(s.width/2, s.height/3)];
         
 
-        [view setBackgroundColor: ccBLUE];
         [view setOpacity: 0];
         
         CGPoint origin = [view position];
