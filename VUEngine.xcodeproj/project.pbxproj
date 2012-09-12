@@ -11,8 +11,6 @@
 		2282772D15FF36E9009142D6 /* VAGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2282772B15FF36E9009142D6 /* VAGradientLayer.m */; };
 		2282773115FF37C1009142D6 /* VALayer+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 2282772F15FF37C1009142D6 /* VALayer+Private.h */; };
 		2282773215FF37C1009142D6 /* VALayer+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 2282773015FF37C1009142D6 /* VALayer+Private.m */; };
-		22931A3216004DAB00B3BD90 /* VALayerPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22931A3016004DAB00B3BD90 /* VALayerPrivate.h */; };
-		22931A3316004DAB00B3BD90 /* VALayerPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22931A3116004DAB00B3BD90 /* VALayerPrivate.m */; };
 		22931A5C16006DF800B3BD90 /* VAES2Renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22931A5916006DF700B3BD90 /* VAES2Renderer.h */; };
 		22931A5D16006DF800B3BD90 /* VAES2Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22931A5A16006DF800B3BD90 /* VAES2Renderer.m */; };
 		22931A5E16006DF800B3BD90 /* VAGLRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22931A5B16006DF800B3BD90 /* VAGLRenderer.h */; };
@@ -241,8 +239,6 @@
 		2282772B15FF36E9009142D6 /* VAGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAGradientLayer.m; sourceTree = "<group>"; };
 		2282772F15FF37C1009142D6 /* VALayer+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VALayer+Private.h"; sourceTree = "<group>"; };
 		2282773015FF37C1009142D6 /* VALayer+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VALayer+Private.m"; sourceTree = "<group>"; };
-		22931A3016004DAB00B3BD90 /* VALayerPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VALayerPrivate.h; sourceTree = "<group>"; };
-		22931A3116004DAB00B3BD90 /* VALayerPrivate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VALayerPrivate.m; sourceTree = "<group>"; };
 		22931A5916006DF700B3BD90 /* VAES2Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAES2Renderer.h; sourceTree = "<group>"; };
 		22931A5A16006DF800B3BD90 /* VAES2Renderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAES2Renderer.m; sourceTree = "<group>"; };
 		22931A5B16006DF800B3BD90 /* VAGLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAGLRenderer.h; sourceTree = "<group>"; };
@@ -573,8 +569,6 @@
 				22BAA03A15F8864F00AEBED9 /* VAScene.m */,
 				22BAA03B15F8864F00AEBED9 /* VAValueFunction.h */,
 				22BAA03C15F8864F00AEBED9 /* VAValueFunction.m */,
-				22931A3016004DAB00B3BD90 /* VALayerPrivate.h */,
-				22931A3116004DAB00B3BD90 /* VALayerPrivate.m */,
 			);
 			path = DiamodCore;
 			sourceTree = "<group>";
@@ -1039,7 +1033,6 @@
 				E1D0EA1915FB08C1004ADE8F /* VEGLViewPrivateHandler.h in Headers */,
 				2282772C15FF36E9009142D6 /* VAGradientLayer.h in Headers */,
 				2282773115FF37C1009142D6 /* VALayer+Private.h in Headers */,
-				22931A3216004DAB00B3BD90 /* VALayerPrivate.h in Headers */,
 				22931A5C16006DF800B3BD90 /* VAES2Renderer.h in Headers */,
 				22931A5E16006DF800B3BD90 /* VAGLRenderer.h in Headers */,
 			);
@@ -1269,7 +1262,6 @@
 				E1D0EA1A15FB08C1004ADE8F /* VEGLViewPrivateHandler.m in Sources */,
 				2282772D15FF36E9009142D6 /* VAGradientLayer.m in Sources */,
 				2282773215FF37C1009142D6 /* VALayer+Private.m in Sources */,
-				22931A3316004DAB00B3BD90 /* VALayerPrivate.m in Sources */,
 				22931A5D16006DF800B3BD90 /* VAES2Renderer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

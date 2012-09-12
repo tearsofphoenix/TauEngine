@@ -501,7 +501,7 @@ CGFloat	__ccContentScaleFactor = 1;
     
 	VGContextSaveState(_renderContext);
     
-	//[runningScene_ visitWithContext: _renderContext];
+	[runningScene_ renderInContext: _renderContext];
     
     [self showStats];
     

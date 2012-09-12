@@ -117,12 +117,21 @@ void test(void)
 		cout << myvec.at(i) << ' ';
 }
 
+
 int main(int argc, char *argv[])
 {
     @autoreleasepool
     {
+//        NSUInteger count = 0;
+//        Class *list = objc_copyClassList(&count);
+//        printf("count: %d\n", count);
+//        for(int i=0; i<count; ++i)
+//        {
+//            objc_dumpClass(class_getName(list[i]));
+//        }
         //objc_dumpClass("CARenderer");
         //objc_dumpClass("UIView");
+        //objc_dumpClass("UITableViewCellLayoutManager");
         //test();
 //        void *func = dlsym(RTLD_DEFAULT, "_CASGetDisplayInfo");
 //        printf("in func: %s %p", __FUNCTION__, func);

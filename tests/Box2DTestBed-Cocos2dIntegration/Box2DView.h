@@ -29,7 +29,7 @@
 
 @end
 
-@interface Box2DView : VALayer
+@interface Box2DView : VAScene
 {
 
 	TestEntry* entry;

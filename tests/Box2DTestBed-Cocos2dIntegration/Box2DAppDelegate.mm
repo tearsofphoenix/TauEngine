@@ -38,18 +38,17 @@
 		CCLOG(@"Retina Display Not supported");
     }
     
-	VAScene *scene = [VAScene layer];
-    MenuLayer *menuLayer = [MenuLayer menuWithEntryID: 0];
-	[scene addSublayer: menuLayer];
+    VAScene *scene = [VAScene layer];
+    
+    [scene setBackgroundColor: [VGColor redColor]];
     
 	[director_ pushScene: scene];
-    
-    
+        
     UITableView *entriesView = [[UITableView alloc] init];
     [entriesView setFrame: CGRectMake(0, 0, 200, 400)];
     
-    [entriesView setDataSource: menuLayer];
-    [entriesView setDelegate: menuLayer];
+//    [entriesView setDataSource: menuLayer];
+//    [entriesView setDelegate: menuLayer];
     
     [[director_ view] addSubview: entriesView];
     [entriesView setAlpha: 0];
@@ -119,8 +118,17 @@ static id render(id obj, SEL selector, id context, id options)
     return _renderIMP(obj, selector, context, options);
 }
 
+static IMP _kvoIMP = NULL;
+static void kvo(id obj, SEL selector, NSString *string, id value, id change, void *context)
+{
+    NSLog(@"in func: %s %@", __FUNCTION__, [NSThread callStackSymbols]);
+    
+    _kvoIMP(obj, selector, string, value, change, context);
+}
+
 + (void)load
 {
+    /*
     Class timerClass = objc_getClass("NSTimer");
     _fIMP = class_getMethodImplementation(timerClass, @selector(fire));
     class_replaceMethod(timerClass, @selector(fire), (IMP)fire, "v@:");
@@ -139,6 +147,11 @@ static id render(id obj, SEL selector, id context, id options)
     Class render = objc_getMetaClass("CARenderer");
     _renderIMP = class_getMethodImplementation(render, @selector(rendererWithEAGLContext:options:));
     class_replaceMethod(render, @selector(rendererWithEAGLContext:options:), (IMP)render, "@16@0:4@8@12");
+     */
+    
+    Class layerClass = objc_getClass("CALayer");
+    _kvoIMP = class_getMethodImplementation(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:));
+    class_replaceMethod(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:), (IMP)kvo, "v@:@@@@");
 }
 
 @end

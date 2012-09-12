@@ -53,11 +53,6 @@
         
     NSMutableArray *_animationKeys;
     NSMutableDictionary *_animations;
-    // rotation angle
-	float _rotation;
-    
-	// skew angles
-	float _skewX, _skewY;
     
 	// anchor point in points
 	CGPoint _anchorPointInPoints;
@@ -110,18 +105,25 @@
     NSMutableDictionary *_actions;
     
     NSString *_name;
-    
+
+    /* media timing i-vars */
+    CFTimeInterval _beginTime;
+    CFTimeInterval _timeOffset;
+    float _repeatCount;
+    float _repeatDuration;
+    BOOL _autoreverses;
+    NSString* _fillMode;
+    CFTimeInterval _duration;
+    float _speed;
+
     NSMutableDictionary *_style;
     
 	// Is running
     BOOL _isHidden;
-	BOOL _isRunning;
     
 	BOOL _isTransformDirty;
 	BOOL _isInverseDirty;
     
-	// is visible
-	BOOL _visible;
 	// If YES, the Anchor Point will be (0,0) when you position the VANode.
 	// Used by VALayer and VAScene
 	BOOL _ignoreAnchorPointForPosition;
@@ -522,7 +524,7 @@
  * clipped to protect valid layer content. Subclasses that wish to find
  * the actual region to draw can call CGContextGetClipBoundingBox(). */
 
-- (void)drawInContext:(VGContext *)ctx;
+- (void)drawInContext: (VGContext *)ctx;
 
 #pragma mark -  VALayer (Rendering)
 
@@ -533,7 +535,7 @@
  * WARNING: currently this method does not implement the full
  * CoreAnimation composition model, use with caution. */
 
-- (void)renderInContext:(VGContext *)ctx;
+- (void)renderInContext: (VGContext *)ctx;
 
 /* Defines how the edges of the layer are rasterized. For each of the
  * four edges (left, right, bottom, top) if the corresponding bit is

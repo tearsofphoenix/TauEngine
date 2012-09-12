@@ -38,7 +38,8 @@
 #import "ccGLStateCache.h"
 #import "TransformUtils.h"
 #import "VGColor.h"
-#import "VALayerPrivate.h"
+#import "VALayer+Private.h"
+#import "OpenGLInternal.h"
 
 @interface VALayer ()
 {
@@ -112,11 +113,6 @@ static inline void __CCLayerPopConfiguration(void)
 
 #pragma mark Layer - Init
 
-+ (void)load
-{
-    __CCLayerAnimationStack = [[NSMutableArray alloc] initWithCapacity: 10];
-}
-
 + (id)layer
 {
     return [[[self alloc] init] autorelease];
@@ -145,15 +141,26 @@ static inline void __CCLayerPopConfiguration(void)
     return self;
 }
 
+/* TODO: list all properties below */
+static NSString * s_VALayerInitializationKeys[] =
+{
+    @"anchorPoint", @"transform", @"sublayerTransform",
+    @"opacity", @"delegate", @"contentsRect", @"shouldRasterize",
+    @"backgroundColor",
+    
+    @"beginTime", @"duration", @"speed", @"autoreverses",
+    @"repeatCount",
+    
+    @"shadowColor", @"shadowOffset", @"shadowOpacity",
+    @"shadowPath", @"shadowRadius",
+    
+    @"bounds", @"position"
+};
 
 - (id)init
 {
 	if( (self=[super init]) )
     {
-        _isRunning = NO;
-        
-		_skewX = _skewY = 0.0f;
-		_rotation = 0.0f;
 		_scaleX = _scaleY = 1.0f;
         _position = CGPointZero;
         _contentSize = CGSizeZero;
@@ -165,7 +172,7 @@ static inline void __CCLayerPopConfiguration(void)
         
 		_isTransformDirty = _isInverseDirty = YES;
         
-		_visible = YES;
+		_isHidden = NO;
         
 		// lazy alloc
 		_camera = nil;
@@ -182,13 +189,28 @@ static inline void __CCLayerPopConfiguration(void)
         
         _anchorPoint = ccp(0.5f, 0.5f);
         
-        [self setBackgroundColor: [VGColor clearColor]];
-        
+        _attr = calloc(1, sizeof(struct VALayerAttribute));
+        _sublayers = [[NSMutableArray alloc] init];
+        _animations = [[NSMutableDictionary alloc] init];
+        _animationKeys = [[NSMutableArray alloc] init];
         _shaderProgram = VEShaderCacheGetProgramByName(CCShaderPositionColorProgram);
+        
+        _camera = VACameraCreate();
+        
+        [self setBounds: CGRectMake(0, 0, 1024, 768)];
+        
+        for (int i = 0; i < sizeof(s_VALayerInitializationKeys)/sizeof(s_VALayerInitializationKeys[0]); i++)
+        {
+            id defaultValue = [[self class] defaultValueForKey: s_VALayerInitializationKeys[i]];
+            if (defaultValue)
+            {
+                [self setValue: defaultValue
+                        forKey: s_VALayerInitializationKeys[i]];
+            }
+        }
         
         
 	}
-    
 	return self;
 }
 
@@ -201,927 +223,21 @@ static inline void __CCLayerPopConfiguration(void)
     return self;
 }
 
-#if 0
-- (void)cleanup
-{
-	// actions
-	[_scheduler unscheduleAllSelectorsForTarget:self];
-    
-	// timers
-    
-	[_children makeObjectsPerformSelector: @selector(cleanup)];
-}
-
-- (NSString*)description
-{
-	return [NSString stringWithFormat: @"<%@ = %p | origin: %@, Tag = %ld>", [self class], self,
-            [NSValue valueWithCGPoint: _position], (long)_tag];
-}
-
 - (void)dealloc
 {
-	CCLOGINFO( @"cocos2d: deallocing %@", self);
-    VACameraFinalize(_camera);
+    free(_attr);
     
-	// children
+    [self removeAllAnimations];
     
-    [(NSArray *)_children makeObjectsPerformSelector: @selector(setParent:)
-                                          withObject: nil];
+    [_animationKeys release];
+    [_animations release];
     
-    if (_children)
-    {
-        CFRelease(_children);
-    }
-    
-	[super dealloc];
-}
-
-@synthesize visible = _visible;
-
-@synthesize zOrder = _zOrder;
-@synthesize tag = _tag;
-@synthesize vertexZ = _vertexZ;
-@synthesize isRunning = _isRunning;
-
-#pragma mark VANode - Transform related properties
-
-@synthesize rotation = _rotation;
-
-@synthesize anchorPoint = _anchorPoint;
-@synthesize anchorPointInPoints = _anchorPointInPoints;
-
-@synthesize contentSize = _contentSize;
-
-@synthesize ignoreAnchorPointForPosition = _ignoreAnchorPointForPosition;
-
-@synthesize skewX = _skewX;
-@synthesize skewY = _skewY;
-
-@synthesize scheduler = _scheduler;
-
-- (void)setScheduler: (CCScheduler *)scheduler
-{
-    if (_scheduler != scheduler)
-    {
-        [_scheduler unscheduleUpdateForTarget: self];
-        _scheduler = scheduler;
-    }
-}
-
-- children
-{
-    if( ! _children )
-    {
-        _children = CFArrayCreateMutable(CFAllocatorGetDefault(), 4, NULL);
-    }
-    
-    return _children;
-}
-
-
-#pragma mark - Setters
-
-- (void)setRotation: (float)newRotation
-{
-    if (_rotation != newRotation)
-    {
-        _rotation = newRotation;
-        _isTransformDirty = _isInverseDirty = YES;
-    }
-}
-
-- (void)setSkewX: (float)newSkewX
-{
-    if (_skewX != newSkewX)
-    {
-        _skewX = newSkewX;
-        _isTransformDirty = _isInverseDirty = YES;
-    }
-}
-
-- (void)setSkewY: (float)newSkewY
-{
-    if (_skewY != newSkewY)
-    {
-        _skewY = newSkewY;
-        _isTransformDirty = _isInverseDirty = YES;
-    }
-}
-
-- (void)setIgnoreAnchorPointForPosition: (BOOL)newValue
-{
-	if( newValue != _ignoreAnchorPointForPosition )
-    {
-		_ignoreAnchorPointForPosition = newValue;
-		_isTransformDirty = _isInverseDirty = YES;
-	}
-}
-
-- (void)setContentSize: (CGSize)size
-{
-	if( ! CGSizeEqualToSize(size, _contentSize) )
-    {
-		_contentSize = size;
-        
-		_anchorPointInPoints = ccp( _contentSize.width * _anchorPoint.x, _contentSize.height * _anchorPoint.y );
-		_isTransformDirty = _isInverseDirty = YES;
-        
-        squareVertices_[1].x = size.width;
-        squareVertices_[2].y = size.height;
-        squareVertices_[3].x = size.width;
-        squareVertices_[3].y = size.height;
-	}
-}
-
-#pragma mark VANode Composition
-
-// camera: lazy alloc
-- (VACameraRef)camera
-{
-	if( ! _camera )
-    {
-		_camera = VACameraCreate();
-	}
-    
-	return _camera;
-}
-
-- (void)setZOrder: (NSInteger)zOrder
-{
-    if (_zOrder != zOrder)
-    {
-        _zOrder = zOrder;
-        
-        [_parent sortAllChildren];
-    }
-}
-
-// used internally to alter the zOrder variable. DON'T call this method manually
-- (void)_setZOrder: (NSInteger) z
-{
-	_zOrder = z;
-}
-
-
-- (void)detachChild: (VALayer *)child
-            cleanup: (BOOL)doCleanup
-{
-	// IMPORTANT:
-	//  -1st do onExit
-	//  -2nd cleanup
-	if (_isRunning)
-	{
-		[child onExitTransitionDidStart];
-		[child onExit];
-	}
-    
-	// If you don't do cleanup, the child's actions will not get removed and the
-	// its scheduledSelectors_ dict will not get released!
-	if (doCleanup)
-    {
-		[child cleanup];
-    }
-    
-	// set parent nil at the end (issue #476)
-	[child setParent: nil];
-    
-	[_children removeObject:child];
-}
-
-// helper used by reorderChild & add
-- (void)insertChild: (VALayer *)child
-                  z: (NSInteger)z
-{
-    if( ! _children )
-    {
-        _children = CFArrayCreateMutable(CFAllocatorGetDefault(), 4, NULL);
-    }
-    
-    CFArrayAppendValue(_children, [child retain]);
-    
-	[child _setZOrder:z];
-    [child setParent: self];
-    
-    //[self sortAllChildren];
-}
-
-#pragma mark Layer - Touch and Accelerometer related
-
-
-@synthesize userInteractionEnabled = _isUserInteractionEnabled;
-
-- (BOOL)pointInside: (CGPoint)point
-          withEvent: (UIEvent *)event
-{
-    //    CGRect bounds = [self bounds];
-    
-    //    NSLog(@"self %@ bounds: %@ point: %@ %s", self, [NSValue valueWithCGRect: bounds], [NSValue valueWithCGPoint: point],
-    //          CGRectContainsPoint([self bounds], point) ? "YES" : "NO");
-    
-    return CGRectContainsPoint([self bounds], point);
-}
-
-
-
-- (VALayer *)hitTest: (CGPoint)point
-           withEvent: (UIEvent *)event
-{
-    if(_VALayerIgnoresTouchEvents(self))
-    {
-        return nil;
-    }
-    
-    for (VALayer *nodeLooper in (NSArray *)_children)
-    {
-        if ([nodeLooper pointInside: point
-                          withEvent: event])
-        {
-            VALayer *layer = [nodeLooper hitTest: point
-                                       withEvent: event];
-            if (layer)
-            {
-                return layer;
-            }
-        }
-    }
-    
-    return self;
-}
-
-#pragma mark - Animation
-
-
-/** Animation methods. **/
-
-/* Attach an animation object to the layer. Typically this is implicitly
- * invoked through an action that is an VAAnimation object.
- *
- * 'key' may be any string such that only one animation per unique key
- * is added per layer. The special key 'transition' is automatically
- * used for transition animations. The nil pointer is also a valid key.
- *
- * If the `duration' property of the animation is zero or negative it
- * is given the default duration, either the value of the
- * `animationDuration' transaction property or .25 seconds otherwise.
- *
- * The animation is copied before being added to the layer, so any
- * subsequent modifications to `anim' will have no affect unless it is
- * added to another layer. */
-
-//for animation
-//
-
-- (void)addAnimation: (VAAnimation *)anim
-              forKey: (NSString *)key
-{
-    if (!_animationKeys)
-    {
-        _animationKeys = [[NSMutableArray alloc] init];
-    }
-    
-    if (!_animations)
-    {
-        _animations = [[NSMutableDictionary alloc] init];
-    }
-    
-    VAAnimation *copy = [anim copy];
-    
-    [_animationKeys addObject: key];
-    [_animations setObject: copy
-                    forKey: key];
-    
-    [copy release];
-    
-}
-
-/* Remove all animations attached to the layer. */
-
-- (void)removeAllAnimations
-{
-    [_animationKeys removeAllObjects];
-    [_animations removeAllObjects];
-}
-
-/* Remove any animation attached to the layer for 'key'. */
-
-- (void)removeAnimationForKey: (NSString *)key
-{
-    [_scheduler pauseTarget: self];
-    
-    [_animationKeys removeObject: key];
-    [_animations removeObjectForKey: key];
-    
-    [_scheduler resumeTarget: self];
-    
-}
-
-/* Returns an array containing the keys of all animations currently
- * attached to the receiver. The order of the array matches the order
- * in which animations will be applied. */
-
-- (NSArray *)animationKeys
-{
-    return [NSArray arrayWithArray: _animationKeys];
-}
-
-/* Returns the animation added to the layer with identifier 'key', or nil
- * if no such animation exists. Attempting to modify any properties of
- * the returned object will result in undefined behavior. */
-
-- (VAAnimation *)animationForKey:(NSString *)key
-{
-    return [_animations objectForKey: key];
-}
-
-#pragma mark - animatable properties
-
-- (void)setPosition: (CGPoint)position
-{
-    if (!CGPointEqualToPoint(_position, position))
-    {
-        NSString *keyPath = @"position";
-        [self willChangeValueForKey: keyPath];
-        
-        if (__currentBlockAnimationTransaction)
-        {
-            [_scheduler pauseTarget: self];
-            
-            VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
-            [animation setDuration: [__currentBlockAnimationTransaction duration]];
-            [animation setFromValue: [NSValue valueWithCGPoint: _position]];
-            [animation setToValue: [NSValue valueWithCGPoint: position]];
-            [animation setDelegate: __currentBlockAnimationTransaction];
-            [animation setModelObject: self];
-            
-            [__currentBlockAnimationTransaction addAnimation: animation];
-            
-            [_scheduler resumeTarget: self];
-        }
-        
-        _position = position;
-        _isTransformDirty = _isInverseDirty = YES;
-        
-        [self didChangeValueForKey: keyPath];
-    }
-}
-
-- (void)setAnchorPoint: (CGPoint)anchorPoint
-{
-    if (!CGPointEqualToPoint(_anchorPoint, anchorPoint))
-    {
-        NSString *keyPath = @"anchorPoint";
-        [self willChangeValueForKey: keyPath];
-        
-        if (__currentBlockAnimationTransaction)
-        {
-            [_scheduler pauseTarget: self];
-            
-            VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
-            [animation setDuration: [__currentBlockAnimationTransaction duration]];
-            [animation setFromValue: [NSValue valueWithCGPoint: _anchorPoint]];
-            [animation setToValue: [NSValue valueWithCGPoint: anchorPoint]];
-            [animation setDelegate: __currentBlockAnimationTransaction];
-            [animation setModelObject: self];
-            
-            [__currentBlockAnimationTransaction addAnimation: animation];
-            
-            [_scheduler resumeTarget: self];
-        }
-        
-		_anchorPoint = anchorPoint;
-		_anchorPointInPoints = ccp( _contentSize.width * _anchorPoint.x, _contentSize.height * _anchorPoint.y );
-		_isTransformDirty = _isInverseDirty = YES;
-        
-        [self didChangeValueForKey: keyPath];
-    }
-}
-
-- (void)setBackgroundColor: (GLKVector4)backgroundColor
-{
-    if (!GLKVector4AllEqualToVector4(_backgroundColor, backgroundColor))
-    {
-        NSString * keyPath = @"backgroundColor";
-        
-        if (__currentBlockAnimationTransaction)
-        {
-            //in block animation, pause animation update first
-            //
-            [_scheduler pauseTarget: self];
-            
-            VEBasicAnimation *animation = [VEBasicAnimation animationWithKeyPath: keyPath];
-            [animation setDuration: [__currentBlockAnimationTransaction duration]];
-            [animation setFromValue: [VGColor colorWithRed: _backgroundColor.r
-                                                     green: _backgroundColor.g
-                                                      blue: _backgroundColor.b
-                                                     alpha: _backgroundColor.a]];
-            
-            [animation setToValue: [VGColor colorWithRed: backgroundColor.r
-                                                   green: backgroundColor.g
-                                                    blue: backgroundColor.b
-                                                   alpha: backgroundColor.a ]];
-            [animation setDelegate: __currentBlockAnimationTransaction];
-            [animation setModelObject: self];
-            
-            [__currentBlockAnimationTransaction addAnimation: animation];
-            
-            [_scheduler resumeTarget: self];
-            
-        }else
-        {
-            [self willChangeValueForKey: keyPath];
-            
-            _backgroundColor = backgroundColor;
-            [self updateColor];
-            
-            [self didChangeValueForKey: keyPath];
-        }
-        
-    }
-}
-
-- (GLKVector4)backgroundColor
-{
-    return _backgroundColor;
-}
-
-- (void)setOpacity: (GLfloat)opacity
-{
-    if (_opacity != opacity)
-    {
-        _opacity = opacity;
-        
-        [self setBackgroundColor: GLKVector4Make(_backgroundColor.r, _backgroundColor.g, _backgroundColor.b, _opacity)];
-        for (VALayer *layerLooper in (NSArray *)_children)
-        {
-            [layerLooper setOpacity: opacity];
-        }
-    }
-}
-
-- (GLfloat)opacity
-{
-    return _opacity;
-}
-
-#pragma mark - animation
-
-
-+ (void)_setupAnimationWithDuration: (NSTimeInterval)duration
-                              delay: (NSTimeInterval)delay
-                               view: (VALayer *)layer
-                            options: (UIViewAnimationOptions)options
-                         animations: (dispatch_block_t)animations
-                              start: (dispatch_block_t)start
-                         completion: (void (^)(BOOL finished))completion
-{
-    if (start)
-    {
-        start();
-    }
-    
-    if (animations)
-    {
-        VAAnimationTransaction *configuration = [[VAAnimationTransaction alloc] init];
-        [configuration setDuration: duration];
-        [configuration setDelay: delay];
-        //[configuration setOptions: options];
-        [configuration setStart: start];
-        [configuration setCompletion: completion];
-        
-        __CCLayerPushConfiguration(configuration);
-        
-        [configuration release];
-        
-        animations();
-        
-        __CCLayerPopConfiguration();
-    }
-}
-
-+ (void)animateWithDuration: (NSTimeInterval)duration
-                      delay: (NSTimeInterval)delay
-                    options: (UIViewAnimationOptions)options
-                 animations: (void (^)(void))animations
-                 completion: (void (^)(BOOL finished))completion
-{
-    [self _setupAnimationWithDuration: duration
-                                delay: delay
-                                 view: nil
-                              options: options
-                           animations: animations
-                                start: nil
-                           completion: completion];
-}
-
-+ (void)animateWithDuration: (NSTimeInterval)duration
-                 animations: (void (^)(void))animations
-                 completion: (void (^)(BOOL finished))completion // delay = 0.0, options = 0
-{
-    [self animateWithDuration: duration
-                        delay: 0
-                      options: UIViewAnimationOptionTransitionNone | UIViewAnimationOptionCurveEaseInOut
-                   animations: animations
-                   completion: completion];
-}
-
-+ (void)animateWithDuration: (NSTimeInterval)duration
-                 animations: (void (^)(void))animations // delay = 0.0, options = 0, completion = NULL
-{
-    [self animateWithDuration: duration
-                        delay: 0
-                      options: UIViewAnimationOptionTransitionNone | UIViewAnimationOptionCurveEaseInOut
-                   animations: animations
-                   completion: nil];
-}
-
-+ (void)transitionWithLayer: (VALayer *)layer
-                   duration: (NSTimeInterval)duration
-                    options: (UIViewAnimationOptions)options
-                 animations: (void (^)(void))animations
-                 completion: (void (^)(BOOL finished))completion
-{
-    
-}
-
-+ (void)transitionFromLayer: (VALayer *)fromView
-                    toLayer: (VALayer *)toView
-                   duration: (NSTimeInterval)duration
-                    options: (UIViewAnimationOptions)options
-                 completion: (void (^)(BOOL finished))completion // toView added to fromView.superview, fromView removed from its superview
-{
-    
-}
-
-@end
-
-
-#pragma mark - VANode Draw
-
-@implementation  VALayer (CCNodeRendering)
-
-- (void)drawInContext: (VGContext *)context
-{
-	VEGLProgramUse(_shaderProgram);
-	VEGLProgramUniformForMVPMatrix(_shaderProgram, VGContextGetMVPMatrix(context));
-    
-	VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color );
-    
-	// Attributes
-	//
-	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, squareVertices_);
-	glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_FLOAT, GL_TRUE, 0, squareColors_);
-    
-	//CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	
-	CC_INCREMENT_GL_DRAWS(1);
-}
-
-- (void)visitWithContext: (VGContext *)context
-{
-	// quick return if not visible. children won't be drawn.
-	if (_visible)
-    {
-        VGContextSaveState(context);
-        
-        [self transformInContext: context];
-        
-        _drawInContextIMP(self, @selector(drawInContext:), context);
-        
-        if(_children)
-        {
-            for(CFIndex i = 0 ; i < CFArrayGetCount(_children); i++ )
-            {
-                VALayer *child =  CFArrayGetValueAtIndex(_children, i);
-                _renderInContextIMP(child, _cmd, context);
-            }
-        }
-        
-        VGContextRestoreState(context);
-    }
-}
-
-@end
-
-#pragma mark - VANode - SceneManagement
-
-@implementation VALayer (CCNodeHierarchy)
-
-#pragma mark VANode - Transformations
-
-- (void)setParent: (VALayer *)parent
-{
-    if (_parent != parent)
-    {
-        _parent = parent;
-    }
-}
-
-- (VALayer *)parent
-{
-    return _parent;
-}
-
-- (void)onEnter
-{
-	[(NSArray *)_children makeObjectsPerformSelector:@selector(onEnter)];
-    
-    [_scheduler resumeTarget: self];
-    
-	_isRunning = YES;
-}
-
-- (void)onExitTransitionDidStart
-{
-	[(NSArray *)_children makeObjectsPerformSelector: @selector(onExitTransitionDidStart)];
-}
-
-- (void)onExit
-{
-    [_scheduler pauseTarget: self];
-    
-	_isRunning = NO;
-    
-	[(NSArray *)_children makeObjectsPerformSelector:@selector(onExit)];
-}
-
-/* "add" logic MUST only be on this method
- * If a class want's to extend the 'addChild' behaviour it only needs
- * to override this method
- */
-
-- (void)addChild: (VALayer *)child
-{
-    NSAssert( child != nil, @"Argument must be non-nil");
-	NSAssert( [child parent] == nil, @"child already added. It can't be added again");
-    
-	[self insertChild: child
-                    z: [child zOrder]];
-    
-	if( _isRunning )
-    {
-		[child onEnter];
-	}
-    
-    [child setOpacity: _opacity];
-}
-
-- (void)removeFromParentAndCleanup: (BOOL)cleanup
-{
-	[_parent removeChild: self
-                 cleanup: cleanup];
-}
-
-/* "remove" logic MUST only be on this method
- * If a class want's to extend the 'removeChild' behavior it only needs
- * to override this method
- */
-- (void)removeChild: (VALayer *)child
-            cleanup: (BOOL)cleanup
-{
-	if (child && CFArrayContainsValue(_children, CFRangeMake(0, CFArrayGetCount(_children)), child))
-    {
-		[self detachChild: child
-                  cleanup: cleanup];
-    }
-}
-
-- (void)removeAllChildrenWithCleanup: (BOOL)cleanup
-{
-	// not using detachChild improves speed here
-    
-	for(VALayer *c in (NSArray *)_children)
-	{
-		// IMPORTANT:
-		//  -1st do onExit
-		//  -2nd cleanup
-		if (_isRunning)
-		{
-			[c onExitTransitionDidStart];
-			[c onExit];
-		}
-        
-		if (cleanup)
-        {
-			[c cleanup];
-        }
-		// set parent nil at the end (issue #476)
-		[c setParent:nil];
-	}
-    
-    [_children removeAllObjects];
-}
-
-- (void) sortAllChildren
-{
-    [_children sortUsingComparator: (^NSComparisonResult(VALayer *obj1, VALayer *obj2)
-                                     {
-                                         NSInteger z1 = [obj1 zOrder];
-                                         NSInteger z2 = [obj2 zOrder];
-                                         if (z1 < z2)
-                                         {
-                                             return NSOrderedAscending;
-                                         }
-                                         if (z1 > z2)
-                                         {
-                                             return NSOrderedDescending;
-                                         }
-                                         return NSOrderedSame;
-                                     })];
-}
-
-@end
-
-#pragma mark - VANode Geometry
-
-@implementation VALayer (CCNodeGeometry)
-
-- (CGRect)bounds
-{
-	CGRect rect = CGRectMake(0, 0, _contentSize.width, _contentSize.height);
-	return CGRectApplyAffineTransform(rect, [self nodeToParentTransform]);
-}
-
-- (void)setBounds: (CGRect)bounds
-{
-    [self setPosition: bounds.origin];
-    [self setContentSize: bounds.size];
-}
-
--(float) scale
-{
-	NSAssert( _scaleX == _scaleY, @"VANode#scale. ScaleX != ScaleY. Don't know which one to return");
-	return _scaleX;
-}
-
-- (void)setScale: (float) s
-{
-	_scaleX = _scaleY = s;
-	_isTransformDirty = _isInverseDirty = YES;
-}
-
-- (void)setScaleX: (float)newScaleX
-{
-    if (_scaleX != newScaleX)
-    {
-        _scaleX = newScaleX;
-        _isTransformDirty = _isInverseDirty = YES;
-    }
-}
-
-- (float)scaleX
-{
-    return _scaleX;
-}
-
-- (void)setScaleY: (float)newScaleY
-{
-    if (_scaleY != newScaleY)
-    {
-        _scaleY = newScaleY;
-        _isTransformDirty = _isInverseDirty = YES;
-    }
-}
-
-- (float)scaleY
-{
-    return _scaleY;
-}
-
-- (CGPoint)position
-{
-    return _position;
-}
-
-- (void)transformInContext: (VGContext *)context
-{
-	GLKMatrix4 transfrom4x4;
-    
-	// Convert 3x3 into 4x4 matrix
-	CGAffineTransform tmpAffine = [self nodeToParentTransform];
-    
-	CGAffineToGL(&tmpAffine, transfrom4x4.m);
-    
-	// Update Z vertex manually
-	transfrom4x4.m[14] = _vertexZ;
-    
-	VGContextConcatCTM(context, transfrom4x4 );
+    [_sublayers makeObjectsPerformSelector: @selector(removeFromSuperlayer)];
+    [_sublayers release];
     
     
-	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
-	if ( _camera )
-	{
-		BOOL needTranslate = !CGPointEqualToPoint(_anchorPoint, CGPointZero);
-        
-		if( needTranslate )
-        {
-			VGContextTranslateCTM(context, _anchorPointInPoints.x, _anchorPointInPoints.y, 0 );
-            
-            VGContextConcatCTM(context, VACameraGetLookAtMatrix(_camera));
-            
-			VGContextTranslateCTM(context, -_anchorPointInPoints.x, -_anchorPointInPoints.y, 0 );
-            
-        }else
-        {
-            VGContextConcatCTM(context, VACameraGetLookAtMatrix(_camera));
-        }
-	}
+    [super dealloc];
 }
-
-- (CGAffineTransform)nodeToParentTransform
-{
-	if ( _isTransformDirty )
-    {
-        
-		// Translate values
-		float x = _position.x;
-		float y = _position.y;
-        
-		if ( _ignoreAnchorPointForPosition )
-        {
-			x += _anchorPointInPoints.x;
-			y += _anchorPointInPoints.y;
-		}
-        
-		// Rotation values
-		float c = 1, s = 0;
-		if( _rotation )
-        {
-			c = cosf(- _rotation);
-			s = sinf(- _rotation);
-		}
-        
-		BOOL needsSkewMatrix = ( _skewX || _skewY );
-        
-        
-		// optimization:
-		// inline anchor point calculation if skew is not needed
-		
-        if( !needsSkewMatrix && !CGPointEqualToPoint(_anchorPointInPoints, CGPointZero) )
-        {
-			x += c * -_anchorPointInPoints.x * _scaleX + -s * -_anchorPointInPoints.y * _scaleY;
-			y += s * -_anchorPointInPoints.x * _scaleX +  c * -_anchorPointInPoints.y * _scaleY;
-		}
-        
-        
-		// Build Transform Matrix
-		_transform = CGAffineTransformMake( c * _scaleX,  s * _scaleX,
-										   -s * _scaleY, c * _scaleY,
-										   x, y );
-        
-		// XXX: Try to inline skew
-		// If skew is needed, apply skew and then anchor point
-		if( needsSkewMatrix )
-        {
-			CGAffineTransform skewMatrix = CGAffineTransformMake(1.0f, tanf(_skewY),
-																 tanf(_skewX), 1.0f,
-																 0.0f, 0.0f );
-			_transform = CGAffineTransformConcat(skewMatrix, _transform);
-            
-			// adjust anchor point
-			if( ! CGPointEqualToPoint(_anchorPointInPoints, CGPointZero) )
-            {
-				_transform = CGAffineTransformTranslate(_transform, -_anchorPointInPoints.x, -_anchorPointInPoints.y);
-            }
-		}
-        
-		_isTransformDirty = NO;
-	}
-    
-	return _transform;
-}
-
-- (CGAffineTransform)parentToNodeTransform
-{
-	if ( _isInverseDirty )
-    {
-		_inverse = CGAffineTransformInvert([self nodeToParentTransform]);
-		_isInverseDirty = NO;
-	}
-    
-	return _inverse;
-}
-
-- (CGAffineTransform)nodeToWorldTransform
-{
-	CGAffineTransform t = [self nodeToParentTransform];
-    
-	for (VALayer *p = _parent; p != nil; p = p->_parent)
-    {
-		t = CGAffineTransformConcat(t, [p nodeToParentTransform]);
-    }
-    
-	return t;
-}
-
-- (CGAffineTransform)worldToNodeTransform
-{
-	return CGAffineTransformInvert([self nodeToWorldTransform]);
-}
-
-@end
-#endif
 
 #pragma mark - VALayer (Property)
 
@@ -1139,7 +255,7 @@ static inline void __CCLayerPopConfiguration(void)
  *	CGPoint			NSValue
  *	CGSize			NSValue
  *	CGRect			NSValue
- *	CGAffineTransform	NSAffineTransform
+ *	CGAffineTransform	NSValue
  *	CATransform3D		NSValue  */
 
 /* Returns the default value of the named property, or nil if no
@@ -1149,8 +265,13 @@ static inline void __CCLayerPopConfiguration(void)
 
 static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
-+ (void)initialize
++ (void)load
 {
+    if (!__CCLayerAnimationStack)
+    {
+        __CCLayerAnimationStack = [[NSMutableArray alloc] initWithCapacity: 10];
+    }
+    
     if (!s_VALayerDefaultValues)
     {
         s_VALayerDefaultValues = [[NSMutableDictionary alloc] init];
@@ -1515,7 +636,7 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
  * inserted. */
 
 - (void)insertSublayer: (VALayer *)layer
-atIndex: (unsigned)idx
+               atIndex: (unsigned)idx
 {
     if(layer)
     {
@@ -1531,7 +652,7 @@ atIndex: (unsigned)idx
  * will be removed before being inserted. */
 
 - (void)insertSublayer:(VALayer *)layer
-below:(VALayer *)sibling
+                 below:(VALayer *)sibling
 {
     NSInteger index = [_sublayers indexOfObject: sibling];
     [self insertSublayer: layer
@@ -1539,7 +660,7 @@ below:(VALayer *)sibling
 }
 
 - (void)insertSublayer: (VALayer *)layer
-above: (VALayer *)sibling
+                 above: (VALayer *)sibling
 {
     NSInteger index = [_sublayers indexOfObject: sibling];
     [self insertSublayer: layer
@@ -1551,7 +672,7 @@ above: (VALayer *)sibling
  * is not the receiver, the behavior is undefined. */
 
 - (void)replaceSublayer:(VALayer *)layer
-with:(VALayer *)layer2
+                   with:(VALayer *)layer2
 {
     NSInteger index = [_sublayers indexOfObject: layer];
     [layer removeFromSuperlayer];
@@ -1652,13 +773,8 @@ with:(VALayer *)layer2
         
 		// Rotation values
 		float c = 1, s = 0;
-		if( _rotation )
-        {
-			c = cosf(- _rotation);
-			s = sinf(- _rotation);
-		}
         
-		BOOL needsSkewMatrix = ( _skewX || _skewY );
+		BOOL needsSkewMatrix = NO;
         
         
 		// optimization:
@@ -1673,24 +789,24 @@ with:(VALayer *)layer2
         
 		// Build Transform Matrix
 		affineTransform = CGAffineTransformMake( c * _scaleX,  s * _scaleX,
-										   -s * _scaleY, c * _scaleY,
-										   x, y );
+                                                -s * _scaleY, c * _scaleY,
+                                                x, y );
         
-		// XXX: Try to inline skew
-		// If skew is needed, apply skew and then anchor point
-		if( needsSkewMatrix )
-        {
-			CGAffineTransform skewMatrix = CGAffineTransformMake(1.0f, tanf(_skewY),
-																 tanf(_skewX), 1.0f,
-																 0.0f, 0.0f );
-			affineTransform = CGAffineTransformConcat(skewMatrix, affineTransform);
-            
-			// adjust anchor point
-			if( ! CGPointEqualToPoint(_anchorPointInPoints, CGPointZero) )
-            {
-				affineTransform = CGAffineTransformTranslate(affineTransform, -_anchorPointInPoints.x, -_anchorPointInPoints.y);
-            }
-		}
+        //		// XXX: Try to inline skew
+        //		// If skew is needed, apply skew and then anchor point
+        //		if( needsSkewMatrix )
+        //        {
+        //			CGAffineTransform skewMatrix = CGAffineTransformMake(1.0f, tanf(_skewY),
+        //																 tanf(_skewX), 1.0f,
+        //																 0.0f, 0.0f );
+        //			affineTransform = CGAffineTransformConcat(skewMatrix, affineTransform);
+        //
+        //			// adjust anchor point
+        //			if( ! CGPointEqualToPoint(_anchorPointInPoints, CGPointZero) )
+        //            {
+        //				affineTransform = CGAffineTransformTranslate(affineTransform, -_anchorPointInPoints.x, -_anchorPointInPoints.y);
+        //            }
+        //		}
         
 		_isTransformDirty = NO;
 	}
@@ -1757,20 +873,20 @@ with:(VALayer *)layer2
 }
 
 - (CGPoint)convertPoint: (CGPoint)p
-fromLayer: (VALayer *)l
+              fromLayer: (VALayer *)l
 {
     return CGPointApplyAffineTransform(p, [l affineTransform]);
 }
 
 - (CGPoint)convertPoint: (CGPoint)p
-toLayer: (VALayer *)l
+                toLayer: (VALayer *)l
 {
     return [l convertPoint: p
                  fromLayer: self];
 }
 
 - (CGRect)convertRect:(CGRect)r
-fromLayer:(VALayer *)l
+            fromLayer:(VALayer *)l
 {
     return CGRectApplyAffineTransform(r, [l affineTransform]);
 }
@@ -1796,7 +912,7 @@ fromLayer:(VALayer *)l
 static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 {
     if (!layer->_isUserInteractionEnabled
-        || !layer->_visible
+        || layer->_isHidden
         || layer->_opacity < 0.01)
     {
         return YES;
@@ -2156,16 +1272,69 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
  * clipped to protect valid layer content. Subclasses that wish to find
  * the actual region to draw can call CGContextGetClipBoundingBox(). */
 
-- (void)drawInContext: (VGContext *)ctx
+- (void)drawInContext: (VGContext *)context
 {
     if(_attr->_delegateRespondsToDrawLayerInContext)
     {
         [_delegate drawLayer: self
-                   inContext: ctx];
+                   inContext: context];
+    }else
+    {
+        VEGLProgramUse(_shaderProgram);
+        VEGLProgramUniformForMVPMatrix(_shaderProgram, VGContextGetMVPMatrix(context));
+        
+        VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color );
+        
+        // Attributes
+        //
+        glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, squareVertices_);
+        glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_FLOAT, GL_TRUE, 0, squareColors_);
+        
+        //CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        
+        CC_INCREMENT_GL_DRAWS(1);
+        CHECK_GL_ERROR_DEBUG();
     }
 }
 
 #pragma mark - VALayer (Rendering)
+
+- (void)transformInContext: (VGContext *)context
+{
+	GLKMatrix4 transfrom4x4;
+    
+	// Convert 3x3 into 4x4 matrix
+	CGAffineTransform tmpAffine = [self nodeToParentTransform];
+    
+	CGAffineToGL(&tmpAffine, transfrom4x4.m);
+    
+	// Update Z vertex manually
+	transfrom4x4.m[14] = _anchorPointZ;
+    
+	VGContextConcatCTM(context, transfrom4x4 );
+    
+    
+	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
+	if ( _camera )
+	{
+		BOOL needTranslate = !CGPointEqualToPoint(_anchorPoint, CGPointZero);
+        
+		if( needTranslate )
+        {
+			VGContextTranslateCTM(context, _anchorPointInPoints.x, _anchorPointInPoints.y, 0 );
+            
+            VGContextConcatCTM(context, VACameraGetLookAtMatrix(_camera));
+            
+			VGContextTranslateCTM(context, -_anchorPointInPoints.x, -_anchorPointInPoints.y, 0 );
+            
+        }else
+        {
+            VGContextConcatCTM(context, VACameraGetLookAtMatrix(_camera));
+        }
+	}
+}
 
 /* Renders the receiver and its sublayers into 'ctx'. This method
  * renders directly from the layer tree. Renders in the coordinate space
@@ -2176,7 +1345,18 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (void)renderInContext: (VGContext *)ctx
 {
+    VGContextSaveState(ctx);
     
+    [self transformInContext: ctx];
+    
+    [self drawInContext: ctx];
+    
+    for (VALayer *layer in _sublayers)
+    {
+        [layer renderInContext: ctx];
+    }
+    
+    VGContextRestoreState(ctx);
 }
 
 /* Defines how the edges of the layer are rasterized. For each of the
@@ -2213,6 +1393,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
         
         [_backgroundColor release];
         _backgroundColor = [backgroundColor retain];
+        [self updateColor];
         
         [self didChangeValueForKey: @"backgroundColor"];
     }
@@ -2785,7 +1966,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
  * added to another layer. */
 
 - (void)addAnimation:(VAAnimation *)anim
-forKey:(NSString *)key
+              forKey:(NSString *)key
 {
     if(anim && key)
     {
@@ -2872,6 +2053,11 @@ forKey:(NSString *)key
         
         _delegate = delegate;
         
+        _attr->_delegateRespondsToDisplayLayer = [_delegate respondsToSelector: @selector(displayLayer:)];
+        _attr->_delegateRespondsToActionForLayerForKey = [_delegate respondsToSelector: @selector(actionForLayer:forKey:)];
+        _attr->_delegateRespondsToDrawLayerInContext = [_delegate respondsToSelector: @selector(drawLayer:inContext:)];
+        _attr->_delegateRespondsToLayoutSublayersOfLayer = [_delegate respondsToSelector: @selector(layoutSublayersOfLayer:)];
+        
         [self didChangeValueForKey: @"delegate"];
     }
 }
@@ -2908,7 +2094,7 @@ forKey:(NSString *)key
 }
 
 - (void) touchBegan: (UITouch*)touch
-withEvent: (UIEvent*)event
+          withEvent: (UIEvent*)event
 {
 }
 
@@ -2921,11 +2107,55 @@ withEvent: (UIEvent*)event
 }
 
 - (void)touchesCancelled: (UITouch *)touch
-withEvent: (UIEvent *)event
+               withEvent: (UIEvent *)event
 {
     
 }
 
+
+- (id)valueForUndefinedKey: (NSString *)key
+{
+    /* Core Graphics types apparently are not KVC-compliant under Cocoa. */
+    
+    if ([key isEqualToString: @"backgroundColor"])
+    {
+        return [self backgroundColor];
+    }
+    if ([key isEqualToString: @"shadowColor"])
+    {
+        return [self shadowColor];
+    }
+    if ([key isEqualToString: @"shadowPath"])
+    {
+        return [self shadowColor];
+    }
+    
+    return [super valueForUndefinedKey: key];
+}
+
+- (void)setValue: (id)value
+ forUndefinedKey: (NSString *)key
+{
+    /* Core Graphics types apparently are not KVC-compliant under Cocoa. */
+    
+    if ([key isEqualToString: @"backgroundColor"])
+    {
+        [self setBackgroundColor: value];
+        return;
+    }
+    if ([key isEqualToString: @"shadowColor"])
+    {
+        [self setShadowColor: value];
+        return;
+    }
+    if ([key isEqualToString: @"shadowPath"])
+    {
+        [self setShadowPath: (CGPathRef)value];
+        return;
+    }
+    
+    [super setValue: value forUndefinedKey: key];
+}
 
 @end
 

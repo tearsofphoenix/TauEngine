@@ -60,6 +60,7 @@
 #import "ccShaders.h"
 
 #import "VGContext.h"
+#import "VGColor.h"
 
 // cocos2d macros
 //
