@@ -47,8 +47,6 @@
     VALayer *_presentationLayer;
     //cached model
     VEGLProgram *_shaderProgram;
-    IMP _renderInContextIMP;
-    IMP _drawInContextIMP;
     
     // scaling factors
 	float _scaleX, _scaleY;
@@ -166,23 +164,10 @@ static NSString * s_VALayerInitializationKeys[] =
         _contentSize = CGSizeZero;
 		_anchorPointInPoints = _anchorPoint = CGPointZero;
         
-        
-		// "whole screen" objects. like Scenes and Layers, should set ignoreAnchorPointForPosition to YES
-		_ignoreAnchorPointForPosition = NO;
-        
 		_isTransformDirty = _isInverseDirty = YES;
         
 		_isHidden = NO;
-        
-		// lazy alloc
-		_camera = nil;
-        
-        _renderInContextIMP = [self methodForSelector: @selector(visitWithContext:)];
-        _drawInContextIMP = [self methodForSelector: @selector(drawInContext:)];
-        
-        
-        //[self setScheduler: [VEDataSource serviceByIdentity: CCScheduleServiceID]];
-        
+                
 		_ignoreAnchorPointForPosition = YES;
         
 		_isUserInteractionEnabled = YES;
@@ -1278,24 +1263,6 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     {
         [_delegate drawLayer: self
                    inContext: context];
-    }else
-    {
-        VEGLProgramUse(_shaderProgram);
-        VEGLProgramUniformForMVPMatrix(_shaderProgram, VGContextGetMVPMatrix(context));
-        
-        VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color );
-        
-        // Attributes
-        //
-        glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, squareVertices_);
-        glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_FLOAT, GL_TRUE, 0, squareColors_);
-        
-        //CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        
-        CC_INCREMENT_GL_DRAWS(1);
-        CHECK_GL_ERROR_DEBUG();
     }
 }
 
@@ -1349,7 +1316,23 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     
     [self transformInContext: ctx];
     
-    [self drawInContext: ctx];
+    {
+        VEGLProgramUse(_shaderProgram);
+        VEGLProgramUniformForMVPMatrix(_shaderProgram, VGContextGetMVPMatrix(ctx));
+        
+        VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color );
+        
+        // Attributes
+        //
+        glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, squareVertices_);
+        glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_FLOAT, GL_TRUE, 0, squareColors_);
+        
+        //CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        
+        CC_INCREMENT_GL_DRAWS(1);
+    }
     
     for (VALayer *layer in _sublayers)
     {
