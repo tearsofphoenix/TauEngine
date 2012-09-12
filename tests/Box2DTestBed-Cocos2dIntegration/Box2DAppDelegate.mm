@@ -40,7 +40,7 @@
     
 	VAScene *scene = [VAScene layer];
     MenuLayer *menuLayer = [MenuLayer menuWithEntryID: 0];
-	[scene addChild: menuLayer];
+	[scene addSublayer: menuLayer];
     
 	[director_ pushScene: scene];
     

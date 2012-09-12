@@ -8,12 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import "VALayer.h"
 #import "VAMediaTiming.h"
 
 @class VAMediaTimingFunction;
 @class VAValueFunction;
 
-@interface VAAnimation : NSObject<NSCoding, NSCopying, VAMediaTiming>
+@interface VAAnimation : NSObject<NSCoding, NSCopying, VAMediaTiming, VAAction>
 
 
 /* Creates a new animation object. */

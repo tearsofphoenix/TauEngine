@@ -11,6 +11,11 @@
 		2282772D15FF36E9009142D6 /* VAGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2282772B15FF36E9009142D6 /* VAGradientLayer.m */; };
 		2282773115FF37C1009142D6 /* VALayer+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 2282772F15FF37C1009142D6 /* VALayer+Private.h */; };
 		2282773215FF37C1009142D6 /* VALayer+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 2282773015FF37C1009142D6 /* VALayer+Private.m */; };
+		22931A3216004DAB00B3BD90 /* VALayerPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22931A3016004DAB00B3BD90 /* VALayerPrivate.h */; };
+		22931A3316004DAB00B3BD90 /* VALayerPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22931A3116004DAB00B3BD90 /* VALayerPrivate.m */; };
+		22931A5C16006DF800B3BD90 /* VAES2Renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22931A5916006DF700B3BD90 /* VAES2Renderer.h */; };
+		22931A5D16006DF800B3BD90 /* VAES2Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22931A5A16006DF800B3BD90 /* VAES2Renderer.m */; };
+		22931A5E16006DF800B3BD90 /* VAGLRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22931A5B16006DF800B3BD90 /* VAGLRenderer.h */; };
 		22BAA07215F8864F00AEBED9 /* VAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA02B15F8864F00AEBED9 /* VAAnimation.h */; };
 		22BAA07315F8864F00AEBED9 /* VAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA02C15F8864F00AEBED9 /* VAAnimation.m */; };
 		22BAA07415F8864F00AEBED9 /* VABlockAnimationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA02D15F8864F00AEBED9 /* VABlockAnimationDelegate.h */; };
@@ -40,9 +45,6 @@
 		22BAA09315F8864F00AEBED9 /* ccTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04D15F8864F00AEBED9 /* ccTypes.h */; };
 		22BAA09415F8864F00AEBED9 /* NVTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04E15F8864F00AEBED9 /* NVTimer.h */; };
 		22BAA09515F8864F00AEBED9 /* NVTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04F15F8864F00AEBED9 /* NVTimer.m */; };
-		22BAA09615F8864F00AEBED9 /* VAES2Renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05015F8864F00AEBED9 /* VAES2Renderer.h */; };
-		22BAA09715F8864F00AEBED9 /* VAES2Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05115F8864F00AEBED9 /* VAES2Renderer.m */; };
-		22BAA09815F8864F00AEBED9 /* VAGLRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05215F8864F00AEBED9 /* VAGLRenderer.h */; };
 		22BAA09915F8864F00AEBED9 /* VEDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05315F8864F00AEBED9 /* VEDataSource.h */; };
 		22BAA09A15F8864F00AEBED9 /* VEDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05415F8864F00AEBED9 /* VEDataSource.m */; };
 		22BAA09B15F8864F00AEBED9 /* VEGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05515F8864F00AEBED9 /* VEGLView.h */; };
@@ -239,6 +241,11 @@
 		2282772B15FF36E9009142D6 /* VAGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAGradientLayer.m; sourceTree = "<group>"; };
 		2282772F15FF37C1009142D6 /* VALayer+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VALayer+Private.h"; sourceTree = "<group>"; };
 		2282773015FF37C1009142D6 /* VALayer+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VALayer+Private.m"; sourceTree = "<group>"; };
+		22931A3016004DAB00B3BD90 /* VALayerPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VALayerPrivate.h; sourceTree = "<group>"; };
+		22931A3116004DAB00B3BD90 /* VALayerPrivate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VALayerPrivate.m; sourceTree = "<group>"; };
+		22931A5916006DF700B3BD90 /* VAES2Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAES2Renderer.h; sourceTree = "<group>"; };
+		22931A5A16006DF800B3BD90 /* VAES2Renderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAES2Renderer.m; sourceTree = "<group>"; };
+		22931A5B16006DF800B3BD90 /* VAGLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAGLRenderer.h; sourceTree = "<group>"; };
 		22BAA02B15F8864F00AEBED9 /* VAAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAAnimation.h; sourceTree = "<group>"; };
 		22BAA02C15F8864F00AEBED9 /* VAAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAAnimation.m; sourceTree = "<group>"; };
 		22BAA02D15F8864F00AEBED9 /* VABlockAnimationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VABlockAnimationDelegate.h; sourceTree = "<group>"; };
@@ -268,9 +275,6 @@
 		22BAA04D15F8864F00AEBED9 /* ccTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccTypes.h; sourceTree = "<group>"; };
 		22BAA04E15F8864F00AEBED9 /* NVTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVTimer.h; sourceTree = "<group>"; };
 		22BAA04F15F8864F00AEBED9 /* NVTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVTimer.m; sourceTree = "<group>"; };
-		22BAA05015F8864F00AEBED9 /* VAES2Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAES2Renderer.h; sourceTree = "<group>"; };
-		22BAA05115F8864F00AEBED9 /* VAES2Renderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAES2Renderer.m; sourceTree = "<group>"; };
-		22BAA05215F8864F00AEBED9 /* VAGLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAGLRenderer.h; sourceTree = "<group>"; };
 		22BAA05315F8864F00AEBED9 /* VEDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEDataSource.h; sourceTree = "<group>"; };
 		22BAA05415F8864F00AEBED9 /* VEDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEDataSource.m; sourceTree = "<group>"; };
 		22BAA05515F8864F00AEBED9 /* VEGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEGLView.h; sourceTree = "<group>"; };
@@ -546,6 +550,9 @@
 		22BAA02A15F8864F00AEBED9 /* DiamodCore */ = {
 			isa = PBXGroup;
 			children = (
+				22931A5916006DF700B3BD90 /* VAES2Renderer.h */,
+				22931A5A16006DF800B3BD90 /* VAES2Renderer.m */,
+				22931A5B16006DF800B3BD90 /* VAGLRenderer.h */,
 				22BAA02B15F8864F00AEBED9 /* VAAnimation.h */,
 				22BAA02C15F8864F00AEBED9 /* VAAnimation.m */,
 				22BAA02D15F8864F00AEBED9 /* VABlockAnimationDelegate.h */,
@@ -566,6 +573,8 @@
 				22BAA03A15F8864F00AEBED9 /* VAScene.m */,
 				22BAA03B15F8864F00AEBED9 /* VAValueFunction.h */,
 				22BAA03C15F8864F00AEBED9 /* VAValueFunction.m */,
+				22931A3016004DAB00B3BD90 /* VALayerPrivate.h */,
+				22931A3116004DAB00B3BD90 /* VALayerPrivate.m */,
 			);
 			path = DiamodCore;
 			sourceTree = "<group>";
@@ -586,9 +595,6 @@
 				22BAA04D15F8864F00AEBED9 /* ccTypes.h */,
 				22BAA04E15F8864F00AEBED9 /* NVTimer.h */,
 				22BAA04F15F8864F00AEBED9 /* NVTimer.m */,
-				22BAA05015F8864F00AEBED9 /* VAES2Renderer.h */,
-				22BAA05115F8864F00AEBED9 /* VAES2Renderer.m */,
-				22BAA05215F8864F00AEBED9 /* VAGLRenderer.h */,
 				22BAA05315F8864F00AEBED9 /* VEDataSource.h */,
 				22BAA05415F8864F00AEBED9 /* VEDataSource.m */,
 				22BAA05515F8864F00AEBED9 /* VEGLView.h */,
@@ -1018,8 +1024,6 @@
 				22BAA08C15F8864F00AEBED9 /* CCScheduler.h in Headers */,
 				22BAA09315F8864F00AEBED9 /* ccTypes.h in Headers */,
 				22BAA09415F8864F00AEBED9 /* NVTimer.h in Headers */,
-				22BAA09615F8864F00AEBED9 /* VAES2Renderer.h in Headers */,
-				22BAA09815F8864F00AEBED9 /* VAGLRenderer.h in Headers */,
 				22BAA09915F8864F00AEBED9 /* VEDataSource.h in Headers */,
 				22BAA09B15F8864F00AEBED9 /* VEGLView.h in Headers */,
 				22BAA09D15F8864F00AEBED9 /* VEMetaService.h in Headers */,
@@ -1035,6 +1039,9 @@
 				E1D0EA1915FB08C1004ADE8F /* VEGLViewPrivateHandler.h in Headers */,
 				2282772C15FF36E9009142D6 /* VAGradientLayer.h in Headers */,
 				2282773115FF37C1009142D6 /* VALayer+Private.h in Headers */,
+				22931A3216004DAB00B3BD90 /* VALayerPrivate.h in Headers */,
+				22931A5C16006DF800B3BD90 /* VAES2Renderer.h in Headers */,
+				22931A5E16006DF800B3BD90 /* VAGLRenderer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1242,7 +1249,6 @@
 				22BAA08A15F8864F00AEBED9 /* CCDirectorIOS.m in Sources */,
 				22BAA08D15F8864F00AEBED9 /* CCScheduler.m in Sources */,
 				22BAA09515F8864F00AEBED9 /* NVTimer.m in Sources */,
-				22BAA09715F8864F00AEBED9 /* VAES2Renderer.m in Sources */,
 				22BAA09A15F8864F00AEBED9 /* VEDataSource.m in Sources */,
 				22BAA09C15F8864F00AEBED9 /* VEGLView.m in Sources */,
 				22BAA09E15F8864F00AEBED9 /* VEMetaService.m in Sources */,
@@ -1263,6 +1269,8 @@
 				E1D0EA1A15FB08C1004ADE8F /* VEGLViewPrivateHandler.m in Sources */,
 				2282772D15FF36E9009142D6 /* VAGradientLayer.m in Sources */,
 				2282773215FF37C1009142D6 /* VALayer+Private.m in Sources */,
+				22931A3316004DAB00B3BD90 /* VALayerPrivate.m in Sources */,
+				22931A5D16006DF800B3BD90 /* VAES2Renderer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1386,16 +1394,17 @@
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
 				COPY_PHASE_STRIP = NO;
-				DOXYGEN_PATH = "";
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_SHADOW = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/build/Debug-iphonesimulator\"",
@@ -1414,14 +1423,15 @@
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DOXYGEN_PATH = "";
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_SHADOW = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/build/Debug-iphonesimulator\"",

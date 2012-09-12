@@ -30,6 +30,9 @@
 @class CCScheduler;
 @class VGContext;
 @class VAAnimation;
+@class VGColor;
+
+@protocol VAAction;
 
 #pragma mark - VALayer
 
@@ -42,7 +45,7 @@
 
 @interface VALayer : NSObject <NSCoding>
 {
-	GLKVector4	_backgroundColor;
+	VGColor	*_backgroundColor;
     GLfloat _opacity;
     
 	GLKVector2	squareVertices_[4];
@@ -60,24 +63,58 @@
 	CGPoint _anchorPointInPoints;
 	// anchor point normalized (NOT in points)
 	CGPoint _anchorPoint;
-    
+    CGFloat _anchorPointZ;
+    CGRect _bounds;
     CGPoint _position;
+    CGRect _frame;
 	// untransformed size of the node
 	CGSize	_contentSize;
     
-	CGAffineTransform _transform;
+	CATransform3D _transform;
     CGAffineTransform _inverse;
-    
+    CATransform3D _sublayerTransform;
 	// z-order value
-	NSInteger _zOrder;
+	NSInteger _zPosition;
     
-	CFMutableArrayRef _children;
+	NSMutableArray *_sublayers;
     
-    NSInteger _tag;
+    id _contents;
     
     CCScheduler *_scheduler;
+    VALayer *_superlayer;
+    CGRect _contentsRect;
+    NSString *_contentsGravity;
+    CGFloat _contentsScale;
+    CGRect _contentsCenter;
+    
+    NSString *_minificationFilter;
+    NSString *_magnificationFilter;
+    float _minificationFilterBias;
+    
+    CGFloat _cornerRadius;
+    CGFloat _borderWidth;
+    
+    VGColor *_borderColor;
+    
+    VALayer *_maskLayer;
+    NSMutableArray *_filters;
+    NSMutableArray *_backgroundFilters;
+    
+    CGFloat _rasterizationScale;
+    VGColor *_shadowColor;
+    float _shadowOpacity;
+    CGSize _shadowOffset;
+    CGFloat _shadowRadius;
+    CGPathRef _shadowPath;
+    
+    NSMutableDictionary *_actions;
+    
+    NSString *_name;
+    
+    NSMutableDictionary *_style;
     
 	// Is running
+    BOOL _isHidden;
 	BOOL _isRunning;
     
 	BOOL _isTransformDirty;
@@ -89,115 +126,632 @@
 	// Used by VALayer and VAScene
 	BOOL _ignoreAnchorPointForPosition;
     BOOL _isUserInteractionEnabled;
+    BOOL _doubleSided;
+    BOOL _geometryFlipped;
+    BOOL _masksToBounds;
+    BOOL _opaque;
+    BOOL _needsDisplay;
+    BOOL _needsDisplayOnBoundsChange;
+    BOOL _drawsAsynchronously;
+    BOOL _needsLayout;
+    BOOL _isLayoutingSublayers;
+    BOOL _shouldRasterize;
+    BOOL _isPresentationLayer;
+    
+    unsigned int _edgeAntialiasingMask;
+    
+    id _compositingFilter;
+    
+    id _layoutManager;
+    id _delegate;
+    struct VALayerAttribute *_attr;
 }
 
 + (id)layer;
 
+/* This initializer is used by CoreAnimation to create shadow copies of
+ * layers, e.g. for use as presentation layers. Subclasses can override
+ * this method to copy their instance variables into the presentation
+ * layer (subclasses should call the superclass afterwards). Calling this
+ * method in any other situation will result in undefined behavior. */
+
+- (id)initWithLayer:(id)layer;
+
+/* Returns a copy of the layer containing all properties as they were
+ * at the start of the current transaction, with any active animations
+ * applied. This gives a close approximation to the version of the layer
+ * that is currently displayed. Returns nil if the layer has not yet
+ * been committed.
+ *
+ * The effect of attempting to modify the returned layer in any way is
+ * undefined.
+ *
+ * The `sublayers', `mask' and `superlayer' properties of the returned
+ * layer return the presentation versions of these properties. This
+ * carries through to read-only layer methods. E.g., calling -hitTest:
+ * on the result of the -presentationLayer will query the presentation
+ * values of the layer tree. */
+
 - (id)presentationLayer;
+
+/* When called on the result of the -presentationLayer method, returns
+ * the underlying layer with the current model values. When called on a
+ * non-presentation layer, returns the receiver. The result of calling
+ * this method after the transaction that produced the presentation
+ * layer has completed is undefined. */
 
 - (id)modelLayer;
 
-- (BOOL)pointInside: (CGPoint)point
-          withEvent: (UIEvent *)event;
+@end
 
-- (VALayer *)hitTest: (CGPoint)point
-           withEvent: (UIEvent *)event;
+@interface VALayer (Property)
+
+/* VALayer implements the standard NSKeyValueCoding protocol for all
+ * Objective C properties defined by the class and its subclasses. It
+ * dynamically implements missing accessor methods for properties
+ * declared by subclasses.
+ *
+ * When accessing properties via KVC whose values are not objects, the
+ * standard KVC wrapping conventions are used, with extensions to
+ * support the following types:
+ *
+ *	C Type			Class
+ *      ------			-----
+ *	CGPoint			NSValue
+ *	CGSize			NSValue
+ *	CGRect			NSValue
+ *	CGAffineTransform	NSAffineTransform
+ *	CATransform3D		NSValue  */
+
+/* Returns the default value of the named property, or nil if no
+ * default value is known. Subclasses that override this method to
+ * define default values for their own properties should call `super'
+ * for unknown properties. */
+
++ (id)defaultValueForKey:(NSString *)key;
+
+/* Method for subclasses to override. Returning true for a given
+ * property causes the layer's contents to be redrawn when the property
+ * is changed (including when changed by an animation attached to the
+ * layer). The default implementation returns NO. Subclasses should
+ * call super for properties defined by the superclass. (For example,
+ * do not try to return YES for properties implemented by VALayer,
+ * doing will have undefined results.) */
+
++ (BOOL)needsDisplayForKey:(NSString *)key;
+
+/* Called by the object's implementation of -encodeWithCoder:, returns
+ * false if the named property should not be archived. The base
+ * implementation returns YES. Subclasses should call super for
+ * unknown properties. */
+
+- (BOOL)shouldArchiveValueForKey:(NSString *)key;
+
+#pragma mark -  VALayer (Geometry)
+
+/* The bounds of the layer. Defaults to CGRectZero. Animatable. */
+
+@property CGRect bounds;
+
+/* The position in the superlayer that the anchor point of the layer's
+ * bounds rect is aligned to. Defaults to the zero point. Animatable. */
+
+@property CGPoint position;
+
+/* The Z component of the layer's position in its superlayer. Defaults
+ * to zero. Animatable. */
+
+@property CGFloat zPosition;
+
+/* Defines the anchor point of the layer's bounds rect, as a point in
+ * normalized layer coordinates - '(0, 0)' is the bottom left corner of
+ * the bounds rect, '(1, 1)' is the top right corner. Defaults to
+ * '(0.5, 0.5)', i.e. the center of the bounds rect. Animatable. */
+
+@property CGPoint anchorPoint;
+
+/* The Z component of the layer's anchor point (i.e. reference point for
+ * position and transform). Defaults to zero. Animatable. */
+
+@property CGFloat anchorPointZ;
+
+/* A transform applied to the layer relative to the anchor point of its
+ * bounds rect. Defaults to the identity transform. Animatable. */
+
+@property CATransform3D transform;
+
+/* Convenience methods for accessing the `transform' property as an
+ * affine transform. */
+
+- (CGAffineTransform)affineTransform;
+- (void)setAffineTransform:(CGAffineTransform)m;
+
+/* Unlike NSView, each Layer in the hierarchy has an implicit frame
+ * rectangle, a function of the `position', `bounds', `anchorPoint',
+ * and `transform' properties. When setting the frame the `position'
+ * and `bounds.size' are changed to match the given frame. */
+
+@property CGRect frame;
+
+/* When true the layer and its sublayers are not displayed. Defaults to
+ * NO. Animatable. */
+
+@property(getter=isHidden) BOOL hidden;
+
+/* When false layers facing away from the viewer are hidden from view.
+ * Defaults to YES. Animatable. */
+
+@property(getter=isDoubleSided) BOOL doubleSided;
+
+/* Whether or not the geometry of the layer (and its sublayers) is
+ * flipped vertically. Defaults to NO. Note that even when geometry is
+ * flipped, image orientation remains the same (i.e. a CGImageRef
+ * stored in the `contents' property will display the same with both
+ * flipped=NO and flipped=YES, assuming no transform on the layer). */
+
+@property(getter=isGeometryFlipped) BOOL geometryFlipped;
+
+/* Returns true if the contents of the contents property of the layer
+ * will be implicitly flipped when rendered in relation to the local
+ * coordinate space (e.g. if there are an odd number of layers with
+ * flippedGeometry=YES from the receiver up to and including the
+ * implicit container of the root layer). Subclasses should not attempt
+ * to redefine this method. When this method returns true the
+ * VGContext * object passed to -drawInContext: by the default
+ * -display method will have been y- flipped (and rectangles passed to
+ * -setNeedsDisplayInRect: will be similarly flipped). */
+
+- (BOOL)contentsAreFlipped;
+
+/* The receiver's superlayer object. Implicitly changed to match the
+ * hierarchy described by the `sublayers' properties. */
+
+@property(readonly) VALayer *superlayer;
+
+/* Removes the layer from its superlayer, works both if the receiver is
+ * in its superlayer's `sublayers' array or set as its `mask' value. */
+
+- (void)removeFromSuperlayer;
+
+/* The array of sublayers of this layer. The layers are listed in back
+ * to front order. Defaults to nil. When setting the value of the
+ * property, any newly added layers must have nil superlayers, otherwise
+ * the behavior is undefined. Note that the returned array is not
+ * guaranteed to retain its elements. */
+
+@property(copy) NSArray *sublayers;
+
+/* Add 'layer' to the end of the receiver's sublayers array. If 'layer'
+ * already has a superlayer, it will be removed before being added. */
+
+- (void)addSublayer:(VALayer *)layer;
+
+/* Insert 'layer' at position 'idx' in the receiver's sublayers array.
+ * If 'layer' already has a superlayer, it will be removed before being
+ * inserted. */
+
+- (void)insertSublayer:(VALayer *)layer atIndex:(unsigned)idx;
+
+/* Insert 'layer' either above or below the specified layer in the
+ * receiver's sublayers array. If 'layer' already has a superlayer, it
+ * will be removed before being inserted. */
+
+- (void)insertSublayer:(VALayer *)layer below:(VALayer *)sibling;
+- (void)insertSublayer:(VALayer *)layer above:(VALayer *)sibling;
+
+/* Remove 'layer' from the sublayers array of the receiver and insert
+ * 'layer2' if non-nil in its position. If the superlayer of 'layer'
+ * is not the receiver, the behavior is undefined. */
+
+- (void)replaceSublayer:(VALayer *)layer with:(VALayer *)layer2;
+
+/* A transform applied to each member of the `sublayers' array while
+ * rendering its contents into the receiver's output. Typically used as
+ * the projection matrix to add perspective and other viewing effects
+ * into the model. Defaults to identity. Animatable. */
+
+@property CATransform3D sublayerTransform;
+
+/* A layer whose alpha channel is used as a mask to select between the
+ * layer's background and the result of compositing the layer's
+ * contents with its filtered background. Defaults to nil. When used as
+ * a mask the layer's `compositingFilter' and `backgroundFilters'
+ * properties are ignored. When setting the mask to a new layer, the
+ * new layer must have a nil superlayer, otherwise the behavior is
+ * undefined. */
+
+@property(retain) VALayer *mask;
+
+/* When true an implicit mask matching the layer bounds is applied to
+ * the layer (including the effects of the `cornerRadius' property). If
+ * both `mask' and `masksToBounds' are non-nil the two masks are
+ * multiplied to get the actual mask values. Defaults to NO.
+ * Animatable. */
+
+@property BOOL masksToBounds;
+
+#pragma mark -  VALayer (CoordinateMapping)
+
+- (CGPoint)convertToNodeSpace: (CGPoint)worldPoint;
+
+- (CGPoint)convertToWorldSpace: (CGPoint)nodePoint;
+
+- (CGPoint)convertToNodeSpaceAR: (CGPoint)worldPoint;
+
+- (CGPoint)convertToWorldSpaceAR: (CGPoint)nodePoint;
+
+- (CGPoint)convertToWindowSpace: (CGPoint)nodePoint;
+
+- (CGPoint)convertPoint:(CGPoint)p fromLayer:(VALayer *)l;
+- (CGPoint)convertPoint:(CGPoint)p toLayer:(VALayer *)l;
+- (CGRect)convertRect:(CGRect)r fromLayer:(VALayer *)l;
+- (CGRect)convertRect:(CGRect)r toLayer:(VALayer *)l;
+
+- (CFTimeInterval)convertTime:(CFTimeInterval)t fromLayer:(VALayer *)l;
+- (CFTimeInterval)convertTime:(CFTimeInterval)t toLayer:(VALayer *)l;
+
+#pragma mark -  VALayer (HitTest)
+
+/* Returns the farthest descendant of the layer containing point 'p'.
+ * Siblings are searched in top-to-bottom order. 'p' is defined to be
+ * in the coordinate space of the receiver's nearest ancestor that
+ * isn't a CATransformLayer (transform layers don't have a 2D
+ * coordinate space in which the point could be specified). */
+
+- (VALayer *)hitTest:(CGPoint)p;
+
+/* Returns true if the bounds of the layer contains point 'p'. */
+
+- (BOOL)containsPoint:(CGPoint)p;
+
+#pragma mark -  VALayer (ContentProperties)
+
+/* An object providing the contents of the layer, typically a CGImageRef,
+ * but may be something else. (For example, NSImage objects are
+ * supported on Mac OS X 10.6 and later.) Default value is nil.
+ * Animatable. */
+
+@property(retain) id contents;
+
+/* A rectangle in normalized image coordinates defining the
+ * subrectangle of the `contents' property that will be drawn into the
+ * layer. If pixels outside the unit rectangles are requested, the edge
+ * pixels of the contents image will be extended outwards. If an empty
+ * rectangle is provided, the results are undefined. Defaults to the
+ * unit rectangle [0 0 1 1]. Animatable. */
+
+@property CGRect contentsRect;
+
+/* A string defining how the contents of the layer is mapped into its
+ * bounds rect. Options are `center', `top', `bottom', `left',
+ * `right', `topLeft', `topRight', `bottomLeft', `bottomRight',
+ * `resize', `resizeAspect', `resizeAspectFill'. The default value is
+ * `resize'. Note that "bottom" always means "Minimum Y" and "top"
+ * always means "Maximum Y". */
+
+@property(copy) NSString *contentsGravity;
+
+/* Defines the scale factor applied to the contents of the layer. If
+ * the physical size of the contents is '(w, h)' then the logical size
+ * (i.e. for contentsGravity calculations) is defined as '(w /
+ * contentsScale, h / contentsScale)'. Applies to both images provided
+ * explicitly and content provided via -drawInContext: (i.e. if
+ * contentsScale is two -drawInContext: will draw into a buffer twice
+ * as large as the layer bounds). Defaults to one. Animatable. */
+
+@property CGFloat contentsScale;
+
+/* A rectangle in normalized image coordinates defining the scaled
+ * center part of the `contents' image.
+ *
+ * When an image is resized due to its `contentsGravity' property its
+ * center part implicitly defines the 3x3 grid that controls how the
+ * image is scaled to its drawn size. The center part is stretched in
+ * both dimensions; the top and bottom parts are only stretched
+ * horizontally; the left and right parts are only stretched
+ * vertically; the four corner parts are not stretched at all. (This is
+ * often called "9-slice scaling".)
+ *
+ * The rectangle is interpreted after the effects of the `contentsRect'
+ * property have been applied. It defaults to the unit rectangle [0 0 1
+ * 1] meaning that the entire image is scaled. As a special case, if
+ * the width or height is zero, it is implicitly adjusted to the width
+ * or height of a single source pixel centered at that position. If the
+ * rectangle extends outside the [0 0 1 1] unit rectangle the result is
+ * undefined. Animatable. */
+
+@property CGRect contentsCenter;
+
+/* The filter types to use when rendering the `contents' property of
+ * the layer. The minification filter is used when to reduce the size
+ * of image data, the magnification filter to increase the size of
+ * image data. Currently the allowed values are `nearest' and `linear'.
+ * Both properties default to `linear'. */
+
+@property(copy) NSString *minificationFilter, *magnificationFilter;
+
+/* The bias factor added when determining which levels of detail to use
+ * when minifying using trilinear filtering. The default value is 0.
+ * Animatable. */
+
+@property float minificationFilterBias;
+
+/* A hint marking that the layer contents provided by -drawInContext:
+ * is completely opaque. Defaults to NO. Note that this does not affect
+ * the interpretation of the `contents' property directly. */
+
+@property(getter=isOpaque) BOOL opaque;
+
+/* Reload the content of this layer. Calls the -drawInContext: method
+ * then updates the `contents' property of the layer. Typically this is
+ * not called directly. */
+
+- (void)display;
+
+/* Marks that -display needs to be called before the layer is next
+ * committed. If a region is specified, only that region of the layer
+ * is invalidated. */
+
+- (void)setNeedsDisplay;
+- (void)setNeedsDisplayInRect:(CGRect)r;
+
+/* Returns true when the layer is marked as needing redrawing. */
+
+- (BOOL)needsDisplay;
+
+/* Call -display if receiver is marked as needing redrawing. */
+
+- (void)displayIfNeeded;
+
+/* When true -setNeedsDisplay will automatically be called when the
+ * bounds of the layer changes. Default value is NO. */
+
+@property BOOL needsDisplayOnBoundsChange;
+
+/* When true, the CGContext object passed to the -drawInContext: method
+ * may queue the drawing commands submitted to it, such that they will
+ * be executed later (i.e. asynchronously to the execution of the
+ * -drawInContext: method). This may allow the layer to complete its
+ * drawing operations sooner than when executing synchronously. The
+ * default value is NO. */
+
+@property BOOL drawsAsynchronously;
+
+/* Called via the -display method when the `contents' property is being
+ * updated. Default implementation does nothing. The context may be
+ * clipped to protect valid layer content. Subclasses that wish to find
+ * the actual region to draw can call CGContextGetClipBoundingBox(). */
+
+- (void)drawInContext:(VGContext *)ctx;
+
+#pragma mark -  VALayer (Rendering)
+
+/* Renders the receiver and its sublayers into 'ctx'. This method
+ * renders directly from the layer tree. Renders in the coordinate space
+ * of the layer.
+ *
+ * WARNING: currently this method does not implement the full
+ * CoreAnimation composition model, use with caution. */
+
+- (void)renderInContext:(VGContext *)ctx;
+
+/* Defines how the edges of the layer are rasterized. For each of the
+ * four edges (left, right, bottom, top) if the corresponding bit is
+ * set the edge will be antialiased. Typically this property is used to
+ * disable antialiasing for edges that abut edges of other layers, to
+ * eliminate the seams that would otherwise occur. The default value is
+ * for all edges to be antialiased. */
+
+@property unsigned int edgeAntialiasingMask;
+
+/* The background color of the layer. Default value is nil. Colors
+ * created from tiled patterns are supported. Animatable. */
+
+@property (retain) VGColor * backgroundColor;
+
+/* When positive, the background of the layer will be drawn with
+ * rounded corners. Also effects the mask generated by the
+ * `masksToBounds' property. Defaults to zero. Animatable. */
+
+@property CGFloat cornerRadius;
+
+/* The width of the layer's border, inset from the layer bounds. The
+ * border is composited above the layer's content and sublayers and
+ * includes the effects of the `cornerRadius' property. Defaults to
+ * zero. Animatable. */
+
+@property CGFloat borderWidth;
+
+/* The color of the layer's border. Defaults to opaque black. Colors
+ * created from tiled patterns are supported. Animatable. */
+
+@property (retain) VGColor * borderColor;
+
+/* The opacity of the layer, as a value between zero and one. Defaults
+ * to one. Specifying a value outside the [0,1] range will give undefined
+ * results. Animatable. */
+
+@property float opacity;
+
+/* A filter object used to composite the layer with its (possibly
+ * filtered) background. Default value is nil, which implies source-
+ * over compositing. Animatable.
+ *
+ * Note that if the inputs of the filter are modified directly after
+ * the filter is attached to a layer, the behavior is undefined. The
+ * filter must either be reattached to the layer, or filter properties
+ * should be modified by calling -setValue:forKeyPath: on each layer
+ * that the filter is attached to. (This also applies to the `filters'
+ * and `backgroundFilters' properties.) */
+
+@property(retain) id compositingFilter;
+
+/* An array of filters that will be applied to the contents of the
+ * layer and its sublayers. Defaults to nil. Animatable. */
+
+@property(copy) NSArray *filters;
+
+/* An array of filters that are applied to the background of the layer.
+ * The root layer ignores this property. Animatable. */
+
+@property(copy) NSArray *backgroundFilters;
+
+/* When true, the layer is rendered as a bitmap in its local coordinate
+ * space ("rasterized"), then the bitmap is composited into the
+ * destination (with the minificationFilter and magnificationFilter
+ * properties of the layer applied if the bitmap needs scaling).
+ * Rasterization occurs after the layer's filters and shadow effects
+ * are applied, but before the opacity modulation. As an implementation
+ * detail the rendering engine may attempt to cache and reuse the
+ * bitmap from one frame to the next. (Whether it does or not will have
+ * no affect on the rendered output.)
+ *
+ * When false the layer is composited directly into the destination
+ * whenever possible (however, certain features of the compositing
+ * model may force rasterization, e.g. adding filters).
+ *
+ * Defaults to NO. Animatable. */
+
+@property BOOL shouldRasterize;
+
+/* The scale at which the layer will be rasterized (when the
+ * shouldRasterize property has been set to YES) relative to the
+ * coordinate space of the layer. Defaults to one. Animatable. */
+
+@property CGFloat rasterizationScale;
 
 
-/** The z order of the node relative to its "siblings": children of the same parent */
-@property(nonatomic) NSInteger zOrder;
-/** The real openGL Z vertex.
- Differences between openGL Z vertex and cocos2d Z order:
- - OpenGL Z modifies the Z vertex, and not the Z order in the relation between parent-children
- - OpenGL Z might require to set 2D projection
- - cocos2d Z order works OK if all the nodes uses the same openGL Z vertex. eg: vertexZ = 0
- @warning: Use it at your own risk since it might break the cocos2d parent-children z order
- @since v0.8
- */
-@property (nonatomic) float vertexZ;
+#pragma mark -  VALayer (Shadow)
 
-/** The X skew angle of the node in radians.
- This angle describes the shear distortion in the X direction.
- Thus, it is the angle between the Y axis and the left edge of the shape
- The default skewX angle is 0. Positive values distort the node in a CW direction.
- */
-@property(nonatomic) float skewX;
+/* The color of the shadow. Defaults to opaque black. Colors created
+ * from patterns are currently NOT supported. Animatable. */
 
-/** The Y skew angle of the node in radians.
- This angle describes the shear distortion in the Y direction.
- Thus, it is the angle between the X axis and the bottom edge of the shape
- The default skewY angle is 0. Positive values distort the node in a CCW direction.
- */
-@property(nonatomic) float skewY;
+@property (retain) VGColor * shadowColor;
 
-/** The rotation (angle) of the node in degrees. 0 is the default rotation angle. Positive values rotate node CW. */
-@property(nonatomic) float rotation;
+/* The opacity of the shadow. Defaults to 0. Specifying a value outside the
+ * [0,1] range will give undefined results. Animatable. */
 
-/** A VACamera object that lets you move the node using a gluLookAt */
-@property(nonatomic,readonly) VACameraRef camera;
+@property float shadowOpacity;
 
-/** Whether of not the node is visible. Default is YES */
-@property(nonatomic, getter = isVisible) BOOL visible;
+/* The shadow offset. Defaults to (0, -3). Animatable. */
 
-/** anchorPoint is the point around which all transformations and positioning manipulations take place.
- It's like a pin in the node where it is "attached" to its parent.
- The anchorPoint is normalized, like a percentage. (0,0) means the bottom-left corner and (1,1) means the top-right corner.
- But you can use values higher than (1,1) and lower than (0,0) too.
- The default anchorPoint is (0,0). It starts in the bottom-left corner. CCSprite and other subclasses have a different default anchorPoint.
- @since v0.8
- */
-@property(nonatomic) CGPoint anchorPoint;
-/** The anchorPoint in absolute pixels.
- Since v0.8 you can only read it. If you wish to modify it, use anchorPoint instead
- */
-@property(nonatomic, readonly) CGPoint anchorPointInPoints;
+@property CGSize shadowOffset;
 
-/** The untransformed size of the node in Points
- The contentSize remains the same no matter the node is scaled or rotated.
- All nodes has a size. Layer and Scene has the same size of the screen.
- @since v0.8
- */
-@property (nonatomic) CGSize contentSize;
+/* The blur radius used to create the shadow. Defaults to 3. Animatable. */
 
-/** whether or not the node is running */
-@property(nonatomic, readonly) BOOL isRunning;
+@property CGFloat shadowRadius;
 
-/**  If YES, the Anchor Point will be (0,0) when you position the VANode.
- Used by VALayer and VAScene.
- */
-@property(nonatomic) BOOL ignoreAnchorPointForPosition;
+/* When non-null this path defines the outline used to construct the
+ * layer's shadow instead of using the layer's composited alpha
+ * channel. The path is rendered using the non-zero winding rule.
+ * Specifying the path explicitly using this property will usually
+ * improve rendering performance, as will sharing the same path
+ * reference across multiple layers. Defaults to null. Animatable. */
 
-/** A tag used to identify the node easily */
-@property(nonatomic) NSInteger tag;
+@property CGPathRef shadowPath;
 
-@property (nonatomic, assign) CCScheduler *scheduler;
+#pragma mark -  VALayer (Layout)
 
-/** Event that is called when the running node is no longer running (eg: its VAScene is being removed from the "stage" ).
- On cleanup you should break any possible circular references.
- CCNode's cleanup removes any possible scheduled timer and/or any possible action.
- If you override cleanup, you shall call [super cleanup]
- @since v0.8
- */
-- (void)cleanup;
+/* Returns the preferred frame size of the layer in the coordinate
+ * space of the superlayer. The default implementation calls the layout
+ * manager if one exists and it implements the -preferredSizeOfLayer:
+ * method, otherwise returns the size of the bounds rect mapped into
+ * the superlayer. */
 
-/** whether or not it will receive Touch events.
- You can enable / disable touch events with this property.
- Only the touches of this node will be affected. This "method" is not propagated to its children.
- 
- Valid on iOS and Mac OS X v10.6 and later.
- 
- @since v0.8.1
- */
-@property (nonatomic,getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
+- (CGSize)preferredFrameSize;
 
-@property (atomic) GLKVector4 backgroundColor;
+/* Marks that -layoutSublayers needs to be invoked on the receiver
+ * before the next update. If the receiver's layout manager implements
+ * the -invalidateLayoutOfLayer: method it will be called.
+ *
+ * This method is automatically invoked on a layer whenever its
+ * `sublayers' or `layoutManager' property is modified, and is invoked
+ * on the layer and its superlayer whenever its `bounds' or `transform'
+ * properties are modified. Implicit calls to -setNeedsLayout are
+ * skipped if the layer is currently executing its -layoutSublayers
+ * method. */
 
-@property (atomic) GLfloat opacity;
+- (void)setNeedsLayout;
 
-/** Animation methods. **/
+/* Returns true when the receiver is marked as needing layout. */
+
+- (BOOL)needsLayout;
+
+/* Traverse upwards from the layer while the superlayer requires layout.
+ * Then layout the entire tree beneath that ancestor. */
+
+- (void)layoutIfNeeded;
+
+/* Called when the layer requires layout. The default implementation
+ * calls the layout manager if one exists and it implements the
+ * -layoutSublayersOfLayer: method. Subclasses can override this to
+ * provide their own layout algorithm, which should set the frame of
+ * each sublayer. */
+
+- (void)layoutSublayers;
+
+#pragma mark -  VALayer (Action)
+
+/* An "action" is an object that responds to an "event" via the
+ * VAAction protocol (see below). Events are named using standard
+ * dot-separated key paths. Each layer defines a mapping from event key
+ * paths to action objects. Events are posted by looking up the action
+ * object associated with the key path and sending it the method
+ * defined by the VAAction protocol.
+ *
+ * When an action object is invoked it receives three parameters: the
+ * key path naming the event, the object on which the event happened
+ * (i.e. the layer), and optionally a dictionary of named arguments
+ * specific to each event.
+ *
+ * To provide implicit animations for layer properties, an event with
+ * the same name as each property is posted whenever the value of the
+ * property is modified. A suitable VAAnimation object is associated by
+ * default with each implicit event (VAAnimation implements the action
+ * protocol).
+ *
+ * The layer class also defines the following events that are not
+ * linked directly to properties:
+ *
+ * onOrderIn
+ *	Invoked when the layer is made visible, i.e. either its
+ *	superlayer becomes visible, or it's added as a sublayer of a
+ *	visible layer
+ *
+ * onOrderOut
+ *	Invoked when the layer becomes non-visible. */
+
+/* Returns the default action object associated with the event named by
+ * the string 'event'. The default implementation returns a suitable
+ * animation object for events posted by animatable properties, nil
+ * otherwise. */
+
++ (id<VAAction>)defaultActionForKey:(NSString *)event;
+
+/* Returns the action object associated with the event named by the
+ * string 'event'. The default implementation searches for an action
+ * object in the following places:
+ *
+ * 1. if defined, call the delegate method -actionForLayer:forKey:
+ * 2. look in the layer's `actions' dictionary
+ * 3. look in any `actions' dictionaries in the `style' hierarchy
+ * 4. call +defaultActionForKey: on the layer's class
+ *
+ * If any of these steps results in a non-nil action object, the
+ * following steps are ignored. If the final result is an instance of
+ * NSNull, it is converted to `nil'. */
+
+- (id<VAAction>)actionForKey:(NSString *)event;
+
+/* A dictionary mapping keys to objects implementing the VAAction
+ * protocol. Default value is nil. */
+
+@property(copy) NSDictionary *actions;
+
+#pragma mark -  VALayer (Animation)
 
 /* Attach an animation object to the layer. Typically this is implicitly
- * invoked through an action that is an CAAnimation object.
+ * invoked through an action that is an VAAnimation object.
  *
  * 'key' may be any string such that only one animation per unique key
  * is added per layer. The special key 'transition' is automatically
@@ -211,8 +765,7 @@
  * subsequent modifications to `anim' will have no affect unless it is
  * added to another layer. */
 
-- (void)addAnimation: (VAAnimation *)anim
-              forKey: (NSString *)key;
+- (void)addAnimation:(VAAnimation *)anim forKey:(NSString *)key;
 
 /* Remove all animations attached to the layer. */
 
@@ -234,192 +787,141 @@
 
 - (VAAnimation *)animationForKey:(NSString *)key;
 
-+ (void)animateWithDuration:(NSTimeInterval)duration
-                      delay: (NSTimeInterval)delay
-                    options:(UIViewAnimationOptions)options
-                 animations:(void (^)(void))animations
-                 completion:(void (^)(BOOL finished))completion ;
+#pragma mark -  VALayer (Miscellaneous)
 
-+ (void)animateWithDuration: (NSTimeInterval)duration
-                 animations: (void (^)(void))animations
-                 completion: (void (^)(BOOL finished))completion; // delay = 0.0, options = 0
+/* The name of the layer. Used by some layout managers. Defaults to nil. */
 
-+ (void)animateWithDuration: (NSTimeInterval)duration
-                 animations: (void (^)(void))animations ; // delay = 0.0, options = 0, completion = NULL
+@property(copy) NSString *name;
 
-+ (void)transitionWithLayer: (VALayer *)layer
-                   duration: (NSTimeInterval)duration
-                    options: (UIViewAnimationOptions)options
-                 animations: (void (^)(void))animations
-                 completion: (void (^)(BOOL finished))completion ;
+/* An object that will receive the VALayer delegate methods defined
+ * below (for those that it implements). The value of this property is
+ * not retained. Default value is nil. */
 
-+ (void)transitionFromLayer: (VALayer *)fromView
-                    toLayer: (VALayer *)toView
-                   duration: (NSTimeInterval)duration
-                    options: (UIViewAnimationOptions)options
-                 completion: (void (^)(BOOL finished))completion; // toView added to fromView.superview, fromView removed from its superview
+@property(assign) id delegate;
 
+/* When non-nil, a dictionary dereferenced to find property values that
+ * aren't explicitly defined by the layer. (This dictionary may in turn
+ * have a `style' property, forming a hierarchy of default values.)
+ * If the style dictionary doesn't define a value for an attribute, the
+ * +defaultValueForKey: method is called. Defaults to nil.
+ *
+ * Note that if the dictionary or any of its ancestors are modified,
+ * the values of the layer's properties are undefined until the `style'
+ * property is reset. */
 
-#pragma mark - User Interaction
+@property(copy) NSDictionary *style;
 
--(void) touchBegan:(UITouch *)touch
-         withEvent:(UIEvent *)event;
+#pragma mark -  VALayer (Extension)
 
--(void) touchEnded:(UITouch *)touch
-         withEvent:(UIEvent *)event;
+- (void) touchBegan: (UITouch*)touch
+          withEvent: (UIEvent*)event;
 
--(void) touchCancelled:(UITouch *)touch
-             withEvent:(UIEvent *)event;
+- (void) touchMoved: (UITouch*)touch
+          withEvent: (UIEvent*)event;
 
--(void) touchMoved: (UITouch *)touch
-         withEvent: (UIEvent *)event;
+- (void) touchEnded: (UITouch*)touch
+          withEvent: (UIEvent*)event;
+
+- (void)touchCancelled: (UITouch *)touch
+             withEvent: (UIEvent *)event;
 
 @end
 
-@interface VALayer (CCNodeHierarchy)
+/** Action (event handler) protocol. **/
 
-/** A weak reference to the parent */
-@property(nonatomic, assign) id parent;
+@protocol VAAction
 
-@property(nonatomic, readonly) NSMutableArray* children;
+/* Called to trigger the event named 'path' on the receiver. The object
+ * (e.g. the layer) on which the event happened is 'anObject'. The
+ * arguments dictionary may be nil, if non-nil it carries parameters
+ * associated with the event. */
 
-// scene managment
-
-/** Event that is called every time the VALayer enters the 'stage'.
- If the VALayer enters the 'stage' with a transition, this event is called when the transition starts.
- During onEnter you can't access a sibling node.
- If you override onEnter, you shall call [super onEnter].
- */
--(void) onEnter;
-
-/** Event that is called every time the VALayer leaves the 'stage'.
- If the VALayer leaves the 'stage' with a transition, this event is called when the transition finishes.
- During onExit you can't access a sibling node.
- If you override onExit, you shall call [super onExit].
- */
--(void) onExit;
-
-/** callback that is called every time the VALayer leaves the 'stage'.
- If the VALayer leaves the 'stage' with a transition, this callback is called when the transition starts.
- */
--(void) onExitTransitionDidStart;
-
-// composition: ADD
-
-/** Adds a child to the container.
- If the child is added to a 'running' node, then 'onEnter' will be called immediately.
- @since v0.7.1
- */
-- (void)addChild: (VALayer*)node;
-
-// composition: REMOVE
-
-/** Remove itself from its parent node. If cleanup is YES, then also remove all actions and callbacks.
- If the node orphan, then nothing happens.
- @since v0.99.3
- */
--(void) removeFromParentAndCleanup: (BOOL)cleanup;
-
-/** Removes a child from the container. It will also cleanup all running actions depending on the cleanup parameter.
- @since v0.7.1
- */
--(void) removeChild: (VALayer*)node
-            cleanup: (BOOL)cleanup;
-
-/** Removes all children from the container and do a cleanup all running actions depending on the cleanup parameter.
- @since v0.7.1
- */
-- (void)removeAllChildrenWithCleanup: (BOOL)cleanup;
-
-/** performance improvement, Sort the children array once before drawing, instead of every time when a child is added or reordered
- don't call this manually unless a child added needs to be removed in the same frame */
-- (void) sortAllChildren;
+- (void)runActionForKey: (NSString *)event
+                 object: (id)anObject
+              arguments: (NSDictionary *)dict;
 
 @end
 
-@interface VALayer (CCNodeRendering)
+/** Delegate methods. **/
 
-// draw
+@interface NSObject (VALayerDelegate)
 
-/** Override this method to draw your own node.
- You should use cocos2d's GL API to enable/disable the GL state / shaders.
- For further info, please see ccGLstate.h.
- You shall NOT call [super draw];
- */
-- (void)drawInContext: (VGContext *)context;
+/* If defined, called by the default implementation of the -display
+ * method, in which case it should implement the entire display
+ * process (typically by setting the `contents' property). */
 
-/** recursive method that visit its children and draw them */
-- (void)visitWithContext: (VGContext *)context;
+- (void)displayLayer:(VALayer *)layer;
 
+/* If defined, called by the default implementation of -drawInContext: */
 
-@end
+- (void)drawLayer:(VALayer *)layer inContext:(VGContext *)ctx;
 
-@interface VALayer (CCNodeGeometry)
+/* Called by the default -layoutSublayers implementation before the layout
+ * manager is checked. Note that if the delegate method is invoked, the
+ * layout manager will be ignored. */
 
-/** The scale factor of the node. 1.0 is the default scale factor. It modifies the X and Y scale at the same time. */
-@property(nonatomic) float scale;
-/** The scale factor of the node. 1.0 is the default scale factor. It only modifies the X scale factor. */
-@property(nonatomic) float scaleX;
-/** The scale factor of the node. 1.0 is the default scale factor. It only modifies the Y scale factor. */
-@property(nonatomic) float scaleY;
+- (void)layoutSublayersOfLayer:(VALayer *)layer;
 
-/** Position (x,y) of the node in points. (0,0) is the left-bottom corner. */
-@property(nonatomic) CGPoint position;
+/* If defined, called by the default implementation of the
+ * -actionForKey: method. Should return an object implementating the
+ * VAAction protocol. May return 'nil' if the delegate doesn't specify
+ * a behavior for the current event. Returning the null object (i.e.
+ * '[NSNull null]') explicitly forces no further search. (I.e. the
+ * +defaultActionForKey: method will not be called.) */
 
-/** returns a "local" axis aligned bounding box of the node in points.
- The returned box is relative only to its parent.
- The returned box is in Points.
- 
- @since v0.8.2
- */
-- (CGRect)bounds;
-
-- (void)setBounds: (CGRect)bounds;
-
-/** performs OpenGL view-matrix transformation based on position, scale, rotation and other attributes. */
-- (void)transformInContext: (VGContext *)context;
-
-// transformation methods
-
-/** Returns the matrix that transform the node's (local) space coordinates into the parent's space coordinates.
- The matrix is in Pixels.
- @since v0.7.1
- */
-- (CGAffineTransform)nodeToParentTransform;
-
-
-/** Returns the matrix that transform parent's space coordinates to the node's (local) space coordinates.
- The matrix is in Pixels.
- @since v0.7.1
- */
-- (CGAffineTransform)parentToNodeTransform;
-/** Retrusn the world affine transform matrix. The matrix is in Pixels.
- @since v0.7.1
- */
-- (CGAffineTransform)nodeToWorldTransform;
-/** Returns the inverse world affine transform matrix. The matrix is in Pixels.
- @since v0.7.1
- */
-- (CGAffineTransform)worldToNodeTransform;
-/** Converts a Point to node (local) space coordinates. The result is in Points.
- @since v0.7.1
- */
-- (CGPoint)convertToNodeSpace:(CGPoint)worldPoint;
-/** Converts a Point to world space coordinates. The result is in Points.
- @since v0.7.1
- */
-- (CGPoint)convertToWorldSpace:(CGPoint)nodePoint;
-/** Converts a Point to node (local) space coordinates. The result is in Points.
- treating the returned/received node point as anchor relative.
- @since v0.7.1
- */
-- (CGPoint)convertToNodeSpaceAR:(CGPoint)worldPoint;
-/** Converts a local Point to world space coordinates.The result is in Points.
- treating the returned/received node point as anchor relative.
- @since v0.7.1
- */
-- (CGPoint)convertToWorldSpaceAR:(CGPoint)nodePoint;
+- (id<VAAction>)actionForLayer:(VALayer *)layer forKey:(NSString *)event;
 
 @end
+
+/** Layer `contentsGravity' values. **/
+
+CA_EXTERN NSString * const kCAGravityCenter
+;
+CA_EXTERN NSString * const kCAGravityTop
+;
+CA_EXTERN NSString * const kCAGravityBottom
+;
+CA_EXTERN NSString * const kCAGravityLeft
+;
+CA_EXTERN NSString * const kCAGravityRight
+;
+CA_EXTERN NSString * const kCAGravityTopLeft
+;
+CA_EXTERN NSString * const kCAGravityTopRight
+;
+CA_EXTERN NSString * const kCAGravityBottomLeft
+;
+CA_EXTERN NSString * const kCAGravityBottomRight
+;
+CA_EXTERN NSString * const kCAGravityResize
+;
+CA_EXTERN NSString * const kCAGravityResizeAspect
+;
+CA_EXTERN NSString * const kCAGravityResizeAspectFill
+;
+
+/** Contents filter names. **/
+
+CA_EXTERN NSString * const kCAFilterNearest
+;
+CA_EXTERN NSString * const kCAFilterLinear
+;
+
+/* Trilinear minification filter. Enables mipmap generation. Some
+ * renderers may ignore this, or impose additional restrictions, such
+ * as source images requiring power-of-two dimensions. */
+
+CA_EXTERN NSString * const kCAFilterTrilinear;
+
+/** Layer event names. **/
+
+CA_EXTERN NSString * const kCAOnOrderIn
+;
+CA_EXTERN NSString * const kCAOnOrderOut
+;
+
+/** The animation key used for transitions. **/
+
+CA_EXTERN NSString * const kCATransition;
 
 

@@ -30,7 +30,7 @@
  */
 @interface VAGradientLayer : VALayer
 {
-	GLKVector4 endColor_;
+	VGColor *endColor_;
 	GLfloat startOpacity_;
 	GLfloat endOpacity_;
 	CGPoint vector_;
@@ -38,17 +38,17 @@
 }
 
 /** Initializes the VALayer with a gradient between start and end. */
-- (id) initWithColor: (GLKVector4) start
-            fadingTo: (GLKVector4) end;
+- (id) initWithColor: (VGColor *) start
+            fadingTo: (VGColor *) end;
 /** Initializes the VALayer with a gradient between start and end in the direction of v. */
-- (id) initWithColor: (GLKVector4) start
-            fadingTo: (GLKVector4) end
+- (id) initWithColor: (VGColor *) start
+            fadingTo: (VGColor *) end
          alongVector: (CGPoint) v;
 
 /** The starting color. */
-@property (nonatomic) GLKVector4 startColor;
+@property (nonatomic, retain) VGColor * startColor;
 /** The ending color. */
-@property (nonatomic) GLKVector4 endColor;
+@property (nonatomic, retain) VGColor * endColor;
 /** The starting opacity. */
 @property (nonatomic) GLfloat startOpacity;
 /** The ending color. */

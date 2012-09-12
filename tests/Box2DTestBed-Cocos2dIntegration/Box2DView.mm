@@ -13,6 +13,7 @@
 #import "Box2DView.h"
 #import "iPhoneTest.h"
 #import "VGContext.h"
+#import "VGColor.h"
 
 #define kAccelerometerFrequency 30
 #define FRAMES_BETWEEN_PRESSES_FOR_DOUBLE_CLICK 10
@@ -32,7 +33,7 @@ Settings settings;
 {
 	if ((self = [super init]))
     {
-        [self setBackgroundColor: ccGREEN];
+        [self setBackgroundColor: [VGColor greenColor]];
         
 		CGSize s = [[CCDirector sharedDirector] winSize];
         
@@ -44,33 +45,33 @@ Settings settings;
         
         _box2DNode = view;
         
-		[self addChild: view];
+		[self addSublayer: view];
         
-		[view setScale:15];
+//		[view setScale:15];
 		[view setAnchorPoint:ccp(0,0)];
 		[view setPosition:ccp(s.width/2, s.height/3)];
         
 
-        [view setOpacity: 0];
-        
-        CGPoint origin = [view position];
-        
-        [VALayer animateWithDuration: 2.0
-                          animations: (^
-                                       {
-                                           [view setOpacity: 1];
-                                           [view setPosition: CGPointMake(0, 10)];
-                                       })
-                          completion: (^(BOOL finished)
-                                       {
-                                           [view setBackgroundColor: ccBLACK];
-                                           [view setPosition: origin];
-                                           [VALayer animateWithDuration: 3.0
-                                                             animations: (^
-                                                                          {
-                                                                              [view setBackgroundColor: ccRED];
-                                                                          })];
-                                       })];
+//        [view setOpacity: 0];
+//        
+//        CGPoint origin = [view position];
+//        
+//        [VALayer animateWithDuration: 2.0
+//                          animations: (^
+//                                       {
+//                                           [view setOpacity: 1];
+//                                           [view setPosition: CGPointMake(0, 10)];
+//                                       })
+//                          completion: (^(BOOL finished)
+//                                       {
+//                                           [view setBackgroundColor: ccBLACK];
+//                                           [view setPosition: origin];
+//                                           [VALayer animateWithDuration: 3.0
+//                                                             animations: (^
+//                                                                          {
+//                                                                              [view setBackgroundColor: ccRED];
+//                                                                          })];
+//                                       })];
 	}
 	return self;
 }
@@ -79,7 +80,7 @@ Settings settings;
 {
 	VAScene *s = [VAScene layer];
 	id box = [MenuLayer menuWithEntryID:entryID];
-	[s addChild:box];
+	[s addSublayer: box];
 	[[CCDirector sharedDirector] replaceScene: s];
 }
 
@@ -90,7 +91,7 @@ Settings settings;
 	if( next >= g_totalEntries)
 		next = 0;
 	id box = [MenuLayer menuWithEntryID:next];
-	[s addChild:box];
+	[s addSublayer: box];
 	[[CCDirector sharedDirector] replaceScene: s];
 }
 
@@ -103,21 +104,8 @@ Settings settings;
 	}
     
 	id box = [MenuLayer menuWithEntryID:next];
-	[s addChild:box];
+	[s addSublayer: box];
 	[[CCDirector sharedDirector] replaceScene: s];
-}
-
--(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event
-{
-
-}
-
--(void) touchEnded:(UITouch *)touch withEvent:(UIEvent *)event
-{
-}
-
--(void) touchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
-{
 }
 
 -(void) touchMoved:(UITouch *)touch withEvent:(UIEvent *)event
@@ -166,7 +154,7 @@ Settings settings;
     }
     
 	id box = [MenuLayer menuWithEntryID: next];
-	[s addChild: box];
+	[s addSublayer: box];
 	[[CCDirector sharedDirector] replaceScene: s];
     
 }

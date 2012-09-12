@@ -332,13 +332,10 @@ static CCDirector *_sharedDirector = nil;
     if (c == 1) {
         [scenesStack_ removeLastObject];
         [self end];
-    } else {
-        while (c > 1) {
-			VAScene *current = [scenesStack_ lastObject];
-			if( [current isRunning] )
-				[current onExit];
-			[current cleanup];
-			
+    } else
+    {
+        while (c > 1)
+        {			
 			[scenesStack_ removeLastObject];
 			c--;
         }
@@ -349,10 +346,6 @@ static CCDirector *_sharedDirector = nil;
 
 -(void) end
 {
-	[runningScene_ onExit];
-	[runningScene_ cleanup];
-	[runningScene_ release];
-    
 	runningScene_ = nil;
 	nextScene_ = nil;
     
@@ -377,29 +370,10 @@ static CCDirector *_sharedDirector = nil;
 
 -(void) setNextScene
 {
-	BOOL runningIsTransition = NO;
-	BOOL newIsTransition = NO;
-    
-	// If it is not a transition, call onExit/cleanup
-	if( ! newIsTransition )
-    {
-		[runningScene_ onExit];
-        
-		// issue #709. the root node (scene) should receive the cleanup message too
-		// otherwise it might be leaked.
-		if( sendCleanupToScene_)
-			[runningScene_ cleanup];
-	}
-    
 	[runningScene_ release];
     
 	runningScene_ = [nextScene_ retain];
-	nextScene_ = nil;
-    
-	if( ! runningIsTransition )
-    {
-		[runningScene_ onEnter];
-	}
+	nextScene_ = nil;    
 }
 
 -(void) pause
@@ -527,7 +501,7 @@ CGFloat	__ccContentScaleFactor = 1;
     
 	VGContextSaveState(_renderContext);
     
-	[runningScene_ visitWithContext: _renderContext];
+	//[runningScene_ visitWithContext: _renderContext];
     
     [self showStats];
     
@@ -748,8 +722,7 @@ CGFloat	__ccContentScaleFactor = 1;
 {
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: location
-                                             withEvent: event];
+    VALayer *responsibleLayer = [runningScene_ hitTest: location];
     [responsibleLayer touchBegan: touch
                        withEvent: event];
     NSLog(@"in func: %s %@", __func__, responsibleLayer);
@@ -759,8 +732,7 @@ CGFloat	__ccContentScaleFactor = 1;
 {
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: location
-                                             withEvent: event];
+    VALayer *responsibleLayer = [runningScene_ hitTest: location];
     [responsibleLayer touchEnded: touch
                        withEvent: event];
 }
@@ -769,8 +741,7 @@ CGFloat	__ccContentScaleFactor = 1;
 {
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: location
-                                             withEvent: event];
+    VALayer *responsibleLayer = [runningScene_ hitTest: location];
     [responsibleLayer touchMoved: touch
                        withEvent: event];
     
@@ -780,8 +751,7 @@ CGFloat	__ccContentScaleFactor = 1;
 {
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: location
-                                             withEvent: event];
+    VALayer *responsibleLayer = [runningScene_ hitTest: location];
     [responsibleLayer touchCancelled: touch
                            withEvent: event];
     

@@ -7,6 +7,7 @@
 //
 
 #import "VALayer+Private.h"
+#import "VGColor.h"
 
 @implementation VALayer (Private)
 
@@ -14,7 +15,7 @@
 {
 	for( NSUInteger i = 0; i < 4; i++ )
 	{
-		squareColors_[i] = _backgroundColor ;
+		squareColors_[i] = [_backgroundColor CCColor];
 	}
 }
 

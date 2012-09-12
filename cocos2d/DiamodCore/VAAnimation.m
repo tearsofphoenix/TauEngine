@@ -56,6 +56,17 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
     return YES;
 }
 
+#pragma mark - VAAction
+
+
+- (void)runActionForKey: (NSString *)event
+                 object: (id)anObject
+              arguments: (NSDictionary *)dict
+{
+    
+}
+
+
 #pragma mark - KVO
 
 - (void)setValue: (id)value
@@ -245,7 +256,10 @@ static void _VEAnimationColorProcessor(VEBasicAnimation *animation, VALayer *lay
     color.b = colo1.b + (color2.b - colo1.b) * percent;
     color.a = colo1.a + (color2.a - colo1.a) * percent;
     
-    [layer setBackgroundColor: color];
+    [layer setBackgroundColor: [VGColor colorWithRed: color.r
+                                               green: color.g
+                                                blue: color.b
+                                               alpha: color.a]];
 }
 
 static void _VEAnimationAnchorPointProcessor(VEBasicAnimation *animation, VALayer *layer, NSValue *value1, NSValue *value2, VAMediaTimingFunction *function, NSTimeInterval elapsed)

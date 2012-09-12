@@ -9,6 +9,7 @@
 #import "VAGradientLayer.h"
 #import "VALayer+Private.h"
 #import "CGPointExtension.h"
+#import "VGColor.h"
 
 @implementation VAGradientLayer
 
@@ -16,13 +17,16 @@
 @synthesize endColor = endColor_, endOpacity = endOpacity_;
 @synthesize vector = vector_;
 
-- (id) initWithColor: (GLKVector4) start fadingTo: (GLKVector4) end
+- (id) initWithColor: (VGColor *) start
+            fadingTo: (VGColor *) end
 {
-    return [self initWithColor:start fadingTo:end alongVector:ccp(0, -1)];
+    return [self initWithColor: start
+                      fadingTo: end
+                   alongVector: ccp(0, -1)];
 }
 
-- (id) initWithColor: (GLKVector4) start
-            fadingTo: (GLKVector4) end
+- (id) initWithColor: (VGColor *) start
+            fadingTo: (VGColor *) end
          alongVector: (CGPoint) v
 {
     if ((self = [super init]))
@@ -30,11 +34,11 @@
         
         endColor_ = end;
         
-        endOpacity_		= end.a;
-        startOpacity_	= start.a;
+        GLKVector4 endColor = [endColor_ CCColor];
+
+        endOpacity_		= endColor.a ;
+        startOpacity_	= [start CCColor].a;
         vector_ = v;
-        
-        start.a	= 1;
         compressedInterpolation_ = YES;
         [self setBackgroundColor: start];
     }
@@ -57,20 +61,22 @@
         float h2 = 1 / ( fabsf(u.x) + fabsf(u.y) );
         u = ccpMult(u, h2 * (float)c);
     }
-    
-    float opacityf = _backgroundColor.a;
+    GLKVector4 color = [_backgroundColor CCColor];
+    float opacityf = color.a;
     
     GLKVector4 S = GLKVector4Make(
-                                  _backgroundColor.r ,
-                                  _backgroundColor.g ,
-                                  _backgroundColor.b ,
+                                  color.r ,
+                                  color.g ,
+                                  color.b ,
                                   startOpacity_ * opacityf
                                   );
     
+    GLKVector4 endColor = [endColor_ CCColor];
+    
     GLKVector4 E = GLKVector4Make(
-                                  endColor_.r ,
-                                  endColor_.g ,
-                                  endColor_.b ,
+                                  endColor.r ,
+                                  endColor.g ,
+                                  endColor.b ,
                                   endOpacity_*opacityf
                                   );
     
@@ -97,17 +103,17 @@
     squareColors_[3].a = E.a + (S.a - E.a) * ((c - u.x - u.y) / (2.0f * c));
 }
 
-- (GLKVector4)startColor
+- (VGColor *)startColor
 {
     return _backgroundColor;
 }
 
--(void) setStartColor:(GLKVector4)colors
+- (void) setStartColor:(VGColor *)colors
 {
     [self setBackgroundColor: colors];
 }
 
--(void) setEndColor:(GLKVector4)colors
+-(void) setEndColor:(VGColor *)colors
 {
     endColor_ = colors;
     [self updateColor];
