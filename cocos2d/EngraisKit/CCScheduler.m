@@ -27,7 +27,7 @@
 // cocos2d imports
 #import "CCScheduler.h"
 #import "ccMacros.h"
-#import "CCDirector.h"
+#import "VEDirector.h"
 #import "VEDataSource.h"
 
 //

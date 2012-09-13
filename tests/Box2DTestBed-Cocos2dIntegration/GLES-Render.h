@@ -28,7 +28,7 @@
 
 #import "cocos2d.h"
 
-#import <OpenGLES/EAGL.h>
+#import <GLKit/GLKit.h>
 
 #include "Box2D.h"
 
@@ -39,7 +39,7 @@ struct b2AABB;
 class GLESDebugDraw : public b2Draw
 {
 	float32 mRatio;
-	VEGLProgram *mShaderProgram;
+    GLKBaseEffect *m_effect;
 	GLint		mColorLocation;
 
 	void initShader( void );

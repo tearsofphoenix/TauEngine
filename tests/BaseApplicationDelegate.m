@@ -19,7 +19,7 @@
 
 @implementation BaseApplicationDelegate
 
-@synthesize window=window_, navController=navController_, director=director_;
+@synthesize window=window_, director=director_;
 
 -(id) init
 {
@@ -35,24 +35,15 @@
 {
 	// Main Window
 	window_ = [[VAWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
+    
 	// Director
-	director_ = [CCDirector sharedDirector];
-	[director_ setDisplayStats:NO];
-	[director_ setAnimationInterval:1.0/60];
+	director_ = [VEDirector sharedDirector];
 	
     UIView *aView = [[UIView alloc] init];
     
     UIView *subView = [[UIView alloc] init];
     [aView addSubview: subView];
 	// GL View
-	VEGLView *__glView = [[VEGLView alloc] initWithFrame: [window_ bounds]];
-	
-	[director_ setView: __glView];
-    
-    [__glView release];
-    
-	[director_ setDelegate: self];
     
 	director_.wantsFullScreenLayout = YES;
     
@@ -60,12 +51,7 @@
 	[director_ enableRetinaDisplay:useRetinaDisplay_];
 	
 	// Navigation Controller
-	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
-	navController_.navigationBarHidden = YES;
-    
-	// AddSubView doesn't work on iOS6
-	[window_ addSubview:navController_.view];
-    //	[window_ setRootViewController:navController_];
+    [window_ setRootViewController: director_];
     
 	[window_ makeKeyAndVisible];
     
@@ -75,45 +61,40 @@
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	if( [navController_ visibleViewController] == director_ )
-		[director_ pause];
+    [director_ setPaused: YES];
 }
 
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	if( [navController_ visibleViewController] == director_ )
-		[director_ resume];
+    [director_ setPaused: NO];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	if( [navController_ visibleViewController] == director_ )
-		[director_ stopAnimation];
+    [director_ setPaused: YES];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	if( [navController_ visibleViewController] == director_ )
-		[director_ startAnimation];
+    [director_ setPaused: NO];
 }
 
 // application will be killed
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] end];
+    
 }
 
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
-	[director_ setNextDeltaTimeZero:YES];
+//	[director_ setNextDeltaTimeZero:YES];
 }
 
 - (void) dealloc
 {
 	[window_ release];
-	[navController_ release];
     
 	[super dealloc];
 }

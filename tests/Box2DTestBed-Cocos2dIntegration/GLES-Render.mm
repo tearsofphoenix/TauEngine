@@ -46,29 +46,31 @@ GLESDebugDraw::GLESDebugDraw( float32 ratio )
 
 void GLESDebugDraw::initShader( void )
 {
-	mShaderProgram = VEShaderCacheGetProgramByName(kCCShaderPositionUColorProgram);
-
-	mColorLocation = VEGLProgramGetUniformLocation( mShaderProgram, "u_color");
+    m_effect = [[GLKBaseEffect alloc] init];    
 }
 
 void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, const b2Color& color)
 {
+    VGContext *context = VGContextGetCurrentContext();
+    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
+    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
     
-    VEGLProgramUse(mShaderProgram);
-    VEGLProgramUniformForMVPMatrix(mShaderProgram, VGContextGetMVPMatrix(VGContextGetCurrentContext()));
-
 	GLKVector2 vertices[vertexCount];
 
-	for( int i=0;i<vertexCount;i++) {
+	for( int i=0;i<vertexCount;i++)
+    {
 		b2Vec2 tmp = old_vertices[i];
 		tmp *= mRatio;
 		vertices[i].x = tmp.x;
 		vertices[i].y = tmp.y;
 	}
 
-    VEGLProgramUniformf(mShaderProgram, mColorLocation, (GLfloat *)&color.r, 3);
-
-	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+    [m_effect setUseConstantColor: GL_TRUE];
+    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1)];
+    
+    [m_effect prepareToDraw];
+    
+	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, vertices);
 	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
 
 	CC_INCREMENT_GL_DRAWS(1);
@@ -79,8 +81,9 @@ void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, c
 void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int32 vertexCount, const b2Color& color)
 {
     
-    VEGLProgramUse(mShaderProgram);
-    VEGLProgramUniformForMVPMatrix(mShaderProgram, VGContextGetMVPMatrix(VGContextGetCurrentContext()));
+    VGContext *context = VGContextGetCurrentContext();
+    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
+    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
 
 	GLKVector2 vertices[vertexCount];
 
@@ -92,17 +95,19 @@ void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int32 vertexCou
 		vertices[i].x = tmp.x;
 		vertices[i].y = tmp.y;
 	}
-
-    GLfloat halfColor[4] = {color.r * 0.5, color.g * 0.5, color.b * 0.5, 0.5};
     
-    VEGLProgramUniformf(mShaderProgram, mColorLocation, halfColor, 4);
+    [m_effect setUseConstantColor: GL_TRUE];
+    
+    [m_effect setConstantColor: GLKVector4Make(color.r * 0.5, color.g * 0.5, color.b * 0.5, 0.5)];
+    [m_effect prepareToDraw];
+//    VEGLProgramUniformf(mShaderProgram, mColorLocation, halfColor, 4);
 
-	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, vertices);
 
 	glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
 
-    GLfloat fullColor[4] = {color.r, color.g, color.b, 1.0};
-    VEGLProgramUniformf(mShaderProgram, mColorLocation, fullColor, 4);
+    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
+    [m_effect prepareToDraw];
 
 	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
 
@@ -113,8 +118,9 @@ void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int32 vertexCou
 
 void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
-    VEGLProgramUse(mShaderProgram);
-    VEGLProgramUniformForMVPMatrix(mShaderProgram, VGContextGetMVPMatrix(VGContextGetCurrentContext()));
+    VGContext *context = VGContextGetCurrentContext();
+    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
+    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
 
 	const float32 k_segments = 16.0f;
 	int vertexCount=16;
@@ -130,10 +136,12 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
 		theta += k_increment;
 	}
 
-    GLfloat fullColor[4] = {color.r, color.g, color.b, 1.0};
-    VEGLProgramUniformf(mShaderProgram, mColorLocation, fullColor, 4);
-
-	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
+    [m_effect setUseConstantColor: GL_TRUE];
+    
+    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
+    [m_effect prepareToDraw];
+    
+	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
 
 	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
 
@@ -144,8 +152,9 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
 
 void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
-    VEGLProgramUse(mShaderProgram);
-    VEGLProgramUniformForMVPMatrix(mShaderProgram, VGContextGetMVPMatrix(VGContextGetCurrentContext()));
+    VGContext *context = VGContextGetCurrentContext();
+    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
+    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
 
 	const float32 k_segments = 16.0f;
 	int vertexCount=16;
@@ -161,15 +170,16 @@ void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
 		theta += k_increment;
 	}
 
-    GLfloat halfColor[4] = {color.r * 0.5, color.g * 0.5, color.b * 0.5, 0.5};
-    VEGLProgramUniformf(mShaderProgram, mColorLocation, halfColor, 4);
+    [m_effect setUseConstantColor: GL_TRUE];
+    
+    [m_effect setConstantColor: GLKVector4Make(color.r * 0.5, color.g * 0.5, color.b * 0.5, 0.5)];
+    [m_effect prepareToDraw];
 
-	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
+	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
 
-
-    GLfloat fullColor[4] = {color.r, color.g, color.b, 1.0};
-    VEGLProgramUniformf(mShaderProgram, mColorLocation, fullColor, 4);
+    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
+    [m_effect prepareToDraw];
     
 	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
 
@@ -183,11 +193,13 @@ void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
 
 void GLESDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
-    VEGLProgramUse(mShaderProgram);
-    VEGLProgramUniformForMVPMatrix(mShaderProgram, VGContextGetMVPMatrix(VGContextGetCurrentContext()));
+    VGContext *context = VGContextGetCurrentContext();
+    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
+    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
 
-    GLfloat fullColor[4] = {color.r, color.g, color.b, 1.0};
-    VEGLProgramUniformf(mShaderProgram, mColorLocation, fullColor, 4);
+    [m_effect setUseConstantColor: GL_TRUE];
+    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
+    [m_effect prepareToDraw];
 
 	GLfloat				glVertices[] =
     {
@@ -195,7 +207,7 @@ void GLESDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Colo
 		p2.x * mRatio, p2.y * mRatio
 	};
 
-	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
+	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
 
 	glDrawArrays(GL_LINES, 0, 2);
 	
@@ -217,18 +229,21 @@ void GLESDebugDraw::DrawTransform(const b2Transform& xf)
 
 void GLESDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
 {
-    VEGLProgramUse(mShaderProgram);
-    VEGLProgramUniformForMVPMatrix(mShaderProgram, VGContextGetMVPMatrix(VGContextGetCurrentContext()));
+    VGContext *context = VGContextGetCurrentContext();
+    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
+    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
+    
 
-    GLfloat fullColor[4] = {color.r, color.g, color.b, 1.0};
-    VEGLProgramUniformf(mShaderProgram, mColorLocation, fullColor, 4);
+    [m_effect setUseConstantColor: GL_TRUE];
+    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
+    [m_effect prepareToDraw];
 
 	GLfloat				glVertices[] =
     {
 		p.x * mRatio, p.y * mRatio
 	};
 
-	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
+	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
 
 	glDrawArrays(GL_POINTS, 0, 1);
 	
@@ -246,11 +261,14 @@ void GLESDebugDraw::DrawString(int x, int y, const char *string, ...)
 
 void GLESDebugDraw::DrawAABB(b2AABB* aabb, const b2Color& color)
 {
-    VEGLProgramUse(mShaderProgram);
-    VEGLProgramUniformForMVPMatrix(mShaderProgram, VGContextGetMVPMatrix(VGContextGetCurrentContext()));
-
-    GLfloat fullColor[4] = {color.r, color.g, color.b, 1.0};
-    VEGLProgramUniformf(mShaderProgram, mColorLocation, fullColor, 4);
+    VGContext *context = VGContextGetCurrentContext();
+    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
+    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
+    
+    
+    [m_effect setUseConstantColor: GL_TRUE];
+    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
+    [m_effect prepareToDraw];
 
 	GLfloat				glVertices[] = {
 		aabb->lowerBound.x * mRatio, aabb->lowerBound.y * mRatio,
@@ -259,7 +277,7 @@ void GLESDebugDraw::DrawAABB(b2AABB* aabb, const b2Color& color)
 		aabb->lowerBound.x * mRatio, aabb->upperBound.y * mRatio
 	};
 
-	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
+	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
 	glDrawArrays(GL_LINE_LOOP, 0, 8);
 	
 	CC_INCREMENT_GL_DRAWS(1);

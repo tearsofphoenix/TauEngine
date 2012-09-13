@@ -27,7 +27,7 @@
 
 #import "VAScene.h"
 #import "CGPointExtension.h"
-#import "CCDirector.h"
+#import "VEDirector.h"
 
 
 @implementation VAScene
@@ -36,7 +36,7 @@
 {
 	if( (self=[super init]) )
     {
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [[VEDirector sharedDirector] winSize];
 
 		_anchorPoint = ccp(0.5f, 0.5f);
         

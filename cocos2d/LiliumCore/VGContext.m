@@ -8,7 +8,6 @@
 
 #import "VGContext.h"
 #import "ccGLStateCache.h"
-#import "VEGLProgram.h"
 
 static VGContext *__currentContext = nil;
 
@@ -134,6 +133,17 @@ void VGContextScaleCTM(VGContext *context, float sx, float sy, float sz)
 {
     GLKMatrixStackScale(context->_currentStack, sx, sy, sz);
 }
+
+GLKMatrix4 VGContextGetModelviewMatrix(VGContext *context)
+{
+    return GLKMatrixStackGetMatrix4(context->_modelViewMatrixStack);
+}
+
+GLKMatrix4 VGContextGetProjectionMatrix(VGContext *context)
+{
+    return GLKMatrixStackGetMatrix4(context->_projectionMatrixStack);
+}
+
 
 GLKMatrix4 VGContextGetMVPMatrix(VGContext *context)
 {

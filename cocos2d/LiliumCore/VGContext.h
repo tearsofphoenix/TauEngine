@@ -41,6 +41,10 @@ extern "C" {
     
     CF_EXPORT GLKMatrix4 VGContextGetMVPMatrix(VGContext *context);
 
+    CF_EXPORT GLKMatrix4 VGContextGetModelviewMatrix(VGContext *context);
+    
+    CF_EXPORT GLKMatrix4 VGContextGetProjectionMatrix(VGContext *context);
+    
 #ifdef __cplusplus
     }
 #endif

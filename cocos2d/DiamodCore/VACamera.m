@@ -41,6 +41,7 @@ VACameraRef VACameraCreate(void)
     camera->_eye = GLKVector3Make(0, 0, FLT_EPSILON);
     camera->_center = GLKVector3Make(0, 0, 0);
     camera->_up = GLKVector3Make(0, 1, 0);
+    camera->_isDirty = YES;
     
     return camera;
 }

@@ -24,8 +24,7 @@
  */
 
 #import "ccGLStateCache.h"
-#import "VEGLProgram.h"
-#import "CCDirector.h"
+#import "VEDirector.h"
 #import "ccConfig.h"
 #import "ccGLStateCache.h"
 
@@ -121,10 +120,12 @@ void VEGLEnableVertexAttribs( unsigned int flags )
 	if( enablePosition != _vertexAttribPosition )
     {
 		if( enablePosition )
-			glEnableVertexAttribArray( kCCVertexAttrib_Position );
-		else
-			glDisableVertexAttribArray( kCCVertexAttrib_Position );
-
+        {
+			glEnableVertexAttribArray( GLKVertexAttribPosition );
+		}else
+        {
+			glDisableVertexAttribArray( GLKVertexAttribPosition );
+        }
 		_vertexAttribPosition = enablePosition;
 	}
 
@@ -134,9 +135,9 @@ void VEGLEnableVertexAttribs( unsigned int flags )
 	if( enableColor != _vertexAttribColor )
     {
 		if( enableColor )
-			glEnableVertexAttribArray( kCCVertexAttrib_Color );
+			glEnableVertexAttribArray( GLKVertexAttribColor );
 		else
-			glDisableVertexAttribArray( kCCVertexAttrib_Color );
+			glDisableVertexAttribArray( GLKVertexAttribColor );
 
 		_vertexAttribColor = enableColor;
 	}
@@ -147,9 +148,9 @@ void VEGLEnableVertexAttribs( unsigned int flags )
 	if( enableTexCoords != _vertexAttribTexCoords )
     {
 		if( enableTexCoords )
-			glEnableVertexAttribArray( kCCVertexAttrib_TexCoords );
+			glEnableVertexAttribArray( GLKVertexAttribTexCoord0 );
 		else
-			glDisableVertexAttribArray( kCCVertexAttrib_TexCoords );
+			glDisableVertexAttribArray( GLKVertexAttribTexCoord0 );
 
 		_vertexAttribTexCoords = enableTexCoords;
 	}

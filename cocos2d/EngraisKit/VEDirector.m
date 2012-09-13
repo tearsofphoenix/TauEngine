@@ -30,7 +30,7 @@
 #import <unistd.h>
 #import <sys/time.h>
 
-#import "CCDirector.h"
+#import "VEDirector.h"
 #import "VGContext.h"
 
 #import "ccMacros.h"
@@ -39,20 +39,18 @@
 
 #import "VALayer.h"
 #import "ccGLStateCache.h"
-#import "VEShaderCache.h"
 
 // support imports
 
 #import "OpenGLInternal.h"
 #import "CGPointExtension.h"
 
-#import "CCDirectorIOS.h"
-#import "VEGLView.h"
+
 #import "VEDataSource.h"
 #import "CCScheduler.h"
+#import <QuartzCore/QuartzCore.h>
 
-#pragma mark -
-#pragma mark Director - global variables (optimization)
+#pragma mark - Director - global variables (optimization)
 
 // XXX it shoul be a Director ivar. Move it there once support for multiple directors is added
 NSUInteger	__ccNumberOfDraws = 0;
@@ -61,57 +59,29 @@ NSUInteger	__ccNumberOfDraws = 0;
 
 
 
-@interface CCDirector ()
+@interface VEDirector ()
 {
 @private
     CCScheduler *_scheduler;
 }
 
 - (void) setNextScene;
-- (void) showStats;
-
-- (void) setNextScene;
-
-// calculates delta time since last time it was called
--(void) calculateDeltaTime;
 
 @end
 
-@implementation CCDirector
+@implementation VEDirector
 
-@synthesize animationInterval = animationInterval_;
 @synthesize runningScene = runningScene_;
-@synthesize displayStats = displayStats_;
-@synthesize nextDeltaTimeZero = nextDeltaTimeZero_;
-@synthesize isPaused = isPaused_;
-@synthesize isAnimating = isAnimating_;
-@synthesize sendCleanupToScene = sendCleanupToScene_;
-@synthesize delegate = delegate_;
-@synthesize totalFrames = totalFrames_;
-@synthesize secondsPerFrame = secondsPerFrame_;
 
-@synthesize dispatchQueue = _dispatchQueue;
-//
 // singleton stuff
 //
-static CCDirector *_sharedDirector = nil;
+static VEDirector *_sharedDirector = nil;
 
-+ (CCDirector *)sharedDirector
++ (VEDirector *)sharedDirector
 {
 	if (!_sharedDirector)
     {
-        
-		//
-		// Default Director is DisplayLink
-		//
-		if( [CCDirector class] == [self class] )
-        {
-			_sharedDirector = [[VEDisplayDirector alloc] init];
-            
-        }else
-        {
-			_sharedDirector = [[self alloc] init];
-        }
+        _sharedDirector = [[self alloc] init];
 	}
     
 	return _sharedDirector;
@@ -134,21 +104,10 @@ static CCDirector *_sharedDirector = nil;
 		runningScene_ = nil;
 		nextScene_ = nil;
         
-		oldAnimationInterval_ = animationInterval_ = 1.0 / kDefaultFPS;
 		scenesStack_ = [[NSMutableArray alloc] initWithCapacity:10];
         
 		// Set default projection (3D)
 		projection_ = kCCDirectorProjectionDefault;
-        
-		// projection delegate if "Custom" projection is used
-		delegate_ = nil;
-        
-		// FPS
-		displayStats_ = NO;
-		totalFrames_ = frames_ = 0;
-        
-		// paused ?
-		isPaused_ = NO;
         
 		winSizeInPixels_ = winSizeInPoints_ = CGSizeZero;
         
@@ -156,8 +115,6 @@ static CCDirector *_sharedDirector = nil;
         
         __ccContentScaleFactor = 1;
         
-		_dispatchQueue = dispatch_get_main_queue();
-        //dispatch_queue_create(CCDirectorIOSDispatchQueue, DISPATCH_QUEUE_SERIAL);
         _scheduler = [VEDataSource serviceByIdentity: CCScheduleServiceID];
         
 	}
@@ -177,8 +134,6 @@ static CCDirector *_sharedDirector = nil;
 	[runningScene_ release];
 	[scenesStack_ release];
     
-	[delegate_ release];
-    
 	_sharedDirector = nil;
     
 	[super dealloc];
@@ -188,44 +143,13 @@ static CCDirector *_sharedDirector = nil;
 {
 	// This method SHOULD be called only after view_ was initialized
 	NSAssert( view_, @"view_ must be initialized");
-
+    
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    
 	[self setProjection: projection_];
     
 	// set other opengl default values
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-}
-
--(void) calculateDeltaTime
-{
-	struct timeval now;
-    
-	if( gettimeofday( &now, NULL) != 0 )
-    {
-		CCLOG(@"cocos2d: error in gettimeofday");
-		dt = 0;
-		return;
-	}
-    
-	// new delta time
-	if( nextDeltaTimeZero_ )
-    {
-		dt = 0;
-		nextDeltaTimeZero_ = NO;
-	} else
-    {
-		dt = (now.tv_sec - lastUpdate_.tv_sec) + (now.tv_usec - lastUpdate_.tv_usec) / 1000000.0f;
-		dt = MAX(0,dt);
-	}
-    
-#ifdef DEBUG
-	// If we are debugging our code, prevent big delta time
-	if( dt > 0.2f )
-		dt = 1/60.0f;
-#endif
-    
-	lastUpdate_ = now;
 }
 
 #pragma mark Director - Scene OpenGL Helper
@@ -252,14 +176,6 @@ static CCDirector *_sharedDirector = nil;
 	CHECK_GL_ERROR_DEBUG();
 }
 
-#pragma mark Director Integration with a UIKit view
-
--(VEGLView*) view
-{
-	return  view_;
-}
-
-
 #pragma mark Director Scene Landscape
 
 -(CGSize)winSize
@@ -279,14 +195,6 @@ static CCDirector *_sharedDirector = nil;
 }
 
 #pragma mark Director Scene Management
-
-- (void)runWithScene:(VAScene*) scene
-{
-	NSAssert( scene != nil, @"Argument must be non-nil");
-    
-	[self pushScene:scene];
-	[self startAnimation];
-}
 
 -(void) replaceScene: (VAScene*) scene
 {
@@ -309,147 +217,12 @@ static CCDirector *_sharedDirector = nil;
 	nextScene_ = scene;	// nextScene_ is a weak ref
 }
 
--(void) popScene
-{
-	NSAssert( runningScene_ != nil, @"A running Scene is needed");
-    
-	[scenesStack_ removeLastObject];
-	NSUInteger c = [scenesStack_ count];
-    
-	if( c == 0 )
-		[self end];
-	else {
-		sendCleanupToScene_ = YES;
-		nextScene_ = [scenesStack_ objectAtIndex:c-1];
-	}
-}
-
--(void) popToRootScene
-{
-	NSAssert(runningScene_ != nil, @"A running Scene is needed");
-	NSUInteger c = [scenesStack_ count];
-	
-    if (c == 1) {
-        [scenesStack_ removeLastObject];
-        [self end];
-    } else
-    {
-        while (c > 1)
-        {			
-			[scenesStack_ removeLastObject];
-			c--;
-        }
-		nextScene_ = [scenesStack_ lastObject];
-		sendCleanupToScene_ = NO;
-    }
-}
-
--(void) end
-{
-	runningScene_ = nil;
-	nextScene_ = nil;
-    
-	// remove all objects, but don't release it.
-	// runWithScene might be executed after 'end'.
-	[scenesStack_ removeAllObjects];
-    
-	[self stopAnimation];
-    
-	[delegate_ release];
-	delegate_ = nil;
-    
-	[self setView:nil];
-	
-    
-    VEShaderCacheFinalize();
-    
-	CCGLInvalidateStateCache();
-    
-	CHECK_GL_ERROR();
-}
-
 -(void) setNextScene
 {
 	[runningScene_ release];
     
 	runningScene_ = [nextScene_ retain];
-	nextScene_ = nil;    
-}
-
--(void) pause
-{
-	if( isPaused_ )
-		return;
-    
-	oldAnimationInterval_ = animationInterval_;
-    
-	// when paused, don't consume CPU
-	[self setAnimationInterval:1/4.0];
-	
-	[self willChangeValueForKey:@"isPaused"];
-	isPaused_ = YES;
-	[self didChangeValueForKey:@"isPaused"];
-}
-
--(void) resume
-{
-	if( ! isPaused_ )
-		return;
-    
-	[self setAnimationInterval: oldAnimationInterval_];
-    
-	if( gettimeofday( &lastUpdate_, NULL) != 0 )
-    {
-		CCLOG(@"cocos2d: Director: Error in gettimeofday");
-	}
-    
-	[self willChangeValueForKey:@"isPaused"];
-	isPaused_ = NO;
-	[self didChangeValueForKey:@"isPaused"];
-    
-	dt = 0;
-}
-
-- (void)startAnimation
-{
-	CCLOG(@"cocos2d: Director#startAnimation. Override me");
-}
-
-- (void)stopAnimation
-{
-	CCLOG(@"cocos2d: Director#stopAnimation. Override me");
-}
-
-- (void)setAnimationInterval:(NSTimeInterval)interval
-{
-	CCLOG(@"cocos2d: Director#setAnimationInterval. Override me");
-}
-
-
-// display statistics
--(void) showStats
-{
-	frames_++;
-	accumDt_ += dt;
-    
-	if( displayStats_ )
-    {
-		// Ms per Frame
-        
-		if( accumDt_ > CC_DIRECTOR_STATS_INTERVAL)
-		{
-            frameRate_ = frames_/accumDt_;
-			frames_ = 0;
-			accumDt_ = 0;
-            
-            //            printf("spf: %.3f\n", secondsPerFrame_);
-            //            printf("fps: %.1f\n", frameRate_);
-            //            printf("draws: %4d\n", (NSInteger)__ccNumberOfDraws);
-            
-		}
-	}
-	
-	__ccNumberOfDraws = 0;
+	nextScene_ = nil;
 }
 
 NSTimeInterval CCDirectorCalculateMPF(struct timeval lastUpdate_)
@@ -460,13 +233,6 @@ NSTimeInterval CCDirectorCalculateMPF(struct timeval lastUpdate_)
 	return (now.tv_sec - lastUpdate_.tv_sec) + (now.tv_usec - lastUpdate_.tv_usec) / 1000000.0f;
 }
 
-#pragma mark Director - Helper
-
--(void) createStatsLabel
-{
-}
-
-
 #pragma mark -
 #pragma mark Director - global variables (optimization)
 
@@ -475,22 +241,22 @@ CGFloat	__ccContentScaleFactor = 1;
 //
 // Draw the Scene
 //
-- (void) drawScene
+- (void)glkView: (GLKView *)view
+     drawInRect: (CGRect)rect
 {
-	/* calculate "global" dt */
-	[self calculateDeltaTime];
-    
-	VEGLView *openGLview = (VEGLView*)[self view];
+	GLKView *openGLview = (GLKView*)[self view];
     
 	[EAGLContext setCurrentContext: [openGLview context]];
     
 	/* tick before glClear: issue #533 */
-	if( ! isPaused_ )
-    {
-        [_scheduler update: dt];
-    }
+    [_scheduler update: 1.0 / [self framesPerSecond]];
+    
+    glClearColor(1, 1, 1, 1);
     
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
     
 	/* to avoid flickr, nextScene MUST be here: after tick and before draw.
 	 XXX: Which bug is this one. It seems that it can't be reproduced with v0.9 */
@@ -503,15 +269,7 @@ CGFloat	__ccContentScaleFactor = 1;
     
 	[runningScene_ renderInContext: _renderContext];
     
-    [self showStats];
-    
-	VGContextRestoreState(_renderContext);
-    
-	totalFrames_++;
-    
-	[openGLview swapBuffers];
-    
-    secondsPerFrame_ = CCDirectorCalculateMPF(lastUpdate_);
+	VGContextRestoreState(_renderContext);    
 }
 
 -(void) setProjection:(ccDirectorProjection)projection
@@ -565,13 +323,13 @@ CGFloat	__ccContentScaleFactor = 1;
             
 		case kCCDirectorProjectionCustom:
         {
-			if( [delegate_ respondsToSelector:@selector(updateProjection)] )
-				[delegate_ updateProjection];
 			break;
         }
 		default:
+        {
 			CCLOG(@"cocos2d: Director: unrecognized projection");
 			break;
+        }
 	}
     
 	projection_ = projection;
@@ -618,9 +376,6 @@ CGFloat	__ccContentScaleFactor = 1;
     
 	[self setContentScaleFactor:newScale];
     
-	// Load Hi-Res FPS label
-	[self createStatsLabel];
-    
 	return YES;
 }
 
@@ -654,68 +409,30 @@ CGFloat	__ccContentScaleFactor = 1;
 #pragma mark Director - UIViewController delegate
 
 
--(void) setView:(VEGLView *)view
-{
-	if( view != view_)
-    {
-        [super setView:view];
+-(void) viewDidLoad
+{    
+    [super viewDidLoad];
+    
+    view_ = (GLKView *)[self view];
+    
+    // set size
+    winSizeInPixels_ = winSizeInPoints_ = [view_ bounds].size;
         
-        VEShaderCacheInitialize();
-        
-		[view_ release];
-		view_ = [view retain];
-        
-		// set size
-		winSizeInPixels_ = winSizeInPoints_ = [view_ bounds].size;
-        
-		[self createStatsLabel];
-		
-		// it could be nil
-		if( view )
-        {
-			[self setGLDefaultValues];
-            
-            CHECK_GL_ERROR_DEBUG();
-			// set size
-			winSizeInPixels_ = CGSizeMake(winSizeInPoints_.width * __ccContentScaleFactor, winSizeInPoints_.height *__ccContentScaleFactor);
-            
-            [view_ setContentScaleFactor: __ccContentScaleFactor];
-            
-			[view setTouchDelegate: self];
-		}
-	}
+    // it could be nil
+    
+    [self setGLDefaultValues];
+    
+    CHECK_GL_ERROR_DEBUG();
+    // set size
+    winSizeInPixels_ = CGSizeMake(winSizeInPoints_.width * __ccContentScaleFactor, winSizeInPoints_.height *__ccContentScaleFactor);
+    
+    [view_ setContentScaleFactor: __ccContentScaleFactor];
 }
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	BOOL ret =YES;
-	if( [delegate_ respondsToSelector: _cmd] )
-    {
-		ret = [delegate_ shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-    }
-    
-	return ret;
-}
-
--(void)willRotateToInterfaceOrientation: (UIInterfaceOrientation)toInterfaceOrientation
-                               duration: (NSTimeInterval)duration
-{
-	// do something ?
-}
-
-
--(void) viewWillAppear:(BOOL)animated
-{
-	[super viewWillAppear:animated];
-	[self startAnimation];
-}
-
--(void) viewDidDisappear:(BOOL)animated
-{
-	[self stopAnimation];
-    
-	[super viewDidDisappear:animated];
+	return YES;
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

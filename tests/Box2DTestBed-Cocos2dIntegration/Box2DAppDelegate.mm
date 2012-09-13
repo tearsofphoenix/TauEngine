@@ -25,10 +25,7 @@
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
     
     [application setStatusBarHidden:true];
-    
-	// Turn on display FPS
-	[director_ setDisplayStats:YES];
-    
+        
 	// 2D projection
 	[director_ setProjection:kCCDirectorProjection2D];
     
@@ -43,7 +40,7 @@
     [scene setBackgroundColor: [VGColor redColor]];
     
 	[director_ pushScene: scene];
-        
+    
     UITableView *entriesView = [[UITableView alloc] init];
     [entriesView setFrame: CGRectMake(0, 0, 200, 400)];
     
@@ -126,6 +123,14 @@ static void kvo(id obj, SEL selector, NSString *string, id value, id change, voi
     _kvoIMP(obj, selector, string, value, change, context);
 }
 
+static IMP _innerDisplay = NULL;
+static void _display(id obj, SEL selector)
+{
+    NSLog(@"in func: %s %@", __FUNCTION__, [NSThread callStackSymbols]);
+    
+    _innerDisplay(obj, selector);
+}
+
 + (void)load
 {
     /*
@@ -149,9 +154,12 @@ static void kvo(id obj, SEL selector, NSString *string, id value, id change, voi
     class_replaceMethod(render, @selector(rendererWithEAGLContext:options:), (IMP)render, "@16@0:4@8@12");
      */
     
-    Class layerClass = objc_getClass("CALayer");
-    _kvoIMP = class_getMethodImplementation(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:));
-    class_replaceMethod(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:), (IMP)kvo, "v@:@@@@");
+//    Class layerClass = objc_getClass("CALayer");
+//    _kvoIMP = class_getMethodImplementation(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:));
+//    class_replaceMethod(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:), (IMP)kvo, "v@:@@@@");
+    
+//    _innerDisplay = class_getMethodImplementation(layerClass, @selector(_display));
+//    class_replaceMethod(layerClass, @selector(_display), (IMP)_display, "v@:");
 }
 
 @end

@@ -27,19 +27,9 @@
 #import "ccConfig.h"
 #import "ccTypes.h"
 #import "ccMacros.h"
-#import "VEGLView.h"
+
+
 #pragma mark -  CCDirectorDelegate
-
-@protocol CCDirectorDelegate <NSObject>
-
-@optional
-/** Called by CCDirector when the porjection is updated, and "custom" projection is used */
--(void) updateProjection;
-
-/** Returns a Boolean value indicating whether the CCDirector supports the specified orientation. Default value is YES (supports all possible orientations) */
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
-
-@end
 
 @class VGContext;
 
@@ -63,7 +53,7 @@ typedef NS_ENUM(NSUInteger, ccDirectorProjection)
 } ;
 
 @class VAScene;
-@class VEGLView;
+@class GLKView;
 
 /**Class that creates and handle the main Window and manages how
 and when to execute the Scenes.
@@ -75,7 +65,7 @@ and when to execute the Scenes.
   - setting the projection (default one is 3D)
 
  Since the CCDirector is a singleton, the standard way to use it is by calling:
-  - [[CCDirector sharedDirector] methodName];
+  - [[VEDirector sharedDirector] methodName];
 
  The CCDirector also sets the default OpenGL context:
   - GL_TEXTURE_2D is enabled
@@ -83,25 +73,8 @@ and when to execute the Scenes.
   - GL_COLOR_ARRAY is enabled
   - GL_TEXTURE_COORD_ARRAY is enabled
 */
-@interface CCDirector : UIViewController<CCTouchDelegate>
+@interface VEDirector : GLKViewController
 {
-	// internal timer
-	NSTimeInterval animationInterval_;
-	NSTimeInterval oldAnimationInterval_;
-
-	NSUInteger frames_;
-	NSUInteger totalFrames_;
-	NSTimeInterval secondsPerFrame_;
-
-	NSTimeInterval		accumDt_;
-	NSTimeInterval		frameRate_;
-
-	/* is the running scene paused */
-	BOOL isPaused_;
-    
-    /* Is the director running */
-    BOOL isAnimating_;
-
 	/* The running scene */
 	VAScene *runningScene_;
 
@@ -115,69 +88,30 @@ and when to execute the Scenes.
 
 	/* scheduled scenes */
 	NSMutableArray *scenesStack_;
-
-	/* last time the main loop was updated */
-	struct timeval lastUpdate_;
-	/* delta time since last tick to main loop */
-	NSTimeInterval dt;
-	/* whether or not the next delta time will be zero */
-	BOOL nextDeltaTimeZero_;
-
+    
 	/* projection used */
 	ccDirectorProjection projection_;
-
-	/* CCDirector delegate */
-	id<CCDirectorDelegate>	delegate_;
 
 	/* window size in points */
 	CGSize	winSizeInPoints_;
 
 	/* window size in pixels */
 	CGSize	winSizeInPixels_;
-    
-    dispatch_queue_t _dispatchQueue;
-    
+        
 	/*  OpenGLView. On iOS it is a copy of self.view */
-	VEGLView		*view_;
+	GLKView		*view_;
 }
-
-@property (nonatomic, readonly) dispatch_queue_t dispatchQueue;
 
 /** The current running Scene. Director can only run one Scene at the time */
 @property (nonatomic,readonly) VAScene* runningScene;
-/** The FPS value */
-@property (nonatomic) NSTimeInterval animationInterval;
-/** Whether or not to display director statistics */
-@property (nonatomic) BOOL displayStats;
-/** whether or not the next delta time will be zero */
-@property (nonatomic) BOOL nextDeltaTimeZero;
-/** Whether or not the Director is paused */
-@property (nonatomic) BOOL isPaused;
-/** Whether or not the Director is active (animating) */
-@property (nonatomic,readonly) BOOL isAnimating;
+
 /** Sets an OpenGL projection */
 @property (nonatomic) ccDirectorProjection projection;
-/** How many frames were called since the director started */
-@property (nonatomic,readonly) NSUInteger	totalFrames;
-/** seconds per frame */
-@property (nonatomic, readonly) NSTimeInterval secondsPerFrame;
-
-/** Whether or not the replaced scene will receive the cleanup message.
- If the new scene is pushed, then the old scene won't receive the "cleanup" message.
- If the new scene replaces the old one, the it will receive the "cleanup" message.
- @since v0.99.0
- */
-@property (nonatomic, readonly) BOOL sendCleanupToScene;
-
-/** CCDirector delegate. It shall implemente the CCDirectorDelegate protocol
- @since v0.99.5
- */
-@property (nonatomic, retain) id<CCDirectorDelegate> delegate;
 
 -(BOOL) enableRetinaDisplay:(BOOL)enabled;
 
 /** returns a shared instance of the director */
-+(CCDirector*)sharedDirector;
++ (VEDirector *)sharedDirector;
 
 
 #pragma mark Director - Stats
@@ -208,14 +142,6 @@ and when to execute the Scenes.
 
 #pragma mark Director - Scene Management
 
-/**Enters the Director's main loop with the given Scene.
- * Call it to run only your FIRST scene.
- * Don't call it if there is already a running scene.
- *
- * It will call pushScene: and then it will call startAnimation
- */
-- (void) runWithScene:(VAScene*) scene;
-
 /**Suspends the execution of the running scene, pushing it on the stack of suspended scenes.
  * The new scene will be executed.
  * Try to avoid big stacks of pushed scenes to reduce memory allocation.
@@ -223,66 +149,15 @@ and when to execute the Scenes.
  */
 - (void) pushScene:(VAScene*) scene;
 
-/**Pops out a scene from the queue.
- * This scene will replace the running one.
- * The running scene will be deleted. If there are no more scenes in the stack the execution is terminated.
- * ONLY call it if there is a running scene.
- */
-- (void) popScene;
-
-/**Pops out all scenes from the queue until the root scene in the queue.
- * This scene will replace the running one.
- * The running scene will be deleted. If there are no more scenes in the stack the execution is terminated.
- * ONLY call it if there is a running scene.
- */
-- (void) popToRootScene;
-
 /** Replaces the running scene with a new one. The running scene is terminated.
  * ONLY call it if there is a running scene.
  */
 -(void) replaceScene: (VAScene*) scene;
 
-/** Ends the execution, releases the running scene.
- It doesn't remove the OpenGL view from its parent. You have to do it manually.
- */
--(void) end;
-
-/** Pauses the running scene.
- The running scene will be _drawed_ but all scheduled timers will be paused
- While paused, the draw rate will be 4 FPS to reduce CPU consuption
- */
--(void) pause;
-
-/** Resumes the paused scene
- The scheduled timers will be activated again.
- The "delta time" will be 0 (as if the game wasn't paused)
- */
--(void) resume;
-
-/** Stops the animation. Nothing will be drawn. The main loop won't be triggered anymore.
- If you wan't to pause your animation call [pause] instead.
- */
--(void) stopAnimation;
-
-/** The main loop is triggered again.
- Call this function only if [stopAnimation] was called earlier
- @warning Dont' call this function to start the main loop. To run the main loop call runWithScene
- */
--(void) startAnimation;
-
-/** Draw the scene.
- This method is called every frame. Don't call it manually.
- */
--(void) drawScene;
-
-
 #pragma mark Director - Memory Helper
 /** enables/disables OpenGL depth test */
 - (void) setDepthTest: (BOOL) on;
 
-// helper
-/** creates the Stats labels */
--(void) createStatsLabel;
 @end
 
 // optimization. Should only be used to read it. Never to write it.

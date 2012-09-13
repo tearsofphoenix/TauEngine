@@ -117,28 +117,10 @@
     float _speed;
 
     NSMutableDictionary *_style;
-    
-	// Is running
-    BOOL _isHidden;
-    
-	BOOL _isTransformDirty;
-	BOOL _isInverseDirty;
-    
+            
 	// If YES, the Anchor Point will be (0,0) when you position the VANode.
 	// Used by VALayer and VAScene
-	BOOL _ignoreAnchorPointForPosition;
-    BOOL _isUserInteractionEnabled;
     BOOL _doubleSided;
-    BOOL _geometryFlipped;
-    BOOL _masksToBounds;
-    BOOL _opaque;
-    BOOL _needsDisplay;
-    BOOL _needsDisplayOnBoundsChange;
-    BOOL _drawsAsynchronously;
-    BOOL _needsLayout;
-    BOOL _isLayoutingSublayers;
-    BOOL _shouldRasterize;
-    BOOL _isPresentationLayer;
     
     unsigned int _edgeAntialiasingMask;
     

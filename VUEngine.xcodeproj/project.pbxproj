@@ -33,10 +33,8 @@
 		22BAA08415F8864F00AEBED9 /* ccConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA03E15F8864F00AEBED9 /* ccConfig.h */; };
 		22BAA08515F8864F00AEBED9 /* CCConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA03F15F8864F00AEBED9 /* CCConfiguration.h */; };
 		22BAA08615F8864F00AEBED9 /* CCConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04015F8864F00AEBED9 /* CCConfiguration.m */; };
-		22BAA08715F8864F00AEBED9 /* CCDirector.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04115F8864F00AEBED9 /* CCDirector.h */; };
-		22BAA08815F8864F00AEBED9 /* CCDirector.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04215F8864F00AEBED9 /* CCDirector.m */; };
-		22BAA08915F8864F00AEBED9 /* CCDirectorIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04315F8864F00AEBED9 /* CCDirectorIOS.h */; };
-		22BAA08A15F8864F00AEBED9 /* CCDirectorIOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04415F8864F00AEBED9 /* CCDirectorIOS.m */; };
+		22BAA08715F8864F00AEBED9 /* VEDirector.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04115F8864F00AEBED9 /* VEDirector.h */; };
+		22BAA08815F8864F00AEBED9 /* VEDirector.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04215F8864F00AEBED9 /* VEDirector.m */; };
 		22BAA08B15F8864F00AEBED9 /* ccMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04515F8864F00AEBED9 /* ccMacros.h */; };
 		22BAA08C15F8864F00AEBED9 /* CCScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04615F8864F00AEBED9 /* CCScheduler.h */; };
 		22BAA08D15F8864F00AEBED9 /* CCScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04715F8864F00AEBED9 /* CCScheduler.m */; };
@@ -45,24 +43,10 @@
 		22BAA09515F8864F00AEBED9 /* NVTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04F15F8864F00AEBED9 /* NVTimer.m */; };
 		22BAA09915F8864F00AEBED9 /* VEDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05315F8864F00AEBED9 /* VEDataSource.h */; };
 		22BAA09A15F8864F00AEBED9 /* VEDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05415F8864F00AEBED9 /* VEDataSource.m */; };
-		22BAA09B15F8864F00AEBED9 /* VEGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05515F8864F00AEBED9 /* VEGLView.h */; };
-		22BAA09C15F8864F00AEBED9 /* VEGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05615F8864F00AEBED9 /* VEGLView.m */; };
 		22BAA09D15F8864F00AEBED9 /* VEMetaService.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05715F8864F00AEBED9 /* VEMetaService.h */; };
 		22BAA09E15F8864F00AEBED9 /* VEMetaService.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05815F8864F00AEBED9 /* VEMetaService.m */; };
-		22BAA09F15F8864F00AEBED9 /* VEShaderCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05915F8864F00AEBED9 /* VEShaderCache.h */; };
-		22BAA0A015F8864F00AEBED9 /* VEShaderCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05A15F8864F00AEBED9 /* VEShaderCache.m */; };
 		22BAA0A115F8864F00AEBED9 /* ccGLStateCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05C15F8864F00AEBED9 /* ccGLStateCache.h */; };
 		22BAA0A215F8864F00AEBED9 /* ccGLStateCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05D15F8864F00AEBED9 /* ccGLStateCache.m */; };
-		22BAA0A315F8864F00AEBED9 /* ccShader_Position_uColor_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05E15F8864F00AEBED9 /* ccShader_Position_uColor_shaders.c */; };
-		22BAA0A415F8864F00AEBED9 /* ccShader_PositionColor_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05F15F8864F00AEBED9 /* ccShader_PositionColor_shaders.c */; };
-		22BAA0A515F8864F00AEBED9 /* ccShader_PositionTexture_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA06015F8864F00AEBED9 /* ccShader_PositionTexture_shaders.c */; };
-		22BAA0A615F8864F00AEBED9 /* ccShader_PositionTexture_uColor_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA06115F8864F00AEBED9 /* ccShader_PositionTexture_uColor_shaders.c */; };
-		22BAA0A715F8864F00AEBED9 /* ccShader_PositionTextureA8Color_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA06215F8864F00AEBED9 /* ccShader_PositionTextureA8Color_shaders.c */; };
-		22BAA0A815F8864F00AEBED9 /* ccShader_PositionTextureColor_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA06315F8864F00AEBED9 /* ccShader_PositionTextureColor_shaders.c */; };
-		22BAA0A915F8864F00AEBED9 /* ccShader_PositionTextureColorAlphaTest_frag.c in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA06415F8864F00AEBED9 /* ccShader_PositionTextureColorAlphaTest_frag.c */; };
-		22BAA0AA15F8864F00AEBED9 /* ccShaders.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA06515F8864F00AEBED9 /* ccShaders.h */; };
-		22BAA0AB15F8864F00AEBED9 /* VEGLProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA06615F8864F00AEBED9 /* VEGLProgram.h */; };
-		22BAA0AC15F8864F00AEBED9 /* VEGLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA06715F8864F00AEBED9 /* VEGLProgram.m */; };
 		22BAA0AD15F8864F00AEBED9 /* VGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA06815F8864F00AEBED9 /* VGColor.h */; };
 		22BAA0AE15F8864F00AEBED9 /* VGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA06915F8864F00AEBED9 /* VGColor.m */; };
 		22BAA0AF15F8864F00AEBED9 /* VGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA06A15F8864F00AEBED9 /* VGContext.h */; };
@@ -261,10 +245,8 @@
 		22BAA03E15F8864F00AEBED9 /* ccConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccConfig.h; sourceTree = "<group>"; };
 		22BAA03F15F8864F00AEBED9 /* CCConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCConfiguration.h; sourceTree = "<group>"; };
 		22BAA04015F8864F00AEBED9 /* CCConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCConfiguration.m; sourceTree = "<group>"; };
-		22BAA04115F8864F00AEBED9 /* CCDirector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDirector.h; sourceTree = "<group>"; };
-		22BAA04215F8864F00AEBED9 /* CCDirector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDirector.m; sourceTree = "<group>"; };
-		22BAA04315F8864F00AEBED9 /* CCDirectorIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCDirectorIOS.h; sourceTree = "<group>"; };
-		22BAA04415F8864F00AEBED9 /* CCDirectorIOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCDirectorIOS.m; sourceTree = "<group>"; };
+		22BAA04115F8864F00AEBED9 /* VEDirector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEDirector.h; sourceTree = "<group>"; };
+		22BAA04215F8864F00AEBED9 /* VEDirector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEDirector.m; sourceTree = "<group>"; };
 		22BAA04515F8864F00AEBED9 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
 		22BAA04615F8864F00AEBED9 /* CCScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScheduler.h; sourceTree = "<group>"; };
 		22BAA04715F8864F00AEBED9 /* CCScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScheduler.m; sourceTree = "<group>"; };
@@ -273,24 +255,10 @@
 		22BAA04F15F8864F00AEBED9 /* NVTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVTimer.m; sourceTree = "<group>"; };
 		22BAA05315F8864F00AEBED9 /* VEDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEDataSource.h; sourceTree = "<group>"; };
 		22BAA05415F8864F00AEBED9 /* VEDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEDataSource.m; sourceTree = "<group>"; };
-		22BAA05515F8864F00AEBED9 /* VEGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEGLView.h; sourceTree = "<group>"; };
-		22BAA05615F8864F00AEBED9 /* VEGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEGLView.m; sourceTree = "<group>"; };
 		22BAA05715F8864F00AEBED9 /* VEMetaService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEMetaService.h; sourceTree = "<group>"; };
 		22BAA05815F8864F00AEBED9 /* VEMetaService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEMetaService.m; sourceTree = "<group>"; };
-		22BAA05915F8864F00AEBED9 /* VEShaderCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEShaderCache.h; sourceTree = "<group>"; };
-		22BAA05A15F8864F00AEBED9 /* VEShaderCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEShaderCache.m; sourceTree = "<group>"; };
 		22BAA05C15F8864F00AEBED9 /* ccGLStateCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccGLStateCache.h; sourceTree = "<group>"; };
 		22BAA05D15F8864F00AEBED9 /* ccGLStateCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ccGLStateCache.m; sourceTree = "<group>"; };
-		22BAA05E15F8864F00AEBED9 /* ccShader_Position_uColor_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_Position_uColor_shaders.c; sourceTree = "<group>"; };
-		22BAA05F15F8864F00AEBED9 /* ccShader_PositionColor_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionColor_shaders.c; sourceTree = "<group>"; };
-		22BAA06015F8864F00AEBED9 /* ccShader_PositionTexture_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionTexture_shaders.c; sourceTree = "<group>"; };
-		22BAA06115F8864F00AEBED9 /* ccShader_PositionTexture_uColor_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionTexture_uColor_shaders.c; sourceTree = "<group>"; };
-		22BAA06215F8864F00AEBED9 /* ccShader_PositionTextureA8Color_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionTextureA8Color_shaders.c; sourceTree = "<group>"; };
-		22BAA06315F8864F00AEBED9 /* ccShader_PositionTextureColor_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionTextureColor_shaders.c; sourceTree = "<group>"; };
-		22BAA06415F8864F00AEBED9 /* ccShader_PositionTextureColorAlphaTest_frag.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ccShader_PositionTextureColorAlphaTest_frag.c; sourceTree = "<group>"; };
-		22BAA06515F8864F00AEBED9 /* ccShaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccShaders.h; sourceTree = "<group>"; };
-		22BAA06615F8864F00AEBED9 /* VEGLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEGLProgram.h; sourceTree = "<group>"; };
-		22BAA06715F8864F00AEBED9 /* VEGLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEGLProgram.m; sourceTree = "<group>"; };
 		22BAA06815F8864F00AEBED9 /* VGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGColor.h; sourceTree = "<group>"; };
 		22BAA06915F8864F00AEBED9 /* VGColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGColor.m; sourceTree = "<group>"; };
 		22BAA06A15F8864F00AEBED9 /* VGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGContext.h; sourceTree = "<group>"; };
@@ -579,10 +547,8 @@
 				22BAA03E15F8864F00AEBED9 /* ccConfig.h */,
 				22BAA03F15F8864F00AEBED9 /* CCConfiguration.h */,
 				22BAA04015F8864F00AEBED9 /* CCConfiguration.m */,
-				22BAA04115F8864F00AEBED9 /* CCDirector.h */,
-				22BAA04215F8864F00AEBED9 /* CCDirector.m */,
-				22BAA04315F8864F00AEBED9 /* CCDirectorIOS.h */,
-				22BAA04415F8864F00AEBED9 /* CCDirectorIOS.m */,
+				22BAA04115F8864F00AEBED9 /* VEDirector.h */,
+				22BAA04215F8864F00AEBED9 /* VEDirector.m */,
 				22BAA04515F8864F00AEBED9 /* ccMacros.h */,
 				22BAA04615F8864F00AEBED9 /* CCScheduler.h */,
 				22BAA04715F8864F00AEBED9 /* CCScheduler.m */,
@@ -591,14 +557,10 @@
 				22BAA04F15F8864F00AEBED9 /* NVTimer.m */,
 				22BAA05315F8864F00AEBED9 /* VEDataSource.h */,
 				22BAA05415F8864F00AEBED9 /* VEDataSource.m */,
-				22BAA05515F8864F00AEBED9 /* VEGLView.h */,
-				22BAA05615F8864F00AEBED9 /* VEGLView.m */,
 				E1D0EA1715FB08C0004ADE8F /* VEGLViewPrivateHandler.h */,
 				E1D0EA1815FB08C1004ADE8F /* VEGLViewPrivateHandler.m */,
 				22BAA05715F8864F00AEBED9 /* VEMetaService.h */,
 				22BAA05815F8864F00AEBED9 /* VEMetaService.m */,
-				22BAA05915F8864F00AEBED9 /* VEShaderCache.h */,
-				22BAA05A15F8864F00AEBED9 /* VEShaderCache.m */,
 			);
 			path = EngraisKit;
 			sourceTree = "<group>";
@@ -608,16 +570,6 @@
 			children = (
 				22BAA05C15F8864F00AEBED9 /* ccGLStateCache.h */,
 				22BAA05D15F8864F00AEBED9 /* ccGLStateCache.m */,
-				22BAA05E15F8864F00AEBED9 /* ccShader_Position_uColor_shaders.c */,
-				22BAA05F15F8864F00AEBED9 /* ccShader_PositionColor_shaders.c */,
-				22BAA06015F8864F00AEBED9 /* ccShader_PositionTexture_shaders.c */,
-				22BAA06115F8864F00AEBED9 /* ccShader_PositionTexture_uColor_shaders.c */,
-				22BAA06215F8864F00AEBED9 /* ccShader_PositionTextureA8Color_shaders.c */,
-				22BAA06315F8864F00AEBED9 /* ccShader_PositionTextureColor_shaders.c */,
-				22BAA06415F8864F00AEBED9 /* ccShader_PositionTextureColorAlphaTest_frag.c */,
-				22BAA06515F8864F00AEBED9 /* ccShaders.h */,
-				22BAA06615F8864F00AEBED9 /* VEGLProgram.h */,
-				22BAA06715F8864F00AEBED9 /* VEGLProgram.m */,
 				22BAA06815F8864F00AEBED9 /* VGColor.h */,
 				22BAA06915F8864F00AEBED9 /* VGColor.m */,
 				22BAA06A15F8864F00AEBED9 /* VGContext.h */,
@@ -1012,19 +964,14 @@
 				22BAA08215F8864F00AEBED9 /* VAValueFunction.h in Headers */,
 				22BAA08415F8864F00AEBED9 /* ccConfig.h in Headers */,
 				22BAA08515F8864F00AEBED9 /* CCConfiguration.h in Headers */,
-				22BAA08715F8864F00AEBED9 /* CCDirector.h in Headers */,
-				22BAA08915F8864F00AEBED9 /* CCDirectorIOS.h in Headers */,
+				22BAA08715F8864F00AEBED9 /* VEDirector.h in Headers */,
 				22BAA08B15F8864F00AEBED9 /* ccMacros.h in Headers */,
 				22BAA08C15F8864F00AEBED9 /* CCScheduler.h in Headers */,
 				22BAA09315F8864F00AEBED9 /* ccTypes.h in Headers */,
 				22BAA09415F8864F00AEBED9 /* NVTimer.h in Headers */,
 				22BAA09915F8864F00AEBED9 /* VEDataSource.h in Headers */,
-				22BAA09B15F8864F00AEBED9 /* VEGLView.h in Headers */,
 				22BAA09D15F8864F00AEBED9 /* VEMetaService.h in Headers */,
-				22BAA09F15F8864F00AEBED9 /* VEShaderCache.h in Headers */,
 				22BAA0A115F8864F00AEBED9 /* ccGLStateCache.h in Headers */,
-				22BAA0AA15F8864F00AEBED9 /* ccShaders.h in Headers */,
-				22BAA0AB15F8864F00AEBED9 /* VEGLProgram.h in Headers */,
 				22BAA0AD15F8864F00AEBED9 /* VGColor.h in Headers */,
 				22BAA0AF15F8864F00AEBED9 /* VGContext.h in Headers */,
 				22BAA0B115F8864F00AEBED9 /* CGPointExtension.h in Headers */,
@@ -1238,23 +1185,12 @@
 				22BAA08115F8864F00AEBED9 /* VAScene.m in Sources */,
 				22BAA08315F8864F00AEBED9 /* VAValueFunction.m in Sources */,
 				22BAA08615F8864F00AEBED9 /* CCConfiguration.m in Sources */,
-				22BAA08815F8864F00AEBED9 /* CCDirector.m in Sources */,
-				22BAA08A15F8864F00AEBED9 /* CCDirectorIOS.m in Sources */,
+				22BAA08815F8864F00AEBED9 /* VEDirector.m in Sources */,
 				22BAA08D15F8864F00AEBED9 /* CCScheduler.m in Sources */,
 				22BAA09515F8864F00AEBED9 /* NVTimer.m in Sources */,
 				22BAA09A15F8864F00AEBED9 /* VEDataSource.m in Sources */,
-				22BAA09C15F8864F00AEBED9 /* VEGLView.m in Sources */,
 				22BAA09E15F8864F00AEBED9 /* VEMetaService.m in Sources */,
-				22BAA0A015F8864F00AEBED9 /* VEShaderCache.m in Sources */,
 				22BAA0A215F8864F00AEBED9 /* ccGLStateCache.m in Sources */,
-				22BAA0A315F8864F00AEBED9 /* ccShader_Position_uColor_shaders.c in Sources */,
-				22BAA0A415F8864F00AEBED9 /* ccShader_PositionColor_shaders.c in Sources */,
-				22BAA0A515F8864F00AEBED9 /* ccShader_PositionTexture_shaders.c in Sources */,
-				22BAA0A615F8864F00AEBED9 /* ccShader_PositionTexture_uColor_shaders.c in Sources */,
-				22BAA0A715F8864F00AEBED9 /* ccShader_PositionTextureA8Color_shaders.c in Sources */,
-				22BAA0A815F8864F00AEBED9 /* ccShader_PositionTextureColor_shaders.c in Sources */,
-				22BAA0A915F8864F00AEBED9 /* ccShader_PositionTextureColorAlphaTest_frag.c in Sources */,
-				22BAA0AC15F8864F00AEBED9 /* VEGLProgram.m in Sources */,
 				22BAA0AE15F8864F00AEBED9 /* VGColor.m in Sources */,
 				22BAA0B015F8864F00AEBED9 /* VGContext.m in Sources */,
 				22BAA0B215F8864F00AEBED9 /* CGPointExtension.m in Sources */,

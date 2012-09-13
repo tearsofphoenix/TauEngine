@@ -49,15 +49,12 @@
 #import "CCScheduler.h"
 #import "VACamera.h"
 
-#import "CCDirector.h"
+#import "VEDirector.h"
 
 #import "CCConfiguration.h"
 
 // Shaders
-#import "VEGLProgram.h"
 #import "ccGLStateCache.h"
-#import "VEShaderCache.h"
-#import "ccShaders.h"
 
 #import "VGContext.h"
 #import "VGColor.h"
@@ -67,8 +64,7 @@
 #import "ccTypes.h"
 #import "ccMacros.h"
 
-#import "VEGLView.h"
-#import "CCDirectorIOS.h"
+
 
 //
 // cocos2d helper files

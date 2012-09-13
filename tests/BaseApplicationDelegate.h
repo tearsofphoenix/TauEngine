@@ -14,20 +14,18 @@
 
 @end
 
-@class UIWindow, UINavigationController;
+@class UIWindow;
 
-@interface BaseApplicationDelegate : NSObject <UIApplicationDelegate, CCDirectorDelegate>
+@interface BaseApplicationDelegate : NSObject <UIApplicationDelegate>
 {
 	UIWindow *window_;
-	UINavigationController *navController_;
 
 	BOOL			useRetinaDisplay_;
-	CCDirector	*director_;							// weak ref
+	VEDirector	*director_;							// weak ref
 }
 
 @property (nonatomic, retain) UIWindow *window;
-@property (readonly) UINavigationController *navController;
-@property (readonly) CCDirector *director;
+@property (readonly) VEDirector *director;
 
 @end
 

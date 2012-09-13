@@ -35,11 +35,9 @@ Settings settings;
     {
         [self setBackgroundColor: [VGColor greenColor]];
         
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [[VEDirector sharedDirector] winSize];
         
 		entryID = entryId;
-        
-		_isUserInteractionEnabled = YES;
         
 		Box2DView *view = [Box2DView viewWithEntryID:entryId];
         
@@ -81,7 +79,7 @@ Settings settings;
 	VAScene *s = [VAScene layer];
 	id box = [MenuLayer menuWithEntryID:entryID];
 	[s addSublayer: box];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[[VEDirector sharedDirector] replaceScene: s];
 }
 
 -(void) nextCallback: (id) sender
@@ -92,7 +90,7 @@ Settings settings;
 		next = 0;
 	id box = [MenuLayer menuWithEntryID:next];
 	[s addSublayer: box];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[[VEDirector sharedDirector] replaceScene: s];
 }
 
 -(void) backCallback: (id) sender
@@ -105,7 +103,7 @@ Settings settings;
     
 	id box = [MenuLayer menuWithEntryID:next];
 	[s addSublayer: box];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[[VEDirector sharedDirector] replaceScene: s];
 }
 
 -(void) touchMoved:(UITouch *)touch withEvent:(UIEvent *)event
@@ -113,8 +111,8 @@ Settings settings;
 	CGPoint touchLocation = [touch locationInView: [touch view]];
 	CGPoint prevLocation = [touch previousLocationInView: [touch view]];
     
-	touchLocation = [[CCDirector sharedDirector] convertToGL: touchLocation];
-	prevLocation = [[CCDirector sharedDirector] convertToGL: prevLocation];
+	touchLocation = [[VEDirector sharedDirector] convertToGL: touchLocation];
+	prevLocation = [[VEDirector sharedDirector] convertToGL: prevLocation];
     
 	CGPoint diff = ccpSub(touchLocation,prevLocation);
     
@@ -155,7 +153,7 @@ Settings settings;
     
 	id box = [MenuLayer menuWithEntryID: next];
 	[s addSublayer: box];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[[VEDirector sharedDirector] replaceScene: s];
     
 }
 
@@ -173,9 +171,7 @@ Settings settings;
 - (id) initWithEntryID:(int)entryId
 {
     if ((self = [super init]))
-    {
-		_isUserInteractionEnabled = YES;
-        
+    {        
         [_scheduler scheduleSelector: @selector(tick:)
                            forTarget: self
                             interval: 0
@@ -225,7 +221,7 @@ Settings settings;
 {
     
 	CGPoint touchLocation=[touch locationInView:[touch view]];
-	touchLocation=[[CCDirector sharedDirector] convertToGL:touchLocation];
+	touchLocation=[[VEDirector sharedDirector] convertToGL:touchLocation];
 	CGPoint nodePosition = [self convertToNodeSpace: touchLocation];
     
 	test->MouseDown(b2Vec2(nodePosition.x,nodePosition.y));
@@ -234,7 +230,7 @@ Settings settings;
 - (void) touchMoved:(UITouch*)touch withEvent:(UIEvent*)event
 {
 	CGPoint touchLocation=[touch locationInView:[touch view]];
-	touchLocation=[[CCDirector sharedDirector] convertToGL:touchLocation];
+	touchLocation=[[VEDirector sharedDirector] convertToGL:touchLocation];
 	CGPoint nodePosition = [self convertToNodeSpace: touchLocation];
     
 	test->MouseMove(b2Vec2(nodePosition.x,nodePosition.y));
@@ -243,7 +239,7 @@ Settings settings;
 - (void) touchEnded:(UITouch*)touch withEvent:(UIEvent*)event
 {
 	CGPoint touchLocation=[touch locationInView:[touch view]];
-	touchLocation=[[CCDirector sharedDirector] convertToGL:touchLocation];
+	touchLocation=[[VEDirector sharedDirector] convertToGL:touchLocation];
 	CGPoint nodePosition = [self convertToNodeSpace: touchLocation];
     
 	test->MouseUp(b2Vec2(nodePosition.x,nodePosition.y));

@@ -29,10 +29,7 @@
 #import "VAAnimation.h"
 #import "VEDataSource.h"
 #import "CGPointExtension.h"
-#import "VEShaderCache.h"
-#import "VEGLProgram.h"
 #import "CCScheduler.h"
-#import "CCDirectorIOS.h"
 #import "VGContext.h"
 #import "VGColor.h"
 #import "ccGLStateCache.h"
@@ -40,18 +37,21 @@
 #import "VGColor.h"
 #import "VALayer+Private.h"
 #import "OpenGLInternal.h"
+#import "VEDirector.h"
 
 @interface VALayer ()
 {
 @private
     VALayer *_presentationLayer;
     //cached model
-    VEGLProgram *_shaderProgram;
-    
+    //VEGLProgram *_shaderProgram;
+    GLKBaseEffect *_effect;
     // scaling factors
 	float _scaleX, _scaleY;
     
     VACameraRef _camera;
+
+    GLKVector2 _vertices[4];
 }
 
 @end
@@ -163,23 +163,18 @@ static NSString * s_VALayerInitializationKeys[] =
         _position = CGPointZero;
         _contentSize = CGSizeZero;
 		_anchorPointInPoints = _anchorPoint = CGPointZero;
-        
-		_isTransformDirty = _isInverseDirty = YES;
-        
-		_isHidden = NO;
                 
-		_ignoreAnchorPointForPosition = YES;
-        
-		_isUserInteractionEnabled = YES;
-        
-        _anchorPoint = ccp(0.5f, 0.5f);
-        
         _attr = calloc(1, sizeof(struct VALayerAttribute));
         _sublayers = [[NSMutableArray alloc] init];
         _animations = [[NSMutableDictionary alloc] init];
         _animationKeys = [[NSMutableArray alloc] init];
-        _shaderProgram = VEShaderCacheGetProgramByName(CCShaderPositionColorProgram);
+        //_shaderProgram = VEShaderCacheGetProgramByName(CCShaderPositionColorProgram);
         
+        _effect = [[GLKBaseEffect alloc] init];
+        [[_effect transform] setProjectionMatrix: GLKMatrix4MakeOrtho(0, 1024, 0, 768, -1024, 1024)];
+        [_effect setUseConstantColor: GL_TRUE];
+        [_effect setConstantColor: GLKVector4Make(1.0, 0, 0, 1)];
+                
         _camera = VACameraCreate();
         
         [self setBounds: CGRectMake(0, 0, 1024, 768)];
@@ -332,6 +327,16 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         [self willChangeValueForKey: @"bounds"];
         _bounds = bounds;
         
+        _vertices[0] =  GLKVector2Make(0, 0);
+        _vertices[1] =  GLKVector2Make(1, 0);
+        _vertices[2] =  GLKVector2Make(0, 1);
+        _vertices[3] =  GLKVector2Make(1, 1);
+
+//        _quad.bl.geometryVertex = CGPointMake(0, 0);
+//        _quad.br.geometryVertex = CGPointMake(_bounds.size.width, 0);
+//        _quad.tl.geometryVertex = CGPointMake(0, _bounds.size.height);
+//        _quad.tr.geometryVertex = CGPointMake(_bounds.size.width, _bounds.size.height);
+
         [self didChangeValueForKey: @"bounds"];
         
         if ([self needsDisplayOnBoundsChange])
@@ -490,11 +495,11 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (void)setHidden: (BOOL)hidden
 {
-    if(_isHidden != hidden)
+    if(_attr->_isHidden != hidden)
     {
         [self willChangeValueForKey: @"hidden"];
         
-        _isHidden = hidden;
+        _attr->_isHidden = hidden;
         
         [self didChangeValueForKey: @"hidden"];
     }
@@ -502,7 +507,7 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (BOOL)isHidden
 {
-    return _isHidden;
+    return _attr->_isHidden;
 }
 
 /* When false layers facing away from the viewer are hidden from view.
@@ -524,7 +529,6 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 {
     return _doubleSided;
 }
-//@property(getter=isDoubleSided) BOOL doubleSided;
 
 /* Whether or not the geometry of the layer (and its sublayers) is
  * flipped vertically. Defaults to NO. Note that even when geometry is
@@ -534,11 +538,11 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (void)setGeometryFlipped: (BOOL)geometryFlipped
 {
-    if(_geometryFlipped != geometryFlipped)
+    if(_attr->_isGeometryFlipped != geometryFlipped)
     {
         [self willChangeValueForKey: @"geometryFlipped"];
         
-        _geometryFlipped = geometryFlipped;
+        _attr->_isGeometryFlipped = geometryFlipped;
         
         [self didChangeValueForKey: @"geometryFlipped"];
     }
@@ -546,7 +550,7 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (BOOL)isGeometryFlipped
 {
-    return _geometryFlipped;
+    return _attr->_isGeometryFlipped;
 }
 
 /* Returns true if the contents of the contents property of the layer
@@ -722,11 +726,11 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (void)setMasksToBounds: (BOOL)masksToBounds
 {
-    if(_masksToBounds != masksToBounds)
+    if(_attr->_masksToBounds != masksToBounds)
     {
         [self willChangeValueForKey: @"masksToBounds"];
         
-        _masksToBounds = masksToBounds;
+        _attr->_masksToBounds = masksToBounds;
         
         [self didChangeValueForKey: @"masksToBounds"];
     }
@@ -734,7 +738,7 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (BOOL)masksToBounds
 {
-    return _masksToBounds;
+    return _attr->_masksToBounds;
 }
 
 #pragma mark - VALayer (CoordinateMapping)
@@ -743,19 +747,13 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 {
     CGAffineTransform affineTransform; // = CGAffineTransformIdentity;
     
-	if ( _isTransformDirty )
+	if ( !_attr->_isTransformClean )
     {
         
 		// Translate values
-		float x = _position.x;
-		float y = _position.y;
-        
-		if ( _ignoreAnchorPointForPosition )
-        {
-			x += _anchorPointInPoints.x;
-			y += _anchorPointInPoints.y;
-		}
-        
+		float x = _position.x + _anchorPointInPoints.x;
+		float y = _position.y + _anchorPointInPoints.y;
+                
 		// Rotation values
 		float c = 1, s = 0;
         
@@ -777,23 +775,7 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
                                                 -s * _scaleY, c * _scaleY,
                                                 x, y );
         
-        //		// XXX: Try to inline skew
-        //		// If skew is needed, apply skew and then anchor point
-        //		if( needsSkewMatrix )
-        //        {
-        //			CGAffineTransform skewMatrix = CGAffineTransformMake(1.0f, tanf(_skewY),
-        //																 tanf(_skewX), 1.0f,
-        //																 0.0f, 0.0f );
-        //			affineTransform = CGAffineTransformConcat(skewMatrix, affineTransform);
-        //
-        //			// adjust anchor point
-        //			if( ! CGPointEqualToPoint(_anchorPointInPoints, CGPointZero) )
-        //            {
-        //				affineTransform = CGAffineTransformTranslate(affineTransform, -_anchorPointInPoints.x, -_anchorPointInPoints.y);
-        //            }
-        //		}
-        
-		_isTransformDirty = NO;
+		_attr->_isTransformClean = YES;
 	}
     
 	return affineTransform;
@@ -801,10 +783,10 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (CGAffineTransform)parentToNodeTransform
 {
-	if ( _isInverseDirty )
+	if ( !_attr->_isInverseClean )
     {
 		_inverse = CGAffineTransformInvert([self nodeToParentTransform]);
-		_isInverseDirty = NO;
+		_attr->_isInverseClean = YES;
 	}
     
 	return _inverse;
@@ -854,7 +836,7 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 - (CGPoint)convertToWindowSpace: (CGPoint)nodePoint
 {
     CGPoint worldPoint = [self convertToWorldSpace:nodePoint];
-	return [[CCDirector sharedDirector] convertToUI:worldPoint];
+	return [[VEDirector sharedDirector] convertToUI:worldPoint];
 }
 
 - (CGPoint)convertPoint: (CGPoint)p
@@ -896,8 +878,8 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 {
-    if (!layer->_isUserInteractionEnabled
-        || layer->_isHidden
+    if (layer->_attr->_isUserInteractionDisabled
+        || layer->_attr->_isHidden
         || layer->_opacity < 0.01)
     {
         return YES;
@@ -1141,11 +1123,11 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
  * the interpretation of the `contents' property directly. */
 - (void)setOpaque: (BOOL)opaque
 {
-    if(_opaque != opaque)
+    if(_attr->_isOpaque != opaque)
     {
         [self willChangeValueForKey: @"opaque"];
         
-        _opaque = opaque;
+        _attr->_isOpaque = opaque;
         
         [self didChangeValueForKey: @"opaque"];
     }
@@ -1153,7 +1135,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (BOOL)isOpaque
 {
-    return _opaque;
+    return _attr->_isOpaque;
 }
 
 /* Reload the content of this layer. Calls the -drawInContext: method
@@ -1183,29 +1165,29 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (void)setNeedsDisplay
 {
-    _needsDisplay = YES;
+    _attr->_needsDisplay = YES;
 }
 
 - (void)setNeedsDisplayInRect: (CGRect)r
 {
-    _needsDisplay = YES;
+    _attr->_needsDisplay = YES;
 }
 
 /* Returns true when the layer is marked as needing redrawing. */
 
 - (BOOL)needsDisplay
 {
-    return _needsDisplay;
+    return _attr->_needsDisplay;
 }
 
 /* Call -display if receiver is marked as needing redrawing. */
 
 - (void)displayIfNeeded
 {
-    if(_needsDisplay)
+    if(_attr->_needsDisplay)
     {
         [self display];
-        _needsDisplay = NO;
+        _attr->_needsDisplay = NO;
     }
 }
 
@@ -1214,11 +1196,11 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (void)setNeedsDisplayOnBoundsChange: (BOOL)needsDisplayOnBoundsChange
 {
-    if(_needsDisplayOnBoundsChange != needsDisplayOnBoundsChange)
+    if(_attr->_needsDisplayOnBoundsChange != needsDisplayOnBoundsChange)
     {
         [self willChangeValueForKey: @"needsDisplayOnBoundsChange"];
         
-        _needsDisplayOnBoundsChange = needsDisplayOnBoundsChange;
+        _attr->_needsDisplayOnBoundsChange = needsDisplayOnBoundsChange;
         
         [self didChangeValueForKey: @"needsDisplayOnBoundsChange"];
     }
@@ -1226,7 +1208,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (BOOL)needsDisplayOnBoundsChange
 {
-    return _needsDisplayOnBoundsChange;
+    return _attr->_needsDisplayOnBoundsChange;
 }
 
 /* When true, the CGContext object passed to the -drawInContext: method
@@ -1237,11 +1219,11 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
  * default value is NO. */
 - (void)setDrawsAsynchronously: (BOOL)drawsAsynchronously
 {
-    if(_drawsAsynchronously != drawsAsynchronously)
+    if(_attr->_drawsAsynchronously != drawsAsynchronously)
     {
         [self willChangeValueForKey: @"drawsAsynchronously"];
         
-        _drawsAsynchronously = drawsAsynchronously;
+        _attr->_drawsAsynchronously = drawsAsynchronously;
         
         [self didChangeValueForKey: @"drawsAsynchronously"];
     }
@@ -1249,7 +1231,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (BOOL)drawsAsynchronously
 {
-    return _drawsAsynchronously;
+    return _attr->_drawsAsynchronously;
 }
 
 /* Called via the -display method when the `contents' property is being
@@ -1303,6 +1285,15 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 	}
 }
 
+- (GLKMatrix4) modelMatrix
+{    
+    GLKMatrix4 modelMatrix = GLKMatrix4Translate(GLKMatrix4Identity, self.position.x, self.position.y, 0);
+    modelMatrix = GLKMatrix4Translate(modelMatrix, -_bounds.size.width/2, -_bounds.size.height/2, 0);
+
+    return modelMatrix;
+    
+}
+
 /* Renders the receiver and its sublayers into 'ctx'. This method
  * renders directly from the layer tree. Renders in the coordinate space
  * of the layer.
@@ -1312,6 +1303,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (void)renderInContext: (VGContext *)ctx
 {
+#if 0
     VGContextSaveState(ctx);
     
     [self transformInContext: ctx];
@@ -1324,11 +1316,11 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
         
         // Attributes
         //
-        glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, squareVertices_);
+        glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, squareVertices_);
         glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_FLOAT, GL_TRUE, 0, squareColors_);
         
         //CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         
         CC_INCREMENT_GL_DRAWS(1);
@@ -1340,6 +1332,33 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     }
     
     VGContextRestoreState(ctx);
+#else
+//    self.effect.texture2d0.name = self.textureInfo.name;
+//    self.effect.texture2d0.enabled = YES;
+    [[_effect transform] setModelviewMatrix: [self modelMatrix]];
+    [_effect setUseConstantColor: GL_TRUE];
+    [_effect setConstantColor: GLKVector4Make(1.0, 0, 0, 1)];
+    
+    [_effect prepareToDraw];
+    
+    // Set up transparency
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    // Set up position vertices
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, _vertices);
+    
+    // Draw arrays
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    
+    // Tear down position vertices
+    glDisableVertexAttribArray(GLKVertexAttribPosition);
+        
+    // Disable transparency
+    glDisable(GL_BLEND);
+    
+#endif
 }
 
 /* Defines how the edges of the layer are rasterized. For each of the
@@ -1550,11 +1569,11 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (void)setShouldRasterize: (BOOL)shouldRasterize
 {
-    if(_shouldRasterize != shouldRasterize)
+    if(_attr->_shouldRasterize != shouldRasterize)
     {
         [self willChangeValueForKey: @"shouldRasterize"];
         
-        _shouldRasterize = shouldRasterize;
+        _attr->_shouldRasterize = shouldRasterize;
         
         [self didChangeValueForKey: @"shouldRasterize"];
     }
@@ -1562,7 +1581,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (BOOL)shouldRasterize
 {
-    return _shouldRasterize;
+    return _attr->_shouldRasterize;
 }
 
 /* The scale at which the layer will be rasterized (when the
@@ -1720,9 +1739,9 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (void)setNeedsLayout
 {
-    if(!_isLayoutingSublayers)
+    if(!_attr->_isLayoutingSublayers)
     {
-        _needsLayout = YES;
+        _attr->_needsLayout = YES;
     }
 }
 
@@ -1730,7 +1749,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (BOOL)needsLayout
 {
-    return _needsLayout;
+    return _attr->_needsLayout;
 }
 
 /* Traverse upwards from the layer while the superlayer requires layout.
@@ -1738,10 +1757,10 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (void)layoutIfNeeded
 {
-    if(_needsLayout)
+    if(_attr->_needsLayout)
     {
         [self layoutSublayers];
-        _needsLayout = NO;
+        _attr->_needsLayout = NO;
     }
 }
 
@@ -1753,7 +1772,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (void)layoutSublayers
 {
-    _isLayoutingSublayers = YES;
+    _attr->_isLayoutingSublayers = YES;
     
     if(_attr->_delegateRespondsToLayoutSublayersOfLayer)
     {
@@ -1764,7 +1783,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
         [_layoutManager layoutSublayersOfLayer: self];
     }
     
-    _isLayoutingSublayers = NO;
+    _attr->_isLayoutingSublayers = NO;
 }
 
 #pragma mark - VALayer (Action)
@@ -1900,7 +1919,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     /* construct new animation */
     VEBasicAnimation * animation = [VEBasicAnimation animationWithKeyPath: key];
     
-    if (_isPresentationLayer)
+    if (_attr->_isPresentationLayer)
     {
         [animation setFromValue: [self valueForKeyPath: key]];
     }else
