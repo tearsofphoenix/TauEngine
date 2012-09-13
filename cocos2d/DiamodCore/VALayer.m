@@ -1333,9 +1333,11 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     
     VGContextRestoreState(ctx);
 #else
-//    self.effect.texture2d0.name = self.textureInfo.name;
+//    self.effect.texture2d0.name = self.textureInfo.name]]]]]]]];
 //    self.effect.texture2d0.enabled = YES;
     [[_effect transform] setModelviewMatrix: [self modelMatrix]];
+    [[_effect transform] setProjectionMatrix: GLKMatrix4MakeOrtho(0, 1024, 0, 768, -1024, 1024)];
+
     [_effect setUseConstantColor: GL_TRUE];
     [_effect setConstantColor: GLKVector4Make(1.0, 0, 0, 1)];
     

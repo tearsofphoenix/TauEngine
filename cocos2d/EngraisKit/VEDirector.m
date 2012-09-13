@@ -63,6 +63,7 @@ NSUInteger	__ccNumberOfDraws = 0;
 {
 @private
     CCScheduler *_scheduler;
+    EAGLContext *_context;
 }
 
 - (void) setNextScene;
@@ -116,7 +117,7 @@ static VEDirector *_sharedDirector = nil;
         __ccContentScaleFactor = 1;
         
         _scheduler = [VEDataSource serviceByIdentity: CCScheduleServiceID];
-        
+        _context = [[EAGLContext alloc] initWithAPI: kEAGLRenderingAPIOpenGLES2];
 	}
     
 	return self;
@@ -414,6 +415,7 @@ CGFloat	__ccContentScaleFactor = 1;
     [super viewDidLoad];
     
     view_ = (GLKView *)[self view];
+    [view_ setContext: _context];
     
     // set size
     winSizeInPixels_ = winSizeInPoints_ = [view_ bounds].size;

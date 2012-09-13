@@ -11,9 +11,6 @@
 		2282772D15FF36E9009142D6 /* VAGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2282772B15FF36E9009142D6 /* VAGradientLayer.m */; };
 		2282773115FF37C1009142D6 /* VALayer+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 2282772F15FF37C1009142D6 /* VALayer+Private.h */; };
 		2282773215FF37C1009142D6 /* VALayer+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 2282773015FF37C1009142D6 /* VALayer+Private.m */; };
-		22931A5C16006DF800B3BD90 /* VAES2Renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22931A5916006DF700B3BD90 /* VAES2Renderer.h */; };
-		22931A5D16006DF800B3BD90 /* VAES2Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22931A5A16006DF800B3BD90 /* VAES2Renderer.m */; };
-		22931A5E16006DF800B3BD90 /* VAGLRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22931A5B16006DF800B3BD90 /* VAGLRenderer.h */; };
 		22BAA07215F8864F00AEBED9 /* VAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA02B15F8864F00AEBED9 /* VAAnimation.h */; };
 		22BAA07315F8864F00AEBED9 /* VAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA02C15F8864F00AEBED9 /* VAAnimation.m */; };
 		22BAA07415F8864F00AEBED9 /* VABlockAnimationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA02D15F8864F00AEBED9 /* VABlockAnimationDelegate.h */; };
@@ -194,8 +191,6 @@
 		E04C646612382F9400A4B3E6 /* b1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E04C640412382F9300A4B3E6 /* b1-hd.png */; };
 		E04C646712382F9400A4B3E6 /* b2-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E04C640512382F9300A4B3E6 /* b2-hd.png */; };
 		E121127B15E4758000A3E43A /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E121127A15E4758000A3E43A /* GLKit.framework */; };
-		E1D0EA1915FB08C1004ADE8F /* VEGLViewPrivateHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = E1D0EA1715FB08C0004ADE8F /* VEGLViewPrivateHandler.h */; };
-		E1D0EA1A15FB08C1004ADE8F /* VEGLViewPrivateHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0EA1815FB08C1004ADE8F /* VEGLViewPrivateHandler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -223,9 +218,6 @@
 		2282772B15FF36E9009142D6 /* VAGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAGradientLayer.m; sourceTree = "<group>"; };
 		2282772F15FF37C1009142D6 /* VALayer+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VALayer+Private.h"; sourceTree = "<group>"; };
 		2282773015FF37C1009142D6 /* VALayer+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VALayer+Private.m"; sourceTree = "<group>"; };
-		22931A5916006DF700B3BD90 /* VAES2Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAES2Renderer.h; sourceTree = "<group>"; };
-		22931A5A16006DF800B3BD90 /* VAES2Renderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAES2Renderer.m; sourceTree = "<group>"; };
-		22931A5B16006DF800B3BD90 /* VAGLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAGLRenderer.h; sourceTree = "<group>"; };
 		22BAA02B15F8864F00AEBED9 /* VAAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAAnimation.h; sourceTree = "<group>"; };
 		22BAA02C15F8864F00AEBED9 /* VAAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAAnimation.m; sourceTree = "<group>"; };
 		22BAA02D15F8864F00AEBED9 /* VABlockAnimationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VABlockAnimationDelegate.h; sourceTree = "<group>"; };
@@ -457,8 +449,6 @@
 		E0BC7D6F1342CC58001B4DCC /* LICENSE_Box2D.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE_Box2D.txt; sourceTree = "<group>"; };
 		E0BC7D711342CC58001B4DCC /* LICENSE_cocos2d.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE_cocos2d.txt; sourceTree = "<group>"; };
 		E121127A15E4758000A3E43A /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		E1D0EA1715FB08C0004ADE8F /* VEGLViewPrivateHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEGLViewPrivateHandler.h; sourceTree = "<group>"; };
-		E1D0EA1815FB08C1004ADE8F /* VEGLViewPrivateHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEGLViewPrivateHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -514,9 +504,6 @@
 		22BAA02A15F8864F00AEBED9 /* DiamodCore */ = {
 			isa = PBXGroup;
 			children = (
-				22931A5916006DF700B3BD90 /* VAES2Renderer.h */,
-				22931A5A16006DF800B3BD90 /* VAES2Renderer.m */,
-				22931A5B16006DF800B3BD90 /* VAGLRenderer.h */,
 				22BAA02B15F8864F00AEBED9 /* VAAnimation.h */,
 				22BAA02C15F8864F00AEBED9 /* VAAnimation.m */,
 				22BAA02D15F8864F00AEBED9 /* VABlockAnimationDelegate.h */,
@@ -557,8 +544,6 @@
 				22BAA04F15F8864F00AEBED9 /* NVTimer.m */,
 				22BAA05315F8864F00AEBED9 /* VEDataSource.h */,
 				22BAA05415F8864F00AEBED9 /* VEDataSource.m */,
-				E1D0EA1715FB08C0004ADE8F /* VEGLViewPrivateHandler.h */,
-				E1D0EA1815FB08C1004ADE8F /* VEGLViewPrivateHandler.m */,
 				22BAA05715F8864F00AEBED9 /* VEMetaService.h */,
 				22BAA05815F8864F00AEBED9 /* VEMetaService.m */,
 			);
@@ -977,11 +962,8 @@
 				22BAA0B115F8864F00AEBED9 /* CGPointExtension.h in Headers */,
 				22BAA0B315F8864F00AEBED9 /* OpenGLInternal.h in Headers */,
 				22BAA0B415F8864F00AEBED9 /* TransformUtils.h in Headers */,
-				E1D0EA1915FB08C1004ADE8F /* VEGLViewPrivateHandler.h in Headers */,
 				2282772C15FF36E9009142D6 /* VAGradientLayer.h in Headers */,
 				2282773115FF37C1009142D6 /* VALayer+Private.h in Headers */,
-				22931A5C16006DF800B3BD90 /* VAES2Renderer.h in Headers */,
-				22931A5E16006DF800B3BD90 /* VAGLRenderer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1195,10 +1177,8 @@
 				22BAA0B015F8864F00AEBED9 /* VGContext.m in Sources */,
 				22BAA0B215F8864F00AEBED9 /* CGPointExtension.m in Sources */,
 				22BAA0B515F8864F00AEBED9 /* TransformUtils.m in Sources */,
-				E1D0EA1A15FB08C1004ADE8F /* VEGLViewPrivateHandler.m in Sources */,
 				2282772D15FF36E9009142D6 /* VAGradientLayer.m in Sources */,
 				2282773215FF37C1009142D6 /* VALayer+Private.m in Sources */,
-				22931A5D16006DF800B3BD90 /* VAES2Renderer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
