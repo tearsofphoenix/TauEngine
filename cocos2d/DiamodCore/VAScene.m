@@ -41,8 +41,6 @@
 		_anchorPoint = ccp(0.5f, 0.5f);
         
 		[self setFrame: CGRectMake(0, 0, s.width, s.height)];
-        
-        [self setOpacity: 0];
 	}
 
 	return self;

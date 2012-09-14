@@ -36,7 +36,7 @@
     }
     
     VAScene *scene = [VAScene layer];
-    [scene setBounds: CGRectMake(0, 0, 10, 10)];
+    [scene setBounds: CGRectMake(0, 0, 100, 10)];
     [scene setBackgroundColor: [VGColor redColor]];
     
 	[director_ pushScene: scene];

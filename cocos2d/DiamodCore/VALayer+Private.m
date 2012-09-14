@@ -15,7 +15,7 @@
 {
 	for( NSUInteger i = 0; i < 4; i++ )
 	{
-		squareColors_[i] = [_backgroundColor CCColor];
+		_vertexColors[i] = [_backgroundColor CCColor];
 	}
 }
 

@@ -26,6 +26,7 @@
 
 #import <GLKit/GLKit.h>
 #import "VACamera.h"
+#import "VAMediaTiming.h"
 
 @class CCScheduler;
 @class VGContext;
@@ -43,13 +44,10 @@
  - It can receive Accelerometer input
  */
 
-@interface VALayer : NSObject <NSCoding>
+@interface VALayer : NSObject <NSCoding, VAMediaTiming>
 {
 	VGColor	*_backgroundColor;
     GLfloat _opacity;
-    
-	GLKVector2	squareVertices_[4];
-	GLKVector4	squareColors_[4];
         
     NSMutableArray *_animationKeys;
     NSMutableDictionary *_animations;
@@ -838,7 +836,8 @@
 
 /* If defined, called by the default implementation of -drawInContext: */
 
-- (void)drawLayer:(VALayer *)layer inContext:(VGContext *)ctx;
+- (void)drawLayer: (VALayer *)layer
+        inContext: (VGContext *)ctx;
 
 /* Called by the default -layoutSublayers implementation before the layout
  * manager is checked. Note that if the delegate method is invoked, the
@@ -853,7 +852,8 @@
  * '[NSNull null]') explicitly forces no further search. (I.e. the
  * +defaultActionForKey: method will not be called.) */
 
-- (id<VAAction>)actionForLayer:(VALayer *)layer forKey:(NSString *)event;
+- (id<VAAction>)actionForLayer: (VALayer *)layer
+                        forKey: (NSString *)event;
 
 @end
 

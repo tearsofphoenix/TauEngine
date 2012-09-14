@@ -82,25 +82,25 @@
     
     
     // (-1, -1)
-    squareColors_[0].r = E.r + (S.r - E.r) * ((c + u.x + u.y) / (2.0f * c));
-    squareColors_[0].g = E.g + (S.g - E.g) * ((c + u.x + u.y) / (2.0f * c));
-    squareColors_[0].b = E.b + (S.b - E.b) * ((c + u.x + u.y) / (2.0f * c));
-    squareColors_[0].a = E.a + (S.a - E.a) * ((c + u.x + u.y) / (2.0f * c));
+    _vertexColors[0].r = E.r + (S.r - E.r) * ((c + u.x + u.y) / (2.0f * c));
+    _vertexColors[0].g = E.g + (S.g - E.g) * ((c + u.x + u.y) / (2.0f * c));
+    _vertexColors[0].b = E.b + (S.b - E.b) * ((c + u.x + u.y) / (2.0f * c));
+    _vertexColors[0].a = E.a + (S.a - E.a) * ((c + u.x + u.y) / (2.0f * c));
     // (1, -1)
-    squareColors_[1].r = E.r + (S.r - E.r) * ((c - u.x + u.y) / (2.0f * c));
-    squareColors_[1].g = E.g + (S.g - E.g) * ((c - u.x + u.y) / (2.0f * c));
-    squareColors_[1].b = E.b + (S.b - E.b) * ((c - u.x + u.y) / (2.0f * c));
-    squareColors_[1].a = E.a + (S.a - E.a) * ((c - u.x + u.y) / (2.0f * c));
+    _vertexColors[1].r = E.r + (S.r - E.r) * ((c - u.x + u.y) / (2.0f * c));
+    _vertexColors[1].g = E.g + (S.g - E.g) * ((c - u.x + u.y) / (2.0f * c));
+    _vertexColors[1].b = E.b + (S.b - E.b) * ((c - u.x + u.y) / (2.0f * c));
+    _vertexColors[1].a = E.a + (S.a - E.a) * ((c - u.x + u.y) / (2.0f * c));
     // (-1, 1)
-    squareColors_[2].r = E.r + (S.r - E.r) * ((c + u.x - u.y) / (2.0f * c));
-    squareColors_[2].g = E.g + (S.g - E.g) * ((c + u.x - u.y) / (2.0f * c));
-    squareColors_[2].b = E.b + (S.b - E.b) * ((c + u.x - u.y) / (2.0f * c));
-    squareColors_[2].a = E.a + (S.a - E.a) * ((c + u.x - u.y) / (2.0f * c));
+    _vertexColors[2].r = E.r + (S.r - E.r) * ((c + u.x - u.y) / (2.0f * c));
+    _vertexColors[2].g = E.g + (S.g - E.g) * ((c + u.x - u.y) / (2.0f * c));
+    _vertexColors[2].b = E.b + (S.b - E.b) * ((c + u.x - u.y) / (2.0f * c));
+    _vertexColors[2].a = E.a + (S.a - E.a) * ((c + u.x - u.y) / (2.0f * c));
     // (1, 1)
-    squareColors_[3].r = E.r + (S.r - E.r) * ((c - u.x - u.y) / (2.0f * c));
-    squareColors_[3].g = E.g + (S.g - E.g) * ((c - u.x - u.y) / (2.0f * c));
-    squareColors_[3].b = E.b + (S.b - E.b) * ((c - u.x - u.y) / (2.0f * c));
-    squareColors_[3].a = E.a + (S.a - E.a) * ((c - u.x - u.y) / (2.0f * c));
+    _vertexColors[3].r = E.r + (S.r - E.r) * ((c - u.x - u.y) / (2.0f * c));
+    _vertexColors[3].g = E.g + (S.g - E.g) * ((c - u.x - u.y) / (2.0f * c));
+    _vertexColors[3].b = E.b + (S.b - E.b) * ((c - u.x - u.y) / (2.0f * c));
+    _vertexColors[3].a = E.a + (S.a - E.a) * ((c - u.x - u.y) / (2.0f * c));
 }
 
 - (VGColor *)startColor

@@ -17,6 +17,7 @@ struct VALayerAttribute
     
     unsigned int _isTransformClean: 1;
 	unsigned int _isInverseClean: 1;
+    unsigned int _isModelviewMatrixClean: 1;
     
     unsigned int _isGeometryFlipped: 1;
     unsigned int _needsDisplayOnBoundsChange: 1;
@@ -39,8 +40,9 @@ struct VALayerAttribute
 
 @interface VALayer ()
 {
-@private
+@protected
     VALayer *_presentationLayer;
+    VALayer *_modelLayer;
     
     GLKBaseEffect *_effect;
     GLKTextureInfo *_textureInfo;
@@ -55,7 +57,12 @@ struct VALayerAttribute
     GLKVector2 _vertices[4];
     GLKVector2 _textureCoordinates[4];
     GLKVector4 _vertexColors[4];
+    GLKMatrix4 _modelviewMatrixCache;
 }
+
+@property (copy) NSDictionary *animations;
+
+@property (copy) NSArray *animationKeys;
 
 @end
 

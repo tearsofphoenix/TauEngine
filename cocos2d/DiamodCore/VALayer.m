@@ -101,17 +101,12 @@ static inline void __CCLayerPopConfiguration(void)
 
 - (id)presentationLayer
 {
-    if (!_presentationLayer)
+    if (!_modelLayer && !_presentationLayer)
     {
-        _presentationLayer = [[[self class] alloc] init];
-        _presentationLayer->_superlayer =  [[[self superlayer] presentationLayer] retain];
+        [self displayIfNeeded];
         
-        NSMutableArray *presentationSublayers = [[NSMutableArray alloc] init];
-        for (VALayer *layer in _sublayers)
-        {
-            [presentationSublayers addObject: [layer presentationLayer]];
-        }
-        _presentationLayer->_sublayers = presentationSublayers;
+        _presentationLayer = [[[self class] alloc] initWithLayer: self];
+        _presentationLayer->_modelLayer = self;
     }
     
     return _presentationLayer;
@@ -119,7 +114,7 @@ static inline void __CCLayerPopConfiguration(void)
 
 - (id)modelLayer
 {
-    return self;
+    return _modelLayer;
 }
 
 /* TODO: list all properties below */
@@ -142,6 +137,7 @@ static NSString * s_VALayerInitializationKeys[] =
 {
 	if( (self=[super init]) )
     {
+        _opacity = 1;
         _scale = GLKVector2Make(1, 1);
         _position = CGPointZero;
         _contentSize = CGSizeZero;
@@ -158,9 +154,7 @@ static NSString * s_VALayerInitializationKeys[] =
         [_effect setConstantColor: GLKVector4Make(1.0, 0, 0, 1)];
         
         _camera = VACameraCreate();
-        
-        [self setBounds: CGRectMake(0, 0, 1024, 768)];
-        
+                
         for (int i = 0; i < sizeof(s_VALayerInitializationKeys)/sizeof(s_VALayerInitializationKeys[0]); i++)
         {
             id defaultValue = [[self class] defaultValueForKey: s_VALayerInitializationKeys[i]];
@@ -176,11 +170,59 @@ static NSString * s_VALayerInitializationKeys[] =
 	return self;
 }
 
-- (id)initWithLayer: (id)layer
+- (id)initWithLayer: (VALayer *)layer
 {
     if ((self = [super init]))
     {
+        [self setDelegate: [layer delegate]];
+        _layoutManager = [layer->_layoutManager retain];
+        _superlayer = [[layer superlayer] presentationLayer];
         
+        _presentationLayer->_superlayer =  [[self superlayer] presentationLayer];
+        
+        NSMutableArray *presentationSublayers = [[NSMutableArray alloc] init];
+        for (VALayer *layerLooper in _sublayers)
+        {
+            [presentationSublayers addObject: [layerLooper presentationLayer]];
+        }
+        _presentationLayer->_sublayers = presentationSublayers;
+
+        [self setBounds: [layer bounds]];
+        [self setAnchorPoint: [layer anchorPoint]];
+        [self setPosition: [layer position]];
+        [self setOpacity: [layer opacity]];
+        [self setTransform: [layer transform]];
+        [self setSublayerTransform: [layer sublayerTransform]];
+        [self setShouldRasterize: [layer shouldRasterize]];
+        [self setOpaque: [layer isOpaque]];
+        [self setGeometryFlipped: [layer isGeometryFlipped]];
+        [self setBackgroundColor: [layer backgroundColor]];
+        [self setMasksToBounds: [layer masksToBounds]];
+        [self setContentsRect: [layer contentsRect]];
+        [self setHidden: [layer isHidden]];
+        [self setContentsGravity: [layer contentsGravity]];
+        [self setNeedsDisplayOnBoundsChange: [layer needsDisplayOnBoundsChange]];
+        [self setZPosition: [layer zPosition]];
+        
+        [self setShadowColor: [layer shadowColor]];
+        [self setShadowOffset: [layer shadowOffset]];
+        [self setShadowOpacity: [layer shadowOpacity]];
+        [self setShadowPath: [layer shadowPath]];
+        [self setShadowRadius: [layer shadowRadius]];
+        
+        [self setBeginTime: [layer beginTime]];
+        [self setTimeOffset: [layer timeOffset]];
+        [self setRepeatCount: [layer repeatCount]];
+        [self setRepeatDuration: [layer repeatDuration]];
+        [self setAutoreverses: [layer autoreverses]];
+        [self setFillMode: [layer fillMode]];
+        [self setDuration: [layer duration]];
+        [self setSpeed: [layer speed]];
+        
+        /* private or publicly read-only properties */
+        [self setAnimations: [layer animations]];
+        [self setAnimationKeys: [layer animationKeys]];
+
     }
     return self;
 }
@@ -300,22 +342,18 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 #pragma mark -  VALayer (Geometry)
 
 /* The bounds of the layer. Defaults to CGRectZero. Animatable. */
-- (void) setBounds: (CGRect)bounds
+- (void)setBounds: (CGRect)bounds
 {
     if (!CGRectEqualToRect(bounds, _bounds))
     {
         [self willChangeValueForKey: @"bounds"];
+        
         _bounds = bounds;
         
         _vertices[0] =  GLKVector2Make(0, 0);
-        _vertices[1] =  GLKVector2Make(1, 0);
-        _vertices[2] =  GLKVector2Make(0, 1);
-        _vertices[3] =  GLKVector2Make(1, 1);
-        
-        //        _quad.bl.geometryVertex = CGPointMake(0, 0);
-        //        _quad.br.geometryVertex = CGPointMake(_bounds.size.width, 0);
-        //        _quad.tl.geometryVertex = CGPointMake(0, _bounds.size.height);
-        //        _quad.tr.geometryVertex = CGPointMake(_bounds.size.width, _bounds.size.height);
+        _vertices[1] =  GLKVector2Make(_bounds.size.width, 0);
+        _vertices[2] =  GLKVector2Make(_bounds.size.width, _bounds.size.height);
+        _vertices[3] =  GLKVector2Make(0, _bounds.size.height);
         
         [self didChangeValueForKey: @"bounds"];
         
@@ -341,6 +379,8 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         [self willChangeValueForKey: @"position"];
         
         _position = position;
+        
+        _attr->_isModelviewMatrixClean = NO;
         
         [self didChangeValueForKey: @"postition"];
     }
@@ -761,17 +801,6 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 	return affineTransform;
 }
 
-- (CGAffineTransform)parentToNodeTransform
-{
-	if ( !_attr->_isInverseClean )
-    {
-		_inverse = CGAffineTransformInvert([self nodeToParentTransform]);
-		_attr->_isInverseClean = YES;
-	}
-    
-	return _inverse;
-}
-
 - (CGAffineTransform)nodeToWorldTransform
 {
 	CGAffineTransform t = [self nodeToParentTransform];
@@ -875,7 +904,8 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (VALayer *)hitTest: (CGPoint)p
 {
-    if(_VALayerIgnoresTouchEvents(self))
+    if(_VALayerIgnoresTouchEvents(self)
+       || ![self containsPoint: p])
     {
         return nil;
     }
@@ -893,8 +923,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
                                                           responsibleLayer = layer;
                                                           *stop = YES;
                                                       }
-                                                  }
-                                                  
+                                                  }                                                  
                                               })];
     
     return responsibleLayer;
@@ -1230,54 +1259,25 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 #pragma mark - VALayer (Rendering)
 
-- (void)transformInContext: (VGContext *)context
-{
-	GLKMatrix4 transfrom4x4;
-    
-	// Convert 3x3 into 4x4 matrix
-	CGAffineTransform tmpAffine = [self nodeToParentTransform];
-    
-	CGAffineToGL(&tmpAffine, transfrom4x4.m);
-    
-	// Update Z vertex manually
-	transfrom4x4.m[14] = _anchorPointZ;
-    
-	VGContextConcatCTM(context, transfrom4x4 );
-    
-    
-	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
-	if ( _camera )
-	{
-		BOOL needTranslate = !CGPointEqualToPoint(_anchorPoint, CGPointZero);
-        
-		if( needTranslate )
-        {
-			VGContextTranslateCTM(context, _anchorPointInPoints.x, _anchorPointInPoints.y, 0 );
-            
-            VGContextConcatCTM(context, VACameraGetLookAtMatrix(_camera));
-            
-			VGContextTranslateCTM(context, -_anchorPointInPoints.x, -_anchorPointInPoints.y, 0 );
-            
-        }else
-        {
-            VGContextConcatCTM(context, VACameraGetLookAtMatrix(_camera));
-        }
-	}
-}
-
 - (GLKMatrix4)modelviewMatrix
-{    
-    GLKMatrix4 modelviewMatrix = GLKMatrix4Multiply(GLKMatrix4MakeTranslation(_position.x, _position.y, 0),
-                                                    GLKMatrix4MakeRotation(_rotation, 0, 0, 1));
-    
-    modelviewMatrix = GLKMatrix4Multiply(modelviewMatrix, GLKMatrix4MakeScale(_scale.x, _scale.y, 1));
-    
-    if (_superlayer)
+{
+    if (!_attr->_isModelviewMatrixClean)
     {
-        modelviewMatrix = GLKMatrix4Multiply([_superlayer modelviewMatrix], modelviewMatrix);
+        
+        _modelviewMatrixCache = GLKMatrix4Multiply(GLKMatrix4MakeTranslation(_position.x, _position.y, 0),
+                                                   GLKMatrix4MakeRotation(_rotation, 0, 0, 1));
+        
+        _modelviewMatrixCache = GLKMatrix4Multiply(_modelviewMatrixCache, GLKMatrix4MakeScale(_scale.x, _scale.y, 1));
+        
+        if (_superlayer)
+        {
+            _modelviewMatrixCache = GLKMatrix4Multiply([_superlayer modelviewMatrix], _modelviewMatrixCache);
+        }
+        
+        _attr->_isModelviewMatrixClean = YES;
     }
     
-    return modelviewMatrix;
+    return _modelviewMatrixCache;
     
 }
 
@@ -1289,7 +1289,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
  * CoreAnimation composition model, use with caution. */
 
 - (void)renderInContext: (VGContext *)ctx
-{    
+{
     // Set up our texture effect if set
     if (_textureInfo)
     {
@@ -1303,7 +1303,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     
     // Set up the projection matrix to fit the scene's boundaries
     
-    [[_effect transform] setProjectionMatrix: GLKMatrix4MakeOrtho(-3, 3, -2, 2, 1, -1)];//GLKMatrix4MakeOrtho(0, 1024, 0, 768, -1024, 1024); //scene.projectionMatrix;
+    [[_effect transform] setProjectionMatrix: GLKMatrix4MakeOrtho(0, 1024, 0, 768, 1024, -1024)];
     
     // Tell OpenGL that we're going to use this effect for our upcoming drawing
     [_effect prepareToDraw];
@@ -1944,6 +1944,37 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 #pragma mark - VALayer (Animation)
 
+- (void)setAnimations: (NSDictionary *)animations
+{
+    if (![_animations isEqualToDictionary: animations])
+    {
+        [_animations setDictionary: animations];
+    }
+}
+
+- (NSDictionary *)animations
+{
+    return [NSDictionary dictionaryWithDictionary: _animations];
+}
+
+- (void)setAnimationKeys: (NSArray *)animationKeys
+{
+    if (![_animationKeys isEqualToArray: animationKeys])
+    {
+        [_animationKeys setArray: animationKeys];
+    }
+}
+
+
+/* Returns an array containing the keys of all animations currently
+ * attached to the receiver. The order of the array matches the order
+ * in which animations will be applied. */
+
+- (NSArray *)animationKeys
+{
+    return _animationKeys;
+}
+
 /* Attach an animation object to the layer. Typically this is implicitly
  * invoked through an action that is an VAAnimation object.
  *
@@ -1995,15 +2026,6 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 {
     [_animations removeObjectForKey: key];
     [_animationKeys removeObject: key];
-}
-
-/* Returns an array containing the keys of all animations currently
- * attached to the receiver. The order of the array matches the order
- * in which animations will be applied. */
-
-- (NSArray *)animationKeys
-{
-    return [NSArray arrayWithArray: _animationKeys];
 }
 
 /* Returns the animation added to the layer with identifier 'key', or nil
@@ -2150,6 +2172,49 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     
     [super setValue: value forUndefinedKey: key];
 }
+
+#pragma mark - VAMediaTiming
+
+
+@synthesize beginTime;
+
+/* The basic duration of the object. Defaults to 0. */
+
+@synthesize duration;
+
+/* The rate of the layer. Used to scale parent time to local time, e.g.
+ * if rate is 2, local time progresses twice as fast as parent time.
+ * Defaults to 1. */
+
+@synthesize speed;
+
+/* Additional offset in active local time. i.e. to convert from parent
+ * time tp to active local time t: t = (tp - begin) * speed + offset.
+ * One use of this is to "pause" a layer by setting `speed' to zero and
+ * `offset' to a suitable value. Defaults to 0. */
+
+@synthesize timeOffset;
+
+/* The repeat count of the object. May be fractional. Defaults to 0. */
+
+@synthesize repeatCount;
+
+/* The repeat duration of the object. Defaults to 0. */
+
+@synthesize repeatDuration;
+
+/* When true, the object plays backwards after playing forwards. Defaults
+ * to NO. */
+
+@synthesize autoreverses;
+
+/* Defines how the timed object behaves outside its active duration.
+ * Local time may be clamped to either end of the active duration, or
+ * the element may be removed from the presentation. The legal values
+ * are `backwards', `forwards', `both' and `removed'. Defaults to
+ * `removed'. */
+
+@synthesize fillMode;
 
 @end
 

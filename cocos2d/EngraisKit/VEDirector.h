@@ -164,3 +164,4 @@ and when to execute the Scenes.
 extern NSUInteger __ccNumberOfDraws;
 
 extern NSTimeInterval CCDirectorCalculateMPF(struct timeval lastUpdate_);
+

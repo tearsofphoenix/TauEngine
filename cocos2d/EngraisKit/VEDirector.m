@@ -441,7 +441,7 @@ CGFloat	__ccContentScaleFactor = 1;
 {
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: location];
+    VALayer *responsibleLayer = [runningScene_ hitTest: [self convertToGL: location]];
     [responsibleLayer touchBegan: touch
                        withEvent: event];
     NSLog(@"in func: %s %@", __func__, responsibleLayer);
@@ -451,7 +451,7 @@ CGFloat	__ccContentScaleFactor = 1;
 {
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: location];
+    VALayer *responsibleLayer = [runningScene_ hitTest: [self convertToGL: location]];
     [responsibleLayer touchEnded: touch
                        withEvent: event];
 }
@@ -460,7 +460,7 @@ CGFloat	__ccContentScaleFactor = 1;
 {
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: location];
+    VALayer *responsibleLayer = [runningScene_ hitTest: [self convertToGL: location]];
     [responsibleLayer touchMoved: touch
                        withEvent: event];
     
@@ -470,7 +470,7 @@ CGFloat	__ccContentScaleFactor = 1;
 {
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: location];
+    VALayer *responsibleLayer = [runningScene_ hitTest: [self convertToGL: location]];
     [responsibleLayer touchCancelled: touch
                            withEvent: event];
     
