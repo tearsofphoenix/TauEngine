@@ -63,9 +63,9 @@
 	// untransformed size of the node
 	CGSize	_contentSize;
     
-	CATransform3D _transform;
+	GLKMatrix4 _transform;
     CGAffineTransform _inverse;
-    CATransform3D _sublayerTransform;
+    GLKMatrix4 _sublayerTransform;
 	// z-order value
 	NSInteger _zPosition;
     
@@ -183,7 +183,7 @@
  *	CGSize			NSValue
  *	CGRect			NSValue
  *	CGAffineTransform	NSAffineTransform
- *	CATransform3D		NSValue  */
+ *	GLKMatrix4		NSValue  */
 
 /* Returns the default value of the named property, or nil if no
  * default value is known. Subclasses that override this method to
@@ -240,7 +240,7 @@
 /* A transform applied to the layer relative to the anchor point of its
  * bounds rect. Defaults to the identity transform. Animatable. */
 
-@property CATransform3D transform;
+@property GLKMatrix4 transform;
 
 /* Convenience methods for accessing the `transform' property as an
  * affine transform. */
@@ -332,7 +332,7 @@
  * the projection matrix to add perspective and other viewing effects
  * into the model. Defaults to identity. Animatable. */
 
-@property CATransform3D sublayerTransform;
+@property GLKMatrix4 sublayerTransform;
 
 /* A layer whose alpha channel is used as a mask to select between the
  * layer's background and the result of compositing the layer's

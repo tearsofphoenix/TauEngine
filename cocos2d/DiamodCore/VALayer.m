@@ -38,7 +38,7 @@
 #import "VALayer+Private.h"
 #import "OpenGLInternal.h"
 #import "VEDirector.h"
-
+#import "TransformUtils.h"
 
 @implementation VALayer
 
@@ -138,10 +138,13 @@ static NSString * s_VALayerInitializationKeys[] =
 	if( (self=[super init]) )
     {
         _opacity = 1;
-        _scale = GLKVector2Make(1, 1);
+
         _position = CGPointZero;
         _contentSize = CGSizeZero;
-		_anchorPointInPoints = _anchorPoint = CGPointZero;
+		_anchorPointInPoints = CGPointZero;
+        _anchorPoint = CGPointZero;
+        _transform = GLKMatrix4Identity;
+        _sublayerTransform = GLKMatrix4Identity;
         
         _attr = calloc(1, sizeof(struct VALayerAttribute));
         _sublayers = [[NSMutableArray alloc] init];
@@ -150,9 +153,7 @@ static NSString * s_VALayerInitializationKeys[] =
         
         _effect = [[GLKBaseEffect alloc] init];
         [_effect setUseConstantColor: !_attr->_useTextureColor];
-        
-        [_effect setConstantColor: GLKVector4Make(1.0, 0, 0, 1)];
-        
+                
         _camera = VACameraCreate();
                 
         for (int i = 0; i < sizeof(s_VALayerInitializationKeys)/sizeof(s_VALayerInitializationKeys[0]); i++)
@@ -260,7 +261,7 @@ static NSString * s_VALayerInitializationKeys[] =
  *	CGSize			NSValue
  *	CGRect			NSValue
  *	CGAffineTransform	NSValue
- *	CATransform3D		NSValue  */
+ *	GLKMatrix4		NSValue  */
 
 /* Returns the default value of the named property, or nil if no
  * default value is known. Subclasses that override this method to
@@ -279,8 +280,9 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
     if (!s_VALayerDefaultValues)
     {
         s_VALayerDefaultValues = [[NSMutableDictionary alloc] init];
+        
         [s_VALayerDefaultValues setObject: [NSValue valueWithCGPoint: CGPointMake(0.5, 0.5)]
-                                   forKey: @"anchorPoint"];
+                                   forKey: @"anchorPoint"];        
         [s_VALayerDefaultValues setObject: [NSValue valueWithCATransform3D: CATransform3DIdentity]
                                    forKey: @"transform"];
         [s_VALayerDefaultValues setObject: [NSValue valueWithCATransform3D: CATransform3DIdentity]
@@ -456,9 +458,9 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 /* A transform applied to the layer relative to the anchor point of its
  * bounds rect. Defaults to the identity transform. Animatable. */
 
-- (void)setTransform: (CATransform3D)transform
+- (void)setTransform: (GLKMatrix4)transform
 {
-    if(!CATransform3DEqualToTransform(_transform, transform))
+    if(memcmp(&_transform, &transform, sizeof(GLKMatrix4)))
     {
         [self willChangeValueForKey: @"transform"];
         
@@ -468,8 +470,18 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
     }
 }
 
-- (CATransform3D)transform
+- (GLKMatrix4)transform
 {
+    if (!_attr->_isModelviewMatrixClean)
+    {
+        if (_superlayer)
+        {
+            _transform = GLKMatrix4Multiply([_superlayer transform], _transform);
+        }
+        
+        _attr->_isModelviewMatrixClean = YES;
+    }
+    
     return _transform;
 }
 
@@ -478,12 +490,16 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (CGAffineTransform)affineTransform
 {
-    return CATransform3DGetAffineTransform(_transform);
+    CGAffineTransform ret;
+    GLToCGAffine((const GLfloat *)&_transform.m, &ret);
+    return ret;
 }
 
 - (void)setAffineTransform: (CGAffineTransform)m
 {
-    [self setTransform: CATransform3DMakeAffineTransform(m)];
+    GLKMatrix4 transform;
+    CGAffineToGL(&m, (GLfloat *)&transform.m);
+    [self setTransform: transform];
 }
 
 /* Unlike NSView, each Layer in the hierarchy has an implicit frame
@@ -696,9 +712,9 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
  * the projection matrix to add perspective and other viewing effects
  * into the model. Defaults to identity. Animatable. */
 
-- (void)setSublayerTransform:(CATransform3D)sublayerTransform
+- (void)setSublayerTransform:(GLKMatrix4)sublayerTransform
 {
-    if(!CATransform3DEqualToTransform(_sublayerTransform, sublayerTransform))
+    if(memcmp(&_sublayerTransform, &sublayerTransform, sizeof(GLKMatrix4)))
     {
         [self willChangeValueForKey: @"sublayerTransform"];
         
@@ -708,7 +724,7 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
     }
 }
 
-- (CATransform3D)sublayerTransform
+- (GLKMatrix4)sublayerTransform
 {
     return _sublayerTransform;
 }
@@ -763,51 +779,13 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 #pragma mark - VALayer (CoordinateMapping)
 
-- (CGAffineTransform)nodeToParentTransform
-{
-    CGAffineTransform affineTransform; // = CGAffineTransformIdentity;
-    
-	if ( !_attr->_isTransformClean )
-    {
-        
-		// Translate values
-		float x = _position.x + _anchorPointInPoints.x;
-		float y = _position.y + _anchorPointInPoints.y;
-        
-		// Rotation values
-		float c = 1, s = 0;
-        
-		BOOL needsSkewMatrix = NO;
-        
-        
-		// optimization:
-		// inline anchor point calculation if skew is not needed
-		
-        if( !needsSkewMatrix && !CGPointEqualToPoint(_anchorPointInPoints, CGPointZero) )
-        {
-			x += c * -_anchorPointInPoints.x * _scale.x + -s * -_anchorPointInPoints.y * _scale.y;
-			y += s * -_anchorPointInPoints.x * _scale.x +  c * -_anchorPointInPoints.y * _scale.y;
-		}
-        
-        
-		// Build Transform Matrix
-		affineTransform = CGAffineTransformMake( c * _scale.x,  s * _scale.x,
-                                                -s * _scale.y, c * _scale.y,
-                                                x, y );
-        
-		_attr->_isTransformClean = YES;
-	}
-    
-	return affineTransform;
-}
-
 - (CGAffineTransform)nodeToWorldTransform
 {
-	CGAffineTransform t = [self nodeToParentTransform];
+	CGAffineTransform t = [self affineTransform];
     
 	for (VALayer *p = _superlayer; p != nil; p = p->_superlayer)
     {
-		t = CGAffineTransformConcat(t, [p nodeToParentTransform]);
+		t = CGAffineTransformConcat(t, [p affineTransform]);
     }
     
 	return t;
@@ -1259,27 +1237,6 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 #pragma mark - VALayer (Rendering)
 
-- (GLKMatrix4)modelviewMatrix
-{
-    if (!_attr->_isModelviewMatrixClean)
-    {
-        
-        _modelviewMatrixCache = GLKMatrix4Multiply(GLKMatrix4MakeTranslation(_position.x, _position.y, 0),
-                                                   GLKMatrix4MakeRotation(_rotation, 0, 0, 1));
-        
-        _modelviewMatrixCache = GLKMatrix4Multiply(_modelviewMatrixCache, GLKMatrix4MakeScale(_scale.x, _scale.y, 1));
-        
-        if (_superlayer)
-        {
-            _modelviewMatrixCache = GLKMatrix4Multiply([_superlayer modelviewMatrix], _modelviewMatrixCache);
-        }
-        
-        _attr->_isModelviewMatrixClean = YES;
-    }
-    
-    return _modelviewMatrixCache;
-}
-
 /* Renders the receiver and its sublayers into 'ctx'. This method
  * renders directly from the layer tree. Renders in the coordinate space
  * of the layer.
@@ -1289,67 +1246,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (void)renderInContext: (VGContext *)ctx
 {
-    // Set up our texture effect if set
-    if (_textureInfo)
-    {
-        [[_effect texture2d0] setEnvMode: GLKTextureEnvModeReplace];
-        [[_effect texture2d0] setTarget: GLKTextureTarget2D];
-        [[_effect texture2d0] setName: [_textureInfo name]];
-    }
     
-    // Create a modelview matrix to position and rotate the object
-    [[_effect transform] setModelviewMatrix: [self modelviewMatrix]];
-    
-    // Set up the projection matrix to fit the scene's boundaries
-    
-    [[_effect transform] setProjectionMatrix: GLKMatrix4MakeOrtho(0, 1024, 0, 768, 1024, -1024)];
-    
-    // Tell OpenGL that we're going to use this effect for our upcoming drawing
-    [_effect prepareToDraw];
-    
-    // Enable transparency
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    // Tell OpenGL that we'll be using vertex position data
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, _vertices);
-    
-    // If we're using vertex coloring, tell OpenGL that we'll be using vertex color data
-    if (_attr->_useTextureColor)
-    {
-        glEnableVertexAttribArray(GLKVertexAttribColor);
-        glVertexAttribPointer(GLKVertexAttribColor, 4, GL_FLOAT, GL_FALSE, 0, _vertexColors);
-    }
-    
-    // If we have a texture, tell OpenGL that we'll be using texture coordinate data
-    
-    if (_textureInfo)
-    {
-        glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-        glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 0, _textureCoordinates);
-    }
-    
-    // Draw our primitives!
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    
-    // Cleanup: Done with position data
-    glDisableVertexAttribArray(GLKVertexAttribPosition);
-    
-    // Cleanup: Done with color data (only if we used it)
-    if (_attr->_useTextureColor)
-    {
-        glDisableVertexAttribArray(GLKVertexAttribColor);
-    }
-    
-    // Cleanup: Done with texture data (only if we used it)
-    if (_textureInfo)
-    {
-        glDisableVertexAttribArray(GLKVertexAttribTexCoord0);
-    }
-    
-    // Cleanup: Done with the current blend function
-    glDisable(GL_BLEND);
 }
 
 /* Defines how the edges of the layer are rasterized. For each of the
@@ -1386,7 +1283,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
         
         [_backgroundColor release];
         _backgroundColor = [backgroundColor retain];
-        [self updateColor];
+        [_effect setConstantColor: [_backgroundColor CCColor]];
         
         [self didChangeValueForKey: @"backgroundColor"];
     }
@@ -2130,46 +2027,51 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 - (id)valueForUndefinedKey: (NSString *)key
 {
-    /* Core Graphics types apparently are not KVC-compliant under Cocoa. */
-    
-    if ([key isEqualToString: @"backgroundColor"])
+    if ([key isEqualToString: @"transform"])
     {
-        return [self backgroundColor];
-    }
-    if ([key isEqualToString: @"shadowColor"])
-    {
-        return [self shadowColor];
-    }
-    if ([key isEqualToString: @"shadowPath"])
-    {
-        return [self shadowColor];
+        GLKMatrix4 transform = [self transform];
+        
+        return [NSValue value: &transform
+                 withObjCType: @encode(GLKMatrix4)];
     }
     
+    if ([key isEqualToString: @"sublayerTransform"])
+    {
+        GLKMatrix4 transform = [self sublayerTransform];
+        
+        return [NSValue value: &transform
+                 withObjCType: @encode(GLKMatrix4)];
+    }
+
     return [super valueForUndefinedKey: key];
 }
 
 - (void)setValue: (id)value
  forUndefinedKey: (NSString *)key
 {
-    /* Core Graphics types apparently are not KVC-compliant under Cocoa. */
     
-    if ([key isEqualToString: @"backgroundColor"])
+    if ([key isEqualToString: @"transform"])
     {
-        [self setBackgroundColor: value];
-        return;
-    }
-    if ([key isEqualToString: @"shadowColor"])
-    {
-        [self setShadowColor: value];
-        return;
-    }
-    if ([key isEqualToString: @"shadowPath"])
-    {
-        [self setShadowPath: (CGPathRef)value];
+        NSValue *tv = value;
+        GLKMatrix4 transform;
+        [tv getValue: &transform];
+        
+        [self setTransform: transform];
         return;
     }
     
-    [super setValue: value forUndefinedKey: key];
+    if ([key isEqualToString: @"sublayerTransform"])
+    {
+        NSValue *tv = value;
+        GLKMatrix4 transform;
+        [tv getValue: &transform];
+        
+        [self setSublayerTransform: transform];
+        return;
+    }
+    
+    [super setValue: value
+    forUndefinedKey: key];
 }
 
 #pragma mark - VAMediaTiming

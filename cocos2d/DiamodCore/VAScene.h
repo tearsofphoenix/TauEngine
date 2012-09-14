@@ -41,6 +41,4 @@
 
 - (GLKMatrix4)projectionMatrix;
 
-- (void)makeKeyAndVisible;
-
 @end

@@ -12,7 +12,7 @@
 
 @implementation VALayer (Private)
 
-- (void) updateColor
+- (void)updateColor
 {
 	for( NSUInteger i = 0; i < 4; i++ )
 	{
@@ -33,7 +33,7 @@ void VALayer_renderInScene(VALayer *layer, VAScene *scene)
     }
     
     // Create a modelview matrix to position and rotate the object
-    [[effect transform] setModelviewMatrix: [layer modelviewMatrix]];
+    [[effect transform] setModelviewMatrix: [layer transform]];
     
     // Set up the projection matrix to fit the scene's boundaries
     

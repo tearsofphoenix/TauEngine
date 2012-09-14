@@ -46,25 +46,17 @@ struct VALayerAttribute
     
     GLKBaseEffect *_effect;
     GLKTextureInfo *_textureInfo;
-    
-    // scaling factors
-    //
-    GLKVector2 _scale;
-    
+        
     VACameraRef _camera;
-    GLfloat _rotation;
     
     GLKVector2 _vertices[4];
     GLKVector2 _textureCoordinates[4];
     GLKVector4 _vertexColors[4];
-    GLKMatrix4 _modelviewMatrixCache;
 }
 
 @property (copy) NSDictionary *animations;
 
 @property (copy) NSArray *animationKeys;
-
-- (GLKMatrix4)modelviewMatrix;
 
 @end
 

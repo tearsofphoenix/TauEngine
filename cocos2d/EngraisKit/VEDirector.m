@@ -48,6 +48,7 @@
 
 #import "VEDataSource.h"
 #import "CCScheduler.h"
+#import "VALayer+Private.h"
 #import <QuartzCore/QuartzCore.h>
 
 #pragma mark - Director - global variables (optimization)
@@ -266,11 +267,8 @@ CGFloat	__ccContentScaleFactor = 1;
 		[self setNextScene];
     }
     
-	VGContextSaveState(_renderContext);
+    VALayer_renderInScene(runningScene_, runningScene_);
     
-	[runningScene_ renderInContext: _renderContext];
-    
-	VGContextRestoreState(_renderContext);    
 }
 
 -(void) setProjection:(ccDirectorProjection)projection
