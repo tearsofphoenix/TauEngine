@@ -39,23 +39,6 @@
 #import "OpenGLInternal.h"
 #import "VEDirector.h"
 
-@interface VALayer ()
-{
-@private
-    VALayer *_presentationLayer;
-    //cached model
-    //VEGLProgram *_shaderProgram;
-    GLKBaseEffect *_effect;
-    // scaling factors
-	float _scaleX, _scaleY;
-    
-    VACameraRef _camera;
-
-    GLKVector2 _vertices[4];
-}
-
-@end
-
 
 @implementation VALayer
 
@@ -159,22 +142,21 @@ static NSString * s_VALayerInitializationKeys[] =
 {
 	if( (self=[super init]) )
     {
-		_scaleX = _scaleY = 1.0f;
+        _scale = GLKVector2Make(1, 1);
         _position = CGPointZero;
         _contentSize = CGSizeZero;
 		_anchorPointInPoints = _anchorPoint = CGPointZero;
-                
+        
         _attr = calloc(1, sizeof(struct VALayerAttribute));
         _sublayers = [[NSMutableArray alloc] init];
         _animations = [[NSMutableDictionary alloc] init];
         _animationKeys = [[NSMutableArray alloc] init];
-        //_shaderProgram = VEShaderCacheGetProgramByName(CCShaderPositionColorProgram);
         
         _effect = [[GLKBaseEffect alloc] init];
-        [[_effect transform] setProjectionMatrix: GLKMatrix4MakeOrtho(0, 1024, 0, 768, -1024, 1024)];
-        [_effect setUseConstantColor: GL_TRUE];
+        [_effect setUseConstantColor: !_attr->_useTextureColor];
+        
         [_effect setConstantColor: GLKVector4Make(1.0, 0, 0, 1)];
-                
+        
         _camera = VACameraCreate();
         
         [self setBounds: CGRectMake(0, 0, 1024, 768)];
@@ -322,8 +304,6 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 {
     if (!CGRectEqualToRect(bounds, _bounds))
     {
-        return;
-        
         [self willChangeValueForKey: @"bounds"];
         _bounds = bounds;
         
@@ -331,17 +311,17 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         _vertices[1] =  GLKVector2Make(1, 0);
         _vertices[2] =  GLKVector2Make(0, 1);
         _vertices[3] =  GLKVector2Make(1, 1);
-
-//        _quad.bl.geometryVertex = CGPointMake(0, 0);
-//        _quad.br.geometryVertex = CGPointMake(_bounds.size.width, 0);
-//        _quad.tl.geometryVertex = CGPointMake(0, _bounds.size.height);
-//        _quad.tr.geometryVertex = CGPointMake(_bounds.size.width, _bounds.size.height);
-
+        
+        //        _quad.bl.geometryVertex = CGPointMake(0, 0);
+        //        _quad.br.geometryVertex = CGPointMake(_bounds.size.width, 0);
+        //        _quad.tl.geometryVertex = CGPointMake(0, _bounds.size.height);
+        //        _quad.tr.geometryVertex = CGPointMake(_bounds.size.width, _bounds.size.height);
+        
         [self didChangeValueForKey: @"bounds"];
         
-        if ([self needsDisplayOnBoundsChange])
+        if (_attr->_needsDisplayOnBoundsChange)
         {
-            [self setNeedsDisplay];
+            _attr->_needsDisplay = YES;
         }
     }
 }
@@ -753,7 +733,7 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 		// Translate values
 		float x = _position.x + _anchorPointInPoints.x;
 		float y = _position.y + _anchorPointInPoints.y;
-                
+        
 		// Rotation values
 		float c = 1, s = 0;
         
@@ -765,14 +745,14 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 		
         if( !needsSkewMatrix && !CGPointEqualToPoint(_anchorPointInPoints, CGPointZero) )
         {
-			x += c * -_anchorPointInPoints.x * _scaleX + -s * -_anchorPointInPoints.y * _scaleY;
-			y += s * -_anchorPointInPoints.x * _scaleX +  c * -_anchorPointInPoints.y * _scaleY;
+			x += c * -_anchorPointInPoints.x * _scale.x + -s * -_anchorPointInPoints.y * _scale.y;
+			y += s * -_anchorPointInPoints.x * _scale.x +  c * -_anchorPointInPoints.y * _scale.y;
 		}
         
         
 		// Build Transform Matrix
-		affineTransform = CGAffineTransformMake( c * _scaleX,  s * _scaleX,
-                                                -s * _scaleY, c * _scaleY,
+		affineTransform = CGAffineTransformMake( c * _scale.x,  s * _scale.x,
+                                                -s * _scale.y, c * _scale.y,
                                                 x, y );
         
 		_attr->_isTransformClean = YES;
@@ -1285,12 +1265,19 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 	}
 }
 
-- (GLKMatrix4) modelMatrix
+- (GLKMatrix4)modelviewMatrix
 {    
-    GLKMatrix4 modelMatrix = GLKMatrix4Translate(GLKMatrix4Identity, self.position.x, self.position.y, 0);
-    modelMatrix = GLKMatrix4Translate(modelMatrix, -_bounds.size.width/2, -_bounds.size.height/2, 0);
-
-    return modelMatrix;
+    GLKMatrix4 modelviewMatrix = GLKMatrix4Multiply(GLKMatrix4MakeTranslation(_position.x, _position.y, 0),
+                                                    GLKMatrix4MakeRotation(_rotation, 0, 0, 1));
+    
+    modelviewMatrix = GLKMatrix4Multiply(modelviewMatrix, GLKMatrix4MakeScale(_scale.x, _scale.y, 1));
+    
+    if (_superlayer)
+    {
+        modelviewMatrix = GLKMatrix4Multiply([_superlayer modelviewMatrix], modelviewMatrix);
+    }
+    
+    return modelviewMatrix;
     
 }
 
@@ -1302,65 +1289,68 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
  * CoreAnimation composition model, use with caution. */
 
 - (void)renderInContext: (VGContext *)ctx
-{
-#if 0
-    VGContextSaveState(ctx);
-    
-    [self transformInContext: ctx];
-    
+{    
+    // Set up our texture effect if set
+    if (_textureInfo)
     {
-        VEGLProgramUse(_shaderProgram);
-        VEGLProgramUniformForMVPMatrix(_shaderProgram, VGContextGetMVPMatrix(ctx));
-        
-        VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color );
-        
-        // Attributes
-        //
-        glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, squareVertices_);
-        glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_FLOAT, GL_TRUE, 0, squareColors_);
-        
-        //CCGLBlendFunc( _blendFunc.src, _blendFunc.dst );
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        
-        CC_INCREMENT_GL_DRAWS(1);
+        [[_effect texture2d0] setEnvMode: GLKTextureEnvModeReplace];
+        [[_effect texture2d0] setTarget: GLKTextureTarget2D];
+        [[_effect texture2d0] setName: [_textureInfo name]];
     }
     
-    for (VALayer *layer in _sublayers)
-    {
-        [layer renderInContext: ctx];
-    }
+    // Create a modelview matrix to position and rotate the object
+    [[_effect transform] setModelviewMatrix: [self modelviewMatrix]];
     
-    VGContextRestoreState(ctx);
-#else
-//    self.effect.texture2d0.name = self.textureInfo.name]]]]]]]];
-//    self.effect.texture2d0.enabled = YES;
-    [[_effect transform] setModelviewMatrix: [self modelMatrix]];
-    [[_effect transform] setProjectionMatrix: GLKMatrix4MakeOrtho(0, 1024, 0, 768, -1024, 1024)];
-
-    [_effect setUseConstantColor: GL_TRUE];
-    [_effect setConstantColor: GLKVector4Make(1.0, 0, 0, 1)];
+    // Set up the projection matrix to fit the scene's boundaries
     
+    [[_effect transform] setProjectionMatrix: GLKMatrix4MakeOrtho(-3, 3, -2, 2, 1, -1)];//GLKMatrix4MakeOrtho(0, 1024, 0, 768, -1024, 1024); //scene.projectionMatrix;
+    
+    // Tell OpenGL that we're going to use this effect for our upcoming drawing
     [_effect prepareToDraw];
     
-    // Set up transparency
+    // Enable transparency
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    // Set up position vertices
+    // Tell OpenGL that we'll be using vertex position data
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, _vertices);
     
-    // Draw arrays
+    // If we're using vertex coloring, tell OpenGL that we'll be using vertex color data
+    if (_attr->_useTextureColor)
+    {
+        glEnableVertexAttribArray(GLKVertexAttribColor);
+        glVertexAttribPointer(GLKVertexAttribColor, 4, GL_FLOAT, GL_FALSE, 0, _vertexColors);
+    }
+    
+    // If we have a texture, tell OpenGL that we'll be using texture coordinate data
+    
+    if (_textureInfo)
+    {
+        glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+        glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 0, _textureCoordinates);
+    }
+    
+    // Draw our primitives!
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     
-    // Tear down position vertices
+    // Cleanup: Done with position data
     glDisableVertexAttribArray(GLKVertexAttribPosition);
-        
-    // Disable transparency
-    glDisable(GL_BLEND);
     
-#endif
+    // Cleanup: Done with color data (only if we used it)
+    if (_attr->_useTextureColor)
+    {
+        glDisableVertexAttribArray(GLKVertexAttribColor);
+    }
+    
+    // Cleanup: Done with texture data (only if we used it)
+    if (_textureInfo)
+    {
+        glDisableVertexAttribArray(GLKVertexAttribTexCoord0);
+    }
+    
+    // Cleanup: Done with the current blend function
+    glDisable(GL_BLEND);
 }
 
 /* Defines how the edges of the layer are rasterized. For each of the

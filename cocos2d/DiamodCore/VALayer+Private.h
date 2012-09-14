@@ -29,12 +29,35 @@ struct VALayerAttribute
     unsigned int _isOpaque: 1;
     unsigned int _needsDisplay: 1;
     unsigned int _needsLayout: 1;
+    unsigned int _useTextureColor: 1;
     
     unsigned int _delegateRespondsToDisplayLayer: 1;
     unsigned int _delegateRespondsToDrawLayerInContext: 1;
     unsigned int _delegateRespondsToLayoutSublayersOfLayer: 1;
     unsigned int _delegateRespondsToActionForLayerForKey: 1;
 };
+
+@interface VALayer ()
+{
+@private
+    VALayer *_presentationLayer;
+    
+    GLKBaseEffect *_effect;
+    GLKTextureInfo *_textureInfo;
+    
+    // scaling factors
+    //
+    GLKVector2 _scale;
+    
+    VACameraRef _camera;
+    GLfloat _rotation;
+    
+    GLKVector2 _vertices[4];
+    GLKVector2 _textureCoordinates[4];
+    GLKVector4 _vertexColors[4];
+}
+
+@end
 
 @interface VALayer (Private)
 

@@ -36,37 +36,37 @@
     }
     
     VAScene *scene = [VAScene layer];
-    
+    [scene setBounds: CGRectMake(0, 0, 10, 10)];
     [scene setBackgroundColor: [VGColor redColor]];
     
 	[director_ pushScene: scene];
     
-    UITableView *entriesView = [[UITableView alloc] init];
-    [entriesView setFrame: CGRectMake(0, 0, 200, 400)];
-    
-//    [entriesView setDataSource: menuLayer];
-//    [entriesView setDelegate: menuLayer];
-    
-    [[director_ view] addSubview: entriesView];
-    [entriesView setAlpha: 0];
-    
-    [UIView animateWithDuration: 2.0
-                     animations: (^
-                                  {
-                                      //NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
-                                      
-                                      [entriesView setAlpha: 1];
-                                  })
-                     completion: (^(BOOL finished)
-                                  {
-                                      //NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
-                                      
-                                  })];
-    
-    printf("\t\t\t%f\n", [NSDate timeIntervalSinceReferenceDate]);
-    
-    [entriesView release];
-    
+//    UITableView *entriesView = [[UITableView alloc] init];
+//    [entriesView setFrame: CGRectMake(0, 0, 200, 400)];
+//    
+////    [entriesView setDataSource: menuLayer];
+////    [entriesView setDelegate: menuLayer];
+//    
+//    [[director_ view] addSubview: entriesView];
+//    [entriesView setAlpha: 0];
+//    
+//    [UIView animateWithDuration: 2.0
+//                     animations: (^
+//                                  {
+//                                      //NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
+//                                      
+//                                      [entriesView setAlpha: 1];
+//                                  })
+//                     completion: (^(BOOL finished)
+//                                  {
+//                                      //NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
+//                                      
+//                                  })];
+//    
+//    printf("\t\t\t%f\n", [NSDate timeIntervalSinceReferenceDate]);
+//    
+//    [entriesView release];
+//    
 	return YES;
 }
 
