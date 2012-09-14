@@ -39,4 +39,8 @@
 */
 @interface VAScene : VALayer
 
+- (GLKMatrix4)projectionMatrix;
+
+- (void)makeKeyAndVisible;
+
 @end

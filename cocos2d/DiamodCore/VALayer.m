@@ -1278,7 +1278,6 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     }
     
     return _modelviewMatrixCache;
-    
 }
 
 /* Renders the receiver and its sublayers into 'ctx'. This method

@@ -28,7 +28,14 @@
 #import "VAScene.h"
 #import "CGPointExtension.h"
 #import "VEDirector.h"
+#import "VALayer+Private.h"
 
+@interface VAScene ()
+{
+@private
+    
+}
+@end
 
 @implementation VAScene
 
@@ -45,4 +52,15 @@
 
 	return self;
 }
+
+- (GLKMatrix4)projectionMatrix
+{    
+    return GLKMatrix4MakeOrtho(0, _frame.size.width, 0, _frame.size.height, 1, -1);
+}
+
+- (void)makeKeyAndVisible
+{
+    VALayer_renderInScene(self, self);
+}
+
 @end

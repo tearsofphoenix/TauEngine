@@ -64,6 +64,8 @@ struct VALayerAttribute
 
 @property (copy) NSArray *animationKeys;
 
+- (GLKMatrix4)modelviewMatrix;
+
 @end
 
 @interface VALayer (Private)
@@ -71,3 +73,9 @@ struct VALayerAttribute
 - (void)updateColor;
 
 @end
+
+@class VAScene;
+
+extern void VALayer_renderInScene(VALayer *layer, VAScene *scene);
+
+
