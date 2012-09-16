@@ -25,7 +25,7 @@
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
     
     [application setStatusBarHidden:true];
-        
+    
 	// 2D projection
 	[director_ setProjection:kCCDirectorProjection2D];
     
@@ -41,32 +41,42 @@
     
 	[director_ pushScene: scene];
     
-//    UITableView *entriesView = [[UITableView alloc] init];
-//    [entriesView setFrame: CGRectMake(0, 0, 200, 400)];
-//    
-////    [entriesView setDataSource: menuLayer];
-////    [entriesView setDelegate: menuLayer];
-//    
-//    [[director_ view] addSubview: entriesView];
-//    [entriesView setAlpha: 0];
-//    
-//    [UIView animateWithDuration: 2.0
-//                     animations: (^
-//                                  {
-//                                      //NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
-//                                      
-//                                      [entriesView setAlpha: 1];
-//                                  })
-//                     completion: (^(BOOL finished)
-//                                  {
-//                                      //NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
-//                                      
-//                                  })];
-//    
-//    printf("\t\t\t%f\n", [NSDate timeIntervalSinceReferenceDate]);
-//    
-//    [entriesView release];
-//    
+    [VAScene animateWithDuration: 2.0
+                      animations: (^
+                                   {
+                                       [scene setBackgroundColor: [VGColor greenColor]];
+                                   })
+                      completion: (^(BOOL finished)
+                                   {
+                                       NSLog(@"in func: %s", __FUNCTION__);
+                                   })];
+    
+    //    UITableView *entriesView = [[UITableView alloc] init];
+    //    [entriesView setFrame: CGRectMake(0, 0, 200, 400)];
+    //
+    ////    [entriesView setDataSource: menuLayer];
+    ////    [entriesView setDelegate: menuLayer];
+    //
+    //    [[director_ view] addSubview: entriesView];
+    //    [entriesView setAlpha: 0];
+    //
+    //    [UIView animateWithDuration: 2.0
+    //                     animations: (^
+    //                                  {
+    //                                      //NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
+    //
+    //                                      [entriesView setAlpha: 1];
+    //                                  })
+    //                     completion: (^(BOOL finished)
+    //                                  {
+    //                                      //NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
+    //
+    //                                  })];
+    //
+    //    printf("\t\t\t%f\n", [NSDate timeIntervalSinceReferenceDate]);
+    //
+    //    [entriesView release];
+    //
 	return YES;
 }
 
@@ -134,32 +144,32 @@ static void _display(id obj, SEL selector)
 + (void)load
 {
     /*
-    Class timerClass = objc_getClass("NSTimer");
-    _fIMP = class_getMethodImplementation(timerClass, @selector(fire));
-    class_replaceMethod(timerClass, @selector(fire), (IMP)fire, "v@:");
-    
-    Class metaClass = objc_getMetaClass("NSTimer");
-    _allocIMP = class_getMethodImplementation(metaClass, @selector(alloc));
-    class_replaceMethod(metaClass, @selector(alloc), (IMP)_allocF, "@@:");
-    
-    _allocZoneIMP = class_getMethodImplementation(metaClass, @selector(allocWithZone:));
-    class_replaceMethod(metaClass, @selector(allocWithZone:), (IMP)allocWithZone, "@@:@");
-    
-    Class transaction = objc_getClass("CATransaction");
-    _initIMP = class_getMethodImplementation(transaction, @selector(init));
-    class_replaceMethod(transaction, @selector(init), (IMP)init, "@@:");
-    
-    Class render = objc_getMetaClass("CARenderer");
-    _renderIMP = class_getMethodImplementation(render, @selector(rendererWithEAGLContext:options:));
-    class_replaceMethod(render, @selector(rendererWithEAGLContext:options:), (IMP)render, "@16@0:4@8@12");
+     Class timerClass = objc_getClass("NSTimer");
+     _fIMP = class_getMethodImplementation(timerClass, @selector(fire));
+     class_replaceMethod(timerClass, @selector(fire), (IMP)fire, "v@:");
+     
+     Class metaClass = objc_getMetaClass("NSTimer");
+     _allocIMP = class_getMethodImplementation(metaClass, @selector(alloc));
+     class_replaceMethod(metaClass, @selector(alloc), (IMP)_allocF, "@@:");
+     
+     _allocZoneIMP = class_getMethodImplementation(metaClass, @selector(allocWithZone:));
+     class_replaceMethod(metaClass, @selector(allocWithZone:), (IMP)allocWithZone, "@@:@");
+     
+     Class transaction = objc_getClass("CATransaction");
+     _initIMP = class_getMethodImplementation(transaction, @selector(init));
+     class_replaceMethod(transaction, @selector(init), (IMP)init, "@@:");
+     
+     Class render = objc_getMetaClass("CARenderer");
+     _renderIMP = class_getMethodImplementation(render, @selector(rendererWithEAGLContext:options:));
+     class_replaceMethod(render, @selector(rendererWithEAGLContext:options:), (IMP)render, "@16@0:4@8@12");
      */
     
-//    Class layerClass = objc_getClass("CALayer");
-//    _kvoIMP = class_getMethodImplementation(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:));
-//    class_replaceMethod(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:), (IMP)kvo, "v@:@@@@");
+    //    Class layerClass = objc_getClass("CALayer");
+    //    _kvoIMP = class_getMethodImplementation(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:));
+    //    class_replaceMethod(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:), (IMP)kvo, "v@:@@@@");
     
-//    _innerDisplay = class_getMethodImplementation(layerClass, @selector(_display));
-//    class_replaceMethod(layerClass, @selector(_display), (IMP)_display, "v@:");
+    //    _innerDisplay = class_getMethodImplementation(layerClass, @selector(_display));
+    //    class_replaceMethod(layerClass, @selector(_display), (IMP)_display, "v@:");
 }
 
 @end

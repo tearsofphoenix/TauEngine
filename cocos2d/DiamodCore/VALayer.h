@@ -857,6 +857,23 @@
 
 @end
 
+@interface VALayer(VALayerAnimationWithBlocks)
+
++ (void)animateWithDuration: (NSTimeInterval)duration
+                      delay: (NSTimeInterval)delay
+                    options: (UIViewAnimationOptions)options
+                 animations: (void (^)(void))animations
+                 completion: (void (^)(BOOL finished))completion;
+
++ (void)animateWithDuration: (NSTimeInterval)duration
+                 animations: (void (^)(void))animations
+                 completion: (void (^)(BOOL finished))completion; // delay = 0.0, options = 0
+
++ (void)animateWithDuration: (NSTimeInterval)duration
+                 animations: (void (^)(void))animations; // delay = 0.0, options = 0, completion = NULL
+
+@end
+
 /** Layer `contentsGravity' values. **/
 
 CA_EXTERN NSString * const kCAGravityCenter

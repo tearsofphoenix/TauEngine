@@ -24,7 +24,7 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
     {
         __VEAnimationDefaultKeyValues = [[NSMutableDictionary alloc] init];
         [__VEAnimationDefaultKeyValues setObject: kVEFillModeRemoved
-                                      forKey: @"fillMode"];
+                                          forKey: @"fillMode"];
         [__VEAnimationDefaultKeyValues setObject: [NSNumber numberWithFloat: 1]
                                           forKey: @"speed"];
     }
@@ -182,11 +182,11 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
 
 @end
 
-#pragma mark - VEPropertyAnimation
+#pragma mark - VAPropertyAnimation
 
 /** Subclass for property-based animations. **/
 
-@implementation VEPropertyAnimation
+@implementation VAPropertyAnimation
 
 /* Creates a new animation object with its `keyPath' property set to
  * 'path'. */
@@ -214,7 +214,7 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
 /** Subclass for basic (single-keyframe) animations. **/
 
 
-@implementation VEBasicAnimation
+@implementation VABasicAnimation
 
 @synthesize fromValue;
 @synthesize toValue;
@@ -236,9 +236,9 @@ static NSMutableDictionary *__VEAnimationDefaultKeyValues = nil;
     return copy;
 }
 
-typedef void (* VEBasicAnimationProcessor)(VEBasicAnimation *animation, VALayer *layer, id value1, id value2, VAMediaTimingFunction *f, NSTimeInterval elapsed);
+typedef void (* VEBasicAnimationProcessor)(VABasicAnimation *animation, VALayer *layer, id value1, id value2, VAMediaTimingFunction *f, NSTimeInterval elapsed);
 
-static void _VEAnimationColorProcessor(VEBasicAnimation *animation, VALayer *layer, VGColor *value1, VGColor *value2, VAMediaTimingFunction *function, NSTimeInterval elapsed)
+static void _VEAnimationColorProcessor(VABasicAnimation *animation, VALayer *layer, VGColor *value1, VGColor *value2, VAMediaTimingFunction *function, NSTimeInterval elapsed)
 {
     GLKVector4 colo1 = [value1 CCColor];
     GLKVector4 color2 = [value2 CCColor];
@@ -262,7 +262,7 @@ static void _VEAnimationColorProcessor(VEBasicAnimation *animation, VALayer *lay
                                                alpha: color.a]];
 }
 
-static void _VEAnimationAnchorPointProcessor(VEBasicAnimation *animation, VALayer *layer, NSValue *value1, NSValue *value2, VAMediaTimingFunction *function, NSTimeInterval elapsed)
+static void _VEAnimationAnchorPointProcessor(VABasicAnimation *animation, VALayer *layer, NSValue *value1, NSValue *value2, VAMediaTimingFunction *function, NSTimeInterval elapsed)
 {
     CGPoint point1 = [value1 CGPointValue];
     CGPoint point2 = [value2 CGPointValue];
@@ -275,7 +275,7 @@ static void _VEAnimationAnchorPointProcessor(VEBasicAnimation *animation, VALaye
     [layer setAnchorPoint: p];
 }
 
-static void _VEAnimationPositionProcessor(VEBasicAnimation *animation, VALayer *layer, NSValue *value1, NSValue *value2, VAMediaTimingFunction *function, NSTimeInterval elapsed)
+static void _VEAnimationPositionProcessor(VABasicAnimation *animation, VALayer *layer, NSValue *value1, NSValue *value2, VAMediaTimingFunction *function, NSTimeInterval elapsed)
 {
     CGPoint point1 = [value1 CGPointValue];
     CGPoint point2 = [value2 CGPointValue];
@@ -402,7 +402,7 @@ static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
 
 /** General keyframe animation class. **/
 
-@implementation VEKeyframeAnimation
+@implementation VAKeyframeAnimation
 
 /* An array of objects providing the value of the animation function for
  * each keyframe. */
@@ -490,7 +490,7 @@ NSString * const kVEAnimationRotateAutoReverse = @"kVEAnimationRotateAutoReverse
 
 /** Transition animation subclass. **/
 
-@implementation VETransition
+@implementation VATransition
 
 /* The name of the transition. Current legal transition types include
  * `fade', `moveIn', `push' and `reveal'. Defaults to `fade'. */
@@ -563,7 +563,8 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 @interface VAAnimationTransaction ()
 {
 @private
-    NSMutableArray *_animations;
+    NSMutableArray *_animationKeys;
+    NSMutableDictionary *_animations;
 }
 
 @end
@@ -575,10 +576,19 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 {
     if ((self = [super init]))
     {
-        _animations = [[NSMutableArray alloc] init];
+        _animationKeys = [[NSMutableArray alloc] init];
+        _animations = [[NSMutableDictionary alloc] init];
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [_animationKeys release];
+    [_animations release];
+    
+    [super dealloc];
 }
 
 @synthesize duration;
@@ -591,17 +601,26 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 
 @synthesize completion = _completion;
 
-- (void)addAnimation: (VEBasicAnimation *)animation
+- (void)addAnimation: (VABasicAnimation *)animation
+              forKey: (NSString *)key
 {
-    [_animations addObject: animation];
+    [_animationKeys addObject: key];
+    [_animations setObject: animation
+                    forKey: key];
+}
+
+- (VABasicAnimation *)animationForKey: (id)key
+{
+    return [_animations objectForKey: key];
 }
 
 - (void)update: (NSTimeInterval)dt
 {
-    NSArray *animations = [NSArray arrayWithArray: _animations];
-    
-    for (VEBasicAnimation *animation in animations)
+    NSArray *animationKeys = [NSArray arrayWithArray: _animationKeys];
+    NSDictionary *animations = [NSDictionary dictionaryWithDictionary: _animations];
+    for (NSString *key in animationKeys)
     {
+        VABasicAnimation *animation = [animations objectForKey: key];
         [animation applyForTime: dt
              presentationObject: [animation presentationObject]
                     modelObject: [animation modelObject]];
@@ -617,11 +636,23 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 - (void)animationDidStop: (VAAnimation *)anim
                 finished: (BOOL)flag
 {
-    [_animations removeObject: anim];
-    if ([_animations count] == 0 && _completion)
-    {
-        _completion(flag);
-    }
+    NSDictionary *animations = [NSDictionary dictionaryWithDictionary: _animations];
+    
+    [animations enumerateKeysAndObjectsUsingBlock: (^(id key, VAAnimation *obj, BOOL *stop)
+                                                    {
+                                                        if ([obj isEqual: anim])
+                                                        {
+                                                            [_animations removeObjectForKey: key];
+                                                            [_animationKeys removeObject: key];
+                                                            
+                                                            if ([_animationKeys count] == 0 && _completion)
+                                                            {
+                                                                _completion(flag);
+                                                            }
+                                                            
+                                                            *stop = YES;
+                                                        }
+                                                    })];
 }
 
 
@@ -634,14 +665,14 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 @end
 
 
-@interface VEViewAnimationBlockDelegate ()
+@interface VAViewAnimationBlockDelegate ()
 {
 @private
     NSMutableArray *_transactions;
 }
 @end
 
-@implementation VEViewAnimationBlockDelegate
+@implementation VAViewAnimationBlockDelegate
 
 - (id)init
 {

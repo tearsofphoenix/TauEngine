@@ -87,7 +87,7 @@
 
 /** Subclass for property-based animations. **/
 
-@interface VEPropertyAnimation : VAAnimation
+@interface VAPropertyAnimation : VAAnimation
 
 /* Creates a new animation object with its `keyPath' property set to
  * 'path'. */
@@ -125,7 +125,7 @@
 
 /** Subclass for basic (single-keyframe) animations. **/
 
-@interface VEBasicAnimation : VEPropertyAnimation
+@interface VABasicAnimation : VAPropertyAnimation
 
 /* The objects defining the property values being interpolated between.
  * All are optional, and no more than two should be non-nil. The object
@@ -164,7 +164,7 @@
 
 /** General keyframe animation class. **/
 
-@interface VEKeyframeAnimation : VEPropertyAnimation
+@interface VAKeyframeAnimation : VAPropertyAnimation
 
 /* An array of objects providing the value of the animation function for
  * each keyframe. */
@@ -252,7 +252,7 @@ CF_EXPORT NSString * const kVEAnimationRotateAutoReverse;
 
 /** Transition animation subclass. **/
 
-@interface VETransition : VAAnimation
+@interface VATransition : VAAnimation
 
 /* The name of the transition. Current legal transition types include
  * `fade', `moveIn', `push' and `reveal'. Defaults to `fade'. */
@@ -332,11 +332,13 @@ CF_EXPORT NSString * const kVETransitionFromBottom
 
 @property (nonatomic, copy) void (^completion)(BOOL fnished);
 
-- (void)addAnimation: (VEBasicAnimation *)animation;
+- (void)addAnimation: (VABasicAnimation *)animation
+              forKey: (NSString *)key;
+- (VABasicAnimation *)animationForKey: (id)key;
 
 @end
 
-@interface VEViewAnimationBlockDelegate : NSObject
+@interface VAViewAnimationBlockDelegate : NSObject
 
 - (void)addTransaction: (VAAnimationTransaction *)transaction;
 

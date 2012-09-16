@@ -44,7 +44,7 @@
 
 static NSMutableArray *__CCLayerAnimationStack = nil;
 static VAAnimationTransaction *__currentBlockAnimationTransaction = nil;
-static VEViewAnimationBlockDelegate *__animationBlockDelegate = nil;
+static VAViewAnimationBlockDelegate *__animationBlockDelegate = nil;
 
 static inline void __CCLayerPushConfiguration(VAAnimationTransaction *config)
 {
@@ -56,7 +56,7 @@ static inline void __CCLayerPushConfiguration(VAAnimationTransaction *config)
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, (^
                                {
-                                   __animationBlockDelegate = [[VEViewAnimationBlockDelegate alloc] init];
+                                   __animationBlockDelegate = [[VAViewAnimationBlockDelegate alloc] init];
                                }));
     
     [__animationBlockDelegate addTransaction: config];
@@ -1805,7 +1805,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     /***********************/
     
     /* construct new animation */
-    VEBasicAnimation * animation = [VEBasicAnimation animationWithKeyPath: key];
+    VABasicAnimation * animation = [VABasicAnimation animationWithKeyPath: key];
     
     if (_attr->_isPresentationLayer)
     {
@@ -2076,7 +2076,6 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 #pragma mark - VAMediaTiming
 
-
 @synthesize beginTime;
 
 /* The basic duration of the object. Defaults to 0. */
@@ -2117,5 +2116,104 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
 
 @synthesize fillMode;
 
+//for animation
+
+- (void)willChangeValueForKey: (NSString *)key
+{
+    [super willChangeValueForKey: key];
+    
+    if (__currentBlockAnimationTransaction)
+    {
+        VABasicAnimation *animation = [VABasicAnimation animationWithKeyPath: key];
+        [animation setFromValue: [self valueForKey: key]];
+        [__currentBlockAnimationTransaction addAnimation: animation
+                                                  forKey: key];
+    }    
+}
+
+- (void)didChangeValueForKey: (NSString *)key
+{
+    [super didChangeValueForKey: key];
+    
+    if (__currentBlockAnimationTransaction)
+    {
+        VABasicAnimation *animation = [__currentBlockAnimationTransaction animationForKey: key];
+        [animation setToValue: [self valueForKey: key]];
+    }
+}
+
 @end
 
+@implementation VALayer(VALayerAnimationWithBlocks)
+
+
++ (void)_setupAnimationWithDuration: (NSTimeInterval)duration
+                              delay: (NSTimeInterval)delay
+                               view: (VALayer *)layer
+                            options: (UIViewAnimationOptions)options
+                         animations: (dispatch_block_t)animations
+                              start: (dispatch_block_t)start
+                         completion: (void (^)(BOOL finished))completion
+{
+    if (start)
+    {
+        start();
+    }
+    
+    if (animations)
+    {
+        VAAnimationTransaction *configuration = [[VAAnimationTransaction alloc] init];
+        [configuration setDuration: duration];
+        [configuration setDelay: delay];
+        //[configuration setOptions: options];
+        [configuration setStart: start];
+        [configuration setCompletion: completion];
+        
+        __CCLayerPushConfiguration(configuration);
+        
+        [configuration release];
+        
+        animations();
+        
+        __CCLayerPopConfiguration();
+    }
+}
+
++ (void)animateWithDuration: (NSTimeInterval)duration
+                      delay: (NSTimeInterval)delay
+                    options: (UIViewAnimationOptions)options
+                 animations: (void (^)(void))animations
+                 completion: (void (^)(BOOL finished))completion
+{
+    [self _setupAnimationWithDuration: duration
+                                delay: delay
+                                 view: nil
+                              options: options
+                           animations: animations
+                                start: nil
+                           completion: completion];
+}
+
++ (void)animateWithDuration: (NSTimeInterval)duration
+                 animations: (void (^)(void))animations
+                 completion: (void (^)(BOOL finished))completion // delay = 0.0, options = 0
+{
+    [self animateWithDuration: duration
+                        delay: 0.0
+                      options: 0
+                   animations: animations
+                   completion: completion];
+}
+
++ (void)animateWithDuration: (NSTimeInterval)duration
+                 animations: (void (^)(void))animations // delay = 0.0, options = 0, completion = NULL
+{
+    [self animateWithDuration: duration
+                        delay: 0.0
+                      options: 0
+                   animations: animations
+                   completion: nil];
+}
+
+
+@end
