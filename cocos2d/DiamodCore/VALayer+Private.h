@@ -17,7 +17,7 @@ struct VALayerAttribute
     
     unsigned int _isTransformClean: 1;
 	unsigned int _isInverseClean: 1;
-    unsigned int _isModelviewMatrixClean: 1;
+    unsigned int _isProjectionClean: 1;
     
     unsigned int _isGeometryFlipped: 1;
     unsigned int _needsDisplayOnBoundsChange: 1;
@@ -32,6 +32,9 @@ struct VALayerAttribute
     unsigned int _needsLayout: 1;
     unsigned int _useTextureColor: 1;
     
+    //Texture Info
+    unsigned int _isTextureInfoDirty: 1;
+
     unsigned int _delegateRespondsToDisplayLayer: 1;
     unsigned int _delegateRespondsToDrawLayerInContext: 1;
     unsigned int _delegateRespondsToLayoutSublayersOfLayer: 1;
@@ -43,13 +46,15 @@ struct VALayerAttribute
 @protected
     VALayer *_presentationLayer;
     VALayer *_modelLayer;
+    VAScene *_scene;
     
     GLKBaseEffect *_effect;
     GLKTextureInfo *_textureInfo;
         
     VACameraRef _camera;
     
-    GLKVector2 _vertices[4];
+    NSUInteger _verticeCount;
+    GLKVector2 *_vertices;
     GLKVector2 _textureCoordinates[4];
     GLKVector4 _vertexColors[4];
 }
@@ -64,10 +69,10 @@ struct VALayerAttribute
 
 - (void)updateColor;
 
+- (void)_commitLayer;
+
 @end
 
-@class VAScene;
+extern void VALayer_renderInScene(VALayer *layer);
 
-extern void VALayer_renderInScene(VALayer *layer, VAScene *scene);
-
-
+extern GLKVector2 *VALayer_getVertices(VALayer *layer);

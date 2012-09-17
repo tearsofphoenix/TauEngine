@@ -138,7 +138,8 @@ static NSString * s_VALayerInitializationKeys[] =
 	if( (self=[super init]) )
     {
         _opacity = 1;
-
+        _verticeCount = 4;
+        
         _position = CGPointZero;
         _contentSize = CGSizeZero;
 		_anchorPointInPoints = CGPointZero;
@@ -240,6 +241,7 @@ static NSString * s_VALayerInitializationKeys[] =
     [_sublayers makeObjectsPerformSelector: @selector(removeFromSuperlayer)];
     [_sublayers release];
     
+    free(_vertices);
     
     [super dealloc];
 }
@@ -352,10 +354,12 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         
         _bounds = bounds;
         
-        _vertices[0] =  GLKVector2Make(0, 0);
-        _vertices[1] =  GLKVector2Make(_bounds.size.width, 0);
-        _vertices[2] =  GLKVector2Make(_bounds.size.width, _bounds.size.height);
-        _vertices[3] =  GLKVector2Make(0, _bounds.size.height);
+        GLKVector2 *vertices = VALayer_getVertices(self);
+        
+        vertices[0] =  GLKVector2Make(0, 0);
+        vertices[1] =  GLKVector2Make(_bounds.size.width, 0);
+        vertices[2] =  GLKVector2Make(_bounds.size.width, _bounds.size.height);
+        vertices[3] =  GLKVector2Make(0, _bounds.size.height);
         
         [self didChangeValueForKey: @"bounds"];
         
@@ -381,8 +385,6 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         [self willChangeValueForKey: @"position"];
         
         _position = position;
-        
-        _attr->_isModelviewMatrixClean = NO;
         
         [self didChangeValueForKey: @"postition"];
     }
@@ -472,14 +474,14 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (GLKMatrix4)transform
 {
-    if (!_attr->_isModelviewMatrixClean)
+    if (!_attr->_isTransformClean)
     {
         if (_superlayer)
         {
             _transform = GLKMatrix4Multiply([_superlayer transform], _transform);
         }
         
-        _attr->_isModelviewMatrixClean = YES;
+        _attr->_isTransformClean = YES;
     }
     
     return _transform;
@@ -647,18 +649,14 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (void)addSublayer: (VALayer *)layer
 {
-    if(layer)
-    {
-        [layer removeFromSuperlayer];
-        
-        [_sublayers addObject: layer];
-        layer->_superlayer = self;
-    }
+    [self insertSublayer: layer
+                 atIndex: [_sublayers count]];
 }
 
 /* Insert 'layer' at position 'idx' in the receiver's sublayers array.
  * If 'layer' already has a superlayer, it will be removed before being
  * inserted. */
+@synthesize scene = _scene;
 
 - (void)insertSublayer: (VALayer *)layer
                atIndex: (unsigned)idx
@@ -669,6 +667,7 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         [_sublayers insertObject: layer
                          atIndex: idx];
         layer->_superlayer = self;
+        layer->_scene = _scene;
     }
 }
 

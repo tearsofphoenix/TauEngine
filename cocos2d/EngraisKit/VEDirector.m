@@ -267,7 +267,7 @@ CGFloat	__ccContentScaleFactor = 1;
 		[self setNextScene];
     }
     
-    VALayer_renderInScene(runningScene_, runningScene_);
+    VALayer_renderInScene(runningScene_);
     
 }
 

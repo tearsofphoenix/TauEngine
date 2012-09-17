@@ -28,6 +28,7 @@
 #import "VAScene.h"
 #import "CGPointExtension.h"
 #import "VEDirector.h"
+#import "VALayer+Private.h"
 
 @implementation VAScene
 
@@ -38,6 +39,7 @@
 		CGSize s = [[VEDirector sharedDirector] winSize];
 
 		_anchorPoint = ccp(0.5f, 0.5f);
+        _scene = self;
         
 		[self setFrame: CGRectMake(0, 0, s.width, s.height)];
 	}

@@ -32,6 +32,7 @@
 @class VGContext;
 @class VAAnimation;
 @class VGColor;
+@class VAScene;
 
 @protocol VAAction;
 
@@ -163,6 +164,8 @@
  * layer has completed is undefined. */
 
 - (id)modelLayer;
+
+@property (nonatomic, readonly) VAScene *scene;
 
 @end
 
