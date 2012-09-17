@@ -365,7 +365,7 @@
 
 - (CGPoint)convertToWorldSpaceAR: (CGPoint)nodePoint;
 
-- (CGPoint)convertToWindowSpace: (CGPoint)nodePoint;
+//- (CGPoint)convertToWindowSpace: (CGPoint)nodePoint;
 
 - (CGPoint)convertPoint:(CGPoint)p fromLayer:(VALayer *)l;
 - (CGPoint)convertPoint:(CGPoint)p toLayer:(VALayer *)l;

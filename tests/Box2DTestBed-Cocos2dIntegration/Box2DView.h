@@ -17,6 +17,7 @@
 
 #import "iPhoneTest.h"
 
+@class VIView;
 
 @interface MenuLayer : VALayer<UITableViewDataSource, UITableViewDelegate>
 {
@@ -31,7 +32,6 @@
 
 @interface Box2DView : VAScene
 {
-
 	TestEntry* entry;
 	Test* test;
 	int		entryID;
@@ -42,5 +42,7 @@
 - (id)initWithEntryID:(int)entryId;
 
 - (NSString*) title;
+
+@property (nonatomic, assign) VIView *view;
 
 @end

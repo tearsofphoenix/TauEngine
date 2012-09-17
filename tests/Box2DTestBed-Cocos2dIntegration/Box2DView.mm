@@ -12,8 +12,6 @@
 
 #import "Box2DView.h"
 #import "iPhoneTest.h"
-#import "VGContext.h"
-#import "VGColor.h"
 
 #define kAccelerometerFrequency 30
 #define FRAMES_BETWEEN_PRESSES_FOR_DOUBLE_CLICK 10
@@ -97,7 +95,8 @@ Settings settings;
 {
 	VAScene *s = [VAScene layer];
 	int next = entryID - 1;
-	if( next < 0 ) {
+	if( next < 0 )
+    {
 		next = g_totalEntries - 1;
 	}
     
@@ -108,16 +107,16 @@ Settings settings;
 
 -(void) touchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	CGPoint touchLocation = [touch locationInView: [touch view]];
-	CGPoint prevLocation = [touch previousLocationInView: [touch view]];
-    
-	touchLocation = [[VEDirector sharedDirector] convertToGL: touchLocation];
-	prevLocation = [[VEDirector sharedDirector] convertToGL: prevLocation];
-    
-	CGPoint diff = ccpSub(touchLocation,prevLocation);
-    
-	CGPoint currentPos = [_box2DNode position];
-	[_box2DNode setPosition: ccpAdd(currentPos, diff)];
+//	CGPoint touchLocation = [touch locationInView: [touch view]];
+//	CGPoint prevLocation = [touch previousLocationInView: [touch view]];
+//    
+//	touchLocation = [[VEDirector sharedDirector] convertToGL: touchLocation];
+//	prevLocation = [[VEDirector sharedDirector] convertToGL: prevLocation];
+//    
+//	CGPoint diff = ccpSub(touchLocation,prevLocation);
+//    
+//	CGPoint currentPos = [_box2DNode position];
+//	[_box2DNode setPosition: ccpAdd(currentPos, diff)];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -159,9 +158,11 @@ Settings settings;
 
 @end
 
-#pragma mark -
-#pragma mark Box2DView
+#pragma mark -  Box2DView
+
 @implementation Box2DView
+
+@synthesize view = _view;
 
 +(id) viewWithEntryID:(int)entryId
 {
@@ -221,7 +222,7 @@ Settings settings;
 {
     
 	CGPoint touchLocation=[touch locationInView:[touch view]];
-	touchLocation=[[VEDirector sharedDirector] convertToGL:touchLocation];
+	touchLocation=[_view convertToGL:touchLocation];
 	CGPoint nodePosition = [self convertToNodeSpace: touchLocation];
     
 	test->MouseDown(b2Vec2(nodePosition.x,nodePosition.y));
@@ -230,7 +231,7 @@ Settings settings;
 - (void) touchMoved:(UITouch*)touch withEvent:(UIEvent*)event
 {
 	CGPoint touchLocation=[touch locationInView:[touch view]];
-	touchLocation=[[VEDirector sharedDirector] convertToGL:touchLocation];
+	touchLocation=[_view convertToGL:touchLocation];
 	CGPoint nodePosition = [self convertToNodeSpace: touchLocation];
     
 	test->MouseMove(b2Vec2(nodePosition.x,nodePosition.y));
@@ -239,7 +240,7 @@ Settings settings;
 - (void) touchEnded:(UITouch*)touch withEvent:(UIEvent*)event
 {
 	CGPoint touchLocation=[touch locationInView:[touch view]];
-	touchLocation=[[VEDirector sharedDirector] convertToGL:touchLocation];
+	touchLocation=[_view convertToGL:touchLocation];
 	CGPoint nodePosition = [self convertToNodeSpace: touchLocation];
     
 	test->MouseUp(b2Vec2(nodePosition.x,nodePosition.y));

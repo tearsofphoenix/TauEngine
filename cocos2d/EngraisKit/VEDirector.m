@@ -49,6 +49,8 @@
 #import "VEDataSource.h"
 #import "CCScheduler.h"
 #import "VALayer+Private.h"
+#import "VIView.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 #pragma mark - Director - global variables (optimization)
@@ -122,6 +124,13 @@ static VEDirector *_sharedDirector = nil;
 	}
     
 	return self;
+}
+
+- (void)loadView
+{
+    VIView *view = [[VIView alloc] initWithFrame: CGRectMake(0, 0, 1024, 768)];
+    [self setView: view];
+    [view release];
 }
 
 - (NSString*) description
@@ -387,24 +396,6 @@ CGFloat	__ccContentScaleFactor = 1;
 	[self setProjection:projection_];
 }
 
-#pragma mark Director Point Convertion
-
--(CGPoint)convertToGL:(CGPoint)uiPoint
-{
-	CGSize s = winSizeInPoints_;
-	float newY = s.height - uiPoint.y;
-    
-	return ccp( uiPoint.x, newY );
-}
-
--(CGPoint)convertToUI:(CGPoint)glPoint
-{
-	CGSize winSize = winSizeInPoints_;
-	int oppositeY = winSize.height - glPoint.y;
-    
-	return ccp(glPoint.x, oppositeY);
-}
-
 #pragma mark Director - UIViewController delegate
 
 
@@ -412,7 +403,8 @@ CGFloat	__ccContentScaleFactor = 1;
 {    
     [super viewDidLoad];
     
-    view_ = (GLKView *)[self view];
+    view_ = (VIView *)[self view];
+    
     [view_ setContext: _context];
     
     // set size
@@ -433,45 +425,6 @@ CGFloat	__ccContentScaleFactor = 1;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: [self convertToGL: location]];
-    [responsibleLayer touchBegan: touch
-                       withEvent: event];
-    NSLog(@"in func: %s %@", __func__, responsibleLayer);
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: [self convertToGL: location]];
-    [responsibleLayer touchEnded: touch
-                       withEvent: event];
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: [self convertToGL: location]];
-    [responsibleLayer touchMoved: touch
-                       withEvent: event];
-    
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint location = [touch locationInView: view_];
-    VALayer *responsibleLayer = [runningScene_ hitTest: [self convertToGL: location]];
-    [responsibleLayer touchCancelled: touch
-                           withEvent: event];
-    
 }
 
 @end

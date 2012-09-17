@@ -821,11 +821,11 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 	return [self convertToWorldSpace:nodePoint];
 }
 
-- (CGPoint)convertToWindowSpace: (CGPoint)nodePoint
-{
-    CGPoint worldPoint = [self convertToWorldSpace:nodePoint];
-	return [[VEDirector sharedDirector] convertToUI:worldPoint];
-}
+//- (CGPoint)convertToWindowSpace: (CGPoint)nodePoint
+//{
+//    CGPoint worldPoint = [self convertToWorldSpace:nodePoint];
+//	return [[VEDirector sharedDirector] convertToUI:worldPoint];
+//}
 
 - (CGPoint)convertPoint: (CGPoint)p
               fromLayer: (VALayer *)l

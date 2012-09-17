@@ -40,9 +40,15 @@
     
     VALayer *layer = [VALayer layer];
     [layer setFrame: CGRectMake(10, 10, 200, 200)];
+    //[layer setBounds: CGRectMake(100, 100, 200, 200)];
+    
     [layer setBackgroundColor: [VGColor redColor]];
     [scene addSublayer: layer];
     
+    VALayer *aSubLayer = [VALayer layer];
+    [aSubLayer setFrame: CGRectMake(10, 10, 100, 100)];
+    [aSubLayer setBackgroundColor: [VGColor greenColor]];
+    [layer addSublayer: aSubLayer];
     
 	[director_ pushScene: scene];
     

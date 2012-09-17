@@ -72,8 +72,6 @@ struct VALayerAttribute
 
 - (void)_commitLayer;
 
-- (void)_updateVertices;
-
 @end
 
 extern void VALayer_renderInScene(VALayer *layer);

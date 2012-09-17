@@ -8,6 +8,14 @@
 
 #import <GLKit/GLKit.h>
 
+@class VAScene;
+
 @interface VIView : GLKView
+
+@property (nonatomic, assign) VAScene *currentScene;
+
+- (CGPoint)convertToGL: (CGPoint)uiPoint;
+
+- (CGPoint)convertToUI: (CGPoint)glPoint;
 
 @end
