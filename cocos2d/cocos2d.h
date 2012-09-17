@@ -59,6 +59,8 @@
 #import "VGContext.h"
 #import "VGColor.h"
 
+#import "VIView.h"
+
 // cocos2d macros
 //
 #import "ccTypes.h"

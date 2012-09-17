@@ -32,6 +32,7 @@
 @class VGContext;
 @class VAAnimation;
 @class VGColor;
+@class VAScene;
 
 @protocol VAAction;
 
@@ -59,7 +60,7 @@
     CGFloat _anchorPointZ;
     CGRect _bounds;
     CGPoint _position;
-    CGRect _frame;
+
 	// untransformed size of the node
 	CGSize	_contentSize;
     
@@ -163,6 +164,8 @@
  * layer has completed is undefined. */
 
 - (id)modelLayer;
+
+@property (nonatomic, readonly) VAScene *scene;
 
 @end
 
@@ -362,7 +365,7 @@
 
 - (CGPoint)convertToWorldSpaceAR: (CGPoint)nodePoint;
 
-- (CGPoint)convertToWindowSpace: (CGPoint)nodePoint;
+//- (CGPoint)convertToWindowSpace: (CGPoint)nodePoint;
 
 - (CGPoint)convertPoint:(CGPoint)p fromLayer:(VALayer *)l;
 - (CGPoint)convertPoint:(CGPoint)p toLayer:(VALayer *)l;

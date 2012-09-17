@@ -138,7 +138,8 @@ static NSString * s_VALayerInitializationKeys[] =
 	if( (self=[super init]) )
     {
         _opacity = 1;
-
+        _verticeCount = 4;
+        
         _position = CGPointZero;
         _contentSize = CGSizeZero;
 		_anchorPointInPoints = CGPointZero;
@@ -239,6 +240,7 @@ static NSString * s_VALayerInitializationKeys[] =
     [_sublayers makeObjectsPerformSelector: @selector(removeFromSuperlayer)];
     [_sublayers release];
     
+    free(_vertices);
     
     [super dealloc];
 }
@@ -350,12 +352,8 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         [self willChangeValueForKey: @"bounds"];
         
         _bounds = bounds;
-        
-        _vertices[0] =  GLKVector2Make(0, 0);
-        _vertices[1] =  GLKVector2Make(_bounds.size.width, 0);
-        _vertices[2] =  GLKVector2Make(_bounds.size.width, _bounds.size.height);
-        _vertices[3] =  GLKVector2Make(0, _bounds.size.height);
-        
+        _attr->_isVerticesClean = NO;
+
         [self didChangeValueForKey: @"bounds"];
         
         if (_attr->_needsDisplayOnBoundsChange)
@@ -381,8 +379,8 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         
         _position = position;
         
-        _attr->_isModelviewMatrixClean = NO;
-        
+        _attr->_isVerticesClean = NO;
+
         [self didChangeValueForKey: @"postition"];
     }
 }
@@ -471,14 +469,14 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (GLKMatrix4)transform
 {
-    if (!_attr->_isModelviewMatrixClean)
+    if (!_attr->_isTransformClean)
     {
         if (_superlayer)
         {
             _transform = GLKMatrix4Multiply([_superlayer transform], _transform);
         }
         
-        _attr->_isModelviewMatrixClean = YES;
+        _attr->_isTransformClean = YES;
     }
     
     return _transform;
@@ -508,11 +506,15 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (void)setFrame: (CGRect)frame
 {
-    if(!CGRectEqualToRect(_frame, frame))
+    if(!CGRectEqualToRect([self frame], frame))
     {
         [self willChangeValueForKey: @"frame"];
         
-        _frame = frame;
+        [self setPosition: frame.origin];
+        
+        CGRect bounds = [self bounds];
+        bounds.size = frame.size;
+        [self setBounds: bounds];
         
         [self didChangeValueForKey: @"frame"];
     }
@@ -521,7 +523,9 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (CGRect)frame
 {
-    return _frame;
+    CGRect frame = [self bounds];
+    frame.origin = [self position];
+    return frame;
 }
 
 
@@ -646,18 +650,14 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (void)addSublayer: (VALayer *)layer
 {
-    if(layer)
-    {
-        [layer removeFromSuperlayer];
-        
-        [_sublayers addObject: layer];
-        layer->_superlayer = self;
-    }
+    [self insertSublayer: layer
+                 atIndex: [_sublayers count]];
 }
 
 /* Insert 'layer' at position 'idx' in the receiver's sublayers array.
  * If 'layer' already has a superlayer, it will be removed before being
  * inserted. */
+@synthesize scene = _scene;
 
 - (void)insertSublayer: (VALayer *)layer
                atIndex: (unsigned)idx
@@ -668,6 +668,7 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         [_sublayers insertObject: layer
                          atIndex: idx];
         layer->_superlayer = self;
+        layer->_scene = _scene;
     }
 }
 
@@ -819,11 +820,11 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 	return [self convertToWorldSpace:nodePoint];
 }
 
-- (CGPoint)convertToWindowSpace: (CGPoint)nodePoint
-{
-    CGPoint worldPoint = [self convertToWorldSpace:nodePoint];
-	return [[VEDirector sharedDirector] convertToUI:worldPoint];
-}
+//- (CGPoint)convertToWindowSpace: (CGPoint)nodePoint
+//{
+//    CGPoint worldPoint = [self convertToWorldSpace:nodePoint];
+//	return [[VEDirector sharedDirector] convertToUI:worldPoint];
+//}
 
 - (CGPoint)convertPoint: (CGPoint)p
               fromLayer: (VALayer *)l

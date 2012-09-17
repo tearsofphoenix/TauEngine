@@ -36,22 +36,32 @@
     }
     
     VAScene *scene = [VAScene layer];
-    [scene setBounds: CGRectMake(0, 0, 100, 10)];
-    [scene setBackgroundColor: [VGColor redColor]];
+    [scene setFrame: CGRectMake(0, 0, 1024, 768)];
+    
+    VALayer *layer = [VALayer layer];
+    [layer setFrame: CGRectMake(10, 10, 200, 200)];
+    //[layer setBounds: CGRectMake(100, 100, 200, 200)];
+    
+    [layer setBackgroundColor: [VGColor redColor]];
+    [scene addSublayer: layer];
+    
+    VALayer *aSubLayer = [VALayer layer];
+    [aSubLayer setFrame: CGRectMake(10, 10, 100, 100)];
+    [aSubLayer setBackgroundColor: [VGColor greenColor]];
+    [layer addSublayer: aSubLayer];
     
 	[director_ pushScene: scene];
     [scene setOpacity: 0];
     
-    [VAScene animateWithDuration: 2.0
-                      animations: (^
-                                   {
+//    [VAScene animateWithDuration: 2.0
+//                      animations: (^
+//                                   {
 //                                       [scene setBackgroundColor: [VGColor greenColor]];
-                                       [scene setOpacity: 1];
-                                   })
-                      completion: (^(BOOL finished)
-                                   {
-                                       NSLog(@"in func: %s", __FUNCTION__);
-                                   })];
+//                                   })
+//                      completion: (^(BOOL finished)
+//                                   {
+//                                       NSLog(@"in func: %s", __FUNCTION__);
+//                                   })];
     
     //    UITableView *entriesView = [[UITableView alloc] init];
     //    [entriesView setFrame: CGRectMake(0, 0, 200, 400)];

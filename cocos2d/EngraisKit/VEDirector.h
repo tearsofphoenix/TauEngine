@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, ccDirectorProjection)
 } ;
 
 @class VAScene;
-@class GLKView;
+@class VIView;
 
 /**Class that creates and handle the main Window and manages how
 and when to execute the Scenes.
@@ -99,7 +99,7 @@ and when to execute the Scenes.
 	CGSize	winSizeInPixels_;
         
 	/*  OpenGLView. On iOS it is a copy of self.view */
-	GLKView		*view_;
+	VIView		*view_;
 }
 
 /** The current running Scene. Director can only run one Scene at the time */
@@ -127,15 +127,6 @@ and when to execute the Scenes.
 
 /** changes the projection size */
 -(void) reshapeProjection:(CGSize)newWindowSize;
-
-/** converts a UIKit coordinate to an OpenGL coordinate
- Useful to convert (multi) touchs coordinates to the current layout (portrait or landscape)
- */
--(CGPoint) convertToGL: (CGPoint) p;
-/** converts an OpenGL coordinate to a UIKit coordinate
- Useful to convert node points to window points for calls such as glScissor
- */
--(CGPoint) convertToUI:(CGPoint)p;
 
 /// XXX: missing description
 -(float) getZEye;

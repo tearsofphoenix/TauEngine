@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2258C402160330B3006F81B3 /* VARenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2258C400160330B3006F81B3 /* VARenderer.h */; };
 		2258C403160330B3006F81B3 /* VARenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2258C401160330B3006F81B3 /* VARenderer.m */; };
+		2268950A160728D400976B67 /* VIView.h in Headers */ = {isa = PBXBuildFile; fileRef = 22689508160728D400976B67 /* VIView.h */; };
+		2268950B160728D400976B67 /* VIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22689509160728D400976B67 /* VIView.m */; };
 		2282772C15FF36E9009142D6 /* VAGradientLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2282772A15FF36E9009142D6 /* VAGradientLayer.h */; };
 		2282772D15FF36E9009142D6 /* VAGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2282772B15FF36E9009142D6 /* VAGradientLayer.m */; };
 		2282773115FF37C1009142D6 /* VALayer+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 2282772F15FF37C1009142D6 /* VALayer+Private.h */; };
@@ -216,6 +218,8 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2258C400160330B3006F81B3 /* VARenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VARenderer.h; sourceTree = "<group>"; };
 		2258C401160330B3006F81B3 /* VARenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VARenderer.m; sourceTree = "<group>"; };
+		22689508160728D400976B67 /* VIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VIView.h; sourceTree = "<group>"; };
+		22689509160728D400976B67 /* VIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VIView.m; sourceTree = "<group>"; };
 		2282772A15FF36E9009142D6 /* VAGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAGradientLayer.h; sourceTree = "<group>"; };
 		2282772B15FF36E9009142D6 /* VAGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAGradientLayer.m; sourceTree = "<group>"; };
 		2282772F15FF37C1009142D6 /* VALayer+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VALayer+Private.h"; sourceTree = "<group>"; };
@@ -545,6 +549,8 @@
 				22BAA05415F8864F00AEBED9 /* VEDataSource.m */,
 				22BAA05715F8864F00AEBED9 /* VEMetaService.h */,
 				22BAA05815F8864F00AEBED9 /* VEMetaService.m */,
+				22689508160728D400976B67 /* VIView.h */,
+				22689509160728D400976B67 /* VIView.m */,
 			);
 			path = EngraisKit;
 			sourceTree = "<group>";
@@ -961,6 +967,7 @@
 				2282772C15FF36E9009142D6 /* VAGradientLayer.h in Headers */,
 				2282773115FF37C1009142D6 /* VALayer+Private.h in Headers */,
 				2258C402160330B3006F81B3 /* VARenderer.h in Headers */,
+				2268950A160728D400976B67 /* VIView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1177,6 +1184,7 @@
 				2282772D15FF36E9009142D6 /* VAGradientLayer.m in Sources */,
 				2282773215FF37C1009142D6 /* VALayer+Private.m in Sources */,
 				2258C403160330B3006F81B3 /* VARenderer.m in Sources */,
+				2268950B160728D400976B67 /* VIView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
