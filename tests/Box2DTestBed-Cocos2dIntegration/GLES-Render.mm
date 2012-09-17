@@ -65,7 +65,7 @@ void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, c
 		vertices[i].y = tmp.y;
 	}
 
-    [m_effect setUseConstantColor: GL_TRUE];
+    
     [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1)];
     
     [m_effect prepareToDraw];
@@ -96,7 +96,7 @@ void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int32 vertexCou
 		vertices[i].y = tmp.y;
 	}
     
-    [m_effect setUseConstantColor: GL_TRUE];
+    
     
     [m_effect setConstantColor: GLKVector4Make(color.r * 0.5, color.g * 0.5, color.b * 0.5, 0.5)];
     [m_effect prepareToDraw];
@@ -136,7 +136,7 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
 		theta += k_increment;
 	}
 
-    [m_effect setUseConstantColor: GL_TRUE];
+    
     
     [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
     [m_effect prepareToDraw];
@@ -170,7 +170,7 @@ void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
 		theta += k_increment;
 	}
 
-    [m_effect setUseConstantColor: GL_TRUE];
+    
     
     [m_effect setConstantColor: GLKVector4Make(color.r * 0.5, color.g * 0.5, color.b * 0.5, 0.5)];
     [m_effect prepareToDraw];
@@ -197,7 +197,7 @@ void GLESDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Colo
     [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
     [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
 
-    [m_effect setUseConstantColor: GL_TRUE];
+    
     [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
     [m_effect prepareToDraw];
 
@@ -234,7 +234,7 @@ void GLESDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& colo
     [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
     
 
-    [m_effect setUseConstantColor: GL_TRUE];
+    
     [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
     [m_effect prepareToDraw];
 
@@ -266,7 +266,7 @@ void GLESDebugDraw::DrawAABB(b2AABB* aabb, const b2Color& color)
     [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
     
     
-    [m_effect setUseConstantColor: GL_TRUE];
+    
     [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
     [m_effect prepareToDraw];
 

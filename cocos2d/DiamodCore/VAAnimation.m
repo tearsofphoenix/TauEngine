@@ -288,6 +288,17 @@ static void _VEAnimationPositionProcessor(VABasicAnimation *animation, VALayer *
     [layer setPosition: p];
 }
 
+static void _VEAnimationOpacityProcessor(VABasicAnimation *animation, VALayer *layer, NSNumber *value1, NSNumber *value2, VAMediaTimingFunction *function, NSTimeInterval elapsed)
+{
+    float percent = elapsed / [animation duration];
+    CGFloat from = [value1 floatValue];
+    CGFloat to = [value2 floatValue];
+    
+    CGFloat looper = from + (to - from) * percent;
+    
+    [layer setOpacity: looper];
+}
+
 static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
 
 + (void)initialize
@@ -301,7 +312,7 @@ static NSMutableDictionary *__VEBasicAnimationProcessors = nil;
         VAAnimationProcessStore(_VEAnimationColorProcessor, @"backgroundColor");
         VAAnimationProcessStore(_VEAnimationAnchorPointProcessor, @"anchorPoint");
         VAAnimationProcessStore(_VEAnimationPositionProcessor, @"position");
-        
+        VAAnimationProcessStore(_VEAnimationOpacityProcessor, @"opacity");
 #undef VAAnimationProcessStore
     }
 }
@@ -689,7 +700,7 @@ NSString * const kVETransitionFromBottom = @"kVETransitionFromBottom"
 }
 
 - (void)flushTransactions
-{    
+{
     [[VEDataSource serviceByIdentity: CCScheduleServiceID ] scheduleUpdateForTarget: [_transactions lastObject]
                                                                            priority: CCSchedulerPriorityZero
                                                                              paused: NO];

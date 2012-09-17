@@ -40,11 +40,13 @@
     [scene setBackgroundColor: [VGColor redColor]];
     
 	[director_ pushScene: scene];
+    [scene setOpacity: 0];
     
     [VAScene animateWithDuration: 2.0
                       animations: (^
                                    {
-                                       [scene setBackgroundColor: [VGColor greenColor]];
+//                                       [scene setBackgroundColor: [VGColor greenColor]];
+                                       [scene setOpacity: 1];
                                    })
                       completion: (^(BOOL finished)
                                    {

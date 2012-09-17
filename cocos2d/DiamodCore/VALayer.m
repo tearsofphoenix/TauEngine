@@ -152,8 +152,7 @@ static NSString * s_VALayerInitializationKeys[] =
         _animationKeys = [[NSMutableArray alloc] init];
         
         _effect = [[GLKBaseEffect alloc] init];
-        [_effect setUseConstantColor: !_attr->_useTextureColor];
-                
+        
         _camera = VACameraCreate();
                 
         for (int i = 0; i < sizeof(s_VALayerInitializationKeys)/sizeof(s_VALayerInitializationKeys[0]); i++)
@@ -1283,6 +1282,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
         
         [_backgroundColor release];
         _backgroundColor = [backgroundColor retain];
+        
         [_effect setConstantColor: [_backgroundColor CCColor]];
         
         [self didChangeValueForKey: @"backgroundColor"];
@@ -1360,7 +1360,8 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
         [self willChangeValueForKey: @"opacity"];
         
         _opacity = opacity;
-        
+        [self setBackgroundColor: [_backgroundColor colorWithAlphaComponent: _opacity]];
+
         [self didChangeValueForKey: @"opacity"];
     }
 }
@@ -2126,6 +2127,8 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
     {
         VABasicAnimation *animation = [VABasicAnimation animationWithKeyPath: key];
         [animation setFromValue: [self valueForKey: key]];
+        [animation setDuration: [__currentBlockAnimationTransaction duration]];
+
         [__currentBlockAnimationTransaction addAnimation: animation
                                                   forKey: key];
     }    
