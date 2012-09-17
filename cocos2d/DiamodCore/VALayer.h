@@ -60,7 +60,7 @@
     CGFloat _anchorPointZ;
     CGRect _bounds;
     CGPoint _position;
-    CGRect _frame;
+
 	// untransformed size of the node
 	CGSize	_contentSize;
     

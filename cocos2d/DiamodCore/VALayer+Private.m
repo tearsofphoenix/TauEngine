@@ -98,6 +98,11 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
         
         _attr->_isProjectionClean = YES;
     }
+    
+    if (!_attr->_isVerticesClean)
+    {
+        [self _updateVertices];
+    }
 }
 
 - (void)updateColor
@@ -106,6 +111,21 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
 	{
 		_vertexColors[i] = [_backgroundColor CCColor];
 	}
+}
+
+- (void)_updateVertices
+{
+    GLKVector2 *vertices = VALayer_getVertices(self);
+    
+    CGFloat originX = _position.x;
+    CGFloat originY = _position.y;
+    CGFloat sizeWidth = _bounds.size.width;
+    CGFloat sizeHeight = _bounds.size.height;
+    
+    vertices[0] =  GLKVector2Make(originX, originY);
+    vertices[1] =  GLKVector2Make(originX + sizeWidth, originY);
+    vertices[2] =  GLKVector2Make(originX + sizeWidth, originY + sizeHeight);
+    vertices[3] =  GLKVector2Make(originX, originY + sizeHeight);
 }
 
 GLKVector2 *VALayer_getVertices(VALayer *layer)

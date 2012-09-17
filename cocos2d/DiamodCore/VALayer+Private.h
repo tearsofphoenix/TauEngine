@@ -18,6 +18,7 @@ struct VALayerAttribute
     unsigned int _isTransformClean: 1;
 	unsigned int _isInverseClean: 1;
     unsigned int _isProjectionClean: 1;
+    unsigned int _isVerticesClean: 1;
     
     unsigned int _isGeometryFlipped: 1;
     unsigned int _needsDisplayOnBoundsChange: 1;
@@ -70,6 +71,8 @@ struct VALayerAttribute
 - (void)updateColor;
 
 - (void)_commitLayer;
+
+- (void)_updateVertices;
 
 @end
 

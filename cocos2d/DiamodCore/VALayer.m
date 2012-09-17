@@ -353,14 +353,8 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         [self willChangeValueForKey: @"bounds"];
         
         _bounds = bounds;
-        
-        GLKVector2 *vertices = VALayer_getVertices(self);
-        
-        vertices[0] =  GLKVector2Make(0, 0);
-        vertices[1] =  GLKVector2Make(_bounds.size.width, 0);
-        vertices[2] =  GLKVector2Make(_bounds.size.width, _bounds.size.height);
-        vertices[3] =  GLKVector2Make(0, _bounds.size.height);
-        
+        _attr->_isVerticesClean = NO;
+
         [self didChangeValueForKey: @"bounds"];
         
         if (_attr->_needsDisplayOnBoundsChange)
@@ -386,6 +380,8 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         
         _position = position;
         
+        _attr->_isVerticesClean = NO;
+
         [self didChangeValueForKey: @"postition"];
     }
 }
@@ -511,11 +507,15 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (void)setFrame: (CGRect)frame
 {
-    if(!CGRectEqualToRect(_frame, frame))
+    if(!CGRectEqualToRect([self frame], frame))
     {
         [self willChangeValueForKey: @"frame"];
         
-        _frame = frame;
+        [self setPosition: frame.origin];
+        
+        CGRect bounds = [self bounds];
+        bounds.size = frame.size;
+        [self setBounds: bounds];
         
         [self didChangeValueForKey: @"frame"];
     }
@@ -524,7 +524,9 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 
 - (CGRect)frame
 {
-    return _frame;
+    CGRect frame = [self bounds];
+    frame.origin = [self position];
+    return frame;
 }
 
 
