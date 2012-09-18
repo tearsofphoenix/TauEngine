@@ -64,8 +64,9 @@
 	// untransformed size of the node
 	CGSize	_contentSize;
     
+    GLKMatrix4 _modelViewMatrix;
+    
 	GLKMatrix4 _transform;
-    CGAffineTransform _inverse;
     GLKMatrix4 _sublayerTransform;
 	// z-order value
 	NSInteger _zPosition;

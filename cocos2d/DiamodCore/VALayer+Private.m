@@ -9,6 +9,7 @@
 #import "VALayer+Private.h"
 #import "VGColor.h"
 #import "VAScene.h"
+#import "TransformUtils.h"
 
 static const NSUInteger verticeCountForEachCorner = 8;
 
@@ -28,10 +29,8 @@ static void ccDrawQuadBezier(CGPoint origin, CGPoint control, CGPoint destinatio
 }
 
 static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2, CGPoint destination,
-                              NSUInteger segments)
-{
-	GLKVector2 vertices[segments + 1];
-	
+                              NSUInteger segments, GLKVector2 *vertices)
+{	
 	float t = 0;
 	for(NSUInteger i = 0; i < segments; i++)
 	{
@@ -40,13 +39,8 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
 		vertices[i] = GLKVector2Make(x * CC_CONTENT_SCALE_FACTOR(), y * CC_CONTENT_SCALE_FACTOR() );
 		t += 1.0f / segments;
 	}
+    
 	vertices[segments] = GLKVector2Make(destination.x * CC_CONTENT_SCALE_FACTOR(), destination.y * CC_CONTENT_SCALE_FACTOR());
-	
-	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Needed states: GL_VERTEX_ARRAY,
-	
-	glVertexPointer(2, GL_FLOAT, 0, vertices);
-	glDrawArrays(GL_LINE_STRIP, 0, (GLsizei) segments + 1);	
 }
 
 @implementation VALayer (Private)
@@ -65,7 +59,13 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
     
     if (!_attr->_isTransformClean)
     {
-        [[_effect transform] setModelviewMatrix: [self transform]];
+        _cachedFullModelviewMatrix = _transform;
+        for (VALayer *layerLooper = _superlayer; layerLooper; layerLooper = layerLooper->_superlayer)
+        {
+            _cachedFullModelviewMatrix = GLKMatrix4Multiply([layerLooper transform], _cachedFullModelviewMatrix);
+        }
+        
+        [[_effect transform] setModelviewMatrix: _cachedFullModelviewMatrix];
         
         _attr->_isTransformClean = YES;
     }
@@ -83,16 +83,7 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
         //
         GLKVector2 *vertices = _vertices;
         
-        CGPoint position = _position;
-        
-        for (VALayer *layerLooper = _superlayer; layerLooper; layerLooper = layerLooper->_superlayer)
-        {
-            CGPoint superPosition = [layerLooper position];
-            CGRect superBounds = [layerLooper bounds];
-            
-            position.x += superPosition.x - superBounds.origin.x;
-            position.y += superPosition.y - superBounds.origin.y;
-        }
+        CGPoint position = CGPointApplyAffineTransform(_position, GLKMatrix4ToCGAffineTransform(&_cachedFullModelviewMatrix));
         
         CGFloat originX = position.x;
         CGFloat originY = position.y;

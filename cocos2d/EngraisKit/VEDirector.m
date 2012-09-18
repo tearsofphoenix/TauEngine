@@ -374,5 +374,10 @@ CGFloat	__ccContentScaleFactor = 1;
 	return YES;
 }
 
+- (void)didRotateFromInterfaceOrientation: (UIInterfaceOrientation)fromInterfaceOrientation
+{
+    
+}
+
 @end
 

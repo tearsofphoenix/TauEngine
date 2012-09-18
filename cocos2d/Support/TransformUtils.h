@@ -28,3 +28,7 @@
 
 void CGAffineToGL(const CGAffineTransform *t, GLfloat *m);
 void GLToCGAffine(const GLfloat *m, CGAffineTransform *t);
+
+extern CGAffineTransform GLKMatrix4ToCGAffineTransform(const GLKMatrix4 *m);
+
+

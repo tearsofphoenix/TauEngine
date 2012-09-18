@@ -40,17 +40,22 @@
     
     VALayer *layer = [VALayer layer];
     [layer setFrame: CGRectMake(10, 10, 200, 200)];
+    [layer setTransform: GLKMatrix4MakeScale(1.0, 0.5, 1.0)];
+    
     //[layer setBounds: CGRectMake(100, 100, 200, 200)];
     
     [layer setBackgroundColor: [VGColor redColor]];
     [scene addSublayer: layer];
     
-    VALayer *aSubLayer = [VALayer layer];
-    [aSubLayer setFrame: CGRectMake(10, 10, 100, 100)];
-    [aSubLayer setBackgroundColor: [VGColor greenColor]];
-    [aSubLayer setCornerRadius: 20];
+//    VALayer *aSubLayer = [VALayer layer];
+//    [aSubLayer setFrame: CGRectMake(10, 10, 100, 100)];
+//    [aSubLayer setBackgroundColor: [VGColor greenColor]];
+//    //[aSubLayer setAffineTransform: CGAffineTransformConcat(CGAffineTransformMakeScale(0.5, 0.5), CGAffineTransformMakeRotation(0))];
+//    [aSubLayer setAffineTransform: CGAffineTransformMakeScale(0.5, 0.5)];
+
+    //[aSubLayer setCornerRadius: 20];
     
-    [layer addSublayer: aSubLayer];
+//    [layer addSublayer: aSubLayer];
     
 	[director_ pushScene: scene];
     [scene setOpacity: 0];

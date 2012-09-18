@@ -45,3 +45,8 @@ void GLToCGAffine(const GLfloat *m, CGAffineTransform *t)
 	t->b = m[1]; t->d = m[5]; t->ty = m[13];
 }
 
+CGAffineTransform GLKMatrix4ToCGAffineTransform(const GLKMatrix4 *matrix)
+{
+    const CGFloat *m = matrix->m;
+    return CGAffineTransformMake(m[0], m[1], m[4], m[5], m[12], m[13]);
+}

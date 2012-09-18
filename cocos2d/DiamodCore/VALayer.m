@@ -145,6 +145,7 @@ static NSString * s_VALayerInitializationKeys[] =
 		_anchorPointInPoints = CGPointZero;
         _anchorPoint = CGPointZero;
         _transform = GLKMatrix4Identity;
+        _cachedFullModelviewMatrix = GLKMatrix4Identity;
         _sublayerTransform = GLKMatrix4Identity;
         
         _attr = calloc(1, sizeof(struct VALayerAttribute));
@@ -463,6 +464,8 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         
         _transform = transform;
         
+        _attr->_isTransformClean = NO;
+        
         [self didChangeValueForKey: @"transform"];
     }
 }
@@ -471,14 +474,8 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
 {
     if (!_attr->_isTransformClean)
     {
-        if (_superlayer)
-        {
-            _transform = GLKMatrix4Multiply([_superlayer transform], _transform);
-        }
         
-        _attr->_isTransformClean = YES;
     }
-    
     return _transform;
 }
 
