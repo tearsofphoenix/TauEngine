@@ -12,10 +12,9 @@
 
 static const NSUInteger verticeCountForEachCorner = 8;
 
-static void ccDrawQuadBezier(CGPoint origin, CGPoint control, CGPoint destination, NSUInteger segments)
-{
-	GLKVector2 vertices[segments + 1];
-	
+static void ccDrawQuadBezier(CGPoint origin, CGPoint control, CGPoint destination,
+                             NSUInteger segments, GLKVector2 *vertices)
+{	
 	float t = 0.0f;
 	for(NSUInteger i = 0; i < segments; i++)
 	{
@@ -26,24 +25,10 @@ static void ccDrawQuadBezier(CGPoint origin, CGPoint control, CGPoint destinatio
 	}
     
 	vertices[segments] = GLKVector2Make(destination.x * CC_CONTENT_SCALE_FACTOR(), destination.y * CC_CONTENT_SCALE_FACTOR());
-	
-	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Needed states: GL_VERTEX_ARRAY,
-	// Unneeded states: GL_TEXTURE_2D, GL_TEXTURE_COORD_ARRAY, GL_COLOR_ARRAY
-	glDisable(GL_TEXTURE_2D);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	
-	glVertexPointer(2, GL_FLOAT, 0, vertices);
-	glDrawArrays(GL_LINE_STRIP, 0, (GLsizei) segments + 1);
-	
-	// restore default state
-	glEnableClientState(GL_COLOR_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnable(GL_TEXTURE_2D);
 }
 
-static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2, CGPoint destination, NSUInteger segments)
+static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2, CGPoint destination,
+                              NSUInteger segments)
 {
 	GLKVector2 vertices[segments + 1];
 	
@@ -59,18 +44,9 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
 	
 	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
 	// Needed states: GL_VERTEX_ARRAY,
-	// Unneeded states: GL_TEXTURE_2D, GL_TEXTURE_COORD_ARRAY, GL_COLOR_ARRAY
-	glDisable(GL_TEXTURE_2D);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
 	
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
-	glDrawArrays(GL_LINE_STRIP, 0, (GLsizei) segments + 1);
-	
-	// restore default state
-	glEnableClientState(GL_COLOR_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnable(GL_TEXTURE_2D);
+	glDrawArrays(GL_LINE_STRIP, 0, (GLsizei) segments + 1);	
 }
 
 @implementation VALayer (Private)
@@ -125,7 +101,27 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
 
         if (_cornerRadius != 0)
         {
-                       
+            _verticeCount = 48;
+            ccDrawQuadBezier(CGPointMake(originX, originY + _cornerRadius),
+                             CGPointMake(originX, originY),
+                             CGPointMake(originX + _cornerRadius, originY),
+                             11, _vertices);
+            
+            ccDrawQuadBezier(CGPointMake(originX + sizeWidth - _cornerRadius, originY),
+                             CGPointMake(originX + sizeWidth, originY),
+                             CGPointMake(originX + sizeWidth, originY + _cornerRadius),
+                             11, _vertices + 12);
+            
+            ccDrawQuadBezier(CGPointMake(originX + sizeWidth, originY + sizeHeight - _cornerRadius),
+                             CGPointMake(originX + sizeWidth, originY + sizeHeight),
+                             CGPointMake(originX + sizeWidth - _cornerRadius, originY + sizeHeight),
+                             11, _vertices + 24);
+            
+            ccDrawQuadBezier(CGPointMake(originX + _cornerRadius, originY + sizeHeight),
+                             CGPointMake(originX, originY + sizeHeight),
+                             CGPointMake(originX, originY + sizeHeight - _cornerRadius),
+                             11, _vertices + 36);
+
         }else
         {
             vertices[0] =  GLKVector2Make(originX, originY);
@@ -145,22 +141,6 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
 		_vertexColors[i] = [_backgroundColor CCColor];
 	}
 }
-
-//GLKVector2 *VALayer_getVertices(VALayer *layer)
-//{
-//    GLKVector2 *vertices = layer->_vertices;
-//    if (!vertices)
-//    {
-//        vertices = malloc(sizeof(GLKVector2) * layer->_verticeCount);
-//        
-//    }else
-//    {
-//        vertices = realloc(vertices, sizeof(GLKVector2) * verticeCountForEachCorner * 4);
-//        layer->_verticeCount += verticeCountForEachCorner * 4;        
-//    }
-//    
-//    return vertices;
-//}
 
 void VALayer_renderInScene(VALayer *layer)
 {

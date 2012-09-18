@@ -183,6 +183,10 @@ static VEDirector *_sharedDirector = nil;
     [self reshapeProjection: size];
 }
 
+- (void)pushScene: (VAScene *)scene
+{
+    [view_ setCurrentScene: scene];
+}
 
 
 NSTimeInterval CCDirectorCalculateMPF(struct timeval lastUpdate_)
@@ -207,18 +211,19 @@ CGFloat	__ccContentScaleFactor = 1;
 	GLKView *openGLview = (GLKView*)[self view];
     
 	[EAGLContext setCurrentContext: [openGLview context]];
-    
-	/* tick before glClear: issue #533 */
-    [_scheduler update: 1.0 / [self framesPerSecond]];
-    
+
     glClearColor(1, 1, 1, 1);
     
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
+
+	/* tick before glClear: issue #533 */
+    [_scheduler update: 1.0 / [self framesPerSecond]];
     
-    //VALayer_renderInScene(runningScene_);
+    
+    VALayer_renderInScene([view_ currentScene]);
     
 }
 

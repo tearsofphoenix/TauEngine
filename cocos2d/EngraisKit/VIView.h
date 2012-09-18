@@ -12,7 +12,7 @@
 
 @interface VIView : GLKView
 
-@property (nonatomic, assign) VAScene *currentScene;
+@property (nonatomic, retain) VAScene *currentScene;
 
 - (CGPoint)convertToGL: (CGPoint)uiPoint;
 

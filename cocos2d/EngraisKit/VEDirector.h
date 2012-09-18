@@ -120,6 +120,8 @@ and when to execute the Scenes.
 /** enables/disables OpenGL depth test */
 - (void) setDepthTest: (BOOL) on;
 
+- (void)pushScene: (VAScene *)scene;
+
 @end
 
 // optimization. Should only be used to read it. Never to write it.
