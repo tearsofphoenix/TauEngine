@@ -240,7 +240,7 @@ static NSString * s_VALayerInitializationKeys[] =
     [_sublayers makeObjectsPerformSelector: @selector(removeFromSuperlayer)];
     [_sublayers release];
     
-    free(_vertices);
+    //free(_vertices);
     
     [super dealloc];
 }
@@ -1300,6 +1300,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
         [self willChangeValueForKey: @"cornerRadius"];
         
         _cornerRadius = cornerRadius;
+        _attr->_isVerticesClean = NO;
         
         [self didChangeValueForKey: @"cornerRadius"];
     }

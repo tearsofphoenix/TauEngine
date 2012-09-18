@@ -72,39 +72,6 @@ Settings settings;
 	return self;
 }
 
--(void) restartCallback: (id) sender
-{
-	VAScene *s = [VAScene layer];
-	id box = [MenuLayer menuWithEntryID:entryID];
-	[s addSublayer: box];
-	[[VEDirector sharedDirector] replaceScene: s];
-}
-
--(void) nextCallback: (id) sender
-{
-	VAScene *s = [VAScene layer];
-	int next = entryID + 1;
-	if( next >= g_totalEntries)
-		next = 0;
-	id box = [MenuLayer menuWithEntryID:next];
-	[s addSublayer: box];
-	[[VEDirector sharedDirector] replaceScene: s];
-}
-
--(void) backCallback: (id) sender
-{
-	VAScene *s = [VAScene layer];
-	int next = entryID - 1;
-	if( next < 0 )
-    {
-		next = g_totalEntries - 1;
-	}
-    
-	id box = [MenuLayer menuWithEntryID:next];
-	[s addSublayer: box];
-	[[VEDirector sharedDirector] replaceScene: s];
-}
-
 -(void) touchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
 //	CGPoint touchLocation = [touch locationInView: [touch view]];
@@ -152,8 +119,7 @@ Settings settings;
     
 	id box = [MenuLayer menuWithEntryID: next];
 	[s addSublayer: box];
-	[[VEDirector sharedDirector] replaceScene: s];
-    
+	//[[VEDirector sharedDirector] replaceScene: s];    
 }
 
 @end

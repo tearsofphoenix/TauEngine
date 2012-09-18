@@ -10,6 +10,8 @@
 #import "VGColor.h"
 #import "VAScene.h"
 
+static const NSUInteger verticeCountForEachCorner = 8;
+
 static void ccDrawQuadBezier(CGPoint origin, CGPoint control, CGPoint destination, NSUInteger segments)
 {
 	GLKVector2 vertices[segments + 1];
@@ -103,7 +105,7 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
     {
         //update vertices
         //
-        GLKVector2 *vertices = VALayer_getVertices(self);
+        GLKVector2 *vertices = _vertices;
         
         CGPoint position = _position;
         
@@ -120,11 +122,17 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
         CGFloat originY = position.y;
         CGFloat sizeWidth = _bounds.size.width;
         CGFloat sizeHeight = _bounds.size.height;
-        
-        vertices[0] =  GLKVector2Make(originX, originY);
-        vertices[1] =  GLKVector2Make(originX + sizeWidth, originY);
-        vertices[2] =  GLKVector2Make(originX + sizeWidth, originY + sizeHeight);
-        vertices[3] =  GLKVector2Make(originX, originY + sizeHeight);
+
+        if (_cornerRadius != 0)
+        {
+                       
+        }else
+        {
+            vertices[0] =  GLKVector2Make(originX, originY);
+            vertices[1] =  GLKVector2Make(originX + sizeWidth, originY);
+            vertices[2] =  GLKVector2Make(originX + sizeWidth, originY + sizeHeight);
+            vertices[3] =  GLKVector2Make(originX, originY + sizeHeight);
+        }
         
         _attr->_isVerticesClean = YES;
     }
@@ -138,15 +146,21 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
 	}
 }
 
-GLKVector2 *VALayer_getVertices(VALayer *layer)
-{
-    if (!layer->_vertices)
-    {
-        layer->_vertices = malloc(sizeof(GLKVector2) * layer->_verticeCount);
-    }
-    
-    return layer->_vertices;
-}
+//GLKVector2 *VALayer_getVertices(VALayer *layer)
+//{
+//    GLKVector2 *vertices = layer->_vertices;
+//    if (!vertices)
+//    {
+//        vertices = malloc(sizeof(GLKVector2) * layer->_verticeCount);
+//        
+//    }else
+//    {
+//        vertices = realloc(vertices, sizeof(GLKVector2) * verticeCountForEachCorner * 4);
+//        layer->_verticeCount += verticeCountForEachCorner * 4;        
+//    }
+//    
+//    return vertices;
+//}
 
 void VALayer_renderInScene(VALayer *layer)
 {
@@ -178,7 +192,7 @@ void VALayer_renderInScene(VALayer *layer)
     }
     
     // Draw our primitives!
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, layer->_verticeCount);
     
     // Cleanup: Done with position data
     glDisableVertexAttribArray(GLKVertexAttribPosition);

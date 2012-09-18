@@ -75,19 +75,7 @@ and when to execute the Scenes.
 */
 @interface VEDirector : GLKViewController
 {
-	/* The running scene */
-	VAScene *runningScene_;
-
-	/* will be the next 'runningScene' in the next frame
-	 nextScene is a weak reference. */
-	VAScene *nextScene_;
     VGContext *_renderContext;
-    
-	/* If YES, then "old" scene will receive the cleanup message */
-	BOOL	sendCleanupToScene_;
-
-	/* scheduled scenes */
-	NSMutableArray *scenesStack_;
     
 	/* projection used */
 	ccDirectorProjection projection_;
@@ -101,9 +89,6 @@ and when to execute the Scenes.
 	/*  OpenGLView. On iOS it is a copy of self.view */
 	VIView		*view_;
 }
-
-/** The current running Scene. Director can only run one Scene at the time */
-@property (nonatomic,readonly) VAScene* runningScene;
 
 /** Sets an OpenGL projection */
 @property (nonatomic) ccDirectorProjection projection;
@@ -130,20 +115,6 @@ and when to execute the Scenes.
 
 /// XXX: missing description
 -(float) getZEye;
-
-#pragma mark Director - Scene Management
-
-/**Suspends the execution of the running scene, pushing it on the stack of suspended scenes.
- * The new scene will be executed.
- * Try to avoid big stacks of pushed scenes to reduce memory allocation.
- * ONLY call it if there is a running scene.
- */
-- (void) pushScene:(VAScene*) scene;
-
-/** Replaces the running scene with a new one. The running scene is terminated.
- * ONLY call it if there is a running scene.
- */
--(void) replaceScene: (VAScene*) scene;
 
 #pragma mark Director - Memory Helper
 /** enables/disables OpenGL depth test */

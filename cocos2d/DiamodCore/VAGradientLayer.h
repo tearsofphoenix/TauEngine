@@ -29,36 +29,30 @@
  @since v0.99.5
  */
 @interface VAGradientLayer : VALayer
-{
-	VGColor *endColor_;
-	GLfloat startOpacity_;
-	GLfloat endOpacity_;
-	CGPoint vector_;
-	BOOL	compressedInterpolation_;
-}
 
-/** Initializes the VALayer with a gradient between start and end. */
-- (id) initWithColor: (VGColor *) start
-            fadingTo: (VGColor *) end;
-/** Initializes the VALayer with a gradient between start and end in the direction of v. */
-- (id) initWithColor: (VGColor *) start
-            fadingTo: (VGColor *) end
-         alongVector: (CGPoint) v;
+/* The array of CGColorRef objects defining the color of each gradient
+ * stop. Defaults to nil. Animatable. */
 
-/** The starting color. */
-@property (nonatomic, retain) VGColor * startColor;
-/** The ending color. */
-@property (nonatomic, retain) VGColor * endColor;
-/** The starting opacity. */
-@property (nonatomic) GLfloat startOpacity;
-/** The ending color. */
-@property (nonatomic) GLfloat endOpacity;
-/** The vector along which to fade color. */
-@property (nonatomic) CGPoint vector;
-/** Whether or not the interpolation will be compressed in order to display all the colors of the gradient both in canonical and non canonical vectors
- Default: YES
- */
-@property (nonatomic) BOOL compressedInterpolation;
+@property(copy) NSArray *colors;
+
+/* An optional array of NSNumber objects defining the location of each
+ * gradient stop as a value in the range [0,1]. The values must be
+ * monotonically increasing. If a nil array is given, the stops are
+ * assumed to spread uniformly across the [0,1] range. When rendered,
+ * the colors are mapped to the output colorspace before being
+ * interpolated. Defaults to nil. Animatable. */
+
+@property(copy) NSArray *locations;
+
+/* The start and end points of the gradient when drawn into the layer's
+ * coordinate space. The start point corresponds to the first gradient
+ * stop, the end point to the last gradient stop. Both points are
+ * defined in a unit coordinate space that is then mapped to the
+ * layer's bounds rectangle when drawn. (I.e. [0,0] is the bottom-left
+ * corner of the layer, [1,1] is the top-right corner.) The default values
+ * are [.5,0] and [.5,1] respectively. Both are animatable. */
+
+@property CGPoint startPoint, endPoint;
 
 @end
 

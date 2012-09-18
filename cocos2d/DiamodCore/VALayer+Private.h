@@ -55,7 +55,7 @@ struct VALayerAttribute
     VACameraRef _camera;
     
     NSUInteger _verticeCount;
-    GLKVector2 *_vertices;
+    GLKVector2 _vertices[12];
     GLKVector2 _textureCoordinates[4];
     GLKVector4 _vertexColors[4];
 }
@@ -76,4 +76,4 @@ struct VALayerAttribute
 
 extern void VALayer_renderInScene(VALayer *layer);
 
-extern GLKVector2 *VALayer_getVertices(VALayer *layer);
+//extern GLKVector2 *VALayer_getVertices(VALayer *layer);

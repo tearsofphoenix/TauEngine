@@ -48,6 +48,8 @@
     VALayer *aSubLayer = [VALayer layer];
     [aSubLayer setFrame: CGRectMake(10, 10, 100, 100)];
     [aSubLayer setBackgroundColor: [VGColor greenColor]];
+    //[aSubLayer setCornerRadius: 20];
+    
     [layer addSublayer: aSubLayer];
     
 	[director_ pushScene: scene];

@@ -69,13 +69,9 @@ NSUInteger	__ccNumberOfDraws = 0;
     EAGLContext *_context;
 }
 
-- (void) setNextScene;
-
 @end
 
 @implementation VEDirector
-
-@synthesize runningScene = runningScene_;
 
 // singleton stuff
 //
@@ -103,13 +99,7 @@ static VEDirector *_sharedDirector = nil;
     {
         
 		CCLOG(@"cocos2d: Using Director Type:%@", [self class]);
-        
-		// scenes
-		runningScene_ = nil;
-		nextScene_ = nil;
-        
-		scenesStack_ = [[NSMutableArray alloc] initWithCapacity:10];
-        
+                
 		// Set default projection (3D)
 		projection_ = kCCDirectorProjectionDefault;
         
@@ -136,18 +126,6 @@ static VEDirector *_sharedDirector = nil;
 - (NSString*) description
 {
 	return [NSString stringWithFormat:@"<%@ = %p | Size: %0.f x %0.f, view = %@>", [self class], self, winSizeInPoints_.width, winSizeInPoints_.height, view_];
-}
-
-- (void) dealloc
-{
-	CCLOGINFO(@"cocos2d: deallocing %@", self);
-    
-	[runningScene_ release];
-	[scenesStack_ release];
-    
-	_sharedDirector = nil;
-    
-	[super dealloc];
 }
 
 -(void) setGLDefaultValues
@@ -205,36 +183,7 @@ static VEDirector *_sharedDirector = nil;
     [self reshapeProjection: size];
 }
 
-#pragma mark Director Scene Management
 
--(void) replaceScene: (VAScene*) scene
-{
-	NSAssert( scene != nil, @"Argument must be non-nil");
-    
-	NSUInteger index = [scenesStack_ count];
-    
-	sendCleanupToScene_ = YES;
-	[scenesStack_ replaceObjectAtIndex:index-1 withObject:scene];
-	nextScene_ = scene;	// nextScene_ is a weak ref
-}
-
-- (void) pushScene: (VAScene*) scene
-{
-	NSAssert( scene != nil, @"Argument must be non-nil");
-    
-	sendCleanupToScene_ = NO;
-    
-	[scenesStack_ addObject: scene];
-	nextScene_ = scene;	// nextScene_ is a weak ref
-}
-
--(void) setNextScene
-{
-	[runningScene_ release];
-    
-	runningScene_ = [nextScene_ retain];
-	nextScene_ = nil;
-}
 
 NSTimeInterval CCDirectorCalculateMPF(struct timeval lastUpdate_)
 {
@@ -269,14 +218,7 @@ CGFloat	__ccContentScaleFactor = 1;
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     
-	/* to avoid flickr, nextScene MUST be here: after tick and before draw.
-	 XXX: Which bug is this one. It seems that it can't be reproduced with v0.9 */
-	if( nextScene_ )
-    {
-		[self setNextScene];
-    }
-    
-    VALayer_renderInScene(runningScene_);
+    //VALayer_renderInScene(runningScene_);
     
 }
 
