@@ -6,8 +6,7 @@
 //
 //
 
-#import <Foundation/Foundation.h>
-#import "ccTypes.h"
+#import <GLKit/GLKit.h>
 
 @interface VGColor : NSObject <NSCoding, NSCopying>
 

@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "VAAnimation.h"
 #import "VAMediaTimingFunction.h"
-#import "ccTypes.h"
+
 #import "VGColor.h"
 #import "VALayer.h"
 #import "CCScheduler.h"

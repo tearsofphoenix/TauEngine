@@ -25,7 +25,7 @@
 
 
 
-#import "ccTypes.h"
+
 #import "VEMetaService.h"
 
 typedef void (*TICK_IMP)(id, SEL, NSTimeInterval);

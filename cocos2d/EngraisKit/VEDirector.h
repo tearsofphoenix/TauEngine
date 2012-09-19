@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-#import "ccTypes.h"
+#import <GLKit/GLKit.h>
 #import "ccMacros.h"
 
 

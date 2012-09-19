@@ -53,7 +53,7 @@
 
 // cocos2d macros
 //
-#import "ccTypes.h"
+
 #import "ccMacros.h"
 
 
