@@ -48,7 +48,8 @@
     [scene addSublayer: layer];
     
     Box2DView *view = [[Box2DView alloc] initWithEntryID: 1];
-    [view setFrame: [scene bounds]];
+    [view setFrame: CGRectMake(100, 100, 800, 600)];
+    [view setView: [director_ view]];
     
     [layer addSublayer: view];
     
@@ -65,7 +66,6 @@
 //    [layer addSublayer: aSubLayer];
     
 	[director_ pushScene: scene];
-    [scene setOpacity: 0];
     
 //    [VAScene animateWithDuration: 2.0
 //                      animations: (^
