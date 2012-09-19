@@ -38,7 +38,6 @@
 #import "VAScene.h"
 
 #import "VALayer.h"
-#import "ccGLStateCache.h"
 
 // support imports
 
@@ -222,7 +221,7 @@ CGFloat	__ccContentScaleFactor = 1;
 	/* tick before glClear: issue #533 */
     [_scheduler update: 1.0 / [self framesPerSecond]];
     
-    VGContextRenderLayerTree(_renderContext, [view_ currentScene]);    
+    VGContextRenderLayer(_renderContext, [view_ currentScene]);    
 }
 
 -(void) setProjection:(ccDirectorProjection)projection
@@ -285,9 +284,7 @@ CGFloat	__ccContentScaleFactor = 1;
         }
 	}
     
-	projection_ = projection;
-    
-	CCSetProjectionMatrixDirty();
+	projection_ = projection;    
 }
 
 #pragma mark Director - Retina Display

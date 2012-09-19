@@ -53,9 +53,6 @@
 
 #import "CCConfiguration.h"
 
-// Shaders
-#import "ccGLStateCache.h"
-
 #import "VGContext.h"
 #import "VGColor.h"
 

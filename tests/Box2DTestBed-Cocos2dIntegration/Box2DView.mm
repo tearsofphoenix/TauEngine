@@ -162,21 +162,6 @@ Settings settings;
     test->Step(&settings);
 }
 
-- (void)drawInContext: (VGContext *)context
-{
-	[super drawInContext: context];
-    
-	VEGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
-    
-	VGContextSaveState(context);
-    
-	test->m_world->DrawDebugData();
-    
-	VGContextRestoreState(context);
-    
-	CHECK_GL_ERROR_DEBUG();
-}
-
 - (void)dealloc
 {
 	delete test;

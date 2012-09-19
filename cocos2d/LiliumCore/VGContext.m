@@ -7,7 +7,6 @@
 //
 
 #import "VGContext.h"
-#import "ccGLStateCache.h"
 #import "VALayer+Private.h"
 #import "VGColor.h"
 
@@ -67,7 +66,7 @@ static VGContext *__currentContext = nil;
     [super dealloc];
 }
 
-void VGContextRenderLayerTree(VGContext *context, VALayer *layer)
+void VGContextRenderLayer(VGContext *context, VALayer *layer)
 {
     GLKBaseEffect *effect = context->_effect;
 
@@ -135,7 +134,7 @@ void VGContextRenderLayerTree(VGContext *context, VALayer *layer)
     
     for (VALayer *layerLooper in [layer sublayers])
     {
-        VGContextRenderLayerTree(context, layerLooper);
+        VGContextRenderLayer(context, layerLooper);
     }
 }
 

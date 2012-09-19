@@ -46,8 +46,6 @@
 		22BAA09A15F8864F00AEBED9 /* VEDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05415F8864F00AEBED9 /* VEDataSource.m */; };
 		22BAA09D15F8864F00AEBED9 /* VEMetaService.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05715F8864F00AEBED9 /* VEMetaService.h */; };
 		22BAA09E15F8864F00AEBED9 /* VEMetaService.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05815F8864F00AEBED9 /* VEMetaService.m */; };
-		22BAA0A115F8864F00AEBED9 /* ccGLStateCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05C15F8864F00AEBED9 /* ccGLStateCache.h */; };
-		22BAA0A215F8864F00AEBED9 /* ccGLStateCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA05D15F8864F00AEBED9 /* ccGLStateCache.m */; };
 		22BAA0AD15F8864F00AEBED9 /* VGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA06815F8864F00AEBED9 /* VGColor.h */; };
 		22BAA0AE15F8864F00AEBED9 /* VGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA06915F8864F00AEBED9 /* VGColor.m */; };
 		22BAA0AF15F8864F00AEBED9 /* VGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA06A15F8864F00AEBED9 /* VGContext.h */; };
@@ -255,8 +253,6 @@
 		22BAA05415F8864F00AEBED9 /* VEDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEDataSource.m; sourceTree = "<group>"; };
 		22BAA05715F8864F00AEBED9 /* VEMetaService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEMetaService.h; sourceTree = "<group>"; };
 		22BAA05815F8864F00AEBED9 /* VEMetaService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEMetaService.m; sourceTree = "<group>"; };
-		22BAA05C15F8864F00AEBED9 /* ccGLStateCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccGLStateCache.h; sourceTree = "<group>"; };
-		22BAA05D15F8864F00AEBED9 /* ccGLStateCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ccGLStateCache.m; sourceTree = "<group>"; };
 		22BAA06815F8864F00AEBED9 /* VGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGColor.h; sourceTree = "<group>"; };
 		22BAA06915F8864F00AEBED9 /* VGColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGColor.m; sourceTree = "<group>"; };
 		22BAA06A15F8864F00AEBED9 /* VGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGContext.h; sourceTree = "<group>"; };
@@ -558,8 +554,6 @@
 		22BAA05B15F8864F00AEBED9 /* LiliumCore */ = {
 			isa = PBXGroup;
 			children = (
-				22BAA05C15F8864F00AEBED9 /* ccGLStateCache.h */,
-				22BAA05D15F8864F00AEBED9 /* ccGLStateCache.m */,
 				22BAA06815F8864F00AEBED9 /* VGColor.h */,
 				22BAA06915F8864F00AEBED9 /* VGColor.m */,
 				22BAA06A15F8864F00AEBED9 /* VGContext.h */,
@@ -958,7 +952,6 @@
 				22BAA09415F8864F00AEBED9 /* NVTimer.h in Headers */,
 				22BAA09915F8864F00AEBED9 /* VEDataSource.h in Headers */,
 				22BAA09D15F8864F00AEBED9 /* VEMetaService.h in Headers */,
-				22BAA0A115F8864F00AEBED9 /* ccGLStateCache.h in Headers */,
 				22BAA0AD15F8864F00AEBED9 /* VGColor.h in Headers */,
 				22BAA0AF15F8864F00AEBED9 /* VGContext.h in Headers */,
 				22BAA0B115F8864F00AEBED9 /* CGPointExtension.h in Headers */,
@@ -1176,7 +1169,6 @@
 				22BAA09515F8864F00AEBED9 /* NVTimer.m in Sources */,
 				22BAA09A15F8864F00AEBED9 /* VEDataSource.m in Sources */,
 				22BAA09E15F8864F00AEBED9 /* VEMetaService.m in Sources */,
-				22BAA0A215F8864F00AEBED9 /* ccGLStateCache.m in Sources */,
 				22BAA0AE15F8864F00AEBED9 /* VGColor.m in Sources */,
 				22BAA0B015F8864F00AEBED9 /* VGContext.m in Sources */,
 				22BAA0B215F8864F00AEBED9 /* CGPointExtension.m in Sources */,

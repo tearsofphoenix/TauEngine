@@ -16,7 +16,7 @@
 extern "C" {
 #endif
     
-    CF_EXPORT void VGContextRenderLayerTree(VGContext *context, VALayer *layer);
+    CF_EXPORT void VGContextRenderLayer(VGContext *context, VALayer *layer);
     
     CF_EXPORT VGContext *VGContextGetCurrentContext(void);
     

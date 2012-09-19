@@ -32,7 +32,6 @@
 #import "CCScheduler.h"
 #import "VGContext.h"
 #import "VGColor.h"
-#import "ccGLStateCache.h"
 #import "TransformUtils.h"
 #import "VGColor.h"
 #import "VALayer+Private.h"
