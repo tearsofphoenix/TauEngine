@@ -29,7 +29,7 @@
 #import "VAAnimation.h"
 #import "VEDataSource.h"
 #import "CGPointExtension.h"
-#import "CCScheduler.h"
+#import "VAScheduler.h"
 #import "VGContext.h"
 #import "VGColor.h"
 #import "TransformUtils.h"

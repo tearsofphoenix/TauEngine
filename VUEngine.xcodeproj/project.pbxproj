@@ -33,9 +33,9 @@
 		22BAA08315F8864F00AEBED9 /* VAValueFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA03C15F8864F00AEBED9 /* VAValueFunction.m */; };
 		22BAA08715F8864F00AEBED9 /* VEDirector.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04115F8864F00AEBED9 /* VEDirector.h */; };
 		22BAA08815F8864F00AEBED9 /* VEDirector.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04215F8864F00AEBED9 /* VEDirector.m */; };
-		22BAA08B15F8864F00AEBED9 /* ccMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04515F8864F00AEBED9 /* ccMacros.h */; };
-		22BAA08C15F8864F00AEBED9 /* CCScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04615F8864F00AEBED9 /* CCScheduler.h */; };
-		22BAA08D15F8864F00AEBED9 /* CCScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04715F8864F00AEBED9 /* CCScheduler.m */; };
+		22BAA08B15F8864F00AEBED9 /* VAMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04515F8864F00AEBED9 /* VAMacros.h */; };
+		22BAA08C15F8864F00AEBED9 /* VAScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04615F8864F00AEBED9 /* VAScheduler.h */; };
+		22BAA08D15F8864F00AEBED9 /* VAScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04715F8864F00AEBED9 /* VAScheduler.m */; };
 		22BAA09415F8864F00AEBED9 /* NVTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04E15F8864F00AEBED9 /* NVTimer.h */; };
 		22BAA09515F8864F00AEBED9 /* NVTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04F15F8864F00AEBED9 /* NVTimer.m */; };
 		22BAA09915F8864F00AEBED9 /* VEDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA05315F8864F00AEBED9 /* VEDataSource.h */; };
@@ -236,9 +236,9 @@
 		22BAA03C15F8864F00AEBED9 /* VAValueFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAValueFunction.m; sourceTree = "<group>"; };
 		22BAA04115F8864F00AEBED9 /* VEDirector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEDirector.h; sourceTree = "<group>"; };
 		22BAA04215F8864F00AEBED9 /* VEDirector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEDirector.m; sourceTree = "<group>"; };
-		22BAA04515F8864F00AEBED9 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
-		22BAA04615F8864F00AEBED9 /* CCScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScheduler.h; sourceTree = "<group>"; };
-		22BAA04715F8864F00AEBED9 /* CCScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScheduler.m; sourceTree = "<group>"; };
+		22BAA04515F8864F00AEBED9 /* VAMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAMacros.h; sourceTree = "<group>"; };
+		22BAA04615F8864F00AEBED9 /* VAScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAScheduler.h; sourceTree = "<group>"; };
+		22BAA04715F8864F00AEBED9 /* VAScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAScheduler.m; sourceTree = "<group>"; };
 		22BAA04E15F8864F00AEBED9 /* NVTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVTimer.h; sourceTree = "<group>"; };
 		22BAA04F15F8864F00AEBED9 /* NVTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVTimer.m; sourceTree = "<group>"; };
 		22BAA05315F8864F00AEBED9 /* VEDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEDataSource.h; sourceTree = "<group>"; };
@@ -524,9 +524,9 @@
 			children = (
 				22BAA04115F8864F00AEBED9 /* VEDirector.h */,
 				22BAA04215F8864F00AEBED9 /* VEDirector.m */,
-				22BAA04515F8864F00AEBED9 /* ccMacros.h */,
-				22BAA04615F8864F00AEBED9 /* CCScheduler.h */,
-				22BAA04715F8864F00AEBED9 /* CCScheduler.m */,
+				22BAA04515F8864F00AEBED9 /* VAMacros.h */,
+				22BAA04615F8864F00AEBED9 /* VAScheduler.h */,
+				22BAA04715F8864F00AEBED9 /* VAScheduler.m */,
 				22BAA04E15F8864F00AEBED9 /* NVTimer.h */,
 				22BAA04F15F8864F00AEBED9 /* NVTimer.m */,
 				22BAA05315F8864F00AEBED9 /* VEDataSource.h */,
@@ -932,8 +932,8 @@
 				22BAA08015F8864F00AEBED9 /* VAScene.h in Headers */,
 				22BAA08215F8864F00AEBED9 /* VAValueFunction.h in Headers */,
 				22BAA08715F8864F00AEBED9 /* VEDirector.h in Headers */,
-				22BAA08B15F8864F00AEBED9 /* ccMacros.h in Headers */,
-				22BAA08C15F8864F00AEBED9 /* CCScheduler.h in Headers */,
+				22BAA08B15F8864F00AEBED9 /* VAMacros.h in Headers */,
+				22BAA08C15F8864F00AEBED9 /* VAScheduler.h in Headers */,
 				22BAA09415F8864F00AEBED9 /* NVTimer.h in Headers */,
 				22BAA09915F8864F00AEBED9 /* VEDataSource.h in Headers */,
 				22BAA09D15F8864F00AEBED9 /* VEMetaService.h in Headers */,
@@ -1149,7 +1149,7 @@
 				22BAA08115F8864F00AEBED9 /* VAScene.m in Sources */,
 				22BAA08315F8864F00AEBED9 /* VAValueFunction.m in Sources */,
 				22BAA08815F8864F00AEBED9 /* VEDirector.m in Sources */,
-				22BAA08D15F8864F00AEBED9 /* CCScheduler.m in Sources */,
+				22BAA08D15F8864F00AEBED9 /* VAScheduler.m in Sources */,
 				22BAA09515F8864F00AEBED9 /* NVTimer.m in Sources */,
 				22BAA09A15F8864F00AEBED9 /* VEDataSource.m in Sources */,
 				22BAA09E15F8864F00AEBED9 /* VEMetaService.m in Sources */,

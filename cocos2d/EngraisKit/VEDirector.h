@@ -24,7 +24,7 @@
  */
 
 #import <GLKit/GLKit.h>
-#import "ccMacros.h"
+#import "VAMacros.h"
 
 
 #pragma mark -  CCDirectorDelegate

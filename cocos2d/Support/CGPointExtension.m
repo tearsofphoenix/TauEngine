@@ -24,7 +24,7 @@
  * SOFTWARE.
  */
 
-#import "ccMacros.h"		// CC_SWAP
+#import "VAMacros.h"		// CC_SWAP
 #include "CGPointExtension.h"
 
 #define kCGPointEpsilon FLT_EPSILON

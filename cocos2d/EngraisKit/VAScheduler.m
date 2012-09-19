@@ -25,8 +25,8 @@
 
 
 // cocos2d imports
-#import "CCScheduler.h"
-#import "ccMacros.h"
+#import "VAScheduler.h"
+#import "VAMacros.h"
 #import "VEDirector.h"
 #import "VEDataSource.h"
 
@@ -77,7 +77,7 @@
 	CFMutableArrayRef  timers;
 	id				target;		// hash key (retained)
 	unsigned int	timerIndex;
-	CCTimer			*currentTimer;
+	VATimer			*currentTimer;
 	BOOL			currentTimerSalvaged;
 	BOOL			paused;
     
@@ -96,12 +96,12 @@
 @end
 
 //
-// CCTimer
+// VATimer
 //
 #pragma mark -
-#pragma mark - CCTimer
+#pragma mark - VATimer
 
-@interface CCTimer ()
+@interface VATimer ()
 {
 @private
     //    dispatch_block_t _block;
@@ -109,13 +109,13 @@
 }
 @end
 
-@implementation CCTimer
+@implementation VATimer
 
 @synthesize interval;
 
 -(id) init
 {
-	NSAssert(NO, @"CCTimer: Init not supported.");
+	NSAssert(NO, @"VATimer: Init not supported.");
 	return nil;
 }
 
@@ -225,16 +225,16 @@
 @end
 
 //
-// CCScheduler
+// VAScheduler
 //
 #pragma mark -
-#pragma mark - CCScheduler
+#pragma mark - VAScheduler
 
 #define kCCScheduleArrayCount (3)
 
-@implementation CCScheduler
+@implementation VAScheduler
 
-static void CCScheduleRemoveHashElement(CCScheduler *self, tHashSelectorEntry *element)
+static void CCScheduleRemoveHashElement(VAScheduler *self, tHashSelectorEntry *element)
 {
     CFRelease(element->timers);
     
@@ -244,7 +244,7 @@ static void CCScheduleRemoveHashElement(CCScheduler *self, tHashSelectorEntry *e
 	free(element);
 }
 
-static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
+static void CCSchedulerRemoveUpdate(VAScheduler *self, tListEntry *entry)
 {
 	tHashUpdateEntry * element = (void *)CFDictionaryGetValue(self->hashForUpdates, entry->target);
     
@@ -277,9 +277,9 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     {
 		timeScale_ = 1.0f;
         
-		// used to trigger CCTimer#update
+		// used to trigger VATimer#update
 		updateSelector = @selector(update:);
-		impMethod = (TICK_IMP) [CCTimer instanceMethodForSelector:updateSelector];
+		impMethod = (TICK_IMP) [VATimer instanceMethodForSelector:updateSelector];
         
 		// updates with priority
         for (NSInteger iLooper = 0; iLooper < kCCScheduleArrayCount; ++iLooper)
@@ -313,7 +313,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 }
 
 
-#pragma mark CCScheduler - Custom Selectors
+#pragma mark VAScheduler - Custom Selectors
 
 -(void) scheduleSelector: (SEL)selector
                forTarget: (id)target
@@ -350,7 +350,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
         
 	} else
     {
-		NSAssert( element->paused == paused, @"CCScheduler. Trying to schedule a selector with a pause value different than the target");
+		NSAssert( element->paused == paused, @"VAScheduler. Trying to schedule a selector with a pause value different than the target");
     }
     
 	if( element->timers == nil )
@@ -361,10 +361,10 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 	{
 		for( CFIndex i=0; i< CFArrayGetCount(element->timers); i++ )
         {
-			CCTimer *timer = CFArrayGetValueAtIndex(element->timers, i);
+			VATimer *timer = CFArrayGetValueAtIndex(element->timers, i);
 			if( selector == timer->selector )
             {
-				CCLOG(@"CCScheduler#scheduleSelector. Selector already scheduled. Updating interval from: %.4f to %.4f", timer->interval, interval);
+				CCLOG(@"VAScheduler#scheduleSelector. Selector already scheduled. Updating interval from: %.4f to %.4f", timer->interval, interval);
 				timer->interval = interval;
 				return;
 			}
@@ -372,7 +372,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
         
 	}
     
-	CCTimer *timer = [[CCTimer alloc] initWithTarget: target
+	VATimer *timer = [[VATimer alloc] initWithTarget: target
                                             selector: selector
                                             interval: interval
                                               repeat: repeat
@@ -396,7 +396,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
         
 		for( CFIndex i=0; i< CFArrayGetCount(element->timers); i++ )
         {
-			CCTimer *timer = CFArrayGetValueAtIndex(element->timers, i);
+			VATimer *timer = CFArrayGetValueAtIndex(element->timers, i);
             
             
 			if( selector == timer->selector )
@@ -430,7 +430,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     
 }
 
-#pragma mark CCScheduler - Update Specific
+#pragma mark VAScheduler - Update Specific
 
 -(void) priorityIn: (CFMutableArrayRef)list
             target: (id)target
@@ -513,7 +513,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     if(hashElement)
     {
 #if COCOS2D_DEBUG >= 1
-        NSAssert( hashElement->entry->markedForDeletion, @"CCScheduler: You can't re-schedule an 'update' selector'. Unschedule it first");
+        NSAssert( hashElement->entry->markedForDeletion, @"VAScheduler: You can't re-schedule an 'update' selector'. Unschedule it first");
 #endif
         hashElement->entry->markedForDeletion = NO;
         return;
@@ -552,7 +552,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
 	}
 }
 
-#pragma mark CCScheduler - Common for Update selector & Custom Selectors
+#pragma mark VAScheduler - Common for Update selector & Custom Selectors
 
 -(void) unscheduleAllSelectors
 {
@@ -702,7 +702,7 @@ static void CCSchedulerRemoveUpdate(CCScheduler *self, tListEntry *entry)
     return idsWithSelectors;
 }
 
-#pragma mark CCScheduler - Main Loop
+#pragma mark VAScheduler - Main Loop
 
 -(void) update: (NSTimeInterval) dt
 {

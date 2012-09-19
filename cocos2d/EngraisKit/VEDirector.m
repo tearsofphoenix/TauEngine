@@ -33,7 +33,7 @@
 #import "VEDirector.h"
 #import "VGContext.h"
 
-#import "ccMacros.h"
+#import "VAMacros.h"
 
 #import "VAScene.h"
 
@@ -46,7 +46,7 @@
 
 
 #import "VEDataSource.h"
-#import "CCScheduler.h"
+#import "VAScheduler.h"
 #import "VALayer+Private.h"
 #import "VIView.h"
 
@@ -64,7 +64,7 @@ NSUInteger	__ccNumberOfDraws = 0;
 @interface VEDirector ()
 {
 @private
-    CCScheduler *_scheduler;
+    VAScheduler *_scheduler;
     EAGLContext *_context;
 }
 

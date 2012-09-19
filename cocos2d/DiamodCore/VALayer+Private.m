@@ -10,7 +10,7 @@
 #import "VGColor.h"
 #import "VAScene.h"
 #import "TransformUtils.h"
-#import "ccMacros.h"
+#import "VAMacros.h"
 
 static const NSUInteger verticeCountForEachCorner = 8;
 

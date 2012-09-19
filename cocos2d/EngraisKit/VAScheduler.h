@@ -31,10 +31,10 @@
 typedef void (*TICK_IMP)(id, SEL, NSTimeInterval);
 
 //
-// CCTimer
+// VATimer
 //
 /** Light weight timer */
-@interface CCTimer : NSObject
+@interface VATimer : NSObject
 {
 	id target;
 	TICK_IMP impMethod;
@@ -76,9 +76,9 @@ typedef void (*TICK_IMP)(id, SEL, NSTimeInterval);
 
 
 //
-// CCScheduler
+// VAScheduler
 //
-/** CCScheduler is responsible of triggering the scheduled callbacks.
+/** VAScheduler is responsible of triggering the scheduled callbacks.
  You should not use NSTimer. Instead use this class.
 
  There are 2 different types of callbacks (selectors):
@@ -100,7 +100,7 @@ typedef NS_ENUM(NSUInteger, CCSchedulerPriority)
     CCSchedulerPriorityPositive = 2,
 };
 
-@interface CCScheduler : VEMetaService
+@interface VAScheduler : VEMetaService
 {
 	NSTimeInterval				timeScale_;
 	//

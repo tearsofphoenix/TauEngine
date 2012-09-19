@@ -11,7 +11,7 @@
 
 #import "VGColor.h"
 #import "VALayer.h"
-#import "CCScheduler.h"
+#import "VAScheduler.h"
 #import "VEDataSource.h"
 
 @implementation VAAnimation

@@ -41,7 +41,7 @@
 #import "VALayer.h"
 
 #import "VAScene.h"
-#import "CCScheduler.h"
+#import "VAScheduler.h"
 #import "VACamera.h"
 
 #import "VEDirector.h"
@@ -54,7 +54,7 @@
 // cocos2d macros
 //
 
-#import "ccMacros.h"
+#import "VAMacros.h"
 
 
 

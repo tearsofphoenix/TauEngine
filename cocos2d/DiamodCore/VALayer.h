@@ -28,7 +28,7 @@
 #import "VACamera.h"
 #import "VAMediaTiming.h"
 
-@class CCScheduler;
+@class VAScheduler;
 @class VGContext;
 @class VAAnimation;
 @class VGColor;
@@ -74,7 +74,7 @@
     
     id _contents;
     
-    CCScheduler *_scheduler;
+    VAScheduler *_scheduler;
     VALayer *_superlayer;
     CGRect _contentsRect;
     NSString *_contentsGravity;
