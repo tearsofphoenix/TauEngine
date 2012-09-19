@@ -15,30 +15,37 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
-    CF_EXPORT void VGContextRenderLayer(VGContext *context, VALayer *layer);
-    
-    CF_EXPORT VGContext *VGContextGetCurrentContext(void);
-    
-    CF_EXPORT void VGContextSaveState(VGContext *context);
-    CF_EXPORT void VGContextRestoreState(VGContext *context);
-    
-    CF_EXPORT void VGContextMatrixMode(VGContext *context, GLenum mode);
-    
-    CF_EXPORT void VGContextLoadIdentity(VGContext *context);
-    
-    CF_EXPORT void VGContextLoadCTM(VGContext *context, GLKMatrix4 pIn);
-    CF_EXPORT void VGContextConcatCTM(VGContext *context, GLKMatrix4 pIn);
-    
-    CF_EXPORT void VGContextTranslateCTM(VGContext *context, float x, float y, float z);
-    CF_EXPORT void VGContextRotateCTM(VGContext *context, float angle, float x, float y, float z);
-    CF_EXPORT void VGContextScaleCTM(VGContext *context, float x, float y, float z);
-    
-    CF_EXPORT GLKMatrix4 VGContextGetMVPMatrix(VGContext *context);
 
-    CF_EXPORT GLKMatrix4 VGContextGetModelviewMatrix(VGContext *context);
+    typedef VGContext  *VGContextRef;
+
+    CF_EXPORT void VGContextRenderLayer(VGContextRef context, VALayer *layer);
     
-    CF_EXPORT GLKMatrix4 VGContextGetProjectionMatrix(VGContext *context);
+    CF_EXPORT VGContextRef VGContextGetCurrentContext(void);
+    
+    CF_EXPORT void VGContextSaveState(VGContextRef context);
+    CF_EXPORT void VGContextRestoreState(VGContextRef context);
+    
+    CF_EXPORT void VGContextMatrixMode(VGContextRef context, GLenum mode);
+    
+    CF_EXPORT void VGContextLoadIdentity(VGContextRef context);
+    
+    CF_EXPORT void VGContextSetFillColor(VGContextRef context, GLKVector4 color);
+    
+    CF_EXPORT void VGContextLoadCTM(VGContextRef context, GLKMatrix4 pIn);
+    CF_EXPORT void VGContextConcatCTM(VGContextRef context, GLKMatrix4 pIn);
+    
+    CF_EXPORT void VGContextTranslateCTM(VGContextRef context, float x, float y, float z);
+    CF_EXPORT void VGContextRotateCTM(VGContextRef context, float angle, float x, float y, float z);
+    CF_EXPORT void VGContextScaleCTM(VGContextRef context, float x, float y, float z);
+    
+    CF_EXPORT GLKMatrix4 VGContextGetMVPMatrix(VGContextRef context);
+
+    CF_EXPORT GLKMatrix4 VGContextGetModelviewMatrix(VGContextRef context);
+    
+    CF_EXPORT GLKMatrix4 VGContextGetProjectionMatrix(VGContextRef context);
+    
+    //extra
+    CF_EXPORT void VGContextDrawVertices(VGContextRef context, GLvoid *vertices, GLsizei vertexCount, GLenum mode);
     
 #ifdef __cplusplus
     }

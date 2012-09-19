@@ -151,9 +151,7 @@ static NSString * s_VALayerInitializationKeys[] =
         _sublayers = [[NSMutableArray alloc] init];
         _animations = [[NSMutableDictionary alloc] init];
         _animationKeys = [[NSMutableArray alloc] init];
-        
-        _camera = VACameraCreate();
-                
+                        
         for (int i = 0; i < sizeof(s_VALayerInitializationKeys)/sizeof(s_VALayerInitializationKeys[0]); i++)
         {
             id defaultValue = [[self class] defaultValueForKey: s_VALayerInitializationKeys[i]];
@@ -1244,6 +1242,11 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
  * CoreAnimation composition model, use with caution. */
 
 - (void)renderInContext: (VGContext *)ctx
+{
+    
+}
+
+- (void)render
 {
     
 }

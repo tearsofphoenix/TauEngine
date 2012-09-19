@@ -10,7 +10,7 @@
 #import "VALayer+Private.h"
 #import "VGColor.h"
 
-static VGContext *__currentContext = nil;
+static VGContextRef __currentContext = nil;
 
 @interface VGContext : NSObject
 
@@ -66,7 +66,7 @@ static VGContext *__currentContext = nil;
     [super dealloc];
 }
 
-void VGContextRenderLayer(VGContext *context, VALayer *layer)
+void VGContextRenderLayer(VGContextRef context, VALayer *layer)
 {
     GLKBaseEffect *effect = context->_effect;
 
@@ -81,20 +81,13 @@ void VGContextRenderLayer(VGContext *context, VALayer *layer)
         [texture2d0 setName: [textureInfo name]];
     }
 
-    [[effect transform] setModelviewMatrix: layer->_cachedFullModelviewMatrix];
-    [[effect transform] setProjectionMatrix: [layer->_scene projectionMatrix]];
-
     bool layerUseTextureColor = VALayer_attribute_useTextureColor(layer);
     if (!layerUseTextureColor)
     {
         [effect setConstantColor: [layer->_backgroundColor CCColor]];
     }
-    // Tell OpenGL that we're going to use this effect for our upcoming drawing
-    [effect prepareToDraw];
-    
-    // Tell OpenGL that we'll be using vertex position data
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, layer->_vertices);
+
+    VGContextDrawVertices(context, layer->_vertices, layer->_verticeCount, GL_TRIANGLE_FAN);
     
     // If we're using vertex coloring, tell OpenGL that we'll be using vertex color data
     if (layerUseTextureColor)
@@ -112,7 +105,7 @@ void VGContextRenderLayer(VGContext *context, VALayer *layer)
     }
     
     // Draw our primitives!
-    glDrawArrays(GL_TRIANGLE_FAN, 0, layer->_verticeCount);
+//    glDrawArrays(GL_TRIANGLE_FAN, 0, layer->_verticeCount);
     
     // Cleanup: Done with position data
     glDisableVertexAttribArray(GLKVertexAttribPosition);
@@ -132,23 +125,27 @@ void VGContextRenderLayer(VGContext *context, VALayer *layer)
     // Cleanup: Done with the current blend function
     glDisable(GL_BLEND);
     
+    [layer render];
+    
     for (VALayer *layerLooper in [layer sublayers])
     {
         VGContextRenderLayer(context, layerLooper);
     }
 }
 
-void VGContextSaveState(VGContext *context)
+void VGContextSaveState(VGContextRef context)
 {
-    GLKMatrixStackPush(context->_currentStack);
+    GLKMatrixStackPush(context->_modelViewMatrixStack);
+    GLKMatrixStackPush(context->_projectionMatrixStack);
 }
 
-void VGContextRestoreState(VGContext *context)
+void VGContextRestoreState(VGContextRef context)
 {
-    GLKMatrixStackPop(context->_currentStack);
+    GLKMatrixStackPop(context->_modelViewMatrixStack);
+    GLKMatrixStackPop(context->_projectionMatrixStack);
 }
 
-void VGContextMatrixMode(VGContext *context, GLenum mode)
+void VGContextMatrixMode(VGContextRef context, GLenum mode)
 {
     switch(mode)
 	{
@@ -175,54 +172,59 @@ void VGContextMatrixMode(VGContext *context, GLenum mode)
 	}
 }
 
-void VGContextLoadIdentity(VGContext *context)
+void VGContextLoadIdentity(VGContextRef context)
 {
     GLKMatrixStackLoadMatrix4(context->_currentStack, GLKMatrix4Identity);
 }
 
-void VGContextLoadCTM(VGContext *context, GLKMatrix4 pIn)
+void VGContextLoadCTM(VGContextRef context, GLKMatrix4 pIn)
 {
     GLKMatrixStackLoadMatrix4(context->_currentStack, pIn);
 }
 
-void VGContextConcatCTM(VGContext *context, GLKMatrix4 pIn)
+void VGContextConcatCTM(VGContextRef context, GLKMatrix4 pIn)
 {
     GLKMatrixStackMultiplyMatrix4(context->_currentStack, pIn);
 }
 
-void VGContextTranslateCTM(VGContext *context, float tx, float ty, float tz)
+void VGContextTranslateCTM(VGContextRef context, float tx, float ty, float tz)
 {
     GLKMatrixStackTranslate(context->_currentStack, tx, ty, tz);
 }
 
-void VGContextRotateCTM(VGContext *context, float angle, float x, float y, float z)
+void VGContextRotateCTM(VGContextRef context, float angle, float x, float y, float z)
 {
     GLKMatrixStackRotate(context->_currentStack, angle, x, y, z);
 }
 
-void VGContextScaleCTM(VGContext *context, float sx, float sy, float sz)
+void VGContextScaleCTM(VGContextRef context, float sx, float sy, float sz)
 {
     GLKMatrixStackScale(context->_currentStack, sx, sy, sz);
 }
 
-GLKMatrix4 VGContextGetModelviewMatrix(VGContext *context)
+void VGContextSetFillColor(VGContextRef context, GLKVector4 color)
+{
+    [context->_effect setConstantColor: color];
+}
+
+GLKMatrix4 VGContextGetModelviewMatrix(VGContextRef context)
 {
     return GLKMatrixStackGetMatrix4(context->_modelViewMatrixStack);
 }
 
-GLKMatrix4 VGContextGetProjectionMatrix(VGContext *context)
+GLKMatrix4 VGContextGetProjectionMatrix(VGContextRef context)
 {
     return GLKMatrixStackGetMatrix4(context->_projectionMatrixStack);
 }
 
 
-GLKMatrix4 VGContextGetMVPMatrix(VGContext *context)
+GLKMatrix4 VGContextGetMVPMatrix(VGContextRef context)
 {
     return GLKMatrix4Multiply(GLKMatrixStackGetMatrix4(context->_projectionMatrixStack),
                               GLKMatrixStackGetMatrix4(context->_modelViewMatrixStack));
 }
 
-VGContext *VGContextGetCurrentContext(void)
+VGContextRef VGContextGetCurrentContext(void)
 {
     if (!__currentContext)
     {
@@ -230,6 +232,22 @@ VGContext *VGContextGetCurrentContext(void)
     }
     
     return __currentContext;
+}
+
+void VGContextDrawVertices(VGContextRef context, GLvoid *vertices, GLsizei vertexCount, GLenum mode)
+{
+    GLKBaseEffect *effect = context->_effect;
+    [[effect transform] setModelviewMatrix: GLKMatrixStackGetMatrix4(context->_modelViewMatrixStack)];
+    [[effect transform] setProjectionMatrix: GLKMatrixStackGetMatrix4(context->_projectionMatrixStack)];
+    
+    [effect prepareToDraw];
+    
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+
+    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+	glDrawArrays(mode, 0, vertexCount);
+
+    glDisableVertexAttribArray(GLKVertexAttribPosition);
 }
 
 @end

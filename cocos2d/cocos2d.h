@@ -42,7 +42,6 @@
 
 #import "VAScene.h"
 #import "VAScheduler.h"
-#import "VACamera.h"
 
 #import "VEDirector.h"
 

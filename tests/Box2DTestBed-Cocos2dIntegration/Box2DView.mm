@@ -145,7 +145,6 @@ Settings settings;
         
 		entry = g_testEntries + entryId;
 		test = entry->createFcn();
-        [self setOpacity: 0];
     }
     
     return self;
@@ -159,6 +158,14 @@ Settings settings;
 - (void)tick: (NSTimeInterval) dt
 {
     test->Step(&settings);
+}
+
+- (void)render
+{
+    test->Step(&settings);
+
+    test->m_world->DrawDebugData();
+    CHECK_GL_ERROR_DEBUG();
 }
 
 - (void)dealloc

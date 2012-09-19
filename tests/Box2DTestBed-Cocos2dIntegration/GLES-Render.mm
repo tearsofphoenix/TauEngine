@@ -32,31 +32,17 @@
 
 #include <cstring>
 
-GLESDebugDraw::GLESDebugDraw()
-: mRatio( 1.0f )
-{
-	this->initShader();
-}
-
 GLESDebugDraw::GLESDebugDraw( float32 ratio )
 : mRatio( ratio )
 {
-	this->initShader();
-}
-
-void GLESDebugDraw::initShader( void )
-{
-    m_effect = [[GLKBaseEffect alloc] init];    
 }
 
 void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, const b2Color& color)
 {
     VGContext *context = VGContextGetCurrentContext();
-    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
-    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
     
 	GLKVector2 vertices[vertexCount];
-
+    
 	for( int i=0;i<vertexCount;i++)
     {
 		b2Vec2 tmp = old_vertices[i];
@@ -64,17 +50,19 @@ void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, c
 		vertices[i].x = tmp.x;
 		vertices[i].y = tmp.y;
 	}
-
     
-    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1)];
+    VGContextSaveState(context);
     
-    [m_effect prepareToDraw];
+    VGContextMatrixMode(context, GL_MODELVIEW_MATRIX);
+    VGContextScaleCTM(context, 10, 10, 1);
     
-	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, vertices);
-	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
-
+    VGContextSetFillColor(context, GLKVector4Make(color.r, color.g, color.b, 1));
+    VGContextDrawVertices(context, vertices, vertexCount, GL_LINE_LOOP);
+    
+    VGContextRestoreState(context);
+    
 	CC_INCREMENT_GL_DRAWS(1);
-
+    
 	CHECK_GL_ERROR_DEBUG();
 }
 
@@ -82,11 +70,9 @@ void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int32 vertexCou
 {
     
     VGContext *context = VGContextGetCurrentContext();
-    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
-    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
-
+    
 	GLKVector2 vertices[vertexCount];
-
+    
 	for( int i=0;i<vertexCount;i++)
     {
 		b2Vec2 tmp = old_vertices[i];
@@ -96,37 +82,33 @@ void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* old_vertices, int32 vertexCou
 		vertices[i].y = tmp.y;
 	}
     
+    VGContextSaveState(context);
     
+    VGContextMatrixMode(context, GL_MODELVIEW_MATRIX);
+    VGContextScaleCTM(context, 10, 10, 1);
+
+    VGContextSetFillColor(context, GLKVector4Make(color.r * 0.5, color.g * 0.5, color.b * 0.5, 0.5));
+    VGContextDrawVertices(context, vertices, vertexCount, GL_TRIANGLE_FAN);
     
-    [m_effect setConstantColor: GLKVector4Make(color.r * 0.5, color.g * 0.5, color.b * 0.5, 0.5)];
-    [m_effect prepareToDraw];
-//    VEGLProgramUniformf(mShaderProgram, mColorLocation, halfColor, 4);
+    VGContextSetFillColor(context, GLKVector4Make(color.r, color.g, color.b, 1.0));
+    VGContextDrawVertices(context, vertices, vertexCount, GL_LINE_LOOP);
 
-	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, vertices);
-
-	glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
-
-    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
-    [m_effect prepareToDraw];
-
-	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
-
+    VGContextRestoreState(context);
+    
 	CC_INCREMENT_GL_DRAWS(2);
-
+    
 	CHECK_GL_ERROR_DEBUG();
 }
 
 void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
     VGContext *context = VGContextGetCurrentContext();
-    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
-    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
-
+    
 	const float32 k_segments = 16.0f;
 	int vertexCount=16;
 	const float32 k_increment = 2.0f * b2_pi / k_segments;
 	float32 theta = 0.0f;
-
+    
 	GLfloat				glVertices[vertexCount*2];
 	for (int32 i = 0; i < k_segments; ++i)
 	{
@@ -135,32 +117,32 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
 		glVertices[i*2+1]=v.y * mRatio;
 		theta += k_increment;
 	}
-
     
+    VGContextSaveState(context);
     
-    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
-    [m_effect prepareToDraw];
+    VGContextMatrixMode(context, GL_MODELVIEW_MATRIX);
+    VGContextScaleCTM(context, 10, 10, 1);
+
+    VGContextSetFillColor(context, GLKVector4Make(color.r, color.g, color.b, 1.0));
     
-	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
+    VGContextDrawVertices(context, glVertices, vertexCount, GL_LINE_LOOP);
 
-	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
-
+    VGContextRestoreState(context);
+    
 	CC_INCREMENT_GL_DRAWS(1);
-
+    
 	CHECK_GL_ERROR_DEBUG();
 }
 
 void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
     VGContext *context = VGContextGetCurrentContext();
-    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
-    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
-
+    
 	const float32 k_segments = 16.0f;
 	int vertexCount=16;
 	const float32 k_increment = 2.0f * b2_pi / k_segments;
 	float32 theta = 0.0f;
-
+    
 	GLfloat				glVertices[vertexCount*2];
 	for (int32 i = 0; i < k_segments; ++i)
 	{
@@ -169,50 +151,52 @@ void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
 		glVertices[i*2+1]=v.y * mRatio;
 		theta += k_increment;
 	}
-
     
+    VGContextSaveState(context);
     
-    [m_effect setConstantColor: GLKVector4Make(color.r * 0.5, color.g * 0.5, color.b * 0.5, 0.5)];
-    [m_effect prepareToDraw];
+    VGContextMatrixMode(context, GL_MODELVIEW_MATRIX);
+    VGContextScaleCTM(context, 10, 10, 1);
 
-	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
-
-    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
-    [m_effect prepareToDraw];
+    VGContextSetFillColor(context, GLKVector4Make(color.r * 0.5, color.g * 0.5, color.b * 0.5, 0.5));
+    VGContextDrawVertices(context, glVertices, vertexCount, GL_TRIANGLE_FAN);
     
-	glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
-
+    VGContextSetFillColor(context, GLKVector4Make(color.r, color.g, color.b, 1.0));
+    VGContextDrawVertices(context, glVertices, vertexCount, GL_LINE_LOOP);
+    
+    VGContextRestoreState(context);
+    
 	// Draw the axis line
 	DrawSegment(center,center+radius*axis,color);
 
+    
 	CC_INCREMENT_GL_DRAWS(2);
-
+    
 	CHECK_GL_ERROR_DEBUG();
 }
 
 void GLESDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
     VGContext *context = VGContextGetCurrentContext();
-    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
-    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
 
+    VGContextSaveState(context);
     
-    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
-    [m_effect prepareToDraw];
-
+    VGContextMatrixMode(context, GL_MODELVIEW_MATRIX);
+    VGContextScaleCTM(context, 10, 10, 1);
+    
+    VGContextSetFillColor(context, GLKVector4Make(color.r, color.g, color.b, 1.0));
+    
 	GLfloat				glVertices[] =
     {
 		p1.x * mRatio, p1.y * mRatio,
 		p2.x * mRatio, p2.y * mRatio
 	};
-
-	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
-
-	glDrawArrays(GL_LINES, 0, 2);
+    
+    VGContextDrawVertices(context, glVertices, 2, GL_LINES);
 	
+    VGContextRestoreState(context);
+    
 	CC_INCREMENT_GL_DRAWS(1);
-
+    
 	CHECK_GL_ERROR_DEBUG();
 }
 
@@ -222,7 +206,7 @@ void GLESDebugDraw::DrawTransform(const b2Transform& xf)
 	const float32 k_axisScale = 0.4f;
 	p2 = p1 + k_axisScale * xf.q.GetXAxis();
 	DrawSegment(p1, p2, b2Color(1,0,0));
-
+    
 	p2 = p1 + k_axisScale * xf.q.GetYAxis();
 	DrawSegment(p1,p2,b2Color(0,1,0));
 }
@@ -230,25 +214,24 @@ void GLESDebugDraw::DrawTransform(const b2Transform& xf)
 void GLESDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
 {
     VGContext *context = VGContextGetCurrentContext();
-    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
-    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
     
-
+    VGContextSaveState(context);
     
-    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
-    [m_effect prepareToDraw];
+    VGContextMatrixMode(context, GL_MODELVIEW_MATRIX);
+    VGContextScaleCTM(context, 10, 10, 1);
 
+    VGContextSetFillColor(context, GLKVector4Make(color.r, color.g, color.b, 1.0));
+    
 	GLfloat				glVertices[] =
     {
 		p.x * mRatio, p.y * mRatio
 	};
-
-	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
-
-	glDrawArrays(GL_POINTS, 0, 1);
-	
+    
+    VGContextDrawVertices(context, glVertices, 1, GL_POINTS);
+    VGContextRestoreState(context);
+    
 	CC_INCREMENT_GL_DRAWS(1);
-
+    
 	CHECK_GL_ERROR_DEBUG();
 }
 
@@ -262,25 +245,27 @@ void GLESDebugDraw::DrawString(int x, int y, const char *string, ...)
 void GLESDebugDraw::DrawAABB(b2AABB* aabb, const b2Color& color)
 {
     VGContext *context = VGContextGetCurrentContext();
-    [[m_effect transform] setModelviewMatrix: VGContextGetModelviewMatrix(context)];
-    [[m_effect transform] setProjectionMatrix: VGContextGetProjectionMatrix(context)];
-    
-    
-    
-    [m_effect setConstantColor: GLKVector4Make(color.r, color.g, color.b, 1.0)];
-    [m_effect prepareToDraw];
 
+    VGContextSaveState(context);
+    
+    VGContextMatrixMode(context, GL_MODELVIEW_MATRIX);
+    VGContextScaleCTM(context, 10, 10, 1);
+
+    VGContextSetFillColor(context, GLKVector4Make(color.r, color.g, color.b, 1.0));
+    
+    
 	GLfloat				glVertices[] = {
 		aabb->lowerBound.x * mRatio, aabb->lowerBound.y * mRatio,
 		aabb->upperBound.x * mRatio, aabb->lowerBound.y * mRatio,
 		aabb->upperBound.x * mRatio, aabb->upperBound.y * mRatio,
 		aabb->lowerBound.x * mRatio, aabb->upperBound.y * mRatio
 	};
-
-	glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, glVertices);
-	glDrawArrays(GL_LINE_LOOP, 0, 8);
-	
+    
+    VGContextDrawVertices(context, glVertices, 8, GL_LINE_LOOP);
+    
+    VGContextRestoreState(context);
+    
 	CC_INCREMENT_GL_DRAWS(1);
-
+    
 	CHECK_GL_ERROR_DEBUG();
 }

@@ -36,26 +36,33 @@
     }
     
     VAScene *scene = [VAScene layer];
-    [scene setFrame: CGRectMake(0, 0, 1024, 768)];
+    [scene setFrame: CGRectMake(0, 0, 1024 / 2, 768 / 2)];
     
     VALayer *layer = [VALayer layer];
-    [layer setFrame: CGRectMake(10, 10, 200, 200)];
+    [layer setFrame: [scene bounds]];
     //[layer setTransform: GLKMatrix4MakeScale(1.0, 0.5, 1.0)];
     
     //[layer setBounds: CGRectMake(100, 100, 200, 200)];
     
-    [layer setBackgroundColor: [VGColor redColor]];
+//    [layer setBackgroundColor: [VGColor redColor]];
     [scene addSublayer: layer];
     
-    VALayer *aSubLayer = [VALayer layer];
-    [aSubLayer setFrame: CGRectMake(10, 10, 100, 100)];
-    [aSubLayer setBackgroundColor: [VGColor greenColor]];
+    Box2DView *view = [[Box2DView alloc] initWithEntryID: 1];
+    [view setFrame: [scene bounds]];
+    
+    [layer addSublayer: view];
+    
+    [view release];
+    
+//    VALayer *aSubLayer = [VALayer layer];
+//    [aSubLayer setFrame: CGRectMake(10, 10, 100, 100)];
+//    [aSubLayer setBackgroundColor: [VGColor greenColor]];
     //[aSubLayer setAffineTransform: CGAffineTransformConcat(CGAffineTransformMakeScale(0.5, 0.5), CGAffineTransformMakeRotation(0))];
     //[aSubLayer setAffineTransform: CGAffineTransformMakeScale(0.5, 0.5)];
 
     //[aSubLayer setCornerRadius: 20];
     
-    [layer addSublayer: aSubLayer];
+//    [layer addSublayer: aSubLayer];
     
 	[director_ pushScene: scene];
     [scene setOpacity: 0];
@@ -97,98 +104,6 @@
     //    [entriesView release];
     //
 	return YES;
-}
-
-static IMP _fIMP = NULL;
-
-static void fire(id timer, SEL selector)
-{
-    NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
-    _fIMP(timer, selector);
-}
-
-static IMP _allocIMP = NULL;
-
-static id _allocF(id className, SEL selector)
-{
-    NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
-    return _allocIMP(className, selector);
-}
-
-static IMP _allocZoneIMP = NULL;
-static id allocWithZone(id className, SEL selector, NSZone *zone)
-{
-    NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
-    return _allocZoneIMP(className, selector, zone);
-}
-
-static IMP _addTimerIMP = NULL;
-static void addTimer(id t, SEL selector, void *timer)
-{
-    NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
-    
-    _addTimerIMP(t, selector, timer);
-}
-
-static IMP _initIMP = NULL;
-static id init(id e, SEL selector)
-{
-    NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
-    return _initIMP(e, selector);
-}
-
-static IMP _renderIMP = NULL;
-static id render(id obj, SEL selector, id context, id options)
-{
-    NSLog(@"f %s %@",  __func__, [NSThread callStackSymbols]);
-    return _renderIMP(obj, selector, context, options);
-}
-
-static IMP _kvoIMP = NULL;
-static void kvo(id obj, SEL selector, NSString *string, id value, id change, void *context)
-{
-    NSLog(@"in func: %s %@", __FUNCTION__, [NSThread callStackSymbols]);
-    
-    _kvoIMP(obj, selector, string, value, change, context);
-}
-
-static IMP _innerDisplay = NULL;
-static void _display(id obj, SEL selector)
-{
-    NSLog(@"in func: %s %@", __FUNCTION__, [NSThread callStackSymbols]);
-    
-    _innerDisplay(obj, selector);
-}
-
-+ (void)load
-{
-    /*
-     Class timerClass = objc_getClass("NSTimer");
-     _fIMP = class_getMethodImplementation(timerClass, @selector(fire));
-     class_replaceMethod(timerClass, @selector(fire), (IMP)fire, "v@:");
-     
-     Class metaClass = objc_getMetaClass("NSTimer");
-     _allocIMP = class_getMethodImplementation(metaClass, @selector(alloc));
-     class_replaceMethod(metaClass, @selector(alloc), (IMP)_allocF, "@@:");
-     
-     _allocZoneIMP = class_getMethodImplementation(metaClass, @selector(allocWithZone:));
-     class_replaceMethod(metaClass, @selector(allocWithZone:), (IMP)allocWithZone, "@@:@");
-     
-     Class transaction = objc_getClass("CATransaction");
-     _initIMP = class_getMethodImplementation(transaction, @selector(init));
-     class_replaceMethod(transaction, @selector(init), (IMP)init, "@@:");
-     
-     Class render = objc_getMetaClass("CARenderer");
-     _renderIMP = class_getMethodImplementation(render, @selector(rendererWithEAGLContext:options:));
-     class_replaceMethod(render, @selector(rendererWithEAGLContext:options:), (IMP)render, "@16@0:4@8@12");
-     */
-    
-    //    Class layerClass = objc_getClass("CALayer");
-    //    _kvoIMP = class_getMethodImplementation(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:));
-    //    class_replaceMethod(layerClass, @selector(observeValueForKeyPath:ofObject:change:context:), (IMP)kvo, "v@:@@@@");
-    
-    //    _innerDisplay = class_getMethodImplementation(layerClass, @selector(_display));
-    //    class_replaceMethod(layerClass, @selector(_display), (IMP)_display, "v@:");
 }
 
 @end

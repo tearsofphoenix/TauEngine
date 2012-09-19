@@ -25,15 +25,6 @@
 
 #import <Foundation/Foundation.h>
 
-/**
- @file
- cocos2d helper macros
- */
-
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-#define __CC_PLATFORM_IOS 1
-#endif
-
 /*
  * if COCOS2D_DEBUG is not defined, or if it is 0 then
  *	all CCLOGXXX macros will be disabled

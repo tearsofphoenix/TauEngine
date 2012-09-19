@@ -28,8 +28,6 @@
 
 #import "cocos2d.h"
 
-#import <GLKit/GLKit.h>
-
 #include "Box2D.h"
 
 struct b2AABB;
@@ -39,14 +37,10 @@ struct b2AABB;
 class GLESDebugDraw : public b2Draw
 {
 	float32 mRatio;
-    GLKBaseEffect *m_effect;
-	GLint		mColorLocation;
 
-	void initShader( void );
 public:
-	GLESDebugDraw();
 
-	GLESDebugDraw( float32 ratio );
+	GLESDebugDraw( float32 ratio = 1.0f);
 
 	void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color);
 

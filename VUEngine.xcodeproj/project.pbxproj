@@ -19,8 +19,6 @@
 		22BAA07315F8864F00AEBED9 /* VAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA02C15F8864F00AEBED9 /* VAAnimation.m */; };
 		22BAA07415F8864F00AEBED9 /* VABlockAnimationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA02D15F8864F00AEBED9 /* VABlockAnimationDelegate.h */; };
 		22BAA07515F8864F00AEBED9 /* VABlockAnimationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA02E15F8864F00AEBED9 /* VABlockAnimationDelegate.m */; };
-		22BAA07615F8864F00AEBED9 /* VACamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA02F15F8864F00AEBED9 /* VACamera.h */; };
-		22BAA07715F8864F00AEBED9 /* VACamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA03015F8864F00AEBED9 /* VACamera.m */; };
 		22BAA07815F8864F00AEBED9 /* VALayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA03115F8864F00AEBED9 /* VALayer.h */; };
 		22BAA07915F8864F00AEBED9 /* VALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA03215F8864F00AEBED9 /* VALayer.m */; };
 		22BAA07A15F8864F00AEBED9 /* VAMediaTiming.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA03315F8864F00AEBED9 /* VAMediaTiming.h */; };
@@ -222,8 +220,6 @@
 		22BAA02C15F8864F00AEBED9 /* VAAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAAnimation.m; sourceTree = "<group>"; };
 		22BAA02D15F8864F00AEBED9 /* VABlockAnimationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VABlockAnimationDelegate.h; sourceTree = "<group>"; };
 		22BAA02E15F8864F00AEBED9 /* VABlockAnimationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VABlockAnimationDelegate.m; sourceTree = "<group>"; };
-		22BAA02F15F8864F00AEBED9 /* VACamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VACamera.h; sourceTree = "<group>"; };
-		22BAA03015F8864F00AEBED9 /* VACamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VACamera.m; sourceTree = "<group>"; };
 		22BAA03115F8864F00AEBED9 /* VALayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VALayer.h; sourceTree = "<group>"; };
 		22BAA03215F8864F00AEBED9 /* VALayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VALayer.m; sourceTree = "<group>"; };
 		22BAA03315F8864F00AEBED9 /* VAMediaTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAMediaTiming.h; sourceTree = "<group>"; };
@@ -497,8 +493,6 @@
 				22BAA02C15F8864F00AEBED9 /* VAAnimation.m */,
 				22BAA02D15F8864F00AEBED9 /* VABlockAnimationDelegate.h */,
 				22BAA02E15F8864F00AEBED9 /* VABlockAnimationDelegate.m */,
-				22BAA02F15F8864F00AEBED9 /* VACamera.h */,
-				22BAA03015F8864F00AEBED9 /* VACamera.m */,
 				22BAA03115F8864F00AEBED9 /* VALayer.h */,
 				22BAA03215F8864F00AEBED9 /* VALayer.m */,
 				2282772F15FF37C1009142D6 /* VALayer+Private.h */,
@@ -925,7 +919,6 @@
 				50305AF40E40E33200F63373 /* cocos2d.h in Headers */,
 				22BAA07215F8864F00AEBED9 /* VAAnimation.h in Headers */,
 				22BAA07415F8864F00AEBED9 /* VABlockAnimationDelegate.h in Headers */,
-				22BAA07615F8864F00AEBED9 /* VACamera.h in Headers */,
 				22BAA07815F8864F00AEBED9 /* VALayer.h in Headers */,
 				22BAA07A15F8864F00AEBED9 /* VAMediaTiming.h in Headers */,
 				22BAA07C15F8864F00AEBED9 /* VAMediaTimingFunction.h in Headers */,
@@ -1142,7 +1135,6 @@
 			files = (
 				22BAA07315F8864F00AEBED9 /* VAAnimation.m in Sources */,
 				22BAA07515F8864F00AEBED9 /* VABlockAnimationDelegate.m in Sources */,
-				22BAA07715F8864F00AEBED9 /* VACamera.m in Sources */,
 				22BAA07915F8864F00AEBED9 /* VALayer.m in Sources */,
 				22BAA07B15F8864F00AEBED9 /* VAMediaTiming.m in Sources */,
 				22BAA07D15F8864F00AEBED9 /* VAMediaTimingFunction.m in Sources */,

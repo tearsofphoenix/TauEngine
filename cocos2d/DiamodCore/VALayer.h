@@ -25,7 +25,6 @@
  */
 
 #import <GLKit/GLKit.h>
-#import "VACamera.h"
 #import "VAMediaTiming.h"
 
 @class VAScheduler;
@@ -519,6 +518,8 @@
  * CoreAnimation composition model, use with caution. */
 
 - (void)renderInContext: (VGContext *)ctx;
+
+- (void)render;
 
 /* Defines how the edges of the layer are rasterized. For each of the
  * four edges (left, right, bottom, top) if the corresponding bit is

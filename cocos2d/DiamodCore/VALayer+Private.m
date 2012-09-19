@@ -11,6 +11,7 @@
 #import "VAScene.h"
 #import "TransformUtils.h"
 #import "VAMacros.h"
+#import "VGContext.h"
 
 static const NSUInteger verticeCountForEachCorner = 8;
 
@@ -55,6 +56,12 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
         {
             _cachedFullModelviewMatrix = GLKMatrix4Multiply([layerLooper transform], _cachedFullModelviewMatrix);
         }
+        
+        VGContextMatrixMode(context, GL_MODELVIEW_MATRIX);
+        VGContextLoadCTM(context, _cachedFullModelviewMatrix);
+        
+        VGContextMatrixMode(context, GL_PROJECTION_MATRIX);
+        VGContextLoadCTM(context, [_scene projectionMatrix]);
         
         _attr->_isTransformClean = YES;
     }

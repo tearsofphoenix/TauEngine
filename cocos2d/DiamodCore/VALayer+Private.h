@@ -49,9 +49,7 @@ struct VALayerAttribute
     VAScene *_scene;
     
     GLKTextureInfo *_textureInfo;
-        
-    VACameraRef _camera;
-    
+            
     GLKMatrix4 _cachedFullModelviewMatrix;
     NSUInteger _verticeCount;
     GLKVector2 _vertices[48];
