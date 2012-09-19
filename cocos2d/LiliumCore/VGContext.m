@@ -8,12 +8,20 @@
 
 #import "VGContext.h"
 #import "ccGLStateCache.h"
+#import "VALayer+Private.h"
+#import "VGColor.h"
 
 static VGContext *__currentContext = nil;
+
+@interface VGContext : NSObject
+
+@end
 
 @interface VGContext ()
 {
 @private
+    GLKBaseEffect *_effect;
+    
     GLKMatrixStackRef _modelViewMatrixStack;
     GLKMatrixStackRef _projectionMatrixStack;
     GLKMatrixStackRef _textureMatrixStack;
@@ -29,6 +37,8 @@ static VGContext *__currentContext = nil;
 {
     if ((self = [super init]))
     {
+        _effect = [[GLKBaseEffect alloc] init];
+        
         _modelViewMatrixStack = GLKMatrixStackCreate(CFAllocatorGetDefault());
         
         _projectionMatrixStack = GLKMatrixStackCreate(CFAllocatorGetDefault());
@@ -57,14 +67,76 @@ static VGContext *__currentContext = nil;
     [super dealloc];
 }
 
-void VGContextAddLayer(VGContext *context, VALayer *layer)
+void VGContextRenderLayerTree(VGContext *context, VALayer *layer)
 {
-    [context->_renderQueue addObject: layer];
-}
+    GLKBaseEffect *effect = context->_effect;
 
-void VGContextRender(VGContext *context)
-{
+    [layer _commitLayerInContextt: context];
 
+    GLKTextureInfo *textureInfo = layer->_textureInfo;
+
+    if (textureInfo)
+    {
+        GLKEffectPropertyTexture *texture2d0 = [effect texture2d0];
+        [texture2d0 setEnvMode: GLKTextureEnvModeReplace];
+        [texture2d0 setName: [textureInfo name]];
+    }
+
+    [[effect transform] setModelviewMatrix: layer->_cachedFullModelviewMatrix];
+    [[effect transform] setProjectionMatrix: [layer->_scene projectionMatrix]];
+
+    bool layerUseTextureColor = VALayer_attribute_useTextureColor(layer);
+    if (!layerUseTextureColor)
+    {
+        [effect setConstantColor: [layer->_backgroundColor CCColor]];
+    }
+    // Tell OpenGL that we're going to use this effect for our upcoming drawing
+    [effect prepareToDraw];
+    
+    // Tell OpenGL that we'll be using vertex position data
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, layer->_vertices);
+    
+    // If we're using vertex coloring, tell OpenGL that we'll be using vertex color data
+    if (layerUseTextureColor)
+    {
+        glEnableVertexAttribArray(GLKVertexAttribColor);
+        glVertexAttribPointer(GLKVertexAttribColor, 4, GL_FLOAT, GL_FALSE, 0, layer->_vertexColors);
+    }
+    
+    // If we have a texture, tell OpenGL that we'll be using texture coordinate data
+    
+    if (textureInfo)
+    {
+        glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+        glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 0, layer->_textureCoordinates);
+    }
+    
+    // Draw our primitives!
+    glDrawArrays(GL_TRIANGLE_FAN, 0, layer->_verticeCount);
+    
+    // Cleanup: Done with position data
+    glDisableVertexAttribArray(GLKVertexAttribPosition);
+    
+    // Cleanup: Done with color data (only if we used it)
+    if (layerUseTextureColor)
+    {
+        glDisableVertexAttribArray(GLKVertexAttribColor);
+    }
+    
+    // Cleanup: Done with texture data (only if we used it)
+    if (textureInfo)
+    {
+        glDisableVertexAttribArray(GLKVertexAttribTexCoord0);
+    }
+    
+    // Cleanup: Done with the current blend function
+    glDisable(GL_BLEND);
+    
+    for (VALayer *layerLooper in [layer sublayers])
+    {
+        VGContextRenderLayerTree(context, layerLooper);
+    }
 }
 
 void VGContextSaveState(VGContext *context)
@@ -153,6 +225,11 @@ GLKMatrix4 VGContextGetMVPMatrix(VGContext *context)
 
 VGContext *VGContextGetCurrentContext(void)
 {
+    if (!__currentContext)
+    {
+        __currentContext = [[VGContext alloc] init];
+    }
+    
     return __currentContext;
 }
 

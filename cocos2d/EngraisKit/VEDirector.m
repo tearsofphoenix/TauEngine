@@ -105,7 +105,7 @@ static VEDirector *_sharedDirector = nil;
         
 		winSizeInPixels_ = winSizeInPoints_ = CGSizeZero;
         
-        _renderContext = [[VGContext alloc] init];
+        _renderContext = VGContextGetCurrentContext();
         
         __ccContentScaleFactor = 1;
         
@@ -222,9 +222,7 @@ CGFloat	__ccContentScaleFactor = 1;
 	/* tick before glClear: issue #533 */
     [_scheduler update: 1.0 / [self framesPerSecond]];
     
-    
-    VALayer_renderInScene([view_ currentScene]);
-    
+    VGContextRenderLayerTree(_renderContext, [view_ currentScene]);    
 }
 
 -(void) setProjection:(ccDirectorProjection)projection

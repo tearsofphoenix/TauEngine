@@ -45,18 +45,8 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
 
 @implementation VALayer (Private)
 
-- (void)_commitLayer
+- (void)_commitLayerInContextt: (VGContext *)context
 {
-    if (_attr->_isTextureInfoDirty)
-    {
-        GLKEffectPropertyTexture *texture2d0 = [_effect texture2d0];
-        [texture2d0 setEnvMode: GLKTextureEnvModeReplace];
-        [texture2d0 setTarget: GLKTextureTarget2D];
-        [texture2d0 setName: [_textureInfo name]];
-        
-        _attr->_isTextureInfoDirty = NO;
-    }
-    
     if (!_attr->_isTransformClean)
     {
         _cachedFullModelviewMatrix = _transform;
@@ -65,16 +55,7 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
             _cachedFullModelviewMatrix = GLKMatrix4Multiply([layerLooper transform], _cachedFullModelviewMatrix);
         }
         
-        [[_effect transform] setModelviewMatrix: _cachedFullModelviewMatrix];
-        
         _attr->_isTransformClean = YES;
-    }
-    
-    if (!_attr->_isProjectionClean)
-    {
-        [[_effect transform] setProjectionMatrix: [_scene projectionMatrix]];
-        
-        _attr->_isProjectionClean = YES;
     }
     
     if (!_attr->_isVerticesClean)
@@ -123,6 +104,12 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
         
         _attr->_isVerticesClean = YES;
     }
+    
+    for (VALayer *layerLooper in _sublayers)
+    {
+        [layerLooper _commitLayerInContextt: context];
+    }
+    
 }
 
 - (void)updateColor
@@ -133,60 +120,14 @@ static void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2
 	}
 }
 
-void VALayer_renderInScene(VALayer *layer)
+bool VALayer_attribute_useTextureColor(VALayer *layer)
 {
-    GLKBaseEffect *effect = layer->_effect;
-    GLKTextureInfo *textureInfo = layer->_textureInfo;
-    
-    [layer _commitLayer];
-    
-    // Tell OpenGL that we're going to use this effect for our upcoming drawing
-    [effect prepareToDraw];
-    
-    // Tell OpenGL that we'll be using vertex position data
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, layer->_vertices);
-    
-    // If we're using vertex coloring, tell OpenGL that we'll be using vertex color data
-    if (layer->_attr->_useTextureColor)
-    {
-        glEnableVertexAttribArray(GLKVertexAttribColor);
-        glVertexAttribPointer(GLKVertexAttribColor, 4, GL_FLOAT, GL_FALSE, 0, layer->_vertexColors);
-    }
-    
-    // If we have a texture, tell OpenGL that we'll be using texture coordinate data
-    
-    if (textureInfo)
-    {
-        glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-        glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 0, layer->_textureCoordinates);
-    }
-    
-    // Draw our primitives!
-    glDrawArrays(GL_TRIANGLE_FAN, 0, layer->_verticeCount);
-    
-    // Cleanup: Done with position data
-    glDisableVertexAttribArray(GLKVertexAttribPosition);
-    
-    // Cleanup: Done with color data (only if we used it)
-    if (layer->_attr->_useTextureColor)
-    {
-        glDisableVertexAttribArray(GLKVertexAttribColor);
-    }
-    
-    // Cleanup: Done with texture data (only if we used it)
-    if (textureInfo)
-    {
-        glDisableVertexAttribArray(GLKVertexAttribTexCoord0);
-    }
-    
-    // Cleanup: Done with the current blend function
-    glDisable(GL_BLEND);
-    
-    for (VALayer *layerLooper in layer->_sublayers)
-    {
-        VALayer_renderInScene(layerLooper);
-    }
+    return layer->_attr->_useTextureColor;
+}
+
+bool VALayer_attribute_useTexture(VALayer *layer)
+{
+    return layer->_textureInfo;
 }
 
 @end

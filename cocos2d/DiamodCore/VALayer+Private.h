@@ -34,7 +34,6 @@ struct VALayerAttribute
     unsigned int _useTextureColor: 1;
     
     //Texture Info
-    unsigned int _isTextureInfoDirty: 1;
 
     unsigned int _delegateRespondsToDisplayLayer: 1;
     unsigned int _delegateRespondsToDrawLayerInContext: 1;
@@ -44,12 +43,11 @@ struct VALayerAttribute
 
 @interface VALayer ()
 {
-@protected
+@public
     VALayer *_presentationLayer;
     VALayer *_modelLayer;
     VAScene *_scene;
     
-    GLKBaseEffect *_effect;
     GLKTextureInfo *_textureInfo;
         
     VACameraRef _camera;
@@ -59,6 +57,9 @@ struct VALayerAttribute
     GLKVector2 _vertices[48];
     GLKVector2 _textureCoordinates[4];
     GLKVector4 _vertexColors[4];
+    
+    VGColor	*_backgroundColor;
+
 }
 
 @property (copy) NSDictionary *animations;
@@ -71,10 +72,11 @@ struct VALayerAttribute
 
 - (void)updateColor;
 
-- (void)_commitLayer;
+- (void)_commitLayerInContextt: (VGContext *)context;
 
 @end
 
-extern void VALayer_renderInScene(VALayer *layer);
+extern bool VALayer_attribute_useTextureColor(VALayer *layer);
 
-//extern GLKVector2 *VALayer_getVertices(VALayer *layer);
+extern bool VALayer_attribute_useTexture(VALayer *layer);
+

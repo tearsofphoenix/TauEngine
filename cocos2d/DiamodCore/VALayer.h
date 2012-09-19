@@ -47,7 +47,6 @@
 
 @interface VALayer : NSObject <NSCoding, VAMediaTiming>
 {
-	VGColor	*_backgroundColor;
     GLfloat _opacity;
         
     NSMutableArray *_animationKeys;

@@ -89,13 +89,6 @@
     return _endPoint;
 }
 
-- (void)_commitLayer
-{
-    [super _commitLayer];
-    
-    
-}
-
 //- (void) updateColor
 //{
 //    [super updateColor];

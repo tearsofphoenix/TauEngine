@@ -153,8 +153,6 @@ static NSString * s_VALayerInitializationKeys[] =
         _animations = [[NSMutableDictionary alloc] init];
         _animationKeys = [[NSMutableArray alloc] init];
         
-        _effect = [[GLKBaseEffect alloc] init];
-        
         _camera = VACameraCreate();
                 
         for (int i = 0; i < sizeof(s_VALayerInitializationKeys)/sizeof(s_VALayerInitializationKeys[0]); i++)
@@ -640,6 +638,11 @@ static NSMutableDictionary *s_VALayerDefaultValues = nil;
         
         [self didChangeValueForKey: @"sublayers"];
     }
+}
+
+- (NSArray *)sublayers
+{
+    return [NSArray arrayWithArray: _sublayers];
 }
 
 /* Add 'layer' to the end of the receiver's sublayers array. If 'layer'
@@ -1280,9 +1283,7 @@ static BOOL _VALayerIgnoresTouchEvents(VALayer *layer)
         
         [_backgroundColor release];
         _backgroundColor = [backgroundColor retain];
-        
-        [_effect setConstantColor: [_backgroundColor CCColor]];
-        
+                
         [self didChangeValueForKey: @"backgroundColor"];
     }
 }

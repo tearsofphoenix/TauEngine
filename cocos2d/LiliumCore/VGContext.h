@@ -10,18 +10,13 @@
 
 @class VALayer;
 
-@interface VGContext : NSObject
-
-@end
+@class VGContext;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
     
-    CF_EXPORT void VGContextAddLayer(VGContext *context, VALayer *layer);
-    
-    CF_EXPORT void VGContextRender(VGContext *context);
+    CF_EXPORT void VGContextRenderLayerTree(VGContext *context, VALayer *layer);
     
     CF_EXPORT VGContext *VGContextGetCurrentContext(void);
     
