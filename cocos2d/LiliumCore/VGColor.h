@@ -74,10 +74,12 @@
 // If the receiver is of a compatible color space, any non-NULL parameters are populated and 'YES' is returned. Otherwise, the parameters are left unchanged and 'NO' is returned.
 - (BOOL)getWhite: (float *)white
            alpha: (float *)alpha ;
+
 - (BOOL)getHue: (float *)hue
     saturation: (float *)saturation
     brightness: (float *)brightness
          alpha: (float *)alpha ;
+
 - (BOOL)getRed: (float *)red
          green: (float *)green
           blue: (float *)blue

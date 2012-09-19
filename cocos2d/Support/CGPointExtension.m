@@ -50,7 +50,7 @@ ccpNormalize(const CGPoint v)
 CGPoint
 ccpForAngle(const CGFloat a)
 {
-	return ccp(cosf(a), sinf(a));
+	return CGPointMake(cosf(a), sinf(a));
 }
 
 CGFloat
@@ -74,17 +74,12 @@ float clampf(float v, float min, float max)
 
 CGPoint ccpClamp(CGPoint p, CGPoint min_inclusive, CGPoint max_inclusive)
 {
-	return ccp(clampf(p.x,min_inclusive.x,max_inclusive.x), clampf(p.y, min_inclusive.y, max_inclusive.y));
-}
-
-CGPoint ccpFromSize(CGSize s)
-{
-	return ccp(s.width, s.height);
+	return CGPointMake(clampf(p.x,min_inclusive.x,max_inclusive.x), clampf(p.y, min_inclusive.y, max_inclusive.y));
 }
 
 CGPoint ccpCompOp(CGPoint p, float (*opFunc)(float))
 {
-	return ccp(opFunc(p.x), opFunc(p.y));
+	return CGPointMake(opFunc(p.x), opFunc(p.y));
 }
 
 BOOL ccpFuzzyEqual(CGPoint a, CGPoint b, float var)
@@ -97,7 +92,7 @@ BOOL ccpFuzzyEqual(CGPoint a, CGPoint b, float var)
 
 CGPoint ccpCompMult(CGPoint a, CGPoint b)
 {
-	return ccp(a.x * b.x, a.y * b.y);
+	return CGPointMake(a.x * b.x, a.y * b.y);
 }
 
 float ccpAngleSigned(CGPoint a, CGPoint b)

@@ -43,9 +43,8 @@ Settings settings;
         
 		[self addSublayer: view];
         
-//		[view setScale:15];
-		[view setAnchorPoint:ccp(0,0)];
-		[view setPosition:ccp(s.width/2, s.height/3)];
+		[view setAnchorPoint:CGPointMake(0,0)];
+		[view setPosition:CGPointMake(s.width/2, s.height/3)];
         
 
 //        [view setOpacity: 0];

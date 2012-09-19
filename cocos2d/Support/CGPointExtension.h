@@ -36,7 +36,7 @@
  The "ccp" prefix means: "CoCos2d Point"
 
  Examples:
-  - ccpAdd( ccp(1,1), ccp(2,2) ); // preferred cocos2d way
+  - ccpAdd( CGPointMake(1,1), CGPointMake(2,2) ); // preferred cocos2d way
   - ccpAdd( CGPointMake(1,1), CGPointMake(2,2) ); // also ok but more verbose
 
   - cpvadd( cpv(1,1), cpv(2,2) ); // way of the chipmunk
@@ -50,13 +50,6 @@
 extern "C" {
 #endif
 
-/** Helper macro that creates a CGPoint
- @return CGPoint
- @since v0.7.2
- */
-#define ccp(__X__,__Y__) CGPointMake(__X__,__Y__)
-
-
 /** Returns opposite of point.
  @return CGPoint
  @since v0.7.2
@@ -64,7 +57,7 @@ extern "C" {
 static inline CGPoint
 ccpNeg(const CGPoint v)
 {
-	return ccp(-v.x, -v.y);
+	return CGPointMake(-v.x, -v.y);
 }
 
 /** Calculates sum of two points.
@@ -74,7 +67,7 @@ ccpNeg(const CGPoint v)
 static inline CGPoint
 ccpAdd(const CGPoint v1, const CGPoint v2)
 {
-	return ccp(v1.x + v2.x, v1.y + v2.y);
+	return CGPointMake(v1.x + v2.x, v1.y + v2.y);
 }
 
 /** Calculates difference of two points.
@@ -84,7 +77,7 @@ ccpAdd(const CGPoint v1, const CGPoint v2)
 static inline CGPoint
 ccpSub(const CGPoint v1, const CGPoint v2)
 {
-	return ccp(v1.x - v2.x, v1.y - v2.y);
+	return CGPointMake(v1.x - v2.x, v1.y - v2.y);
 }
 
 /** Returns point multiplied by given factor.
@@ -94,7 +87,7 @@ ccpSub(const CGPoint v1, const CGPoint v2)
 static inline CGPoint
 ccpMult(const CGPoint v, const CGFloat s)
 {
-	return ccp(v.x*s, v.y*s);
+	return CGPointMake(v.x*s, v.y*s);
 }
 
 /** Calculates midpoint between two points.
@@ -134,7 +127,7 @@ ccpCross(const CGPoint v1, const CGPoint v2)
 static inline CGPoint
 ccpPerp(const CGPoint v)
 {
-	return ccp(-v.y, v.x);
+	return CGPointMake(-v.y, v.x);
 }
 
 /** Calculates perpendicular of v, rotated 90 degrees clockwise -- cross(v, rperp(v)) <= 0
@@ -144,7 +137,7 @@ ccpPerp(const CGPoint v)
 static inline CGPoint
 ccpRPerp(const CGPoint v)
 {
-	return ccp(v.y, -v.x);
+	return CGPointMake(v.y, -v.x);
 }
 
 /** Calculates the projection of v1 over v2.
@@ -164,7 +157,7 @@ ccpProject(const CGPoint v1, const CGPoint v2)
 static inline CGPoint
 ccpRotate(const CGPoint v1, const CGPoint v2)
 {
-	return ccp(v1.x*v2.x - v1.y*v2.y, v1.x*v2.y + v1.y*v2.x);
+	return CGPointMake(v1.x*v2.x - v1.y*v2.y, v1.x*v2.y + v1.y*v2.x);
 }
 
 /** Unrotates two points.
@@ -174,7 +167,7 @@ ccpRotate(const CGPoint v1, const CGPoint v2)
 static inline CGPoint
 ccpUnrotate(const CGPoint v1, const CGPoint v2)
 {
-	return ccp(v1.x*v2.x + v1.y*v2.y, v1.y*v2.x - v1.x*v2.y);
+	return CGPointMake(v1.x*v2.x + v1.y*v2.y, v1.y*v2.x - v1.x*v2.y);
 }
 
 /** Calculates the square length of a CGPoint (not calling sqrt() )
@@ -237,11 +230,6 @@ float clampf(float value, float min_inclusive, float max_inclusive);
  @since v0.99.1
  */
 CGPoint ccpClamp(CGPoint p, CGPoint from, CGPoint to);
-
-/** Quickly convert CGSize to a CGPoint
- @since v0.99.1
- */
-CGPoint ccpFromSize(CGSize s);
 
 /** Run a math operation function on each point component
  * absf, fllorf, ceilf, roundf

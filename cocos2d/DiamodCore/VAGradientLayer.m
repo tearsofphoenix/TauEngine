@@ -98,7 +98,7 @@
 //        return;
 //    
 //    float c = sqrtf(2);
-//    CGPoint u = ccp(vector_.x / h, vector_.y / h);
+//    CGPoint u = CGPointMake(vector_.x / h, vector_.y / h);
 //    
 //    // Compressed Interpolation mode
 //    if( compressedInterpolation_ ) {

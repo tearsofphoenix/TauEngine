@@ -31,9 +31,6 @@
 		22BAA08115F8864F00AEBED9 /* VAScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA03A15F8864F00AEBED9 /* VAScene.m */; };
 		22BAA08215F8864F00AEBED9 /* VAValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA03B15F8864F00AEBED9 /* VAValueFunction.h */; };
 		22BAA08315F8864F00AEBED9 /* VAValueFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA03C15F8864F00AEBED9 /* VAValueFunction.m */; };
-		22BAA08415F8864F00AEBED9 /* ccConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA03E15F8864F00AEBED9 /* ccConfig.h */; };
-		22BAA08515F8864F00AEBED9 /* CCConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA03F15F8864F00AEBED9 /* CCConfiguration.h */; };
-		22BAA08615F8864F00AEBED9 /* CCConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04015F8864F00AEBED9 /* CCConfiguration.m */; };
 		22BAA08715F8864F00AEBED9 /* VEDirector.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04115F8864F00AEBED9 /* VEDirector.h */; };
 		22BAA08815F8864F00AEBED9 /* VEDirector.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BAA04215F8864F00AEBED9 /* VEDirector.m */; };
 		22BAA08B15F8864F00AEBED9 /* ccMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 22BAA04515F8864F00AEBED9 /* ccMacros.h */; };
@@ -238,9 +235,6 @@
 		22BAA03A15F8864F00AEBED9 /* VAScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAScene.m; sourceTree = "<group>"; };
 		22BAA03B15F8864F00AEBED9 /* VAValueFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAValueFunction.h; sourceTree = "<group>"; };
 		22BAA03C15F8864F00AEBED9 /* VAValueFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAValueFunction.m; sourceTree = "<group>"; };
-		22BAA03E15F8864F00AEBED9 /* ccConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccConfig.h; sourceTree = "<group>"; };
-		22BAA03F15F8864F00AEBED9 /* CCConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCConfiguration.h; sourceTree = "<group>"; };
-		22BAA04015F8864F00AEBED9 /* CCConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCConfiguration.m; sourceTree = "<group>"; };
 		22BAA04115F8864F00AEBED9 /* VEDirector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEDirector.h; sourceTree = "<group>"; };
 		22BAA04215F8864F00AEBED9 /* VEDirector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEDirector.m; sourceTree = "<group>"; };
 		22BAA04515F8864F00AEBED9 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
@@ -530,9 +524,6 @@
 		22BAA03D15F8864F00AEBED9 /* EngraisKit */ = {
 			isa = PBXGroup;
 			children = (
-				22BAA03E15F8864F00AEBED9 /* ccConfig.h */,
-				22BAA03F15F8864F00AEBED9 /* CCConfiguration.h */,
-				22BAA04015F8864F00AEBED9 /* CCConfiguration.m */,
 				22BAA04115F8864F00AEBED9 /* VEDirector.h */,
 				22BAA04215F8864F00AEBED9 /* VEDirector.m */,
 				22BAA04515F8864F00AEBED9 /* ccMacros.h */,
@@ -943,8 +934,6 @@
 				22BAA07C15F8864F00AEBED9 /* VAMediaTimingFunction.h in Headers */,
 				22BAA08015F8864F00AEBED9 /* VAScene.h in Headers */,
 				22BAA08215F8864F00AEBED9 /* VAValueFunction.h in Headers */,
-				22BAA08415F8864F00AEBED9 /* ccConfig.h in Headers */,
-				22BAA08515F8864F00AEBED9 /* CCConfiguration.h in Headers */,
 				22BAA08715F8864F00AEBED9 /* VEDirector.h in Headers */,
 				22BAA08B15F8864F00AEBED9 /* ccMacros.h in Headers */,
 				22BAA08C15F8864F00AEBED9 /* CCScheduler.h in Headers */,
@@ -1163,7 +1152,6 @@
 				22BAA07D15F8864F00AEBED9 /* VAMediaTimingFunction.m in Sources */,
 				22BAA08115F8864F00AEBED9 /* VAScene.m in Sources */,
 				22BAA08315F8864F00AEBED9 /* VAValueFunction.m in Sources */,
-				22BAA08615F8864F00AEBED9 /* CCConfiguration.m in Sources */,
 				22BAA08815F8864F00AEBED9 /* VEDirector.m in Sources */,
 				22BAA08D15F8864F00AEBED9 /* CCScheduler.m in Sources */,
 				22BAA09515F8864F00AEBED9 /* NVTimer.m in Sources */,

@@ -38,11 +38,6 @@
  *
  */
 
-//
-// all cocos2d include files
-//
-#import "ccConfig.h"	// should be included first
-
 #import "VALayer.h"
 
 #import "VAScene.h"
@@ -50,8 +45,6 @@
 #import "VACamera.h"
 
 #import "VEDirector.h"
-
-#import "CCConfiguration.h"
 
 #import "VGContext.h"
 #import "VGColor.h"
