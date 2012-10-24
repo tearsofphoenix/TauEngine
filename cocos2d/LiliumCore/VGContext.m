@@ -10,6 +10,8 @@
 #import "VALayer+Private.h"
 #import "VGColor.h"
 
+#define VGContextMatrix(context, name) ((context)->_matrixStacks[(name) - GL_MODELVIEW_MATRIX])
+
 static VGContextRef __currentContext = nil;
 
 @interface VGContext : NSObject
@@ -21,9 +23,7 @@ static VGContextRef __currentContext = nil;
 @private
     GLKBaseEffect *_effect;
     
-    GLKMatrixStackRef _modelViewMatrixStack;
-    GLKMatrixStackRef _projectionMatrixStack;
-    GLKMatrixStackRef _textureMatrixStack;
+    GLKMatrixStackRef _matrixStacks[3];
     
     GLKMatrixStackRef _currentStack;
     NSMutableArray *_renderQueue;
@@ -37,15 +37,10 @@ static VGContextRef __currentContext = nil;
     if ((self = [super init]))
     {
         _effect = [[GLKBaseEffect alloc] init];
+        VGContextMatrix(self, GL_MODELVIEW_MATRIX) = _currentStack =  GLKMatrixStackCreate(CFAllocatorGetDefault());
+        VGContextMatrix(self, GL_PROJECTION_MATRIX) = GLKMatrixStackCreate(CFAllocatorGetDefault());
+        VGContextMatrix(self, GL_TEXTURE_MATRIX) = GLKMatrixStackCreate(CFAllocatorGetDefault());
         
-        _modelViewMatrixStack = GLKMatrixStackCreate(CFAllocatorGetDefault());
-        
-        _projectionMatrixStack = GLKMatrixStackCreate(CFAllocatorGetDefault());
-
-        _textureMatrixStack = GLKMatrixStackCreate(CFAllocatorGetDefault());
-        
-		_currentStack = _modelViewMatrixStack;
-
         _renderQueue = [[NSMutableArray alloc] init];
         
         __currentContext = self;        
@@ -56,9 +51,10 @@ static VGContextRef __currentContext = nil;
 
 - (void)dealloc
 {
-    CFRelease(_modelViewMatrixStack);
-    CFRelease(_projectionMatrixStack);
-    CFRelease(_textureMatrixStack);
+    CFRelease(VGContextMatrix(self, GL_MODELVIEW_MATRIX));
+    CFRelease(VGContextMatrix(self, GL_PROJECTION_MATRIX));
+    CFRelease(VGContextMatrix(self, GL_TEXTURE_MATRIX));
+    
     _currentStack = NULL;
     
     [_renderQueue release];
@@ -135,41 +131,19 @@ void VGContextRenderLayer(VGContextRef context, VALayer *layer)
 
 void VGContextSaveState(VGContextRef context)
 {
-    GLKMatrixStackPush(context->_modelViewMatrixStack);
-    GLKMatrixStackPush(context->_projectionMatrixStack);
+    GLKMatrixStackPush( VGContextMatrix(context, GL_MODELVIEW_MATRIX) );
+    GLKMatrixStackPush( VGContextMatrix(context, GL_PROJECTION_MATRIX) );
 }
 
 void VGContextRestoreState(VGContextRef context)
 {
-    GLKMatrixStackPop(context->_modelViewMatrixStack);
-    GLKMatrixStackPop(context->_projectionMatrixStack);
+    GLKMatrixStackPop(VGContextMatrix(context, GL_MODELVIEW_MATRIX) );
+    GLKMatrixStackPop(VGContextMatrix(context, GL_PROJECTION_MATRIX) );
 }
 
 void VGContextMatrixMode(VGContextRef context, GLenum mode)
 {
-    switch(mode)
-	{
-		case GL_MODELVIEW_MATRIX:
-        {
-			context->_currentStack = context->_modelViewMatrixStack;
-            break;
-        }
-		case GL_PROJECTION_MATRIX:
-        {
-			context->_currentStack = context->_projectionMatrixStack;
-            break;
-        }
-		case GL_TEXTURE_MATRIX:
-        {
-			context->_currentStack = context->_textureMatrixStack;
-            break;
-        }
-		default:
-        {
-			assert(0 && "Invalid matrix mode specified");
-            break;
-        }
-	}
+    context->_currentStack = VGContextMatrix(context, mode);
 }
 
 void VGContextLoadIdentity(VGContextRef context)
@@ -209,19 +183,19 @@ void VGContextSetFillColor(VGContextRef context, GLKVector4 color)
 
 GLKMatrix4 VGContextGetModelviewMatrix(VGContextRef context)
 {
-    return GLKMatrixStackGetMatrix4(context->_modelViewMatrixStack);
+    return GLKMatrixStackGetMatrix4( VGContextMatrix(context, GL_MODELVIEW_MATRIX) );
 }
 
 GLKMatrix4 VGContextGetProjectionMatrix(VGContextRef context)
 {
-    return GLKMatrixStackGetMatrix4(context->_projectionMatrixStack);
+    return GLKMatrixStackGetMatrix4( VGContextMatrix(context, GL_PROJECTION_MATRIX) );
 }
 
 
 GLKMatrix4 VGContextGetMVPMatrix(VGContextRef context)
 {
-    return GLKMatrix4Multiply(GLKMatrixStackGetMatrix4(context->_projectionMatrixStack),
-                              GLKMatrixStackGetMatrix4(context->_modelViewMatrixStack));
+    return GLKMatrix4Multiply(GLKMatrixStackGetMatrix4( VGContextMatrix(context, GL_PROJECTION_MATRIX) ),
+                              GLKMatrixStackGetMatrix4( VGContextMatrix(context, GL_MODELVIEW_MATRIX) ));
 }
 
 VGContextRef VGContextGetCurrentContext(void)
@@ -237,8 +211,8 @@ VGContextRef VGContextGetCurrentContext(void)
 void VGContextDrawVertices(VGContextRef context, GLvoid *vertices, GLsizei vertexCount, GLenum mode)
 {
     GLKBaseEffect *effect = context->_effect;
-    [[effect transform] setModelviewMatrix: GLKMatrixStackGetMatrix4(context->_modelViewMatrixStack)];
-    [[effect transform] setProjectionMatrix: GLKMatrixStackGetMatrix4(context->_projectionMatrixStack)];
+    [[effect transform] setModelviewMatrix: GLKMatrixStackGetMatrix4( VGContextMatrix(context, GL_MODELVIEW_MATRIX) )];
+    [[effect transform] setProjectionMatrix: GLKMatrixStackGetMatrix4( VGContextMatrix(context, GL_PROJECTION_MATRIX) )];
     
     [effect prepareToDraw];
     
