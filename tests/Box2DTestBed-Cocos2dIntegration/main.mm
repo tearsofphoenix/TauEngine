@@ -117,36 +117,10 @@ void test(void)
 		cout << myvec.at(i) << ' ';
 }
 
-@interface UIPopoverBackgroundView ()
-
-+ (CGPathRef)_shadowPathForRect: (CGRect)rect
-                 arrowDirection: (UIPopoverArrowDirection)direction;
-
-@end
-
 int main(int argc, char *argv[])
 {
     @autoreleasepool
-    {
-//        NSUInteger count = 0;
-//        Class *list = objc_copyClassList(&count);
-//        printf("count: %d\n", count);
-//        for(int i=0; i<count; ++i)
-//        {
-//            objc_dumpClass(class_getName(list[i]));
-//        }
-//        objc_dumpClass("UIPopoverBackgroundView");
-        UIPopoverBackgroundView *view = [[UIPopoverBackgroundView alloc] initWithFrame: CGRectMake(0, 0, 100, 100)];
-        NSLog(@"%f", [view arrowOffset]);
-        //objc_dumpClass("CALayer");
-        
-        //objc_dumpClass("CARenderer");
-        //objc_dumpClass("UIView");
-        //objc_dumpClass("UITableViewCellLayoutManager");
-        //test();
-//        void *func = dlsym(RTLD_DEFAULT, "_CASGetDisplayInfo");
-//        printf("in func: %s %p", __FUNCTION__, func);
-        
+    {        
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([Box2DAppDelegate class]));
     }
 }
