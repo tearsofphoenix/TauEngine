@@ -117,6 +117,12 @@ void test(void)
 		cout << myvec.at(i) << ' ';
 }
 
+@interface UIPopoverBackgroundView ()
+
++ (CGPathRef)_shadowPathForRect: (CGRect)rect
+                 arrowDirection: (UIPopoverArrowDirection)direction;
+
+@end
 
 int main(int argc, char *argv[])
 {
@@ -129,6 +135,9 @@ int main(int argc, char *argv[])
 //        {
 //            objc_dumpClass(class_getName(list[i]));
 //        }
+//        objc_dumpClass("UIPopoverBackgroundView");
+        UIPopoverBackgroundView *view = [[UIPopoverBackgroundView alloc] initWithFrame: CGRectMake(0, 0, 100, 100)];
+        NSLog(@"%f", [view arrowOffset]);
         //objc_dumpClass("CALayer");
         
         //objc_dumpClass("CARenderer");
